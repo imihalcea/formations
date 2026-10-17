@@ -63,7 +63,7 @@ Un seul fichier de contexte sert aux deux outils : Open Code lit `CLAUDE.md` en 
 
 Open Code n'a pas d'équivalent de la mémoire automatique, de `/context` ni des règles par chemin. Le module 5 les présente pour Claude Code et signale l'absence.
 
-Au TP 6, la slash command et le skill ont un équivalent direct, et Open Code lit aussi `.claude/skills/`. Le hook diffère. Pour le formatage, la clé `formatter` suffit, avec la commande `["uv", "run", "ruff", "format", "$FILE"]`, car `ruff` n'est pas dans le `PATH` hors de `uv run`. Pour lancer `pytest`, il faut un plugin sur `tool.execute.after`. La documentation d'Open Code n'en donne aucun exemple ni la forme de ses arguments : le corrigé de ce plugin s'écrit et se teste sur la VM.
+Au TP 6, la slash command et le skill ont un équivalent direct, et Open Code lit aussi `.claude/skills/`. Le hook diffère. Pour le formatage, la clé `formatter` suffit, avec la commande `["uv", "run", "ruff", "format", "$FILE"]`, car `ruff` n'est pas dans le `PATH` hors de `uv run`. Pour lancer `pytest`, il faut un plugin. La VM a Open Code v2, dont l'API de plugin diffère de celle que décrit la documentation (v1) : export `default` avec `id` et `setup`, puis `ctx.tool.hook("execute.after", …)`, d'après le source de la v2.0.26 ([anomalyco/opencode](https://github.com/anomalyco/opencode/tree/v2.0.26/packages/plugin/src)). Une première version testée en local est dans `tp/tp06/.opencode/plugins/run-tests.js`.
 
 ## À vérifier sur la VM
 
