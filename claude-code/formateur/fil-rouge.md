@@ -141,6 +141,6 @@ La trajectoire impose ces éléments au code de départ :
 - aucun `CLAUDE.md` ni `AGENTS.md` ;
 - un `opencode.json` qui fixe le modèle à `anthropic/claude-sonnet-4-6` et met `bash` à `ask`, pour le TP 2.
 
-## Questions ouvertes
+## Distribution
 
-- Comment les stagiaires récupèrent-ils `fil-rouge/` : copie depuis la VM, archive, ou clonage du dépôt ?
+Chaque stagiaire trouve sur la VM l'archive `~/Documents/claude-code.zip`, produite à partir du build. Elle contient à sa racine le support `claude-code.html` (copie de `dist/index.html`) et le dossier `fil-rouge/`, sans `.venv` ni caches. `unzip ~/Documents/claude-code.zip -d ~` crée donc `~/claude-code.html` et `~/fil-rouge`, chemin utilisé par les modules et les TP. Sans `unzip`, `python3 -m zipfile -e` fait la même extraction avec le Python 3.10 de la VM. Avec Claude Code sur le poste, le stagiaire copie d'abord l'archive depuis la VM.

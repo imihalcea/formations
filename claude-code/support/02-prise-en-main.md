@@ -495,9 +495,10 @@ Ouvrir ensuite un nouveau terminal, pour que `uv` soit dans le `PATH`. Sans `cur
 
 ### Préparer le projet
 
-Copier le dossier `fil-rouge/` fourni dans `~/fil-rouge`, puis :
+Extraire l'archive fournie, qui crée `~/fil-rouge` et le support `~/claude-code.html`, puis :
 
 ```console
+$ unzip ~/Documents/claude-code.zip -d ~
 $ cd ~/fil-rouge
 $ uv sync
 $ git init
@@ -507,6 +508,10 @@ $ git commit -m "État initial"
 
 ::: attendu
 `uv sync` télécharge Python 3.14 si besoin et installe les dépendances. `git log` montre un commit.
+:::
+
+::: indice
+Sans `unzip` : `python3 -m zipfile -e ~/Documents/claude-code.zip ~`. Avec Claude Code sur le poste, copier d'abord l'archive depuis la VM dans `~/Documents`.
 :::
 
 ### Lancer l'outil
