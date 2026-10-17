@@ -61,19 +61,19 @@ Le code respecte des conventions qu'aucun document n'écrit. Le TP 5 les fait fo
 
 ## Trajectoire des TP
 
-Le stagiaire copie `fil-rouge/` au début du TP 2, installe `uv`, lance `uv sync`, fait de sa copie un dépôt git et commite l'état initial. Les commandes du projet passent par `uv run` : `uv run pytest`, `uv run uvicorn rooms.main:app --reload`. Chaque TP qui modifie le code se termine par un commit : le stagiaire compare son état à celui du corrigé avec `git diff` et peut revenir au commit précédent si un TP échoue.
+Au début du TP 2, le stagiaire installe `uv`, extrait l'archive `claude-code.zip`, lance `uv sync`, fait de sa copie un dépôt git et commite l'état initial. Les commandes du projet passent par `uv run` : `uv run pytest`, `uv run uvicorn rooms.main:app --reload`. Chaque TP qui modifie le code se termine par un commit : le stagiaire compare son état à celui du corrigé avec `git diff` et peut revenir au commit précédent si un TP échoue.
 
 Les durées sont des estimations, fixées dans le plan de chaque module.
 
 ### TP 2 : premier lancement (15 min)
 
-Départ : installation de `uv`, copie de `fil-rouge/`, `uv sync`, `git init`, commit « État initial ».
+Départ : installation de `uv`, extraction de l'archive `claude-code.zip` dans `~`, `uv sync`, `git init`, commit « État initial ».
 
-Travail : lancer l'outil à la racine du projet avec `claude-sonnet-4-6`, faire décrire la structure, faire lancer `pytest`. Le stagiaire remplit la base avec `seed.py`, démarre `uvicorn` dans un second terminal, puis demande à l'agent d'interroger l'API avec `curl`. Chaque commande déclenche une demande de permission, que le stagiaire accepte, refuse ou autorise pour la session.
+Travail : lancer l'outil à la racine du projet avec `claude-sonnet-4-6`, faire décrire la structure, faire lancer `pytest`. Le stagiaire remplit la base avec `seed.py`, démarre `uvicorn` dans un second terminal, puis demande à l'agent d'interroger l'API avec `curl`. Chaque commande déclenche une demande de permission : le stagiaire refuse la première avec une consigne, accepte la suivante une fois, puis autorise durablement `curl` et vérifie que la règle s'applique.
 
 Les demandes de permission apparaissent dans les deux outils. Claude Code est lancé avec `--permission-mode default`, car il démarre sinon en mode `auto`. Pour Open Code, le `opencode.json` du projet met `bash` à `ask` : ces règles s'ajoutent après celles de chaque agent, et la dernière règle qui correspond l'emporte (`packages/core/src/config/plugin/agent.ts` de la v2.0.26). Open Code ne doit pas être lancé avec `--auto`, qui accepte toutes les demandes.
 
-Arrivée : code inchangé, aucun commit. `/init` est montré en démonstration sans être lancé : le `CLAUDE.md` est le sujet du TP 5.
+Arrivée : code inchangé, aucun commit. `/init` est montré sur une slide du module 2 sans être lancé : le `CLAUDE.md` est le sujet du TP 5.
 
 ### TP 3 : explorer et modifier (20 min)
 
