@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 540" width="1680" height="540">
+  <text x="0" y="24" class="accent mono" font-size="22" font-weight="600" letter-spacing="3">ILLUSTRATION</text>
+
+  <rect x="0" y="50" width="1100" height="490" rx="12" class="ink"/>
+  <text x="40" y="110" class="paper mono" font-size="26"><tspan class="accent">$</tspan> uv run pytest -q tests/test_pricing.py</text>
+  <text x="40" y="170" class="muted mono" font-size="24">test_seed_internal_bookings[…10:45-2187]</text>
+  <text x="40" y="212" class="paper mono" font-size="26">E   AssertionError: assert <tspan class="accent">2188</tspan> == 2187</text>
+  <text x="40" y="282" class="muted mono" font-size="24">test_seed_internal_bookings[…16:15-2813]</text>
+  <text x="40" y="324" class="paper mono" font-size="26">E   AssertionError: assert <tspan class="accent">2812</tspan> == 2813</text>
+  <text x="40" y="394" class="paper mono" font-size="26">FAILED tests/test_pricing.py::…[…-2187]</text>
+  <text x="40" y="436" class="paper mono" font-size="26">FAILED tests/test_pricing.py::…[…-2813]</text>
+  <text x="40" y="496" class="accent mono" font-size="26" font-weight="600">2 failed in 0.02s</text>
+
+  <g class="ink" font-size="28">
+    <path d="M1116 202 H1180" class="stroke-accent" stroke-width="3"/>
+    <text x="1196" y="212">Retrospective : un centime de plus</text>
+    <path d="M1116 314 H1180" class="stroke-accent" stroke-width="3"/>
+    <text x="1196" y="324">Supplier meeting : un de moins</text>
+    <path d="M1116 486 H1180" class="stroke-accent" stroke-width="3"/>
+    <text x="1196" y="496">Le diff relu ne montrait rien</text>
+  </g>
+</svg>
