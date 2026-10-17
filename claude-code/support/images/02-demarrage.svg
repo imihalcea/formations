@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 560" width="1680" height="560">
+  <rect x="0" y="180" width="420" height="200" rx="12" class="ink"/>
+  <text x="36" y="250" class="paper mono" font-size="30">$ cd ~/fil-rouge</text>
+  <text x="36" y="310" class="paper mono" font-size="30">$ claude</text>
+
+  <path d="M436 280 H504" class="stroke-accent" stroke-width="5"/>
+  <path d="M498 267 L516 280 L498 293 Z" class="accent"/>
+
+  <g>
+    <rect x="540" y="0" width="360" height="250" rx="12" class="deck"/>
+    <rect x="540" y="0" width="360" height="6" class="accent"/>
+    <text x="572" y="66" class="accent mono" font-size="24" font-weight="600">01</text>
+    <text x="572" y="122" class="ink display" font-size="38">Fichiers</text>
+    <text x="572" y="172" class="ink" font-size="26">du répertoire et de</text>
+    <text x="572" y="206" class="ink" font-size="26">ses sous-répertoires</text>
+  </g>
+  <g>
+    <rect x="930" y="0" width="360" height="250" rx="12" class="deck"/>
+    <rect x="930" y="0" width="360" height="6" class="accent"/>
+    <text x="962" y="66" class="accent mono" font-size="24" font-weight="600">02</text>
+    <text x="962" y="122" class="ink display" font-size="38">Terminal</text>
+    <text x="962" y="172" class="ink" font-size="26">les commandes</text>
+    <text x="962" y="206" class="ink" font-size="26">installées</text>
+  </g>
+  <g>
+    <rect x="1320" y="0" width="360" height="250" rx="12" class="deck"/>
+    <rect x="1320" y="0" width="360" height="6" class="accent"/>
+    <text x="1352" y="66" class="accent mono" font-size="24" font-weight="600">03</text>
+    <text x="1352" y="122" class="ink display" font-size="38">État git</text>
+    <text x="1352" y="172" class="ink" font-size="26">branche, modifications,</text>
+    <text x="1352" y="206" class="ink" font-size="26">commits récents</text>
+  </g>
+  <g>
+    <rect x="540" y="310" width="360" height="250" rx="12" class="deck"/>
+    <rect x="540" y="310" width="360" height="6" class="accent"/>
+    <text x="572" y="376" class="accent mono" font-size="24" font-weight="600">04</text>
+    <text x="572" y="432" class="ink display mono" font-size="38">CLAUDE.md</text>
+    <text x="572" y="482" class="ink" font-size="26">instructions du projet</text>
+  </g>
+  <g>
+    <rect x="930" y="310" width="360" height="250" rx="12" class="deck"/>
+    <rect x="930" y="310" width="360" height="6" class="accent"/>
+    <text x="962" y="376" class="accent mono" font-size="24" font-weight="600">05</text>
+    <text x="962" y="432" class="ink display" font-size="38">Mémoire auto</text>
+    <text x="962" y="482" class="ink" font-size="26">début de</text>
+    <text x="962" y="516" class="ink mono" font-size="26">MEMORY.md</text>
+  </g>
+  <g>
+    <rect x="1322" y="312" width="356" height="246" rx="12" class="stroke-muted" stroke-width="3" stroke-dasharray="12 8"/>
+    <text x="1352" y="376" class="accent mono" font-size="24" font-weight="600">AILLEURS</text>
+    <text x="1352" y="432" class="ink display" font-size="38">Sur demande</text>
+    <text x="1352" y="482" class="ink" font-size="26">avec permission,</text>
+    <text x="1352" y="516" class="ink" font-size="26">ou <tspan class="mono">--add-dir</tspan></text>
+  </g>
+</svg>

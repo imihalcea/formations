@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 580" width="1680" height="580">
+  <text x="0" y="24" class="accent mono" font-size="22" font-weight="600" letter-spacing="3">ILLUSTRATION, D'APRÈS LA CAPTURE DE LA DOCUMENTATION</text>
+
+  <rect x="0" y="50" width="1100" height="530" rx="12" class="ink"/>
+  <text x="40" y="110" class="accent mono" font-size="28" font-weight="600">Bash command</text>
+  <text x="70" y="160" class="paper mono" font-size="28">uv run pytest</text>
+  <text x="70" y="200" class="paper mono" font-size="26">Run the test suite</text>
+  <text x="40" y="262" class="paper mono" font-size="28">Do you want to proceed?</text>
+  <text x="40" y="312" class="paper mono" font-size="28"><tspan class="accent">❯</tspan> 1. Yes</text>
+  <text x="40" y="358" class="paper mono" font-size="28">  2. Yes, and don't ask again for: uv run pytest *</text>
+  <text x="40" y="404" class="paper mono" font-size="28">  3. Yes, and switch to auto mode</text>
+  <text x="40" y="450" class="paper mono" font-size="28">  4. No</text>
+  <text x="40" y="530" class="paper mono" font-size="24">Esc to cancel · Tab to amend</text>
+
+  <g class="ink" font-size="28">
+    <path d="M1116 302 H1180" class="stroke-accent" stroke-width="3"/>
+    <text x="1196" y="312">Cette fois</text>
+    <path d="M1116 348 H1180" class="stroke-accent" stroke-width="3"/>
+    <text x="1196" y="358">Règle durable pour le dépôt</text>
+    <path d="M1116 394 H1180" class="stroke-accent" stroke-width="3"/>
+    <text x="1196" y="404">Bascule en mode auto</text>
+    <path d="M1116 440 H1180" class="stroke-accent" stroke-width="3"/>
+    <text x="1196" y="450">Refus</text>
+    <path d="M1116 520 H1180" class="stroke-accent" stroke-width="3"/>
+    <text x="1196" y="530">Ajouter une consigne</text>
+  </g>
+</svg>

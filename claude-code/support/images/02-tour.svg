@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 560" width="1680" height="560">
+  <text x="0" y="24" class="accent mono" font-size="22" font-weight="600" letter-spacing="3">ILLUSTRATION</text>
+
+  <rect x="0" y="50" width="1100" height="510" rx="12" class="ink"/>
+  <text x="40" y="120" class="paper mono" font-size="28">&gt; lance les tests</text>
+  <text x="40" y="200" class="paper mono" font-size="28"><tspan class="accent">●</tspan> Bash(uv run pytest -q)</text>
+  <rect x="70" y="232" width="990" height="120" rx="8" class="stroke-accent" stroke-width="3"/>
+  <text x="100" y="282" class="paper mono" font-size="26">Do you want to proceed?</text>
+  <text x="100" y="326" class="paper mono" font-size="26">❯ 1. Yes</text>
+  <text x="70" y="404" class="paper mono" font-size="28">  ⎿ 33 passed in 0.07s</text>
+  <text x="40" y="484" class="paper mono" font-size="28"><tspan class="accent">●</tspan> Les 33 tests passent.</text>
+
+  <g class="ink" font-size="28">
+    <path d="M1116 110 H1180" class="stroke-accent" stroke-width="3"/>
+    <text x="1196" y="120">Le prompt</text>
+    <path d="M1116 190 H1180" class="stroke-accent" stroke-width="3"/>
+    <text x="1196" y="200">L'appel d'outil, affiché</text>
+    <path d="M1116 292 H1180" class="stroke-accent" stroke-width="3"/>
+    <text x="1196" y="302">La demande de permission</text>
+    <path d="M1116 394 H1180" class="stroke-accent" stroke-width="3"/>
+    <text x="1196" y="404">Le résultat de l'outil</text>
+    <path d="M1116 474 H1180" class="stroke-accent" stroke-width="3"/>
+    <text x="1196" y="484">La réponse, fin du tour</text>
+  </g>
+</svg>
