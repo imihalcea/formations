@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 460" width="1680" height="460">
+  <g>
+    <rect x="0" y="20" width="296" height="360" rx="12" class="deck"/>
+    <rect x="0" y="20" width="296" height="6" class="accent"/>
+    <text x="28" y="76" class="accent mono" font-size="24" font-weight="600">TP 2</text>
+    <text x="28" y="132" class="ink display" font-size="34">Premier</text>
+    <text x="28" y="174" class="ink display" font-size="34">lancement</text>
+    <text x="28" y="230" class="ink" font-size="24">code inchangé</text>
+    <text x="28" y="362" class="accent mono" font-size="24" font-weight="600">aucun commit</text>
+  </g>
+  <path d="M302 180 H330" class="stroke-accent" stroke-width="5"/>
+  <path d="M326 168 L342 180 L326 192 Z" class="accent"/>
+  <g>
+    <rect x="346" y="20" width="296" height="360" rx="12" class="deck"/>
+    <rect x="346" y="20" width="296" height="6" class="accent"/>
+    <text x="374" y="76" class="accent mono" font-size="24" font-weight="600">TP 3</text>
+    <text x="374" y="132" class="ink display" font-size="34">Explorer</text>
+    <text x="374" y="174" class="ink display" font-size="34">et modifier</text>
+    <text x="374" y="230" class="ink" font-size="24">durée dans le CSV</text>
+    <text x="374" y="362" class="accent mono" font-size="24" font-weight="600">1 commit</text>
+  </g>
+  <path d="M648 180 H676" class="stroke-accent" stroke-width="5"/>
+  <path d="M672 168 L688 180 L672 192 Z" class="accent"/>
+  <g>
+    <rect x="692" y="20" width="296" height="360" rx="12" class="deck"/>
+    <rect x="692" y="20" width="296" height="6" class="accent"/>
+    <text x="720" y="76" class="accent mono" font-size="24" font-weight="600">TP 4</text>
+    <text x="720" y="132" class="ink display" font-size="34">Tester</text>
+    <text x="720" y="174" class="ink display" font-size="34">et refactorer</text>
+    <text x="720" y="230" class="ink" font-size="24">tarifs testés,</text>
+    <text x="720" y="262" class="ink" font-size="24">filtre de capacité</text>
+    <text x="720" y="362" class="accent mono" font-size="24" font-weight="600">2 commits</text>
+  </g>
+  <path d="M994 180 H1022" class="stroke-accent" stroke-width="5"/>
+  <path d="M1018 168 L1034 180 L1018 192 Z" class="accent"/>
+  <g>
+    <rect x="1038" y="20" width="296" height="360" rx="12" class="deck"/>
+    <rect x="1038" y="20" width="296" height="6" class="accent"/>
+    <text x="1066" y="76" class="accent mono" font-size="24" font-weight="600">TP 5</text>
+    <text x="1066" y="132" class="ink display" font-size="34">Contexte</text>
+    <text x="1066" y="174" class="ink display" font-size="34">projet</text>
+    <text x="1066" y="230" class="ink" font-size="24">CLAUDE.md,</text>
+    <text x="1066" y="262" class="ink" font-size="24">réservations</text>
+    <text x="1066" y="294" class="ink" font-size="24">hebdomadaires</text>
+    <text x="1066" y="362" class="accent mono" font-size="24" font-weight="600">2 commits</text>
+  </g>
+  <path d="M1340 180 H1368" class="stroke-accent" stroke-width="5"/>
+  <path d="M1364 168 L1380 180 L1364 192 Z" class="accent"/>
+  <g>
+    <rect x="1384" y="20" width="296" height="360" rx="12" class="deck"/>
+    <rect x="1384" y="20" width="296" height="6" class="accent"/>
+    <text x="1412" y="76" class="accent mono" font-size="24" font-weight="600">TP 6</text>
+    <text x="1412" y="132" class="ink display" font-size="34">Étendre</text>
+    <text x="1412" y="174" class="ink display" font-size="34">l'outil</text>
+    <text x="1412" y="230" class="ink" font-size="24">extensions</text>
+    <text x="1412" y="262" class="ink" font-size="24">dans .claude/,</text>
+    <text x="1412" y="294" class="ink" font-size="24">GET /stats</text>
+    <text x="1412" y="362" class="accent mono" font-size="24" font-weight="600">3 commits</text>
+  </g>
+  <text x="0" y="440" class="ink" font-size="28" opacity="0.7">Une seule copie de fil-rouge/. Chaque TP part de l'état laissé par le précédent.</text>
+</svg>
