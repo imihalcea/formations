@@ -139,7 +139,7 @@ La trajectoire impose ces éléments au code de départ :
 - `pyproject.toml`, `uv.lock` et `.python-version` sont versionnés ;
 - les tests existants passent et `uv run ruff check` ne signale rien ;
 - aucun `CLAUDE.md` ni `AGENTS.md` ;
-- un `opencode.json` qui met `bash` à `ask`, pour le TP 2.
+- un `opencode.json` qui fixe le modèle à `anthropic/claude-sonnet-4-6` et met `bash` à `ask`, pour le TP 2.
 
 ## Questions ouvertes
 
