@@ -486,7 +486,15 @@ $ git commit -m "Export : durée des réservations dans le CSV du planning"
 
 ### Corrigé {.corrige}
 
-`rooms/export.py` définit `duration_minutes(booking)`, qui renvoie `(booking.ends_at - booking.starts_at)` en minutes entières, et ajoute la colonne entre `ends_at` et `amount`, dans l'en-tête comme dans chaque ligne.
+`rooms/export.py` définit `duration_minutes` et ajoute la colonne entre `ends_at` et `amount`, dans l'en-tête comme dans chaque ligne :
+
+```python file="../tp/tp03/rooms/export.py"
+```
+
+Un test vérifie l'en-tête et la durée par le `TestClient` :
+
+```python file="../tp/tp03/tests/test_export.py" lines="29-43"
+```
 
 Les lectures et l'explication passent sans demande de permission. Chaque édition en déclenche une, avec son diff : en mode Manual sous Claude Code, par la règle `edit` à `ask` du `opencode.json` sous Open Code.
 
