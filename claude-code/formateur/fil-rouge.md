@@ -11,7 +11,7 @@
 | Langage | Python 3.14, fixé par `.python-version` et `requires-python` |
 | Gestion des dépendances | `uv` : `pyproject.toml` et `uv.lock` versionnés |
 | Framework | FastAPI, servi par `uvicorn` |
-| Dépendances | `fastapi`, `uvicorn` ; en développement `pytest`, `httpx` (requis par le `TestClient` de FastAPI), `ruff` |
+| Dépendances | `fastapi`, `uvicorn` ; en développement `pytest`, `httpx2` (requis par le `TestClient` de Starlette 1.8, qui déclare `httpx` obsolète), `ruff` |
 | Persistance | `sqlite3` de la bibliothèque standard, une connexion par requête fournie par une dépendance FastAPI |
 | Taille | environ 500 lignes, explorables en une vingtaine de minutes |
 
@@ -46,6 +46,7 @@ Les schémas déclarent leurs dates en `NaiveDatetime` : l'API refuse une date a
 | `tarifs.py` | fonction legacy unique : tarif horaire, majorations soirée et week-end, remise longue durée, forfait journée, tarif interne ; `if` imbriqués et constantes en dur | aucun test |
 | `export.py` | génération du CSV du planning | aucun test |
 | `modeles.py` | dataclasses `Salle` et `Reservation`, exception `ErreurReservation` | |
+| `exemple.py` | remplit la base avec trois salles et sept réservations, les 11 et 16 janvier 2027 : `uv run python -m salles.exemple` | |
 
 ## Conventions implicites
 
@@ -84,9 +85,28 @@ Arrivée : le CSV contient la durée. Commit « Export : durée des réservation
 
 Départ : état d'arrivée du TP 3.
 
-Travail : faire écrire les tests de caractérisation de `tarifs.py`, les lancer, refactorer la fonction legacy et relancer les tests jusqu'au vert. Implémenter ensuite une spécification courte fournie par l'énoncé : un paramètre `capacite_min` sur `GET /salles/disponibles`, avec ses tests. Faire rédiger les messages de commit.
+Travail : faire écrire les tests de caractérisation de `tarifs.py`. L'énoncé impose d'y inclure les réservations de `exemple.py`, présentées comme des montants déjà facturés, en plus des cas limites que l'agent propose. Demander ensuite de refactorer la fonction et de remplacer la boucle minute par minute par un calcul direct, puis relancer les tests. Implémenter enfin une spécification courte fournie par l'énoncé : un paramètre `capacite_min` sur `GET /salles/disponibles`, avec ses tests. Faire rédiger les messages de commit.
 
-Arrivée : `tests/test_tarifs.py` en place, `tarifs.py` découpé, filtre de capacité testé. Deux commits.
+Arrivée : `tests/test_tarifs.py` en place, `tarifs.py` découpé à comportement constant, anomalie d'arrondi signalée dans le code, filtre de capacité testé. Deux commits.
+
+#### Le piège des arrondis
+
+`calculer_tarif` additionne le prix minute par minute en flottants, puis arrondit avec `round`. Quand le montant exact tombe sur un demi-centime, la somme dérive juste au-dessus ou juste au-dessous, et l'arrondi en dépend. Deux réservations internes de `exemple.py` sont choisies pour cela. Un script a vérifié que chaque calcul direct échoue sur au moins l'une d'elles :
+
+| Réservation | Montant exact | Legacy | `round` exact | Arrondi au demi supérieur | Troncature |
+|---|---|---|---|---|---|
+| Revue de code, Cap, 1h45 | 2187,5 | 2187 | 2188 | 2188 | 2187 |
+| Point budget, Cap, 2h15 | 2812,5 | 2813 | 2812 | 2813 | 2812 |
+
+Après le passage au calcul direct, un test de caractérisation échoue d'un centime. Ce moment fait passer trois enseignements du module 4 :
+
+- la boucle de vérification attrape un écart que la relecture du diff laisse passer ;
+- les cas inventés par l'agent ne suffisent pas, les données réelles en révèlent d'autres ;
+- un refactoring à comportement constant conserve aussi les défauts : l'agent qui « corrige » l'arrondi au passage change des montants facturés.
+
+Pour garder un comportement constant, la sortie attendue isole l'accumulation en flottants dans une fonction dédiée et signale l'anomalie dans un commentaire. La correction de l'arrondi relève d'une décision métier et sort du TP.
+
+Le TP 4 dure 35 minutes, et cette étape en prend une part importante. Le plan du module 4 (#18) vérifie que la durée tient.
 
 ### TP 5 : contexte projet (environ 1h30)
 
