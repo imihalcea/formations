@@ -81,6 +81,8 @@ Départ : état initial.
 
 Travail : faire expliquer le traitement de `POST /bookings`, de la route jusqu'à `sqlite3`, puis l'injection de la connexion par `Depends`. Demander une petite modification de `export.py` : une colonne `duration_minutes` dans le CSV de `GET /schedule.csv`. Relire le diff avant de l'accepter, refuser une première proposition et la reformuler.
 
+Open Code laisse passer les éditions sans demande par défaut. Le `opencode.json` du projet met `edit` à `ask`, pour que le diff s'affiche avant l'acceptation comme en mode Manual de Claude Code (`packages/tui/src/routes/session/permission.tsx` de la v2.0.26). La clé v1 `edit` couvre aussi `write` et `patch` (`packages/core/src/v1/config/migrate.ts`).
+
 Arrivée : le CSV contient la durée. Un commit.
 
 ### TP 4 : tester, refactorer, générer (35 min)
@@ -139,7 +141,7 @@ La trajectoire impose ces éléments au code de départ :
 - `pyproject.toml`, `uv.lock` et `.python-version` sont versionnés ;
 - les tests existants passent et `uv run ruff check` ne signale rien ;
 - aucun `CLAUDE.md` ni `AGENTS.md` ;
-- un `opencode.json` qui fixe le modèle à `anthropic/claude-sonnet-4-6` et met `bash` à `ask`, pour le TP 2.
+- un `opencode.json` qui fixe le modèle à `anthropic/claude-sonnet-4-6`, met `bash` à `ask` pour le TP 2 et `edit` à `ask` pour le TP 3.
 
 ## Distribution
 

@@ -72,3 +72,4 @@ Au TP 6, la slash command et le skill ont un équivalent direct, et Open Code li
 - Le mode de connexion d'Open Code avec la clé API : `/connect`, `opencode auth login`, ou variable `ANTHROPIC_API_KEY`, que le code v2.0.26 lit.
 - Le plugin Open Code qui lance `pytest` après une modification.
 - Avec le `opencode.json` du fil rouge (`"bash": "ask"`), `uv run pytest` demandé à Open Code déclenche une demande de permission.
+- Avec `"edit": "ask"`, une édition demandée à Open Code affiche son diff avant acceptation, et l'agent Plan refuse toujours les éditions : si les règles du projet passent après celles de Plan, `ask` remplacerait son `deny`.
