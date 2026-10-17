@@ -91,6 +91,8 @@ Départ : état d'arrivée du TP 3.
 
 Travail : faire écrire les tests de caractérisation de `pricing.py`. L'énoncé impose d'y inclure les réservations de `seed.py`, présentées comme des montants déjà facturés, en plus des cas limites que l'agent propose. Demander ensuite de refactorer la fonction et de remplacer la boucle minute par minute par un calcul direct, puis relancer les tests. Implémenter enfin une spécification courte fournie par l'énoncé : un paramètre `min_capacity` sur `GET /rooms/available`, avec ses tests. Faire rédiger les messages de commit.
 
+L'effort est fixé à high dans les deux outils : `--effort high` sous Claude Code, variante `high` par `/variants` sous Open Code. Sans variante, Open Code v2.0.26 n'envoie aucun réglage de raisonnement (`packages/core/src/model-resolver.ts`), alors que Claude Code part en high avec le raisonnement adaptatif ([Model configuration](https://code.claude.com/docs/en/model-config#adjust-effort-level)).
+
 Arrivée : `tests/test_pricing.py` en place, `pricing.py` découpé à comportement constant, anomalie d'arrondi signalée dans le code, filtre de capacité testé. Deux commits.
 
 #### Le piège des arrondis
