@@ -71,6 +71,8 @@ Départ : installation de `uv`, copie de `fil-rouge/`, `uv sync`, `git init`, co
 
 Travail : lancer l'outil à la racine du projet avec `claude-sonnet-4-6`, faire décrire la structure, faire lancer `pytest`. Le stagiaire remplit la base avec `seed.py`, démarre `uvicorn` dans un second terminal, puis demande à l'agent d'interroger l'API avec `curl`. Chaque commande déclenche une demande de permission, que le stagiaire accepte, refuse ou autorise pour la session.
 
+Les demandes de permission apparaissent dans les deux outils. Claude Code est lancé avec `--permission-mode default`, car il démarre sinon en mode `auto`. Pour Open Code, le `opencode.json` du projet met `bash` à `ask` : ces règles s'ajoutent après celles de chaque agent, et la dernière règle qui correspond l'emporte (`packages/core/src/config/plugin/agent.ts` de la v2.0.26). Open Code ne doit pas être lancé avec `--auto`, qui accepte toutes les demandes.
+
 Arrivée : code inchangé, aucun commit. `/init` est montré en démonstration sans être lancé : le `CLAUDE.md` est le sujet du TP 5.
 
 ### TP 3 : explorer et modifier (20 min)
@@ -136,7 +138,8 @@ La trajectoire impose ces éléments au code de départ :
 - `db.py` versionne le schéma par `PRAGMA user_version`, ce qui donne un point d'appui au skill de migration ;
 - `pyproject.toml`, `uv.lock` et `.python-version` sont versionnés ;
 - les tests existants passent et `uv run ruff check` ne signale rien ;
-- aucun `CLAUDE.md` ni `AGENTS.md`.
+- aucun `CLAUDE.md` ni `AGENTS.md` ;
+- un `opencode.json` qui met `bash` à `ask`, pour le TP 2.
 
 ## Questions ouvertes
 

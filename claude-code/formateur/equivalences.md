@@ -71,3 +71,4 @@ Au TP 6, la slash command et le skill ont un équivalent direct, et Open Code li
 - La version de Claude Code installée sur les postes : la lecture d'`AGENTS.md` exige la v2.1.277, le démarrage en mode `auto` date de la v2.1.283.
 - Le mode de connexion d'Open Code avec la clé API : `/connect`, `opencode auth login`, ou variable `ANTHROPIC_API_KEY`. La documentation d'Open Code ne mentionne pas cette variable.
 - Le plugin Open Code qui lance `pytest` après une modification.
+- Avec le `opencode.json` du fil rouge (`"bash": "ask"`), `uv run pytest` demandé à Open Code déclenche une demande de permission.
