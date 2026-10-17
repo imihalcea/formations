@@ -35,7 +35,7 @@ Depuis `template-support/app/` : `npm run build` génère `dist/index.html` à p
 
 ## Contexte pédagogique et contraintes techniques
 
-- **Environnement des stagiaires** : une VM équipée d'Open Code. Les TP se font soit avec Open Code sur la VM, soit avec Claude Code sur le poste du développeur. Claude Code sur la VM viendra plus tard, quand la VM aura évolué.
+- **Environnement des stagiaires** : une VM équipée d'Open Code. Les TP se font soit avec Open Code sur la VM, soit avec Claude Code sur le poste du développeur. Claude Code sur la VM viendra plus tard, quand la VM aura évolué. Le support considère Claude Code déjà installé et configuré sur le poste du stagiaire : le module 2 présente l'installation et l'authentification sans les faire réaliser.
 - **Tout se fait en CLI.** Aucune manipulation ne doit dépendre d'une extension IDE ou d'une interface graphique.
 - **Python 3.10** pour tous les exemples et TP (version présente sur la VM) : aucune syntaxe ni bibliothèque standard postérieure à 3.10 (pas de `tomllib`, `ExceptionGroup`, `except*`, `typing.Self`, `TaskGroup`…).
 - **Modèle unique : Claude Sonnet 4.6** (`claude-sonnet-4-6`), dans les deux outils, pour toutes les démonstrations et tous les TP. Le support désigne le modèle par son identifiant complet : l'alias `sonnet` pointe vers la dernière version de Sonnet et ne garantit pas la 4.6. Les exemples de sortie, les limites et les comportements décrits sont ceux de ce modèle.
