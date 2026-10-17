@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 580" width="1680" height="580">
+  <text x="0" y="24" class="accent mono" font-size="22" font-weight="600" letter-spacing="3">ILLUSTRATION</text>
+
+  <rect x="0" y="50" width="1100" height="530" rx="12" class="ink"/>
+  <text x="40" y="104" class="paper mono" font-size="26">&gt; Où le code vérifie-t-il qu'une réservation</text>
+  <text x="72" y="140" class="paper mono" font-size="26">ne chevauche pas une réservation existante ?</text>
+  <text x="40" y="206" class="paper mono" font-size="26"><tspan class="accent">●</tspan> Bash(grep -rn overlaps rooms/)</text>
+  <text x="72" y="242" class="paper mono" font-size="24">⎿ rooms/conflicts.py:7:def overlaps(…</text>
+  <text x="40" y="306" class="paper mono" font-size="26"><tspan class="accent">●</tspan> Read(rooms/conflicts.py)</text>
+  <text x="72" y="342" class="paper mono" font-size="24">⎿ Read 27 lines</text>
+  <text x="40" y="406" class="paper mono" font-size="26"><tspan class="accent">●</tspan> Read(rooms/routes.py)</text>
+  <text x="72" y="442" class="paper mono" font-size="24">⎿ Read 18 lines</text>
+  <text x="40" y="506" class="paper mono" font-size="26"><tspan class="accent">●</tspan> check_availability, rooms/conflicts.py:21,</text>
+  <text x="72" y="542" class="paper mono" font-size="26">appelée par book, rooms/routes.py:50.</text>
+
+  <g class="ink" font-size="28">
+    <path d="M1116 112 H1180" class="stroke-accent" stroke-width="3"/>
+    <text x="1196" y="122">La question</text>
+    <path d="M1116 196 H1180" class="stroke-accent" stroke-width="3"/>
+    <text x="1196" y="206">Recherche du symbole</text>
+    <path d="M1116 296 H1180" class="stroke-accent" stroke-width="3"/>
+    <text x="1196" y="306">Lecture du fichier trouvé</text>
+    <path d="M1116 396 H1180" class="stroke-accent" stroke-width="3"/>
+    <text x="1196" y="406">Une plage de routes.py</text>
+    <path d="M1116 514 H1180" class="stroke-accent" stroke-width="3"/>
+    <text x="1196" y="524">Réponse, fichier et ligne</text>
+  </g>
+</svg>

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 580" width="1680" height="580">
+  <text x="0" y="24" class="accent mono" font-size="22" font-weight="600" letter-spacing="3">ILLUSTRATION</text>
+
+  <rect x="0" y="50" width="1100" height="530" rx="12" class="ink"/>
+  <text x="40" y="110" class="accent mono" font-size="28" font-weight="600">Edit file</text>
+  <text x="40" y="156" class="paper mono" font-size="26">rooms/export.py</text>
+  <rect x="40" y="180" width="1020" height="150" rx="8" class="stroke-muted" stroke-width="2"/>
+  <text y="226" class="paper mono" font-size="26"><tspan x="70">18</tspan><tspan x="150">booking.ends_at.isoformat(),</tspan></text>
+  <rect x="50" y="242" width="1000" height="40" class="tint"/>
+  <text y="270" class="paper mono" font-size="26"><tspan x="70">19</tspan><tspan x="114" class="accent">+</tspan><tspan x="150">duration_minutes(booking),</tspan></text>
+  <text y="314" class="paper mono" font-size="26"><tspan x="70">20</tspan><tspan x="150">booking.amount,</tspan></text>
+  <text x="40" y="384" class="paper mono" font-size="26">Do you want to make this edit to export.py?</text>
+  <text y="430" class="paper mono" font-size="26"><tspan x="40" class="accent">❯</tspan><tspan x="72">1. Yes</tspan></text>
+  <text x="72" y="474" class="paper mono" font-size="26">2. Yes, allow all edits during this session</text>
+  <text x="72" y="518" class="paper mono" font-size="26">3. No</text>
+
+  <g class="ink" font-size="28">
+    <path d="M1116 146 H1180" class="stroke-accent" stroke-width="3"/>
+    <text x="1196" y="156">Le fichier visé</text>
+    <path d="M1116 260 H1180" class="stroke-accent" stroke-width="3"/>
+    <text x="1196" y="270">La ligne ajoutée, en contexte</text>
+    <path d="M1116 420 H1180" class="stroke-accent" stroke-width="3"/>
+    <text x="1196" y="430">Accepter cette édition</text>
+    <path d="M1116 464 H1180" class="stroke-accent" stroke-width="3"/>
+    <text x="1196" y="474">Toutes, jusqu'à la fin de session</text>
+    <path d="M1116 508 H1180" class="stroke-accent" stroke-width="3"/>
+    <text x="1196" y="518">Refuser, Tab pour une consigne</text>
+  </g>
+</svg>
