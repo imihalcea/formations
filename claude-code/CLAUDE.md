@@ -45,6 +45,8 @@ Depuis `template-support/app/` : `npm run build` génère `dist/index.html` à p
 
 L'ordre et le périmètre des modules sont validés : ne pas les modifier sans demande explicite.
 
+La formation dure quatre demi-journées de 3h30. Les modules 1 à 4 forment ensemble la première demi-journée : ils servent d'introduction et ne s'attardent sur aucun sujet. Les modules 5, 6 et 7 occupent chacun une demi-journée.
+
 1. **Les LLM au service du développement** : fonctionnement d'un LLM et ce qu'il sait vraiment faire ; panorama des assistants (Claude Code, Copilot, autres agents) ; apports pour le développeur ; limites structurelles ; confidentialité dès la première ligne de code envoyée à un modèle.
 2. **Prise en main de Claude Code** : installation et configuration (CLI, IDE, authentification) ; cycle de travail agentique ; modes de permission et actions sensibles ; contexte de session et répertoire de travail ; bonnes pratiques de démarrage sur un dépôt existant.
 3. **Explorer et comprendre un code existant** : recherche et navigation (Grep, Glob, lecture ciblée) ; expliquer une portion de code, une architecture, une dépendance ; édition assistée ; reformuler une demande pour obtenir un résultat exploitable ; garder le contrôle.
