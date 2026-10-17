@@ -69,3 +69,20 @@ La formation dure quatre demi-journées de 3h30. Les modules 1 à 4 forment ense
   - les listes à puces et le gras quand une phrase suffit ;
   - les triades décoratives (trois adjectifs, trois exemples) par réflexe.
 - Le code des TP est exécuté sous Python 3.14 avec `uv run` avant d'être livré ; les corrigés passent leurs propres tests.
+
+### Qualité pédagogique des slides
+
+La qualité pédagogique prime sur la durée annoncée d'un module : le formateur accepte de dépasser le temps prévu quand le contenu l'exige.
+
+- **Une idée par slide**, deux phrases courtes ou quatre éléments brefs au plus. Au-delà, scinder la slide plutôt que condenser le texte.
+- **Montrer avant d'expliquer** : chaque notion abstraite a un support visuel (schéma SVG dans `support/images/`, commande réelle, extrait de code, sortie de terminal). Un exemple inventé porte la mention « illustration ».
+- **Des exemples présentés comme tels** : le titre ou une phrase indique qu'une liste est partielle, pour qu'elle ne passe pas pour exhaustive.
+- **Des chiffres lisibles d'un coup d'œil** : légende de trois à cinq mots. Intervalles de confiance, effectifs et méthode vont dans les notes. Aucune abréviation non définie à l'écran.
+- **Le détail technique dans les notes** : variables d'environnement, chemins secondaires, cas particuliers servent au formateur pour répondre aux questions. Une slide qui ne contient que du détail se supprime.
+- **Le support parle du sujet, pas du public** : aucune mention des stagiaires ni de la situation de formation sur les slides ; ces éléments vont dans les notes.
+- **Des liens logiques explicites** : une slide de conclusion ou d'idée clé dit de quoi elle découle.
+- **Des idées clés courtes** : une phrase d'une dizaine de mots, deux lignes au plus en `statement`.
+- **Partir des questions concrètes du développeur** (combien ça coûte, comment je paie, que se passe-t-il à la limite) avant les tableaux de référence.
+- **Un glossaire limité aux notions vues** dans le module.
+- **Corriger le template quand un type de slide rend mal**, au lieu de contourner dans le contenu : la hiérarchie visuelle (terme et explication, chiffre et légende) doit être évidente.
+- **Relire chaque slide en capture d'écran** avant de livrer un module, en plus du contrôle automatique des débordements.
