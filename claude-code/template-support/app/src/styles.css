@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+/* Charte graphique reprise du premier jet Lovable : référence pour tout nouveau type de slide. */
+
+@theme inline {
+  --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --color-slide-paper: var(--slide-paper);
+  --color-slide-ink: var(--slide-ink);
+  --color-slide-accent: var(--slide-accent);
+  --color-deck: var(--deck);
+  --color-deck-foreground: var(--deck-foreground);
+  --color-deck-muted: var(--deck-muted);
+}
+
+:root {
+  --slide-paper: oklch(0.985 0.004 250);
+  --slide-ink: oklch(0.24 0.05 262);
+  --slide-accent: oklch(0.54 0.21 262);
+  --deck: oklch(0.96 0.006 255);
+  --deck-foreground: oklch(0.28 0.035 262);
+  --deck-muted: oklch(0.88 0.012 255);
+  --shadow-deck: 0 30px 80px -24px oklch(0.3 0.05 262 / 30%);
+}
+
+@utility shadow-deck { box-shadow: var(--shadow-deck); }
+@utility font-display { font-family: var(--font-display); }
+
+body { background-color: var(--deck); color: var(--deck-foreground); }
+
+.slide-content {
+  width: 1920px; height: 1080px; overflow: hidden; position: relative;
+  font-family: var(--font-sans);
+  --slide-title-lg: 128px; --slide-title: 96px; --slide-subtitle: 52px;
+  --slide-heading: 64px; --slide-body-lg: 44px; --slide-body: 36px; --slide-caption: 26px;
+  --slide-kicker: 24px; --slide-chrome: 20px;
+}
+.slide-title-lg { font-size: var(--slide-title-lg); line-height: 1; letter-spacing: -0.03em; font-weight: 400; }
+.slide-title { font-size: var(--slide-title); line-height: 1.05; letter-spacing: -0.025em; font-weight: 400; }
+.slide-heading { font-size: var(--slide-heading); line-height: 1.1; letter-spacing: -0.02em; font-weight: 400; }
+.slide-subtitle { font-size: var(--slide-subtitle); line-height: 1.15; }
+.slide-body-lg { font-size: var(--slide-body-lg); line-height: 1.22; }
+.slide-body { font-size: var(--slide-body); line-height: 1.3; }
+.slide-caption { font-size: var(--slide-caption); line-height: 1.25; }
+.slide-kicker { font-family: var(--font-mono); font-size: var(--slide-kicker); letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; }
+.slide-footer, .slide-page { font-family: var(--font-mono); font-size: var(--slide-chrome); }
+
+.slide-content a { text-decoration: underline; text-underline-offset: 0.15em; }
+
+/* Corps Markdown des slides : mêmes tailles, couleurs et motifs que les types dédiés. */
+.slide-md { font-size: var(--slide-body); line-height: 1.3; }
+.slide-md > * + * { margin-top: 28px; }
+.slide-md h3 { font-size: var(--slide-subtitle); line-height: 1.15; font-family: var(--font-display); }
+.slide-md strong { font-weight: 600; }
+.slide-md ul, .slide-md ol { display: flex; flex-direction: column; gap: 36px; }
+.slide-md li { position: relative; padding-left: 64px; }
+.slide-md li li { font-size: 30px; }
+.slide-md li > ul, .slide-md li > ol { margin-top: 24px; gap: 24px; }
+.slide-md ul > li::before {
+  content: ""; position: absolute; left: 0; top: 0.6em; width: 32px; height: 6px; background: var(--slide-accent);
+}
+.slide-md ol { counter-reset: item; }
+.slide-md ol > li { counter-increment: item; }
+.slide-md ol > li::before {
+  content: counter(item, decimal-leading-zero); position: absolute; left: 0;
+  font-family: var(--font-mono); font-weight: 600; font-size: var(--slide-caption); line-height: 1.6;
+  color: var(--slide-accent); font-variant-numeric: tabular-nums;
+}
+.slide-md :not(pre) > code {
+  font-family: var(--font-mono); font-size: 0.85em; padding: 0.05em 0.3em; border-radius: 6px;
+  background: oklch(0.54 0.21 262 / 9%);
+}
+.slide-md pre.shiki {
+  font-family: var(--font-mono); font-size: var(--slide-caption); line-height: 1.45;
+  padding: 36px 44px; border-radius: 12px; overflow: hidden; white-space: pre-wrap;
+  background-color: var(--deck) !important; border-top: 4px solid var(--slide-accent);
+}
+.slide-md pre.shiki.terminal { background-color: var(--slide-ink) !important; border-top-color: var(--slide-ink); }
+.slide-md table { width: 100%; border-collapse: collapse; font-size: var(--slide-caption); }
+.slide-md th { text-align: left; font-weight: 600; padding: 16px 24px 16px 0; border-bottom: 4px solid var(--slide-accent); }
+.slide-md td { padding: 16px 24px 16px 0; border-bottom: 2px solid var(--deck-muted); vertical-align: top; }
+.slide-md img { max-height: 720px; max-width: 100%; margin-inline: auto; }
+
+/* Panneau de notes : HTML rendu depuis le bloc « ::: notes ». */
+.notes-md > * + * { margin-top: 0.5em; }
+.notes-md ul { list-style: disc; padding-left: 1.25em; }
+.notes-md ol { list-style: decimal; padding-left: 1.25em; }
+.notes-md code { font-family: var(--font-mono); font-size: 0.9em; }
+
+/* Page d'énoncé de TP : lecture à taille normale, en plein écran comme en demi-écran. */
+.tp-md { font-size: 17px; line-height: 1.65; }
+.tp-md > * + * { margin-top: 0.9em; }
+.tp-md h3 { font-family: var(--font-display); font-size: 1.2em; }
+.tp-md strong { font-weight: 600; }
+.tp-md a { color: var(--slide-accent); text-decoration: underline; text-underline-offset: 0.15em; }
+.tp-md ul { list-style: disc; padding-left: 1.4em; }
+.tp-md ol { list-style: decimal; padding-left: 1.4em; }
+.tp-md li + li { margin-top: 0.35em; }
+.tp-md li::marker { color: var(--slide-accent); }
+.tp-md :not(pre) > code {
+  font-family: var(--font-mono); font-size: 0.88em; padding: 0.1em 0.35em; border-radius: 4px;
+  background: oklch(0.54 0.21 262 / 9%);
+}
+.tp-md pre {
+  position: relative; font-family: var(--font-mono); font-size: 14px; line-height: 1.55;
+  padding: 16px 20px; padding-right: 88px; border-radius: 8px; overflow-x: auto;
+  background-color: var(--deck) !important; border-top: 3px solid var(--slide-accent);
+}
+.tp-md pre.terminal { background-color: var(--slide-ink) !important; border-top-color: var(--slide-ink); }
+.tp-md pre.prompt {
+  font-family: var(--font-sans); font-size: 16px; white-space: pre-wrap;
+  background-color: oklch(0.54 0.21 262 / 7%) !important; border-top: 0; border-left: 4px solid var(--slide-accent);
+}
+.tp-md pre.prompt::before {
+  content: "Prompt"; display: block; margin-bottom: 6px; font-family: var(--font-mono); font-size: 11px;
+  font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--slide-accent);
+}
+.tp-md table { width: 100%; border-collapse: collapse; font-size: 15px; }
+.tp-md th { text-align: left; font-weight: 600; padding: 8px 12px 8px 0; border-bottom: 3px solid var(--slide-accent); }
+.tp-md td { padding: 8px 12px 8px 0; border-bottom: 1px solid var(--deck-muted); vertical-align: top; }
+.tp-md img { max-width: 100%; }
+.tp-md pre .copy {
+  position: absolute; top: 10px; right: 10px; font-family: var(--font-sans); font-size: 12px;
+  padding: 3px 10px; border-radius: 999px; border: 1px solid var(--deck-muted);
+  background: var(--slide-paper); color: var(--slide-ink); cursor: pointer;
+}
+.tp-md pre .copy:hover { border-color: var(--slide-accent); color: var(--slide-accent); }
+.tp-details > summary { cursor: pointer; }
+.tp-details > summary::marker { color: var(--slide-accent); }
+.slide-md pre.prompt {
+  font-size: var(--slide-caption); line-height: 1.45; white-space: pre-wrap; padding: 32px 44px;
+  border-radius: 12px; background: oklch(0.54 0.21 262 / 7%); border-left: 6px solid var(--slide-accent);
+}
+.tp-md pre.prompt code, .slide-md pre.prompt code { font-family: inherit; }
