@@ -2,30 +2,49 @@
 
 ## Domaine
 
-`salles` est une application en ligne de commande qui gère les salles de réunion d'une entreprise : salles, réservations, détection des conflits, calcul du tarif et export du planning. Le domaine se comprend sans explication métier.
+`salles` est une API REST qui gère les salles de réunion d'une entreprise : salles, réservations, détection des conflits, calcul du tarif et export du planning. Le domaine se comprend sans explication métier.
 
 ## Contraintes techniques
 
 | Contrainte | Choix |
 |---|---|
-| Langage | Python 3.10, aucune syntaxe ni bibliothèque standard postérieure |
-| Dépendances | bibliothèque standard, `pytest`, `ruff` |
-| Persistance | `sqlite3` |
-| Interface | CLI `argparse` |
+| Langage | Python 3.14, fixé par `.python-version` et `requires-python` |
+| Gestion des dépendances | `uv` : `pyproject.toml` et `uv.lock` versionnés |
+| Framework | FastAPI, servi par `uvicorn` |
+| Dépendances | `fastapi`, `uvicorn` ; en développement `pytest`, `httpx` (requis par le `TestClient` de FastAPI), `ruff` |
+| Persistance | `sqlite3` de la bibliothèque standard, une connexion par requête fournie par une dépendance FastAPI |
 | Taille | environ 500 lignes, explorables en une vingtaine de minutes |
 
-`datetime.fromisoformat` n'accepte pas le suffixe `Z` avant Python 3.11. Les dates sont donc stockées naïves, sans fuseau.
+Python 3.14 est sorti en octobre 2025 et reste maintenu jusqu'en octobre 2030 ([endoflife.date](https://endoflife.date/python)). La 3.15, sortie le 9 octobre 2026, est trop récente pour garantir les wheels de toutes les dépendances. `pydantic-core` publie déjà des wheels `cp314` ([PyPI](https://pypi.org/project/pydantic-core/#files)).
+
+`uv` installe lui-même la version de Python demandée par le projet : la VM n'a pas besoin de Python 3.14. Par défaut, `uv` télécharge une version de Python manquante quand une commande en a besoin ([uv, Installing Python](https://docs.astral.sh/uv/guides/install-python/)).
+
+## Installation de uv
+
+Sur la VM, et sur le poste du stagiaire sous Linux ou macOS, l'installeur officiel place `uv` et `uvx` dans `~/.local/bin` ([uv, Installation](https://docs.astral.sh/uv/getting-started/installation/)). La version est épinglée dans l'URL :
+
+```console
+$ curl -LsSf https://astral.sh/uv/0.13.1/install.sh | sh
+```
+
+Sans `curl`, la même commande s'écrit avec `wget -qO- https://astral.sh/uv/0.13.1/install.sh | sh`. L'installeur modifie les fichiers de profil du shell : il faut ouvrir un nouveau terminal pour que `uv` soit dans le `PATH`. La version 0.13.1 est la dernière publiée sur PyPI au 17 octobre 2026.
+
+L'énoncé du TP 2 reprend cette commande.
+
+Les schémas déclarent leurs dates en `NaiveDatetime` : l'API refuse une date avec fuseau, conformément à la convention des dates naïves.
 
 ## Modules
 
 | Module | Rôle | État au départ |
 |---|---|---|
-| `cli.py` | sous-commandes `salle ajouter`, `salle lister`, `reserver`, `annuler`, `planning`, `disponibles` | testé partiellement |
-| `db.py` | connexion `sqlite3`, création du schéma | testé |
+| `main.py` | application FastAPI, gestionnaire qui traduit `ErreurReservation` en réponse 409 | |
+| `routes.py` | `POST /salles`, `GET /salles`, `GET /salles/disponibles`, `POST /reservations`, `DELETE /reservations/{id}`, `GET /planning`, `GET /planning.csv` | testé partiellement |
+| `schemas.py` | schémas Pydantic des requêtes et des réponses | |
+| `db.py` | connexion `sqlite3`, création et version du schéma | testé |
 | `depot.py` | requêtes SQL paramétrées sur les salles et les réservations | testé |
 | `conflits.py` | chevauchement de créneaux | bien testé |
 | `tarifs.py` | fonction legacy unique : tarif horaire, majorations soirée et week-end, remise longue durée, forfait journée, tarif interne ; `if` imbriqués et constantes en dur | aucun test |
-| `export.py` | export CSV du planning | aucun test |
+| `export.py` | génération du CSV du planning | aucun test |
 | `modeles.py` | dataclasses `Salle` et `Reservation`, exception `ErreurReservation` | |
 
 ## Conventions implicites
@@ -34,18 +53,71 @@ Le code respecte des conventions qu'aucun document n'écrit. Le TP 5 les fait fo
 
 - montants en centimes entiers ;
 - dates en ISO 8601, heure locale naïve ;
-- noms et messages en français ;
+- noms, champs JSON et messages d'erreur en français ;
 - SQL toujours paramétré ;
-- erreurs métier levées par `ErreurReservation`.
+- erreurs métier levées par `ErreurReservation` dans le code métier, jamais de `HTTPException` hors de `routes.py` ;
+- chaque route a un test qui passe par le `TestClient`.
 
-## Exploitation par les TP
+## Trajectoire des TP
 
-La trajectoire détaillée, état de départ et d'arrivée de chaque TP, fait l'objet d'une étape suivante.
+Le stagiaire copie `fil-rouge/` au début du TP 2, installe `uv`, lance `uv sync`, fait de sa copie un dépôt git et commite l'état initial. Les commandes du projet passent par `uv run` : `uv run pytest`, `uv run uvicorn salles.main:app --reload`. Chaque TP qui modifie le code se termine par un commit : le stagiaire compare son état à celui du corrigé avec `git diff` et peut revenir au commit précédent si un TP échoue.
 
-| TP | Ce que le TP exploite |
-|---|---|
-| 2 | premier lancement sur le dépôt, lecture de la structure, premières demandes soumises aux permissions |
-| 3 | explication du flux `reserver` de la CLI jusqu'à `sqlite3`, petite édition guidée dans `export.py` |
-| 4 | tests de caractérisation de `tarifs.py`, refactoring à comportement constant, implémentation d'une spécification fournie (réservations récurrentes hebdomadaires, refusées si une occurrence est en conflit), message de commit |
-| 5 | rédaction du `CLAUDE.md` à partir des conventions implicites |
-| 6 | slash command qui crée une sous-commande et son test ; hook qui lance `ruff format` et `pytest` après chaque modification |
+Les durées sont des estimations, fixées dans le plan de chaque module.
+
+### TP 2 : premier lancement (15 min)
+
+Départ : installation de `uv`, copie de `fil-rouge/`, `uv sync`, `git init`, commit « État initial ».
+
+Travail : lancer l'outil à la racine du projet avec `claude-sonnet-4-6`, faire décrire la structure, faire lancer `pytest`. Le stagiaire démarre `uvicorn` dans un second terminal, puis demande à l'agent d'interroger l'API avec `curl`. Chaque commande déclenche une demande de permission, que le stagiaire accepte, refuse ou autorise pour la session.
+
+Arrivée : code inchangé, aucun commit. `/init` est montré en démonstration sans être lancé : le `CLAUDE.md` est le sujet du TP 5.
+
+### TP 3 : explorer et modifier (20 min)
+
+Départ : état initial.
+
+Travail : faire expliquer le traitement de `POST /reservations`, de la route jusqu'à `sqlite3`, puis l'injection de la connexion par `Depends`. Demander une petite modification de `export.py` : une colonne `duree_minutes` dans le CSV de `GET /planning.csv`. Relire le diff avant de l'accepter, refuser une première proposition et la reformuler.
+
+Arrivée : le CSV contient la durée. Commit « Export : durée des réservations ».
+
+### TP 4 : tester, refactorer, générer (35 min)
+
+Départ : état d'arrivée du TP 3.
+
+Travail : faire écrire les tests de caractérisation de `tarifs.py`, les lancer, refactorer la fonction legacy et relancer les tests jusqu'au vert. Implémenter ensuite une spécification courte fournie par l'énoncé : un paramètre `capacite_min` sur `GET /salles/disponibles`, avec ses tests. Faire rédiger les messages de commit.
+
+Arrivée : `tests/test_tarifs.py` en place, `tarifs.py` découpé, filtre de capacité testé. Deux commits.
+
+### TP 5 : contexte projet (environ 1h30)
+
+Départ : état d'arrivée du TP 4.
+
+Travail : lancer `/init` et lire le `CLAUDE.md` généré. Le compléter avec les conventions implicites, absentes du fichier généré. Rédiger une demande structurée pour la spécification des réservations récurrentes hebdomadaires : toutes les occurrences sont créées dans une transaction, ou aucune si l'une est en conflit. Vérifier que l'implémentation respecte les conventions du `CLAUDE.md`. Passer à une seconde tâche dans une session neuve, puis compacter une session longue et comparer.
+
+Arrivée : `CLAUDE.md` commité, route `POST /reservations/hebdomadaires` testée. Deux commits.
+
+### TP 6 : étendre l'outil (environ 1h30)
+
+Départ : état d'arrivée du TP 5.
+
+Travail : écrire une slash command qui crée une route et son test, puis l'utiliser pour ajouter `GET /statistiques` (taux d'occupation par salle). Écrire un hook qui lance `uv run ruff format` et `uv run pytest` après chaque modification de fichier. Écrire un skill de migration de schéma, appliqué à l'ajout d'une colonne `equipements` sur les salles. Commiter ces extensions dans `.claude/` pour les partager.
+
+Arrivée : extensions versionnées, route `GET /statistiques`, migration appliquée. Trois commits.
+
+Les équivalents Open Code de la slash command, du hook et du skill dépendent de l'issue #3. Si l'un d'eux n'existe pas, l'énoncé propose une variante ou signale l'absence.
+
+## Contenu exigé du code de départ
+
+La trajectoire impose ces éléments au code de départ :
+
+- `Salle` a un champ `capacite`, et `GET /salles/disponibles` n'a pas encore de filtre sur la capacité ;
+- `export.py` produit un CSV sans durée ;
+- `tarifs.py` applique des règles déterministes, dont le résultat ne dépend que de la réservation et de la salle ;
+- `db.py` versionne le schéma par `PRAGMA user_version`, ce qui donne un point d'appui au skill de migration ;
+- `pyproject.toml`, `uv.lock` et `.python-version` sont versionnés ;
+- les tests existants passent et `uv run ruff check` ne signale rien ;
+- aucun `CLAUDE.md` ni `AGENTS.md`.
+
+## Questions ouvertes
+
+- Comment les stagiaires récupèrent-ils `fil-rouge/` : copie depuis la VM, archive, ou clonage du dépôt ?
