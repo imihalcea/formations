@@ -1,0 +1,20 @@
+# Node
+node_modules/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Claude Code : réglages personnels
+.claude/settings.local.json
+
+# Éditeurs et système
+.idea/
+.vscode/
+*.swp
+.DS_Store
