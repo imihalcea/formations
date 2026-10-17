@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, Check } from "lucide-react";
 import type { Section, Tp, TpSegment } from "./types";
 import { TOOL_LABELS } from "./SlideView";
+import { addCopyButtons } from "./copy";
 
 type Tool = "claude-code" | "opencode";
 const TOOLS: { id: Tool; label: string }[] = [
@@ -32,27 +33,6 @@ function useStored<T>(key: string, initial: T): [T, (v: T) => void] {
   return [value, set];
 }
 
-// Texte copié depuis un bloc : pour une session terminal, seulement les commandes, sans « $ ».
-function copyText(pre: HTMLPreElement): string {
-  const text = (pre.querySelector("code") ?? pre).textContent ?? "";
-  if (!pre.classList.contains("terminal")) return text.replace(/\n$/, "");
-  const commands = text.split("\n").filter((l) => l.startsWith("$ ")).map((l) => l.slice(2));
-  return commands.length > 0 ? commands.join("\n") : text;
-}
-
-async function writeClipboard(text: string) {
-  try {
-    await navigator.clipboard.writeText(text);
-  } catch {
-    const area = document.createElement("textarea");
-    area.value = text;
-    document.body.appendChild(area);
-    area.select();
-    document.execCommand("copy");
-    area.remove();
-  }
-}
-
 export function TpPage({ tp, section, onBack }: { tp: Tp; section: Section; onBack: () => void }) {
   const [tool, setTool] = useStored<Tool>("tp-outil", "claude-code");
   const [done, setDone] = useStored<number[]>(`tp-fait-${tp.id}`, []);
@@ -60,21 +40,7 @@ export function TpPage({ tp, section, onBack }: { tp: Tp; section: Section; onBa
 
   // Ajoute un bouton de copie à chaque bloc de code affiché.
   useEffect(() => {
-    const root = page.current;
-    if (!root) return;
-    for (const pre of root.querySelectorAll<HTMLPreElement>("pre")) {
-      if (pre.querySelector(":scope > .copy")) continue;
-      const btn = document.createElement("button");
-      btn.className = "copy";
-      btn.type = "button";
-      btn.textContent = "Copier";
-      btn.addEventListener("click", async () => {
-        await writeClipboard(copyText(pre));
-        btn.textContent = "Copié";
-        setTimeout(() => (btn.textContent = "Copier"), 1500);
-      });
-      pre.appendChild(btn);
-    }
+    if (page.current) addCopyButtons(page.current);
   });
 
   const toggle = (k: number) => setDone(done.includes(k) ? done.filter((d) => d !== k) : [...done, k]);

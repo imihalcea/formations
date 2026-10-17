@@ -1,5 +1,6 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { Section, Slide, SlideKind } from "./types";
+import { addCopyButtons } from "./copy";
 
 export const TOOL_LABELS = { claude: "Claude Code", opencode: "Open Code" };
 
@@ -56,6 +57,10 @@ function SlideContent({ slide, index, total, section }: Props) {
     const over = el.scrollHeight > el.clientHeight + 1 || el.scrollWidth > el.clientWidth + 1;
     setOverflow(over);
     if (over) console.warn(`Contenu qui déborde : ${slide.origin}`);
+  }, [slide]);
+
+  useEffect(() => {
+    if (body.current) addCopyButtons(body.current);
   }, [slide]);
 
   return (
