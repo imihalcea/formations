@@ -186,7 +186,11 @@ function ContentBody({ slide }: { slide: Slide }) {
       );
     case "agenda":
       return (
-        <div className="grid grid-cols-2 gap-x-24 gap-y-10">
+        // Remplit la colonne de gauche, puis celle de droite, pour une lecture dans l'ordre des modules.
+        <div
+          className="grid grid-flow-col grid-cols-2 gap-x-24 gap-y-10"
+          style={{ gridTemplateRows: `repeat(${Math.ceil(slide.modules.length / 2)}, auto)` }}
+        >
           {slide.modules.map((m) => (
             <div key={m.number} className="flex items-baseline gap-8 border-t-4 border-slide-ink pt-5">
               <span className="slide-caption font-mono font-semibold text-slide-accent tabular-nums">{m.number}</span>
