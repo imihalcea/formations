@@ -193,9 +193,10 @@ function ContentBody({ slide }: { slide: Slide }) {
     case "facts":
       return (
         <div className="grid grid-cols-2 gap-x-24 gap-y-14">
-          {slide.itemsHtml.map((it, i) => (
+          {slide.facts.map((f, i) => (
             <div key={i} className="border-t-4 border-slide-accent pt-7">
-              <InlineHtml html={it} className="slide-body" />
+              {f.termHtml && <InlineHtml html={f.termHtml} className="slide-heading font-display block text-slide-accent" />}
+              <InlineHtml html={f.textHtml} className={f.termHtml ? "slide-body mt-5 block opacity-80" : "slide-body"} />
             </div>
           ))}
         </div>
@@ -208,14 +209,17 @@ function ContentBody({ slide }: { slide: Slide }) {
       // Réduit la taille d'une valeur longue pour qu'elle tienne dans sa colonne (≈ 0,6 em par caractère).
       const size = (v: string) => Math.min(base, Math.floor(width / (v.length * 0.6)));
       return (
-        <div className={`grid ${cols === 3 ? "grid-cols-3" : cols === 4 ? "grid-cols-4" : "grid-cols-5"}`} style={{ gap }}>
-          {slide.stats.map((st, i) => (
-            <div key={i} className="border-t-4 border-slide-accent pt-8">
-              <p className="font-display text-slide-accent" style={{ fontSize: size(st.value), lineHeight: 1 }}>{st.value}</p>
-              <InlineHtml html={st.labelHtml} className="slide-body mt-8 block" />
-            </div>
-          ))}
-        </div>
+        <>
+          <div className={`grid ${cols === 3 ? "grid-cols-3" : cols === 4 ? "grid-cols-4" : "grid-cols-5"}`} style={{ gap }}>
+            {slide.stats.map((st, i) => (
+              <div key={i} className="border-t-4 border-slide-accent pt-8">
+                <p className="font-display text-slide-accent" style={{ fontSize: size(st.value), lineHeight: 1 }}>{st.value}</p>
+                <InlineHtml html={st.labelHtml} className="slide-body mt-8 block" />
+              </div>
+            ))}
+          </div>
+          {slide.remarkHtml && <InlineHtml html={slide.remarkHtml} className="slide-body mt-16 block border-l-8 border-slide-accent pl-10" />}
+        </>
       );
     }
     case "compare":

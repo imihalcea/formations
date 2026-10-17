@@ -82,6 +82,20 @@ body { background-color: var(--deck); color: var(--deck-foreground); }
 .slide-md td { padding: 16px 24px 16px 0; border-bottom: 2px solid var(--deck-muted); vertical-align: top; }
 .slide-md img { max-height: 720px; max-width: 100%; margin-inline: auto; }
 
+/* Schémas SVG insérés en ligne : classes de couleur et de police de la charte. */
+.slide-svg { display: block; width: 100%; height: auto; max-height: 720px; margin-inline: auto; font-family: var(--font-sans); }
+.slide-svg .ink { fill: var(--slide-ink); }
+.slide-svg .accent { fill: var(--slide-accent); }
+.slide-svg .paper { fill: var(--slide-paper); }
+.slide-svg .deck { fill: var(--deck); }
+.slide-svg .muted { fill: var(--deck-muted); }
+.slide-svg .tint { fill: oklch(0.54 0.21 262 / 12%); }
+.slide-svg .stroke-accent { stroke: var(--slide-accent); fill: none; }
+.slide-svg .stroke-ink { stroke: var(--slide-ink); fill: none; }
+.slide-svg .stroke-muted { stroke: var(--deck-muted); fill: none; }
+.slide-svg .display { font-family: var(--font-display); }
+.slide-svg .mono { font-family: var(--font-mono); }
+
 /* Panneau de notes : HTML rendu depuis le bloc « ::: notes ». */
 .notes-md > * + * { margin-top: 0.5em; }
 .notes-md ul { list-style: disc; padding-left: 1.25em; }

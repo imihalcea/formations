@@ -35,9 +35,9 @@ Chaque titre `##` ouvre une slide. Une classe entre accolades fixe son type, et 
 | `title` | sous-titre | `kicker` |
 | `agenda` | aucun ; la liste des modules est générée | |
 | `statement` | aucun | `kicker` |
-| `facts` | 2 à 4 éléments `- …` | `kicker` |
+| `facts` | 2 à 4 éléments `- …`, ou `- **Terme** explication` pour mettre le terme en vedette | `kicker` |
 | `figure` | aucun ; le titre décrit le chiffre | `value` (obligatoire), `kicker` |
-| `figures` | 3 à 5 éléments `- **valeur** légende` | `kicker` |
+| `figures` | 3 à 5 éléments `- **valeur** légende`, puis un paragraphe facultatif affiché en remarque | `kicker` |
 | `quote` | lignes `> …` | `author` |
 | `compare` | conteneurs `claude-code` et `opencode` | `kicker` |
 | `tp` | voir « Travaux pratiques » | `duration`, `kicker` |
@@ -57,7 +57,7 @@ Notes d'animation, visibles dans la vue présentateur (touche P) et le panneau d
 
 Dans une slide `content`, une ligne `|||` coupe le corps en deux colonnes.
 
-Les types `facts`, `figure`, `figures` et `quote` refusent de compiler sans `::: sources`. Les blocs de code ```` ```console ```` prennent le style terminal, les blocs ```` ```prompt ```` le style d'un prompt à copier ; les autres langages sont colorés par Shiki sur fond clair. Les images sont référencées relativement au fichier Markdown et intégrées au fichier généré.
+Les types `facts`, `figure`, `figures` et `quote` refusent de compiler sans `::: sources`. Les blocs de code ```` ```console ```` prennent le style terminal, les blocs ```` ```prompt ```` le style d'un prompt à copier ; les autres langages sont colorés par Shiki sur fond clair. Les images sont référencées relativement au fichier Markdown et intégrées au fichier généré. Un SVG est inséré en ligne : il utilise les polices de la charte et les classes de `styles.css` (`ink`, `accent`, `paper`, `deck`, `muted`, `tint`, `stroke-accent`, `display`, `mono`…), ce qui garde les schémas dans les couleurs du support.
 
 Un bloc de code vide peut reprendre le contenu d'un fichier, chemin relatif au fichier Markdown, éventuellement limité à une plage de lignes. Le code d'un corrigé se cite ainsi depuis `tp/`, où il est testé, au lieu d'être recopié :
 

@@ -77,6 +77,21 @@ describe("compileDeck", () => {
     expect(partie!.kind === "content" && partie!.columns[0]).toContain("trois = 3");
   });
 
+  it("sépare le terme de l'explication dans une slide facts", async () => {
+    const src = "::: sources\n- [S](https://s)\n:::\n";
+    const dir = supportWith({ "01-m.md": `# M\n\n## X {.facts}\n\n- **Terme** explication\n- Texte seul\n\n${src}` });
+    const slide = (await compileDeck(dir)).slides[1]!;
+    expect(slide.kind === "facts" && slide.facts).toEqual([{ termHtml: "Terme", textHtml: "explication" }, { textHtml: "Texte seul" }]);
+  });
+
+  it("lit la remarque qui suit les chiffres d'une slide figures", async () => {
+    const src = "::: sources\n- [S](https://s)\n:::\n";
+    const dir = supportWith({ "01-m.md": `# M\n\n## X {.figures}\n\n- **1** a\n- **2** b\n- **3** c\n\nUne remarque.\n\n${src}` });
+    const slide = (await compileDeck(dir)).slides[1]!;
+    expect(slide.kind === "figures" && slide.stats).toHaveLength(3);
+    expect(slide.kind === "figures" && slide.remarkHtml).toBe("Une remarque.");
+  });
+
   it("refuse une image introuvable", async () => {
     const dir = supportWith({ "01-m.md": "# M\n\n## X\n\n![](images/absente.png)\n" });
     await expect(compileDeck(dir)).rejects.toThrow("Image introuvable");

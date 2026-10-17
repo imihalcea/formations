@@ -141,6 +141,12 @@ function createMarkdown(hl: Highlighter): MarkdownIt {
       } catch {
         throw new SupportError(`Image introuvable : ${file}`);
       }
+      // Un SVG est inséré en ligne : il hérite des polices et des couleurs de la charte (var(--slide-accent)…).
+      if (mime === "image/svg+xml") {
+        const svg = data.toString("utf8").replace(/<\?xml[^>]*\?>\s*/, "").trim();
+        const alt = md.utils.escapeHtml(token.content);
+        return svg.replace(/^<svg\b/, `<svg role="img" aria-label="${alt}" class="slide-svg"`);
+      }
       token.attrSet("src", `data:${mime};base64,${data.toString("base64")}`);
     }
     return image(tokens, idx, options, env, self);
@@ -306,18 +312,29 @@ function buildSlide(b: Block, ctx: Ctx): Slide {
     case "facts": {
       const items = listItems();
       if (items.length < 2 || items.length > 4) fail("une slide « facts » contient de 2 à 4 éléments");
-      return { ...base, kind, itemsHtml: items.map(inline) };
+      // « - **Terme** explication » affiche le terme en vedette au-dessus de l'explication.
+      const facts = items.map((it) => {
+        const m = /^\*\*(.+?)\*\*\s+(.+)$/.exec(it);
+        return m ? { termHtml: inline(m[1]!), textHtml: inline(m[2]!) } : { textHtml: inline(it) };
+      });
+      return { ...base, kind, facts };
     }
     case "figure":
       empty();
       return { ...base, kind, value: b.attrs["value"] ?? fail('attribut value="…" obligatoire') };
     case "figures": {
-      const stats = listItems().map((it) => {
+      // La liste des chiffres, puis un paragraphe facultatif affiché en remarque sous les chiffres.
+      const lines = contentOf(rest);
+      const end = lines.findIndex((l) => !/^[-*]\s+/.test(l.text.trim()));
+      const list = end === -1 ? lines : lines.slice(0, end);
+      const remark = end === -1 ? "" : lines.slice(end).map((l) => l.text.trim()).join(" ");
+      const stats = list.map((l) => {
+        const it = l.text.trim().replace(/^[-*]\s+/, "");
         const m = /^\*\*(.+?)\*\*\s+(.+)$/.exec(it) ?? fail(`« ${it} » : format attendu « - **valeur** légende »`);
         return { value: m[1]!, labelHtml: inline(m[2]!) };
       });
       if (stats.length < 3 || stats.length > 5) fail("une slide « figures » contient de 3 à 5 chiffres");
-      return { ...base, kind, stats };
+      return { ...base, kind, stats, ...(remark ? { remarkHtml: inline(remark) } : {}) };
     }
     case "quote": {
       const lines = contentOf(rest).map((l) => /^>\s?(.*)$/.exec(l.text)?.[1] ?? fail(`ligne ${l.no} : citation « > » attendue`));
