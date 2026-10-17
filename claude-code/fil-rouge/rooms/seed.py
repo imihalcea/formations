@@ -16,8 +16,8 @@ BOOKINGS = [
     ("Atlas", "Team sync", "2027-01-11T09:00", "2027-01-11T10:00", True),
     ("Atlas", "Interview", "2027-01-11T14:00", "2027-01-11T15:30", False),
     ("Boreal", "Training", "2027-01-11T09:00", "2027-01-11T17:30", False),
-    ("Cape", "Code review", "2027-01-11T09:00", "2027-01-11T10:45", True),
-    ("Cape", "Budget review", "2027-01-11T14:00", "2027-01-11T16:15", True),
+    ("Cape", "Retrospective", "2027-01-11T09:00", "2027-01-11T10:45", True),
+    ("Cape", "Supplier meeting", "2027-01-11T14:00", "2027-01-11T16:15", True),
     ("Cape", "Steering committee", "2027-01-11T18:00", "2027-01-11T20:00", False),
     ("Boreal", "Workshop", "2027-01-16T10:00", "2027-01-16T12:00", False),
 ]

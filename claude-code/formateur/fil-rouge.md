@@ -101,8 +101,8 @@ Arrivée : `tests/test_pricing.py` en place, `pricing.py` découpé à comportem
 
 | Réservation | Montant exact | Legacy | `round` exact | Arrondi au demi supérieur | Troncature |
 |---|---|---|---|---|---|
-| Code review, Cape, 1h45 | 2187,5 | 2187 | 2188 | 2188 | 2187 |
-| Budget review, Cape, 2h15 | 2812,5 | 2813 | 2812 | 2813 | 2812 |
+| Retrospective, Cape, 1h45 | 2187,5 | 2187 | 2188 | 2188 | 2187 |
+| Supplier meeting, Cape, 2h15 | 2812,5 | 2813 | 2812 | 2813 | 2812 |
 
 Après le passage au calcul direct, un test de caractérisation échoue d'un centime. Ce moment fait passer trois enseignements du module 4 :
 
