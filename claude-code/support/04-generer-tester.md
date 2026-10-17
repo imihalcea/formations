@@ -565,6 +565,33 @@ Commite le filtre min_capacity et ses tests avec un message qui les décrit.
 `git log --oneline` montre quatre commits.
 :::
 
+### Corrigé {.corrige}
+
+`tests/test_pricing.py` fige les sept réservations de `seed.py` avec leur montant facturé, puis les cas limites :
+
+```python file="../tp/tp04/tests/test_pricing.py" lines="18-41"
+```
+
+`compute_price` délègue le forfait journée et le tarif horaire à des fonctions dédiées. Les constantes en dur sont nommées :
+
+```python file="../tp/tp04/rooms/pricing.py" lines="17-32"
+```
+
+Le tarif horaire se calcule par plage de tarif (avant 19 h, soirée, après minuit) au lieu de minute par minute. Un calcul direct `per_minute * count` fait échouer Retrospective et Supplier meeting d'un centime : l'addition en flottants reste isolée dans `_add_minutes`, avec l'anomalie signalée.
+
+```python file="../tp/tp04/rooms/pricing.py" lines="43-74"
+```
+
+Le filtre `min_capacity` écarte les salles trop petites avant la recherche de conflits :
+
+```python file="../tp/tp04/rooms/routes.py" lines="32-47"
+```
+
+```python file="../tp/tp04/tests/test_routes.py" lines="39-47"
+```
+
+La correction de l'arrondi change des montants déjà facturés : elle relève d'une décision métier et sort du refactoring.
+
 ## Glossaire {kicker="Glossaire"}
 
 - **Test de caractérisation** : test qui fige le comportement actuel
