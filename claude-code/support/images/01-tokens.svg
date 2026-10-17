@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 300" width="1680" height="300">
+  <text x="0" y="24" class="accent mono" font-size="22" font-weight="600" letter-spacing="3">UNE LIGNE DE CODE, DÉCOUPÉE EN TOKENS</text>
+  <g class="mono" font-size="40">
+    <rect x="0" y="60" width="96" height="80" rx="8" class="tint"/>
+    <text x="12" y="114" class="ink">def</text>
+    <rect x="104" y="60" width="168" height="80" rx="8" class="muted"/>
+    <text x="116" y="114" class="ink">␣total</text>
+    <rect x="280" y="60" width="48" height="80" rx="8" class="tint"/>
+    <text x="292" y="114" class="ink">(</text>
+    <rect x="336" y="60" width="120" height="80" rx="8" class="muted"/>
+    <text x="348" y="114" class="ink">prix</text>
+    <rect x="464" y="60" width="48" height="80" rx="8" class="tint"/>
+    <text x="476" y="114" class="ink">,</text>
+    <rect x="520" y="60" width="168" height="80" rx="8" class="muted"/>
+    <text x="532" y="114" class="ink">␣quant</text>
+    <rect x="696" y="60" width="96" height="80" rx="8" class="tint"/>
+    <text x="708" y="114" class="ink">ite</text>
+    <rect x="800" y="60" width="72" height="80" rx="8" class="muted"/>
+    <text x="812" y="114" class="ink">):</text>
+  </g>
+  <text x="940" y="100" class="accent display" font-size="56">8 tokens</text>
+  <text x="940" y="136" class="ink" font-size="26" opacity="0.7">pour 26 caractères</text>
+  <text x="0" y="210" class="ink" font-size="30">Un token peut être un mot, une partie de mot, un caractère ou un octet.</text>
+  <text x="0" y="270" class="ink" font-size="26" opacity="0.6">Illustration : le découpage réel dépend du tokenizer du modèle. ␣ marque une espace.</text>
+</svg>

@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 420" width="1680" height="420">
+  <g>
+    <rect x="0" y="40" width="440" height="300" rx="12" class="deck"/>
+    <rect x="0" y="40" width="440" height="6" class="accent"/>
+    <text x="36" y="100" class="accent mono" font-size="24" font-weight="600">01</text>
+    <text x="36" y="160" class="ink display" font-size="44">Pré-entraînement</text>
+    <text x="36" y="222" class="ink" font-size="28">Prédire le mot suivant</text>
+    <text x="36" y="260" class="ink" font-size="28">sur un vaste corpus</text>
+    <text x="36" y="298" class="ink" font-size="28">de texte non étiqueté</text>
+  </g>
+  <path d="M452 190 H500" class="stroke-accent" stroke-width="5"/>
+  <path d="M494 177 L512 190 L494 203 Z" class="accent"/>
+  <g>
+    <rect x="524" y="40" width="440" height="300" rx="12" class="deck"/>
+    <rect x="524" y="40" width="440" height="6" class="accent"/>
+    <text x="560" y="100" class="accent mono" font-size="24" font-weight="600">02</text>
+    <text x="560" y="160" class="ink display" font-size="44">Fine-tuning</text>
+    <text x="560" y="222" class="ink" font-size="28">Poursuivre l'entraînement</text>
+    <text x="560" y="260" class="ink" font-size="28">sur des données choisies</text>
+  </g>
+  <path d="M976 190 H1024" class="stroke-accent" stroke-width="5"/>
+  <path d="M1018 177 L1036 190 L1018 203 Z" class="accent"/>
+  <g>
+    <rect x="1048" y="40" width="440" height="300" rx="12" class="deck"/>
+    <rect x="1048" y="40" width="440" height="6" class="accent"/>
+    <text x="1084" y="100" class="accent mono" font-size="24" font-weight="600">03</text>
+    <text x="1084" y="160" class="ink display" font-size="44">RLHF</text>
+    <text x="1084" y="222" class="ink" font-size="28">Favoriser les réponses</text>
+    <text x="1084" y="260" class="ink" font-size="28">que des humains</text>
+    <text x="1084" y="298" class="ink" font-size="28">ont classées en tête</text>
+  </g>
+  <path d="M1500 190 H1548" class="stroke-accent" stroke-width="5"/>
+  <path d="M1542 177 L1560 190 L1542 203 Z" class="accent"/>
+  <rect x="1572" y="120" width="108" height="140" rx="12" class="accent"/>
+  <text x="1626" y="200" class="paper" font-size="26" font-weight="600" text-anchor="middle">Claude</text>
+  <text x="0" y="400" class="ink" font-size="28" opacity="0.7">Le modèle pré-entraîné répond mal aux questions. Les étapes 02 et 03 en font un assistant qui suit des instructions.</text>
+</svg>

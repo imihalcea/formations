@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 500" width="1680" height="500">
+  <rect x="2" y="2" width="1676" height="496" rx="16" class="tint"/>
+  <text x="40" y="56" class="accent mono" font-size="22" font-weight="600" letter-spacing="3">HARNAIS : CLAUDE CODE, OPEN CODE</text>
+
+  <rect x="640" y="160" width="400" height="200" rx="16" class="ink"/>
+  <text x="840" y="250" class="paper display" font-size="56" text-anchor="middle">Modèle</text>
+  <text x="840" y="300" class="paper" font-size="28" text-anchor="middle" opacity="0.8">raisonne, choisit l'outil</text>
+
+  <g font-size="30" class="ink">
+    <rect x="40" y="110" width="440" height="80" rx="40" class="paper"/>
+    <text x="260" y="161" text-anchor="middle">Lire et éditer les fichiers</text>
+    <rect x="40" y="220" width="440" height="80" rx="40" class="paper"/>
+    <text x="260" y="271" text-anchor="middle">Lancer des commandes</text>
+    <rect x="40" y="330" width="440" height="80" rx="40" class="paper"/>
+    <text x="260" y="381" text-anchor="middle">Chercher dans le code</text>
+
+    <rect x="1200" y="110" width="440" height="80" rx="40" class="paper"/>
+    <text x="1420" y="161" text-anchor="middle">Chercher sur le web</text>
+    <rect x="1200" y="220" width="440" height="80" rx="40" class="paper"/>
+    <text x="1420" y="271" text-anchor="middle">Gérer le contexte</text>
+    <rect x="1200" y="330" width="440" height="80" rx="40" class="paper"/>
+    <text x="1420" y="381" text-anchor="middle">Demander les permissions</text>
+  </g>
+
+  <path d="M490 250 H630 M1050 250 H1190" class="stroke-accent" stroke-width="4"/>
+  <path d="M630 238 L648 250 L630 262 Z M1190 238 L1208 250 L1190 262 Z" class="accent"/>
+  <path d="M500 238 L482 250 L500 262 Z M1060 238 L1042 250 L1060 262 Z" class="accent"/>
+  <text x="840" y="450" class="ink" font-size="28" text-anchor="middle">Appel d'outil, puis résultat renvoyé au modèle</text>
+</svg>

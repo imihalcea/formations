@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 480" width="1680" height="480">
+  <rect x="0" y="20" width="660" height="440" rx="16" class="deck"/>
+  <rect x="0" y="20" width="660" height="6" class="accent"/>
+  <text x="40" y="84" class="accent mono" font-size="22" font-weight="600" letter-spacing="3">SUR LE POSTE</text>
+  <text x="40" y="150" class="ink display" font-size="36">Claude Code</text>
+  <text x="40" y="196" class="ink" font-size="28">Transcriptions en clair, 30 jours</text>
+  <text x="40" y="236" class="ink mono" font-size="24">~/.claude/projects/</text>
+  <text x="40" y="320" class="ink display" font-size="36">Open Code v2</text>
+  <text x="40" y="366" class="ink" font-size="28">Sessions sans purge automatique</text>
+  <text x="40" y="406" class="ink mono" font-size="24">~/.local/share/opencode/opencode.db</text>
+
+  <path d="M690 180 H970" class="stroke-accent" stroke-width="5"/>
+  <path d="M964 166 L984 180 L964 194 Z" class="accent"/>
+  <text x="836" y="150" class="ink" font-size="28" text-anchor="middle">prompts, fichiers lus</text>
+  <path d="M710 300 H990" class="stroke-ink" stroke-width="5"/>
+  <path d="M716 286 L696 300 L716 314 Z" class="ink"/>
+  <text x="844" y="350" class="ink" font-size="28" text-anchor="middle">réponses</text>
+  <rect x="770" y="216" width="140" height="48" rx="24" class="tint"/>
+  <text x="840" y="249" class="accent mono" font-size="24" font-weight="600" text-anchor="middle">TLS</text>
+
+  <rect x="1020" y="20" width="660" height="440" rx="16" class="ink"/>
+  <text x="1060" y="84" class="accent mono" font-size="22" font-weight="600" letter-spacing="3" opacity="0.9" style="fill: oklch(0.75 0.12 262)">CHEZ LE FOURNISSEUR</text>
+  <text x="1060" y="150" class="paper display" font-size="36">API Anthropic</text>
+  <text x="1060" y="196" class="paper" font-size="28" opacity="0.85">Reçoit tout le contexte</text>
+  <text x="1060" y="236" class="paper" font-size="28" opacity="0.85">de chaque requête</text>
+  <text x="1060" y="320" class="paper" font-size="28" opacity="0.85">Même API pour Open Code</text>
+  <text x="1060" y="360" class="paper" font-size="28" opacity="0.85">configuré avec une clé Anthropic</text>
+</svg>
