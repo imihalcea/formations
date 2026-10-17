@@ -1,12 +1,12 @@
-# salles
+# rooms
 
-API de réservation des salles de réunion.
+Meeting room booking API.
 
 ```console
 $ uv sync
-$ uv run python -m salles.exemple      # remplit salles.db avec des données d'exemple
-$ uv run uvicorn salles.main:app --reload
+$ uv run python -m rooms.seed      # fills rooms.db with sample data
+$ uv run uvicorn rooms.main:app --reload
 $ uv run pytest
 ```
 
-La documentation interactive de l'API est servie sur http://127.0.0.1:8000/docs. La base est le fichier `salles.db`, ou celui que désigne la variable d'environnement `SALLES_DB`.
+The interactive API documentation is served at http://127.0.0.1:8000/docs. The database is the file `rooms.db`, or the one named by the `ROOMS_DB` environment variable.

@@ -1,24 +1,24 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from salles.db import connecter
-from salles.main import app
+from rooms.db import connect
+from rooms.main import app
 
 
 @pytest.fixture
-def chemin_db(tmp_path, monkeypatch):
-    chemin = str(tmp_path / "test.db")
-    monkeypatch.setenv("SALLES_DB", chemin)
-    return chemin
+def db_file(tmp_path, monkeypatch):
+    path = str(tmp_path / "test.db")
+    monkeypatch.setenv("ROOMS_DB", path)
+    return path
 
 
 @pytest.fixture
-def connexion(chemin_db):
-    connexion = connecter(chemin_db)
-    yield connexion
-    connexion.close()
+def connection(db_file):
+    connection = connect(db_file)
+    yield connection
+    connection.close()
 
 
 @pytest.fixture
-def client(chemin_db):
+def client(db_file):
     return TestClient(app)
