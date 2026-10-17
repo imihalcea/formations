@@ -233,7 +233,6 @@ L'effort agit sur tous les tokens de sortie, appels d'outils compris : durée et
 `medium`, sur un modèle dont le défaut est plus haut : « reduces token usage for cost-sensitive work that can trade off some intelligence ».
 « The effort parameter affects all tokens in the response » : texte, appels d'outils et arguments, raisonnement quand il est actif. « Lower effort also means fewer and terser tool calls. »
 Lien avec le module 1 : facturation au token sur l'API, quota consommé plus vite sur un abonnement.
-Démonstration (#21) : le même refactoring en `low` et en `high`, durée, tokens et diff comparés, puis les tests.
 :::
 
 ## Une spécification exploitable {kicker="Générer"}
