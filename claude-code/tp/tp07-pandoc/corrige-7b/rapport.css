@@ -1,0 +1,68 @@
+@page {
+  size: A4;
+  margin: 2cm 1.8cm 2.2cm;
+
+  @bottom-center {
+    content: "Page " counter(page) " / " counter(pages);
+    font-family: "DejaVu Sans", sans-serif;
+    font-size: 9pt;
+    color: #555;
+  }
+}
+
+body {
+  font-family: "DejaVu Sans", sans-serif;
+  font-size: 10pt;
+  line-height: 1.4;
+  color: #222;
+}
+
+header {
+  border-bottom: 3px solid #1f4e79;
+  margin-bottom: 1.5em;
+}
+
+h1 {
+  font-size: 20pt;
+  margin: 0;
+  color: #1f4e79;
+}
+
+.mois {
+  font-size: 13pt;
+  margin: 0.2em 0 0.6em;
+}
+
+h2 {
+  font-size: 13pt;
+  color: #1f4e79;
+  margin: 1.6em 0 0.5em;
+  break-after: avoid;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+/* pandoc sets equal column widths when a table line exceeds 72 characters */
+col {
+  width: auto !important;
+}
+
+th,
+td {
+  border-bottom: 1px solid #ccc;
+  padding: 0.3em 0.5em;
+  text-align: left;
+}
+
+th {
+  background: #e8eef4;
+  white-space: nowrap;
+}
+
+tr {
+  break-inside: avoid;
+}

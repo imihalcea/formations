@@ -1,0 +1,153 @@
+{
+  "mois": "Septembre 2026",
+  "synthese": {
+    "incidents": 296,
+    "resolus": 291,
+    "en_cours": 5,
+    "p1": 9,
+    "duree_moyenne_h": 28.2,
+    "taux_objectif_pct": 77.3
+  },
+  "par_severite": [
+    {
+      "severite": "P1",
+      "incidents": 9,
+      "resolus": 9,
+      "duree_moyenne_h": 3.2,
+      "taux_objectif_pct": 77.8
+    },
+    {
+      "severite": "P2",
+      "incidents": 49,
+      "resolus": 49,
+      "duree_moyenne_h": 6.2,
+      "taux_objectif_pct": 75.5
+    },
+    {
+      "severite": "P3",
+      "incidents": 134,
+      "resolus": 132,
+      "duree_moyenne_h": 18.5,
+      "taux_objectif_pct": 77.3
+    },
+    {
+      "severite": "P4",
+      "incidents": 104,
+      "resolus": 101,
+      "duree_moyenne_h": 53.7,
+      "taux_objectif_pct": 78.2
+    }
+  ],
+  "par_service": [
+    {
+      "service": "recherche",
+      "incidents": 70,
+      "p1": 2,
+      "duree_moyenne_h": 24.3
+    },
+    {
+      "service": "catalogue",
+      "incidents": 60,
+      "p1": 3,
+      "duree_moyenne_h": 31.3
+    },
+    {
+      "service": "commandes",
+      "incidents": 48,
+      "p1": 3,
+      "duree_moyenne_h": 35.6
+    },
+    {
+      "service": "paiement",
+      "incidents": 46,
+      "p1": 0,
+      "duree_moyenne_h": 26.2
+    },
+    {
+      "service": "authentification",
+      "incidents": 44,
+      "p1": 1,
+      "duree_moyenne_h": 21.9
+    },
+    {
+      "service": "notifications",
+      "incidents": 28,
+      "p1": 0,
+      "duree_moyenne_h": 30.8
+    }
+  ],
+  "plus_longues": [
+    {
+      "id": "INC-2609-0037",
+      "service": "commandes",
+      "severite": "P4",
+      "titre": "Requêtes lentes sur la base principale",
+      "duree_h": 444.8
+    },
+    {
+      "id": "INC-2609-0154",
+      "service": "paiement",
+      "severite": "P4",
+      "titre": "Quota d'API tiers dépassé",
+      "duree_h": 203.4
+    },
+    {
+      "id": "INC-2609-0183",
+      "service": "catalogue",
+      "severite": "P4",
+      "titre": "Timeouts vers le répartiteur de charge",
+      "duree_h": 187.1
+    },
+    {
+      "id": "INC-2609-0059",
+      "service": "paiement",
+      "severite": "P4",
+      "titre": "Latence élevée d'un service tiers",
+      "duree_h": 136.5
+    },
+    {
+      "id": "INC-2609-0040",
+      "service": "catalogue",
+      "severite": "P4",
+      "titre": "Résolution DNS en échec",
+      "duree_h": 135.6
+    }
+  ],
+  "en_cours": [
+    {
+      "id": "INC-2609-0291",
+      "ouverture": "2026-09-30T04:17",
+      "service": "recherche",
+      "severite": "P3",
+      "titre": "Perte de paquets entre zones"
+    },
+    {
+      "id": "INC-2609-0292",
+      "ouverture": "2026-09-30T06:18",
+      "service": "paiement",
+      "severite": "P3",
+      "titre": "Pic de charge non absorbé"
+    },
+    {
+      "id": "INC-2609-0293",
+      "ouverture": "2026-09-30T08:54",
+      "service": "authentification",
+      "severite": "P4",
+      "titre": "Réponses invalides d'un partenaire"
+    },
+    {
+      "id": "INC-2609-0295",
+      "ouverture": "2026-09-30T13:40",
+      "service": "authentification",
+      "severite": "P4",
+      "titre": "Régression après mise en production"
+    },
+    {
+      "id": "INC-2609-0296",
+      "ouverture": "2026-09-30T20:34",
+      "service": "authentification",
+      "severite": "P4",
+      "titre": "File de messages en débordement"
+    }
+  ]
+}
