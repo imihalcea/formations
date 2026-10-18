@@ -1201,20 +1201,34 @@ La spécification finit par la liste des tests à écrire dans tests/test_routes
 ```prompt
 /clear
 ```
+
+```prompt
+/plan Lis SPEC.md et implémente-le. Écris d'abord les tests, vérifie qu'ils échouent, puis implémente et lance uv run pytest -q.
+```
+
+Relire le plan, puis l'approuver par « Yes, manually approve edits ».
 :::
 
 ::: opencode
 ```prompt
 /new
 ```
-:::
+
+`Shift+Tab` jusqu'à l'agent Plan, puis :
 
 ```prompt
 Lis SPEC.md et implémente-le. Écris d'abord les tests, vérifie qu'ils échouent, puis implémente et lance uv run pytest -q.
 ```
 
+Relire le plan, puis `Shift+Tab` jusqu'à l'agent Build :
+
+```prompt
+Implémente ce plan.
+```
+:::
+
 ::: attendu
-Les nouveaux tests échouent d'abord, puis tous les tests passent. Dans un second terminal, avec l'API démarrée (`uv run uvicorn rooms.main:app --reload`), cette requête renvoie 409 : la salle Atlas est déjà réservée le 11 janvier à 9 h.
+Le plan suit `SPEC.md` et ne modifie pas le schéma de la base. Les nouveaux tests échouent d'abord, puis tous les tests passent. Dans un second terminal, avec l'API démarrée (`uv run uvicorn rooms.main:app --reload`), cette requête renvoie 409 : la salle Atlas est déjà réservée le 11 janvier à 9 h.
 
 ```console
 $ curl -X POST http://127.0.0.1:8000/bookings/weekly \
