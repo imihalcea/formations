@@ -1,6 +1,6 @@
 # Grille de conformité du rapport mensuel d'exploitation
 
-Grille commune aux TP 7A et 7B, appliquée au PDF du mois 1 (`incidents-2026-09.csv`) puis à celui du mois 2 (`incidents-2026-10.csv`). Chaque critère vaut 1 point s'il est entièrement satisfait, 0 sinon : 13 points. Les valeurs attendues sont dans `preparation/references.md`. La vérification prend cinq minutes environ.
+Grille commune aux TP 7A et 7B, appliquée au PDF du mois 1 (`incidents-2026-09.csv`) puis à celui du mois 2 (`incidents-2026-10.csv`). Chaque critère vaut 1 point s'il est entièrement satisfait, 0 sinon : 13 points. Les valeurs attendues servent à la notation et ne sont pas données à l'agent. La vérification prend cinq minutes environ.
 
 ## Données
 

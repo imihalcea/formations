@@ -1,0 +1,92 @@
+@page {
+    size: A4;
+    margin: 2cm 2.5cm 3cm 2.5cm;
+
+    @bottom-center {
+        content: "Page " counter(page) " / " counter(pages);
+        font-family: "DejaVu Sans", Arial, sans-serif;
+        font-size: 9pt;
+        color: #555;
+    }
+}
+
+body {
+    font-family: "DejaVu Sans", Arial, sans-serif;
+    font-size: 11pt;
+    line-height: 1.5;
+    color: #1a1a1a;
+}
+
+h1 {
+    font-size: 20pt;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 0.2em;
+    color: #1a3a5c;
+    page-break-after: avoid;
+}
+
+h2 {
+    font-size: 14pt;
+    font-weight: bold;
+    color: #1a3a5c;
+    border-bottom: 2px solid #1a3a5c;
+    padding-bottom: 0.2em;
+    margin-top: 1.4em;
+    margin-bottom: 0.5em;
+    page-break-after: avoid;
+}
+
+/* The "Septembre 2026" subtitle — first h2 immediately after the h1 */
+h1 + h2 {
+    text-align: center;
+    font-size: 13pt;
+    color: #444;
+    border-bottom: none;
+    margin-top: 0.2em;
+    margin-bottom: 1.2em;
+    font-weight: normal;
+}
+
+/* Avoid orphan rows on last page */
+section, .section {
+    page-break-inside: avoid;
+}
+
+p {
+    margin: 0.4em 0 0.8em 0;
+    text-align: justify;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.8em 0 1.2em 0;
+    font-size: 10pt;
+}
+
+th {
+    background-color: #1a3a5c;
+    color: #ffffff;
+    padding: 6px 8px;
+    text-align: left;
+    font-weight: bold;
+}
+
+td {
+    padding: 5px 8px;
+    border-bottom: 1px solid #dde;
+    vertical-align: top;
+}
+
+tr:nth-child(even) td {
+    background-color: #f4f6fb;
+}
+
+tr:hover td {
+    background-color: #eaf0fa;
+}
+
+strong {
+    font-weight: bold;
+}
