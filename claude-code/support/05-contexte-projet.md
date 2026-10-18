@@ -1102,7 +1102,8 @@ Open Code : permissions de `opencode.json`, plugins pour les hooks (module 6).
 Prérequis : TP 4 terminé et commité.
 
 ::: notes
-Étapes de l'énoncé : #24.
+Durées visées : 15 min pour le fichier de contexte et son commit, 15 pour la spécification, 30 pour l'implémentation et la vérification des conventions, 15 pour la compaction, 15 de marge.
+Le point clé de la vérification : une boucle sur `add_booking` valide chaque semaine séparément, et le test de conflit seul ne le voit pas si les conflits sont vérifiés avant toute écriture. La décision ajoutée à l'étape 2 rend l'écart visible à la relecture.
 Sous Claude Code, `/init` crée `CLAUDE.md` ; sous Open Code, `AGENTS.md`. Chaque outil garde son fichier, sans renommage.
 Essai du 18 octobre 2026, copie du fil rouge, `claude-sonnet-4-6` :
 - Claude Code v2.1.302, `CLAUDE_CODE_NEW_INIT=1` : deux questions de cadrage (fichiers, skills et hooks), exploration par un sous-agent Explore (approbations : `git worktree list`, `ls` de fichiers de config d'autres outils), deux questions (conventions git, contexte), proposition à valider, puis écriture. `CLAUDE.md` de 35 lignes : commandes, ruff, dates naïves, centimes, `seed.py`, `pytest -q` avant commit. Après l'écriture, l'agent continue sur des « optimisations supplémentaires » (vérification de `gh`) : interrompre par `Esc` si besoin.
@@ -1142,6 +1143,176 @@ Crée AGENTS.md pour ce projet. Explore d'abord le dépôt avec un sous-agent. P
 ::: attendu
 L'agent montre le contenu proposé avant d'écrire `CLAUDE.md` (Claude Code) ou `AGENTS.md` (Open Code) à la racine du projet. Le fichier donne les commandes `uv run` et reprend les réponses. Les raisons qu'il attribue aux décisions sont à relire : l'agent en propose sans les connaître.
 :::
+
+### Ajouter une décision
+
+::: claude-code
+```prompt
+Ajoute à CLAUDE.md : une écriture de plusieurs lignes se fait dans une seule transaction, un seul bloc with connection:.
+```
+
+Puis `/context`.
+:::
+
+::: opencode
+```prompt
+Ajoute à AGENTS.md : une écriture de plusieurs lignes se fait dans une seule transaction, un seul bloc with connection:.
+```
+:::
+
+::: attendu
+Une ligne de plus dans le fichier, à l'endroit des décisions. Claude Code : `/context` liste `CLAUDE.md` parmi les Memory files.
+:::
+
+### Commiter le fichier de contexte
+
+```prompt
+Commite le fichier de contexte avec un message qui le décrit.
+```
+
+::: attendu
+`git log --oneline` montre un commit de plus, qui ne contient que `CLAUDE.md` ou `AGENTS.md`.
+:::
+
+### Spécifier la fonctionnalité
+
+```prompt
+<context>
+POST /bookings, dans rooms/routes.py, crée une réservation après validate_slot et check_availability.
+</context>
+<instructions>
+Écris dans SPEC.md la spécification de POST /bookings/weekly : la même réservation répétée chaque semaine, de 2 à 12 semaines consécutives. Si un point est ambigu, pose-moi la question avant d'écrire. Ne modifie aucun autre fichier.
+</instructions>
+<constraints>
+Toutes les occurrences sont créées dans une transaction, ou aucune si l'une est en conflit ; l'erreur 409 donne la date du conflit. Hors périmètre : le schéma de la base et les autres routes.
+</constraints>
+<verification>
+La spécification finit par la liste des tests à écrire dans tests/test_routes.py.
+</verification>
+```
+
+::: attendu
+`SPEC.md` décrit le corps de la requête (champs de `POST /bookings` et nombre de semaines), la réponse 201 avec la liste des réservations, les erreurs 404, 409 et 422, et les tests. Seul `SPEC.md` est créé. Le relire et le faire corriger avant de continuer.
+:::
+
+### Implémenter dans une session neuve
+
+::: claude-code
+```prompt
+/clear
+```
+:::
+
+::: opencode
+```prompt
+/new
+```
+:::
+
+```prompt
+Lis SPEC.md et implémente-le. Écris d'abord les tests, vérifie qu'ils échouent, puis implémente et lance uv run pytest -q.
+```
+
+::: attendu
+Les nouveaux tests échouent d'abord, puis tous les tests passent. Dans un second terminal, avec l'API démarrée (`uv run uvicorn rooms.main:app --reload`), cette requête renvoie 409 : la salle Atlas est déjà réservée le 11 janvier à 9 h.
+
+```console
+$ curl -X POST http://127.0.0.1:8000/bookings/weekly \
+    -H "Content-Type: application/json" \
+    -d '{"room_id": 1, "title": "Weekly sync", "weeks": 3,
+         "starts_at": "2027-01-04T09:00", "ends_at": "2027-01-04T10:00"}'
+```
+
+Le message d'erreur dépend de l'implémentation et donne la date du conflit, par exemple `2027-01-11: Slot already booked by "Team sync" from 09:00 to 10:00`. `GET /schedule?day=2027-01-04` reste vide. Avec `09:00` et `10:00` remplacés par `10:00` et `11:00`, la requête renvoie 201 et trois réservations.
+:::
+
+::: indice
+Si la base n'a aucune salle, la remplir par `uv run python -m rooms.seed`.
+:::
+
+### Vérifier les conventions
+
+::: claude-code
+```prompt
+Avec un sous-agent, vérifie que les changements non commités respectent chaque règle de CLAUDE.md. Signale les écarts sans rien corriger.
+```
+:::
+
+::: opencode
+```prompt
+Avec un sous-agent, vérifie que les changements non commités respectent chaque règle de AGENTS.md. Signale les écarts sans rien corriger.
+```
+:::
+
+::: attendu
+Un rapport règle par règle. Les insertions se font dans un seul bloc `with connection:`, les montants restent des entiers, les dates n'ont pas de fuseau horaire. Faire corriger les écarts réels, puis relancer `uv run pytest -q`.
+:::
+
+### Compacter et comparer
+
+::: claude-code
+`/context`, puis :
+
+```prompt
+/compact Garde la spécification, la liste des fichiers modifiés et les commandes de test.
+```
+
+Puis de nouveau `/context`.
+:::
+
+::: opencode
+```prompt
+/compact
+```
+:::
+
+```prompt
+Quels fichiers as-tu modifiés, et quelles règles du fichier de contexte s'appliquent à ces changements ?
+```
+
+::: attendu
+Claude Code : la part Messages de `/context` diminue, la ligne de `CLAUDE.md` ne change pas. Dans les deux outils, la réponse cite les fichiers modifiés et les règles du fichier de contexte, relu après la compaction.
+:::
+
+### Commiter la fonctionnalité
+
+```prompt
+Commite SPEC.md, la route POST /bookings/weekly et ses tests avec un message qui les décrit.
+```
+
+::: attendu
+`git log --oneline` montre deux commits de plus que l'état de départ : le fichier de contexte, puis la fonctionnalité. `git status` ne montre aucun changement.
+:::
+
+### Corrigé {.corrige}
+
+Un fichier de contexte possible, avec la décision ajoutée à l'étape 2 :
+
+```markdown file="../tp/tp05/CLAUDE.md" lines="17-22"
+```
+
+Le corps de la requête reprend celui de `POST /bookings` et ajoute le nombre de semaines, borné par Pydantic :
+
+```python file="../tp/tp05/rooms/schemas.py" lines="25-26"
+```
+
+La route vérifie toutes les occurrences avant d'écrire. Les dates sans fuseau horaire gardent l'heure locale au changement d'heure :
+
+```python file="../tp/tp05/rooms/routes.py" lines="72-90"
+```
+
+Les insertions se font dans un seul bloc `with connection:`. Une boucle sur `add_booking` validerait chaque ligne séparément :
+
+```python file="../tp/tp05/rooms/repository.py" lines="85-104"
+```
+
+Le test du conflit vérifie qu'aucune semaine n'a été créée, le suivant que 9 h reste 9 h après le changement d'heure. Celui du dépôt vérifie qu'une insertion qui échoue annule les précédentes :
+
+```python file="../tp/tp05/tests/test_routes.py" lines="117-133"
+```
+
+```python file="../tp/tp05/tests/test_repository.py" lines="67-73"
+```
 
 ## Glossaire {kicker="Glossaire"}
 
