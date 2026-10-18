@@ -25,7 +25,7 @@ Décisions prises :
 - **TP autoportants** : l'énoncé de chaque TP est écrit dans le fichier de son module (bloc `{.tp}`), en fin de module. Il produit une slide de lancement et une page d'énoncé qui défile. Le stagiaire ne travaille qu'avec le support et ses outils (Open Code ou Claude Code, IDE), sans autre fichier à ouvrir. Pas de TP pour le module 1.
 - **Notes d'animation à côté de chaque slide** (bloc `::: notes`). Les stagiaires peuvent les voir : elles sont rédigées comme des notes du formateur pour lui-même, en style télégraphique.
 - **Projet fil rouge** réutilisé de TP en TP (exploration, puis génération, refactoring, tests, extensions). Le stagiaire travaille sur une seule copie du projet du début à la fin et termine chaque TP avant le suivant. Pas d'état intermédiaire par TP ni de mécanisme de rattrapage : l'expérience des TP reste simple.
-- **Le TP de la dernière demi-journée (module 7, chaîne pandoc) est indépendant du fil rouge.** Son contenu sera défini avec l'utilisateur le moment venu : ne pas l'anticiper.
+- **Le TP de la dernière demi-journée (module 7, chaîne pandoc) est indépendant du fil rouge.** Il produit un rapport d'incidents depuis un CSV selon deux approches comparées, chacune dans sa section : TP 7A directe, TP 7B outillée (script uv, pandoc, WeasyPrint, Makefile). Détail dans le commentaire de clôture de #30.
 
 Le skill `support-formation-html` ne doit pas être utilisé sur ce projet.
 
