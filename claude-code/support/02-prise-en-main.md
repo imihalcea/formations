@@ -472,13 +472,57 @@ Ajouter : les règles affinent le mode, les garde-fous restent quel que soit le 
 
 Lancer l'outil sur le projet fil rouge, faire lire le code et lancer des commandes, puis accepter, refuser et autoriser durablement une demande de permission. Le code reste inchangé.
 
-Prérequis : Claude Code installé et connecté sur le poste, ou Open Code sur la VM avec la clé API Anthropic.
+Prérequis : Claude Code installé et connecté sur le poste, ou Open Code sur la VM avec la clé API Anthropic. L'étape 00 installe Claude Code sur Linux et le connecte à Amazon Bedrock.
 
 ::: notes
+Étape 00 hors des 15 min : à faire avant la session si possible. Clé API Bedrock, région et accès au modèle Anthropic (formulaire de cas d'usage, une fois par compte AWS) fournis par l'organisation.
+`--model claude-sonnet-4-6` passe par la correspondance de Claude Code vers le profil d'inférence Bedrock, préfixe déduit de la région (`us.` pour `us-*`, `eu.` pour `eu-*`). Sans `--model`, `sonnet` désigne Sonnet 4.5 sur Bedrock.
+Disponibilité du profil dans la région : `aws bedrock list-inference-profiles --region <région>`.
+Persister les variables : bloc `env` de `~/.claude/settings.json`, ou assistant `/setup-bedrock`, qui l'écrit.
 Passer entre les postes : vérifier le modèle (`claude-sonnet-4-6`) et, sous Claude Code, le mode Manual dans la barre d'état.
 Piège : Claude Code lancé sans `--permission-mode default` démarre en `auto` et ne demande rien.
 Piège : Open Code lancé avec `--auto` accepte tout.
 L'agent peut choisir WebFetch au lieu de `curl` pour interroger l'API : lui redemander `curl`.
+:::
+
+### Installer Claude Code sur Linux et le connecter à Bedrock {.optionnel}
+
+::: claude-code
+Installer Claude Code (Ubuntu 20.04+ ou Debian 10+, 4 Go de RAM) :
+
+```console
+$ curl -fsSL https://claude.ai/install.sh | bash
+```
+
+Ouvrir ensuite un nouveau terminal, pour que `~/.local/bin/claude` soit dans le `PATH`, et lancer `claude --version`.
+
+Définir les variables de Bedrock dans le terminal qui lancera `claude`, avec la région et la clé API Bedrock fournies :
+
+```console
+$ export CLAUDE_CODE_USE_BEDROCK=1
+$ export AWS_REGION=us-east-1
+$ export AWS_BEARER_TOKEN_BEDROCK=<clé API Bedrock>
+```
+
+Vérifier l'accès au modèle :
+
+```console
+$ claude -p "Réponds OK" --model claude-sonnet-4-6
+```
+
+Documentation : [Advanced setup](https://code.claude.com/docs/en/setup#install-claude-code), [Claude Code on Amazon Bedrock](https://code.claude.com/docs/en/amazon-bedrock#3-configure-claude-code).
+:::
+
+::: opencode
+Rien à faire : Open Code est installé sur la VM.
+:::
+
+::: attendu
+`claude --version` affiche un numéro de version. `claude -p` affiche la réponse du modèle. L'erreur `AWS authentication failed` signale une clé, une région ou un accès au modèle incorrect.
+:::
+
+::: indice
+Avec un profil AWS au lieu d'une clé API Bedrock : `aws sso login --profile <profil>`, puis `export AWS_PROFILE=<profil>` à la place de `AWS_BEARER_TOKEN_BEDROCK`. `AWS_REGION` peut alors être omise si le profil définit une région.
 :::
 
 ### Installer uv
