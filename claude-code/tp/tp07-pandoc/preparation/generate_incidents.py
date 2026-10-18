@@ -115,7 +115,7 @@ def month_rows(year, month, count, weights, spikes, open_count, prefix, seed):
 
 def write(path, rows):
     with path.open("w", newline="", encoding="utf-8") as file:
-        writer = csv.DictWriter(file, fieldnames=COLUMNS)
+        writer = csv.DictWriter(file, fieldnames=COLUMNS, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
 
