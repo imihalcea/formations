@@ -215,8 +215,8 @@ function ContentBody({ slide }: { slide: Slide }) {
       const gap = 64;
       const width = (CONTENT_WIDTH - gap * (cols - 1)) / cols;
       const base = cols === 5 ? 150 : cols === 4 ? 210 : 280;
-      // Réduit la taille d'une valeur longue pour qu'elle tienne dans sa colonne (≈ 0,6 em par caractère).
-      const size = (v: string) => Math.min(base, Math.floor(width / (v.length * 0.6)));
+      // Réduit la taille d'une valeur longue pour qu'elle tienne dans sa colonne, avec une marge (≈ 0,6 em par chiffre, compté 0,7).
+      const size = (v: string) => Math.min(base, Math.floor(width / (v.length * 0.7)));
       return (
         <>
           <div className={`grid ${cols === 3 ? "grid-cols-3" : cols === 4 ? "grid-cols-4" : "grid-cols-5"}`} style={{ gap }}>
