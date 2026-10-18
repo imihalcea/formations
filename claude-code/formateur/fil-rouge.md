@@ -50,7 +50,7 @@ L'énoncé du TP 2 reprend cette commande.
 
 ## Conventions implicites
 
-Le code respecte des conventions qu'aucun document n'écrit. Le TP 5 les fait formaliser dans un `CLAUDE.md` :
+Le code respecte des conventions qu'aucun document n'écrit. Le TP 5 les fait formaliser dans le fichier de contexte, `CLAUDE.md` sous Claude Code ou `AGENTS.md` sous Open Code :
 
 - montants en centimes entiers ;
 - dates en ISO 8601, heure locale naïve ;
@@ -120,7 +120,7 @@ Départ : état d'arrivée du TP 4.
 
 Travail : lancer `/init` et lire le `CLAUDE.md` généré. Le compléter avec les conventions implicites, absentes du fichier généré. Rédiger une demande structurée pour la spécification des réservations récurrentes hebdomadaires : toutes les occurrences sont créées dans une transaction, ou aucune si l'une est en conflit. Vérifier que l'implémentation respecte les conventions du `CLAUDE.md`. Passer à une seconde tâche dans une session neuve, puis compacter une session longue et comparer.
 
-Arrivée : `CLAUDE.md` commité, route `POST /bookings/weekly` testée. Deux commits.
+Arrivée : fichier de contexte commité, route `POST /bookings/weekly` testée. Deux commits.
 
 ### TP 6 : étendre l'outil (environ 1h30)
 
