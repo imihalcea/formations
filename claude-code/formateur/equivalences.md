@@ -53,6 +53,31 @@ Documentation consultée le 17 octobre 2026 : [Claude Code](https://code.claude.
 | Plugins | répertoire avec `.claude-plugin/plugin.json` ; `/plugin` ; marketplaces | paquets npm ou git listés dans `plugins` de `opencode.json` en v2 (la clé v1 `plugin` est migrée) ; `opencode plugin add` les installe ; aucune marketplace ni équivalent de `plugin.json` | [CC plugins](https://code.claude.com/docs/en/plugins/overview), [OC `schema/config/plugin.ts`](https://github.com/anomalyco/opencode/blob/v2.0.26/packages/schema/src/config/plugin.ts), [OC `cli/commands.ts`](https://github.com/anomalyco/opencode/blob/v2.0.26/packages/cli/src/commands/commands.ts) |
 | Serveurs MCP du projet | `claude mcp add --scope project` écrit `.mcp.json` | clé `mcp` de `opencode.json` | [CC mcp](https://code.claude.com/docs/en/mcp#project-scope), [OC mcp-servers](https://opencode.ai/docs/mcp-servers/) |
 
+## Coût et lecture de PDF (module 7)
+
+Consulté le 18 octobre 2026.
+
+| Fonctionnalité | Claude Code | Open Code | Sources |
+|---|---|---|---|
+| Coût de la session en cours | `/usage` (alias `/cost`, `/stats`) : coût estimé en dollars (`Total cost`) et tokens par modèle (input, output, cache read, cache write) ; avec un abonnement Pro ou Max, le montant n'a pas de valeur de facturation | pied de l'invite et barre latérale « Context » de la TUI : tokens du contexte, pourcentage utilisé et « $x spent », affiché dès que le coût dépasse 0 ; aucune commande slash dédiée | [CC costs](https://code.claude.com/docs/en/costs#using-the-usage-command), [CC commands](https://code.claude.com/docs/en/commands), [OC `footer.tsx`](https://github.com/anomalyco/opencode/blob/v2.0.26/packages/tui/src/feature-plugins/prompt/footer.tsx), [OC `context.tsx`](https://github.com/anomalyco/opencode/blob/v2.0.26/packages/tui/src/feature-plugins/sidebar/context.tsx) |
+| Coût en CLI | `claude -p --output-format json` renvoie `total_cost_usd` et le détail par modèle | `opencode stats --cost [--project .] [--days N] [--json]` agrège les sessions par période et par projet, pas par session (la doc v1 ne cite ni `--cost` ni `--json`) ; `opencode run --format json` émet `cost` et `tokens` à chaque `step_finish` | [CC headless](https://code.claude.com/docs/en/headless), [OC `commands.ts`](https://github.com/anomalyco/opencode/blob/v2.0.26/packages/cli/src/commands/commands.ts), [OC `handlers/stats.ts`](https://github.com/anomalyco/opencode/blob/v2.0.26/packages/cli/src/commands/handlers/stats.ts), [OC `run/noninteractive.ts`](https://github.com/anomalyco/opencode/blob/v2.0.26/packages/cli/src/run/noninteractive.ts) |
+| Lecture d'un PDF par l'agent | Read lit un PDF court en entier ; au-delà de 10 pages, par plages (`pages`, 20 pages au plus par appel), rendues en images par `pdftoppm` (paquet `poppler-utils`), erreur `pdftoppm is not installed` sinon | `read` transmet le PDF entier au modèle comme fichier `application/pdf`, sans extraction de texte ni paramètre de pages ; limite de 20 Mio ; refusé si le modèle ne déclare pas l'entrée `pdf` (models.dev la déclare pour `claude-sonnet-4-6`) ; non documenté en v1 | [CC tools-reference](https://code.claude.com/docs/en/tools-reference#read-tool-behavior), [OC `read-filesystem.ts`](https://github.com/anomalyco/opencode/blob/v2.0.26/packages/core/src/tool/read-filesystem.ts), [OC `plugin/read.ts`](https://github.com/anomalyco/opencode/blob/v2.0.26/packages/core/src/tool/plugin/read.ts), [OC `model-request.ts`](https://github.com/anomalyco/opencode/blob/v2.0.26/packages/core/src/session/model-request.ts) |
+
+## pandoc et WeasyPrint (module 7)
+
+Testé le 18 octobre 2026 dans les images Docker `ubuntu:22.04` et `ubuntu:24.04`, avec `apt-get install pandoc weasyprint` :
+
+| Distribution | pandoc | WeasyPrint | Python |
+|---|---|---|---|
+| Ubuntu 22.04.5 | 2.9.2.1 | 54.1 | 3.10.12 |
+| Ubuntu 24.04.5 | 3.1.3 | 61.1 | 3.12.3 |
+
+Sur les deux versions, `pandoc rapport.md -s --template template.html --css rapport.css --toc --pdf-engine=weasyprint -o rapport.pdf` produit le PDF attendu : table des matières, tableau, accents, saut de page par `break-before: page` et pied de page `counter(page) / counter(pages)` dans `@page`. `weasyprint rapport.html rapport.pdf` donne le même résultat depuis le HTML. Les paquets des dépôts suffisent : l'installation depuis les releases officielles n'est pas nécessaire.
+
+Un PDF demande `--pdf-engine=weasyprint` : sans lui, pandoc passe par LaTeX ([pandoc, Creating a PDF](https://pandoc.org/MANUAL.html#creating-a-pdf)). `--css` exige `-s`, que `--template` implique ([pandoc, `--css`](https://pandoc.org/MANUAL.html#option--css), [`--template`](https://pandoc.org/MANUAL.html#option--template)). Pandoc 3.1.3 coupe les lignes longues du HTML à 72 colonnes, y compris le `<title>`, et WeasyPrint 61.1 ne garde alors que la première ligne dans le titre du PDF : `--wrap=none` l'évite ([pandoc, `--wrap`](https://pandoc.org/MANUAL.html#option--wrap)).
+
+Sur le poste du développeur, pour la variante Claude Code : macOS, `brew install pandoc weasyprint` ; Linux et WSL Debian ou Ubuntu, `sudo apt install pandoc weasyprint` ; Windows, `winget install --source winget --exact --id JohnMacFarlane.Pandoc` et l'exécutable WeasyPrint des [releases GitHub](https://github.com/Kozea/WeasyPrint/releases), que des antivirus signalent parfois à tort ([pandoc, Installing](https://pandoc.org/installing.html), [WeasyPrint, First steps](https://doc.courtbouillon.org/weasyprint/stable/first_steps.html)). Pour que Claude Code lise un PDF de plus de 10 pages, `pdftoppm` (paquet `poppler-utils`) doit être installé.
+
 ## Conséquences pour le support
 
 Depuis la v2.1.283, Claude Code démarre en mode `auto` dans le terminal ([CC permission-modes](https://code.claude.com/docs/en/permission-modes)) : un second modèle valide les actions à la place de l'utilisateur. Le TP 2 fait lancer `claude --permission-mode default --model claude-sonnet-4-6` pour que les demandes de permission apparaissent.
@@ -72,4 +97,5 @@ Au TP 6, le stagiaire observe des extensions fournies. La slash command a un éq
 - Le mode de connexion d'Open Code avec la clé API : `/connect`, `opencode auth login`, ou variable `ANTHROPIC_API_KEY`, que le code v2.0.26 lit.
 - Le plugin Open Code qui lance `pytest` après une modification.
 - Avec le `opencode.json` du fil rouge (`"bash": "ask"`), `uv run pytest` demandé à Open Code déclenche une demande de permission.
+- La distribution de la VM : Python 3.10 correspond à Ubuntu 22.04, hypothèse des tests pandoc et WeasyPrint ci-dessus. Les stagiaires doivent pouvoir lancer `sudo apt install pandoc weasyprint`.
 - Avec `"edit": "ask"`, une édition demandée à Open Code affiche son diff avant acceptation, et l'agent Plan refuse toujours les éditions : si les règles du projet passent après celles de Plan, `ask` remplacerait son `deny`.
