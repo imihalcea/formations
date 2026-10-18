@@ -132,6 +132,11 @@ export function Deck() {
     );
   }
 
+  // Slides de débrief d'une section : de la première à la dernière slide de kicker « Débrief ».
+  const debrief = (k: number): [number, number] | undefined => {
+    const marked = slides.flatMap((x, n) => (x.section === k && x.kicker === "Débrief" ? [n] : []));
+    return marked.length ? [marked[0]!, marked.at(-1)!] : undefined;
+  };
   const progress = ((i + 1) / total) * 100;
   return (
     <div className="flex h-screen flex-col bg-deck text-deck-foreground font-sans">
@@ -157,9 +162,18 @@ export function Deck() {
                   onClick={() => openTp(t.id)}
                   className={`rounded-full border px-2.5 py-0.5 font-mono transition-colors ${tpId === t.id ? "border-slide-accent bg-slide-accent text-slide-paper" : "border-slide-accent text-slide-accent hover:bg-slide-accent/10"}`}
                 >
-                  {all.length > 1 ? `TP ${n + 1}` : "TP"}
+                  {all.length > 1 ? (/^TP \S+(?= :)/.exec(t.title)?.[0] ?? `TP ${n + 1}`) : "TP"}
                 </button>
               ))}
+            {k === s.section && debrief(k) && (
+              <button
+                title="Débrief"
+                onClick={() => go(debrief(k)![0])}
+                className={`rounded-full border px-2.5 py-0.5 font-mono transition-colors ${!tp && i >= debrief(k)![0] && i <= debrief(k)![1] ? "border-slide-accent bg-slide-accent text-slide-paper" : "border-slide-accent text-slide-accent hover:bg-slide-accent/10"}`}
+              >
+                Débrief
+              </button>
+            )}
           </Fragment>
         ))}
         <div className="ml-auto flex items-center gap-1">

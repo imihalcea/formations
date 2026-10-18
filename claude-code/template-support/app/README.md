@@ -108,4 +108,4 @@ Chaque étape `###` exige un bloc `::: attendu`. Une étape qui a une variante `
 
 ## Navigation
 
-Flèches, Page précédente/suivante, espace, Début et Fin. G affiche la vue d'ensemble, N les notes, P ouvre la vue présentateur dans une seconde fenêtre synchronisée, F bascule en plein écran. Le numéro de slide figure dans l'URL (`index.html#12`), une page de TP a la sienne (`index.html#tp-03`). La pastille « TP » de la barre de navigation ouvre le TP du module courant ; Échap revient aux slides.
+Flèches, Page précédente/suivante, espace, Début et Fin. G affiche la vue d'ensemble, N les notes, P ouvre la vue présentateur dans une seconde fenêtre synchronisée, F bascule en plein écran. Le numéro de slide figure dans l'URL (`index.html#12`), une page de TP a la sienne (`index.html#tp-03`). La pastille « TP » de la barre de navigation ouvre le TP du module courant ; Échap revient aux slides. Si le module contient des slides de kicker « Débrief », une pastille « Débrief » suit celles des TP et mène à la première d'entre elles.

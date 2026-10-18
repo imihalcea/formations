@@ -176,7 +176,8 @@ function ContentBody({ slide }: { slide: Slide }) {
           </div>
           <ol className="min-w-0 border-t-4 border-slide-accent pt-7">
             {slide.stepTitles.map((t, i) => (
-              <li key={i} className="slide-body flex items-baseline gap-8 py-4">
+              // Au-delà de sept étapes, des lignes plus serrées gardent la liste dans la slide.
+              <li key={i} className={`slide-body flex items-baseline gap-8 ${slide.stepTitles.length > 7 ? "py-1.5" : "py-4"}`}>
                 <span className="slide-caption font-mono font-semibold text-slide-accent tabular-nums">{pad(i + 1)}</span>
                 {t}
               </li>
