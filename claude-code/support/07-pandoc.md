@@ -1238,7 +1238,7 @@ Le coût d'octobre est presque tout entier celui de la vérification par l'agent
 | Chiffres calculés par | l'agent, à chaque session | `rapport.py`, testé |
 
 ::: sources
-- Corrigés des TP 7A et 7B, essai du 18 octobre 2026 (`claude -p`, `claude-sonnet-4-6`)
+- Corrigés des TP 7A et 7B
 :::
 
 ::: notes
@@ -1259,7 +1259,7 @@ Critère 8 : « Résolutions les plus longues : les cinq bons identifiants, dans
 En octobre, l'outillage ne paie que `make faits` et la vérification. `make faits` seul coûte quelques centimes.
 
 ::: sources
-- Corrigés des TP 7A et 7B, essai du 18 octobre 2026
+- Corrigés des TP 7A et 7B
 :::
 
 ::: notes
