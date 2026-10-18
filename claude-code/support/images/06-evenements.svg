@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 310" width="1680" height="310">
+  <path d="M0 140 H1680" class="stroke-muted" stroke-width="4"/>
+
+  <g>
+    <circle cx="130" cy="140" r="16" class="accent"/>
+    <text x="130" y="60" class="ink mono" font-size="26" text-anchor="middle">SessionStart</text>
+    <text x="130" y="210" class="ink" font-size="24" text-anchor="middle">démarrage</text>
+    <text x="130" y="244" class="ink" font-size="24" text-anchor="middle">ou reprise</text>
+  </g>
+
+  <g>
+    <circle cx="485" cy="140" r="16" class="accent"/>
+    <text x="485" y="60" class="ink mono" font-size="26" text-anchor="middle">UserPromptSubmit</text>
+    <text x="485" y="210" class="ink" font-size="24" text-anchor="middle">envoi d'un prompt</text>
+    <text x="485" y="290" class="accent mono" font-size="22" font-weight="600" text-anchor="middle">PEUT BLOQUER</text>
+  </g>
+
+  <g>
+    <circle cx="840" cy="140" r="16" class="accent"/>
+    <text x="840" y="60" class="ink mono" font-size="26" text-anchor="middle">PreToolUse</text>
+    <text x="840" y="210" class="ink" font-size="24" text-anchor="middle">avant un outil</text>
+    <text x="840" y="290" class="accent mono" font-size="22" font-weight="600" text-anchor="middle">PEUT BLOQUER</text>
+  </g>
+
+  <g>
+    <circle cx="1195" cy="140" r="16" class="accent"/>
+    <text x="1195" y="60" class="ink mono" font-size="26" text-anchor="middle">PostToolUse</text>
+    <text x="1195" y="210" class="ink" font-size="24" text-anchor="middle">après un outil</text>
+  </g>
+
+  <g>
+    <circle cx="1550" cy="140" r="16" class="accent"/>
+    <text x="1550" y="60" class="ink mono" font-size="26" text-anchor="middle">Stop</text>
+    <text x="1550" y="210" class="ink" font-size="24" text-anchor="middle">fin du tour</text>
+    <text x="1550" y="290" class="accent mono" font-size="22" font-weight="600" text-anchor="middle">PEUT BLOQUER</text>
+  </g>
+
+</svg>

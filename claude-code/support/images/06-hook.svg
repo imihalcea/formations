@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 320" width="1680" height="320">
+  <g>
+    <rect x="0" y="0" width="520" height="260" rx="12" class="deck"/>
+    <rect x="0" y="0" width="520" height="6" class="accent"/>
+    <text x="32" y="64" class="accent mono" font-size="24" font-weight="600">01  ÉVÉNEMENT</text>
+    <text x="32" y="124" class="ink display" font-size="38">quand</text>
+    <text x="32" y="186" class="ink mono" font-size="28">PostToolUse</text>
+    <text x="32" y="230" class="ink" font-size="24">après l'exécution d'un outil</text>
+  </g>
+  <path d="M528 130 H568" class="stroke-accent" stroke-width="5"/>
+  <path d="M562 117 L580 130 L562 143 Z" class="accent"/>
+
+  <g>
+    <rect x="580" y="0" width="520" height="260" rx="12" class="deck"/>
+    <rect x="580" y="0" width="520" height="6" class="accent"/>
+    <text x="612" y="64" class="accent mono" font-size="24" font-weight="600">02  MATCHER</text>
+    <text x="612" y="124" class="ink display" font-size="38">pour quels outils</text>
+    <text x="612" y="186" class="ink mono" font-size="28">Edit|Write</text>
+    <text x="612" y="230" class="ink" font-size="24">les deux outils d'édition</text>
+  </g>
+  <path d="M1108 130 H1148" class="stroke-accent" stroke-width="5"/>
+  <path d="M1142 117 L1160 130 L1142 143 Z" class="accent"/>
+
+  <g>
+    <rect x="1160" y="0" width="520" height="260" rx="12" class="deck"/>
+    <rect x="1160" y="0" width="520" height="6" class="accent"/>
+    <text x="1192" y="64" class="accent mono" font-size="24" font-weight="600">03  COMMANDE</text>
+    <text x="1192" y="124" class="ink display" font-size="38">quoi lancer</text>
+    <text x="1192" y="186" class="ink mono" font-size="28">.claude/hooks/check.sh</text>
+    <text x="1192" y="230" class="ink" font-size="24">ruff format, puis pytest</text>
+  </g>
+
+  <text x="0" y="308" class="ink" font-size="26">déclaré dans <tspan class="mono">.claude/settings.json</tspan>, clé <tspan class="mono">hooks</tspan></text>
+</svg>

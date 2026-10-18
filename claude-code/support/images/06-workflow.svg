@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 300" width="1680" height="300">
+  <g>
+    <rect x="0" y="0" width="372" height="260" rx="12" class="deck"/>
+    <rect x="0" y="0" width="372" height="6" class="accent"/>
+    <text x="32" y="64" class="accent mono" font-size="24" font-weight="600">01  CONVENTIONS</text>
+    <text x="32" y="124" class="ink mono" font-size="30">CLAUDE.md</text>
+    <text x="32" y="186" class="ink" font-size="24">lu à chaque session</text>
+    <text x="32" y="222" class="ink" font-size="24">TP 5</text>
+  </g>
+  <path d="M380 130 H420" class="stroke-accent" stroke-width="5"/>
+  <path d="M414 117 L432 130 L414 143 Z" class="accent"/>
+
+  <g>
+    <rect x="436" y="0" width="372" height="260" rx="12" class="deck"/>
+    <rect x="436" y="0" width="372" height="6" class="accent"/>
+    <text x="468" y="64" class="accent mono" font-size="24" font-weight="600">02  ÉCRIRE</text>
+    <text x="468" y="124" class="ink mono" font-size="30">/new-route</text>
+    <text x="468" y="186" class="ink" font-size="24">une route et son test</text>
+    <text x="468" y="222" class="ink" font-size="24">lancée par le développeur</text>
+  </g>
+  <path d="M816 130 H856" class="stroke-accent" stroke-width="5"/>
+  <path d="M850 117 L868 130 L850 143 Z" class="accent"/>
+
+  <g>
+    <rect x="872" y="0" width="372" height="260" rx="12" class="deck"/>
+    <rect x="872" y="0" width="372" height="6" class="accent"/>
+    <text x="904" y="64" class="accent mono" font-size="24" font-weight="600">03  VÉRIFIER</text>
+    <text x="904" y="124" class="ink mono" font-size="30">check.sh</text>
+    <text x="904" y="186" class="ink" font-size="24">ruff et pytest</text>
+    <text x="904" y="222" class="ink" font-size="24">après chaque édition</text>
+  </g>
+
+  <g>
+    <rect x="1310" y="2" width="368" height="256" rx="12" class="stroke-muted" stroke-width="3" stroke-dasharray="12 8"/>
+    <text x="1340" y="64" class="accent mono" font-size="24" font-weight="600">À LA DEMANDE</text>
+    <text x="1340" y="124" class="ink mono" font-size="30">schema-migration</text>
+    <text x="1340" y="186" class="ink" font-size="24">quand la tâche touche</text>
+    <text x="1340" y="222" class="ink" font-size="24">au schéma de la base</text>
+  </g>
+
+  <text x="0" y="296" class="ink" font-size="26">tout est commité dans le dépôt</text>
+</svg>

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 572" width="1680" height="572">
+  <g>
+    <rect x="0" y="0" width="1680" height="120" rx="12" class="deck"/>
+    <rect x="0" y="0" width="1680" height="6" class="accent"/>
+    <text x="32" y="50" class="accent mono" font-size="24" font-weight="600">01  À CHAQUE SESSION</text>
+    <text x="1648" y="50" class="ink" font-size="26" text-anchor="end">dans la liste des skills</text>
+    <text x="32" y="100" class="ink" font-size="30">la <tspan class="mono">description</tspan> de l'en-tête</text>
+  </g>
+
+  <g>
+    <rect x="0" y="148" width="1680" height="120" rx="12" class="deck"/>
+    <rect x="0" y="148" width="1680" height="6" class="accent"/>
+    <text x="32" y="198" class="accent mono" font-size="24" font-weight="600">02  QUAND LE SKILL SERT</text>
+    <text x="1648" y="198" class="ink" font-size="26" text-anchor="end">lancé par l'agent ou par /nom</text>
+    <text x="32" y="248" class="ink" font-size="30">tout le <tspan class="mono">SKILL.md</tspan></text>
+  </g>
+
+  <g>
+    <rect x="2" y="298" width="1676" height="116" rx="12" class="stroke-muted" stroke-width="3" stroke-dasharray="12 8"/>
+    <text x="32" y="346" class="accent mono" font-size="24" font-weight="600">03  SI LE SKILL.md Y RENVOIE</text>
+    <text x="1648" y="346" class="ink" font-size="26" text-anchor="end">lu par l'agent</text>
+    <text x="32" y="394" class="ink" font-size="30"><tspan class="mono">reference.md</tspan> et les autres fichiers du répertoire</text>
+  </g>
+
+  <g>
+    <rect x="2" y="446" width="1676" height="116" rx="12" class="stroke-muted" stroke-width="3" stroke-dasharray="12 8"/>
+    <text x="32" y="494" class="accent mono" font-size="24" font-weight="600">04  SCRIPTS</text>
+    <text x="1648" y="494" class="ink" font-size="26" text-anchor="end">exécutés, jamais lus</text>
+    <text x="32" y="542" class="ink" font-size="30">seule la sortie de <tspan class="mono">scripts/…</tspan> entre dans le contexte</text>
+  </g>
+</svg>
