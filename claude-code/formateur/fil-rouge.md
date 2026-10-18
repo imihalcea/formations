@@ -122,15 +122,24 @@ Travail : générer le fichier de contexte par `/init` interactif (`CLAUDE_CODE_
 
 Arrivée : fichier de contexte commité, `SPEC.md` et route `POST /bookings/weekly` testée. Deux commits. Corrigé dans `tp/tp05/`.
 
-### TP 6 : étendre l'outil (environ 1h30)
+### TP 6 : observer des extensions (1h20)
 
 Départ : état d'arrivée du TP 5.
 
-Travail : écrire une slash command qui crée une route et son test, puis l'utiliser pour ajouter `GET /stats` (taux d'occupation par salle). Écrire un hook qui lance `uv run ruff format` et `uv run pytest` après chaque modification de fichier. Écrire un skill de migration de schéma, appliqué à l'ajout d'une colonne `equipment` sur les salles. Commiter ces extensions dans `.claude/` pour les partager.
+Le stagiaire n'écrit aucune extension : il lit et déclenche des extensions fournies, testées dans `tp/tp06/`. Elles sont livrées dans le dossier `extensions/` de l'archive et copiées dans `~/fil-rouge` au début du TP. Présentes dès le départ, elles feraient tourner le hook pendant les TP 2 à 5 et fausseraient le `/init` du TP 5.
 
-Arrivée : extensions versionnées, route `GET /stats`, migration appliquée. Trois commits.
+Extensions fournies :
 
-Les équivalents Open Code de la slash command, du hook et du skill dépendent de l'issue #3. Si l'un d'eux n'existe pas, l'énoncé propose une variante ou signale l'absence.
+| Extension | Claude Code | Open Code |
+|---|---|---|
+| slash command `new-route` : une route et son test | `.claude/skills/new-route/SKILL.md`, `disable-model-invocation: true` | `.opencode/commands/new-route.md` |
+| skill `schema-migration`, appuyé sur `PRAGMA user_version` | `.claude/skills/schema-migration/` | le même répertoire, lu par Open Code |
+| `ruff format` et `pytest` après chaque édition | hook `PostToolUse` sur `Edit\|Write` dans `.claude/settings.json`, script `.claude/hooks/check.sh` | clé `formatter` de `opencode.json` et plugin `.opencode/plugins/run-tests.js` |
+| refus d'éditer `uv.lock` | hook `PreToolUse`, code de sortie 2 | plugin, `ctx.permission.hook("evaluate")` |
+
+Travail : lister les extensions (`/skills`, `/hooks`, menu `/`). Lire `new-route`, puis l'utiliser pour ajouter `GET /stats` (taux d'occupation par salle). Demander une modification qui casse un test et observer le retour de `pytest` lu par l'agent, puis demander de modifier `uv.lock` et observer le refus. Demander une colonne `equipment` sur les salles sans nommer le skill et vérifier que `schema-migration` est chargé. Vérifier par `git status` ce qui sera partagé.
+
+Arrivée : extensions versionnées, route `GET /stats`, migration appliquée. Deux commits.
 
 ## Contenu exigé du code de départ
 
