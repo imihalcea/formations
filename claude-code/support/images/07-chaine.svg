@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 480" width="1680" height="480">
+  <g>
+    <rect x="0" y="0" width="340" height="220" rx="12" class="deck"/>
+    <rect x="0" y="0" width="340" height="6" class="accent"/>
+    <text x="32" y="64" class="accent mono" font-size="24" font-weight="600">SOURCE</text>
+    <text x="32" y="124" class="ink mono" font-size="30">rapport.md</text>
+    <text x="32" y="176" class="ink" font-size="24">texte et tableaux</text>
+  </g>
+
+  <text x="505" y="86" class="ink mono" font-size="30" font-weight="600" text-anchor="middle">pandoc</text>
+  <path d="M356 110 H648" class="stroke-accent" stroke-width="5"/>
+  <path d="M642 97 L660 110 L642 123 Z" class="accent"/>
+
+  <g>
+    <rect x="670" y="0" width="340" height="220" rx="12" class="deck"/>
+    <rect x="670" y="0" width="340" height="6" class="accent"/>
+    <text x="702" y="64" class="accent mono" font-size="24" font-weight="600">INTERMÉDIAIRE</text>
+    <text x="702" y="124" class="ink mono" font-size="30">HTML + CSS</text>
+    <text x="702" y="176" class="ink" font-size="24">fichier temporaire</text>
+  </g>
+
+  <text x="1175" y="86" class="ink mono" font-size="30" font-weight="600" text-anchor="middle">WeasyPrint</text>
+  <path d="M1026 110 H1318" class="stroke-accent" stroke-width="5"/>
+  <path d="M1312 97 L1330 110 L1312 123 Z" class="accent"/>
+
+  <g>
+    <rect x="1340" y="0" width="340" height="220" rx="12" class="deck"/>
+    <rect x="1340" y="0" width="340" height="6" class="accent"/>
+    <text x="1372" y="64" class="accent mono" font-size="24" font-weight="600">LIVRABLE</text>
+    <text x="1372" y="124" class="ink mono" font-size="30">rapport.pdf</text>
+    <text x="1372" y="176" class="ink" font-size="24">pages A4 numérotées</text>
+  </g>
+
+  <g>
+    <rect x="335" y="300" width="340" height="150" rx="12" class="stroke-muted" stroke-width="3" stroke-dasharray="12 8"/>
+    <text x="365" y="356" class="ink mono" font-size="28">template.html</text>
+    <text x="365" y="404" class="ink" font-size="24">squelette de la page</text>
+  </g>
+  <path d="M505 296 V140" class="stroke-accent" stroke-width="4"/>
+  <path d="M492 146 L505 128 L518 146 Z" class="accent"/>
+
+  <g>
+    <rect x="1005" y="300" width="340" height="150" rx="12" class="stroke-muted" stroke-width="3" stroke-dasharray="12 8"/>
+    <text x="1035" y="356" class="ink mono" font-size="28">rapport.css</text>
+    <text x="1035" y="404" class="ink" font-size="24">mise en page, pagination</text>
+  </g>
+  <path d="M1175 296 V140" class="stroke-accent" stroke-width="4"/>
+  <path d="M1162 146 L1175 128 L1188 146 Z" class="accent"/>
+</svg>

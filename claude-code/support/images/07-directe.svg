@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 320" width="1680" height="320">
+  <g>
+    <rect x="0" y="0" width="360" height="230" rx="12" class="deck"/>
+    <rect x="0" y="0" width="360" height="6" class="accent"/>
+    <text x="32" y="64" class="accent mono" font-size="24" font-weight="600">DONNÉES</text>
+    <text x="32" y="124" class="ink mono" font-size="28">incidents.csv</text>
+    <text x="32" y="176" class="ink" font-size="24">296 lignes</text>
+  </g>
+  <path d="M368 115 H422" class="stroke-accent" stroke-width="5"/>
+  <path d="M416 102 L434 115 L416 128 Z" class="accent"/>
+
+  <g>
+    <rect x="440" y="0" width="360" height="230" rx="12" class="deck"/>
+    <rect x="440" y="0" width="360" height="6" class="accent"/>
+    <rect x="440" y="0" width="360" height="230" rx="12" class="stroke-accent" stroke-width="4"/>
+    <text x="472" y="64" class="accent mono" font-size="24" font-weight="600">AGENT</text>
+    <text x="472" y="124" class="ink" font-size="28">lit le CSV, calcule</text>
+    <text x="472" y="166" class="ink" font-size="28">les chiffres, rédige</text>
+  </g>
+  <path d="M808 115 H862" class="stroke-accent" stroke-width="5"/>
+  <path d="M856 102 L874 115 L856 128 Z" class="accent"/>
+
+  <g>
+    <rect x="880" y="0" width="360" height="230" rx="12" class="deck"/>
+    <rect x="880" y="0" width="360" height="6" class="accent"/>
+    <text x="912" y="64" class="accent mono" font-size="24" font-weight="600">SOURCE</text>
+    <text x="912" y="124" class="ink mono" font-size="28">rapport.md</text>
+    <text x="912" y="176" class="ink" font-size="24">écrit par l'agent</text>
+  </g>
+  <path d="M1248 115 H1302" class="stroke-accent" stroke-width="5"/>
+  <path d="M1296 102 L1314 115 L1296 128 Z" class="accent"/>
+
+  <g>
+    <rect x="1320" y="0" width="360" height="230" rx="12" class="deck"/>
+    <rect x="1320" y="0" width="360" height="6" class="accent"/>
+    <text x="1352" y="64" class="accent mono" font-size="24" font-weight="600">LIVRABLE</text>
+    <text x="1352" y="124" class="ink mono" font-size="28">rapport.pdf</text>
+    <text x="1352" y="176" class="ink" font-size="24">pandoc, WeasyPrint</text>
+  </g>
+
+  <text x="0" y="298" class="ink" font-size="26">Le mois suivant : l'agent relit le nouveau CSV et refait les calculs.</text>
+</svg>

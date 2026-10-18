@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 470" width="1680" height="470">
+  <g>
+    <rect x="0" y="0" width="360" height="200" rx="12" class="deck"/>
+    <rect x="0" y="0" width="360" height="6" class="accent"/>
+    <text x="32" y="56" class="accent mono" font-size="22" font-weight="600">DONNÉES</text>
+    <text x="32" y="116" class="ink mono" font-size="28">incidents.csv</text>
+    <text x="32" y="164" class="ink" font-size="22">une ligne par incident</text>
+  </g>
+  <path d="M368 100 H422" class="stroke-accent" stroke-width="5"/>
+  <path d="M416 87 L434 100 L416 113 Z" class="accent"/>
+
+  <g>
+    <rect x="440" y="0" width="360" height="200" rx="12" class="deck"/>
+    <rect x="440" y="0" width="360" height="6" class="accent"/>
+    <text x="472" y="56" class="accent mono" font-size="22" font-weight="600">rapport.py agregats</text>
+    <text x="472" y="116" class="ink mono" font-size="28">agregats.json</text>
+    <text x="472" y="164" class="ink" font-size="22">totaux, taux, moyennes</text>
+  </g>
+  <path d="M808 100 H862" class="stroke-accent" stroke-width="5"/>
+  <path d="M856 87 L874 100 L856 113 Z" class="accent"/>
+
+  <g>
+    <rect x="880" y="0" width="360" height="200" rx="12" class="deck"/>
+    <rect x="880" y="0" width="360" height="6" class="accent"/>
+    <text x="912" y="56" class="accent mono" font-size="22" font-weight="600">rapport.py markdown</text>
+    <text x="912" y="116" class="ink mono" font-size="28">rapport.md</text>
+    <text x="912" y="164" class="ink" font-size="22">tableaux et faits marquants</text>
+  </g>
+  <path d="M1248 100 H1302" class="stroke-accent" stroke-width="5"/>
+  <path d="M1296 87 L1314 100 L1296 113 Z" class="accent"/>
+
+  <g>
+    <rect x="1320" y="0" width="360" height="200" rx="12" class="deck"/>
+    <rect x="1320" y="0" width="360" height="6" class="accent"/>
+    <text x="1352" y="56" class="accent mono" font-size="22" font-weight="600">pandoc</text>
+    <text x="1352" y="116" class="ink mono" font-size="28">rapport.pdf</text>
+    <text x="1352" y="164" class="ink" font-size="22">le livrable</text>
+  </g>
+
+  <path d="M620 208 V290" class="stroke-accent" stroke-width="5" stroke-dasharray="14 10"/>
+  <path d="M607 284 L620 302 L633 284 Z" class="accent"/>
+  <g>
+    <rect x="440" y="310" width="800" height="150" rx="12" class="stroke-accent" stroke-width="4" stroke-dasharray="14 10"/>
+    <text x="472" y="364" class="accent mono" font-size="22" font-weight="600">make faits : l'agent, sans session</text>
+    <text x="472" y="420" class="ink mono" font-size="28">faits.md</text>
+    <text x="640" y="420" class="ink" font-size="22">paragraphe rédigé à partir des agrégats</text>
+  </g>
+  <path d="M1060 306 V226" class="stroke-accent" stroke-width="5"/>
+  <path d="M1047 232 L1060 214 L1073 232 Z" class="accent"/>
+
+</svg>
