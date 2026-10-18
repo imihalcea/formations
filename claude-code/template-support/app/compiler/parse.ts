@@ -394,12 +394,15 @@ function buildTp(b: Block, ctx: Ctx, id: string, slideIndex: number): { slide: S
   };
   if (containers.has("claude-code") || containers.has("opencode")) fail(b.origin, "les variantes d'outil se placent dans une étape");
   parts.forEach((p, i) => {
-    if (p.kind && p.kind !== "corrige") fail(p.origin, `type d'étape inconnu « ${p.kind} »`);
+    if (p.kind && p.kind !== "corrige" && p.kind !== "optionnel") fail(p.origin, `type d'étape inconnu « ${p.kind} »`);
     if (p.kind === "corrige" && i !== parts.length - 1) fail(p.origin, "le corrigé est la dernière partie du TP");
+    if (p.kind === "optionnel" && i !== 0) fail(p.origin, "seule la première étape peut être optionnelle");
   });
   const corrige = parts.at(-1)?.kind === "corrige" ? parts.pop()! : undefined;
   if (parts.length === 0) fail(b.origin, "un TP contient au moins une étape « ### »");
 
+  // Une première étape optionnelle porte le numéro 00 : les étapes communes gardent 01, 02…
+  const optionalFirst = parts[0]!.kind === "optionnel";
   const steps: TpStep[] = parts.map((p) => ({ title: p.title, segments: tpSegments(p.body, p.origin, ctx) }));
   const introHtml = ctx.md.render(join_(rest), ctx.env);
   const duration = b.attrs["duration"];
@@ -410,6 +413,7 @@ function buildTp(b: Block, ctx: Ctx, id: string, slideIndex: number): { slide: S
     tpId: id,
     introHtml,
     stepTitles: steps.map((s) => s.title),
+    ...(optionalFirst ? { optionalFirst } : {}),
     ...(duration ? { duration } : {}),
   };
   const tp: Tp = {
@@ -419,6 +423,7 @@ function buildTp(b: Block, ctx: Ctx, id: string, slideIndex: number): { slide: S
     title: b.title,
     introHtml,
     steps,
+    ...(optionalFirst ? { optionalFirst } : {}),
     ...(duration ? { duration } : {}),
     ...(corrige ? { corrigeHtml: ctx.md.render(join_(corrige.body), ctx.env) } : {}),
   };

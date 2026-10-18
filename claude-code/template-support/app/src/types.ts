@@ -21,7 +21,7 @@ export type Slide =
   | (Base & { kind: "figures"; stats: { value: string; labelHtml: string }[]; remarkHtml?: string })
   | (Base & { kind: "quote"; quoteHtml: string; author?: string })
   | (Base & { kind: "compare"; claudeHtml: string; opencodeHtml: string })
-  | (Base & { kind: "tp"; tpId: string; introHtml: string; stepTitles: string[]; duration?: string })
+  | (Base & { kind: "tp"; tpId: string; introHtml: string; stepTitles: string[]; optionalFirst?: boolean; duration?: string })
   | (Base & { kind: "end"; subtitleHtml?: string })
   | (Base & { kind: "carte"; carte: Carte });
 
@@ -43,6 +43,8 @@ export type Tp = {
   duration?: string;
   introHtml: string;
   steps: TpStep[];
+  // Vrai quand la première étape est optionnelle : elle porte le numéro 00.
+  optionalFirst?: boolean;
   corrigeHtml?: string;
 };
 

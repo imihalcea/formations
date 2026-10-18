@@ -179,8 +179,9 @@ function ContentBody({ slide }: { slide: Slide }) {
             {slide.stepTitles.map((t, i) => (
               // Au-delà de sept étapes, des lignes plus serrées gardent la liste dans la slide.
               <li key={i} className={`slide-body flex items-baseline gap-8 ${slide.stepTitles.length > 7 ? "py-1.5" : "py-4"}`}>
-                <span className="slide-caption font-mono font-semibold text-slide-accent tabular-nums">{pad(i + 1)}</span>
+                <span className="slide-caption font-mono font-semibold text-slide-accent tabular-nums">{pad(slide.optionalFirst ? i : i + 1)}</span>
                 {t}
+                {slide.optionalFirst && i === 0 && <span className="slide-caption text-slide-accent">(optionnel)</span>}
               </li>
             ))}
           </ol>

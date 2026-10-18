@@ -66,6 +66,16 @@ describe("compileDeck", () => {
     await expect(compileDeck(dir)).rejects.toThrow("a aussi une variante opencode");
   });
 
+  it("accepte une première étape optionnelle et refuse les suivantes", async () => {
+    const step = (h: string) => `### ${h}\n\n::: attendu\nB\n:::\n\n`;
+    const ok = supportWith({ "01-m.md": `# M\n\n## TP {.tp}\n\n${step("Zéro {.optionnel}")}${step("Un")}` });
+    const tp = (await compileDeck(ok)).tps[0]!;
+    expect(tp.optionalFirst).toBe(true);
+    expect(tp.steps.map((s) => s.title)).toEqual(["Zéro", "Un"]);
+    const ko = supportWith({ "01-m.md": `# M\n\n## TP {.tp}\n\n${step("Un")}${step("Deux {.optionnel}")}` });
+    await expect(compileDeck(ko)).rejects.toThrow("seule la première étape peut être optionnelle");
+  });
+
   it("inclut un fichier ou une plage de lignes dans un bloc de code", async () => {
     const dir = supportWith({
       "x.py": "un = 1\ndeux = 2\ntrois = 3\n",

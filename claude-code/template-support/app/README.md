@@ -104,7 +104,7 @@ Aide, repliée par défaut.
 Solution, repliée par défaut.
 ```
 
-Chaque étape `###` exige un bloc `::: attendu`. Une étape qui a une variante `claude-code` doit avoir une variante `opencode`, et inversement. Les blocs `indice` et le corrigé sont facultatifs. Sur la page, le stagiaire choisit son outil une fois pour tous les TP, coche les étapes terminées et copie chaque bloc de code ; pour une session `console`, le bouton copie seulement les commandes. Ces choix restent dans son navigateur.
+Chaque étape `###` exige un bloc `::: attendu`. Une étape qui a une variante `claude-code` doit avoir une variante `opencode`, et inversement. Les blocs `indice` et le corrigé sont facultatifs. La première étape peut porter `{.optionnel}` : elle est numérotée `00` et marquée « Optionnel », les suivantes gardent `01`, `02`… Sur la page, le stagiaire choisit son outil une fois pour tous les TP, coche les étapes terminées et copie chaque bloc de code ; pour une session `console`, le bouton copie seulement les commandes. Ces choix restent dans son navigateur.
 
 ## Carte mentale
 
