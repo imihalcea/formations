@@ -583,7 +583,7 @@ Chaque question se pose deux fois : pour le premier mois, puis pour le mois suiv
 :::
 
 ::: notes
-Ne pas annoncer de gagnant : la restitution compare les relevés des groupes.
+L'approche qui correspond à la pratique est donnée avant le TP (slide « Un rapport récurrent s'outille ») ; la restitution la confronte aux relevés des groupes.
 Questions à garder pour la restitution : qui a calculé les chiffres, comment le groupe les a vérifiés, ce qu'a coûté le mois suivant.
 :::
 
@@ -614,7 +614,7 @@ Approche hybride : le script pour les calculs, le modèle pour la rédaction.
 
 ::: notes
 Découle de « L'approche directe », « L'approche outillée » et « Ce que le TP compare ».
-Le choix se discute en restitution, sur les relevés des groupes.
+Ce qui les distingue en pratique vient après l'industrialisation, avant le lancement du TP.
 :::
 
 ## Un Makefile enchaîne les étapes {kicker="Industrialisation"}
@@ -763,7 +763,553 @@ Pas de `$ARGUMENTS` : les agrégats arrivent par l'entrée standard.
 
 ::: notes
 Découle de « Un Makefile enchaîne les étapes » et de « L'appel au modèle a sa propre cible ».
-Transition : le TP, en deux approches.
+Transition : laquelle des deux approches du TP correspond à la pratique.
+:::
+
+## Un rapport récurrent s'outille {kicker="Choisir"}
+
+| | Approche directe | Approche outillée |
+|---|---|---|
+| Usage | document ponctuel, premier jet | rapport publié chaque mois |
+| Chiffres | recalculés par l'agent chaque mois | calculés par un script testé |
+| Mois suivant | une nouvelle session | `make faits`, puis `make` |
+
+Un script redonne les mêmes chiffres. Deux appels identiques au modèle peuvent différer.
+
+::: sources
+- [Claude Platform, Glossary : Temperature](https://platform.claude.com/docs/en/about-claude/glossary#temperature)
+- Corrigé du TP 7B : `tp/tp07-pandoc/corrige-7b/Makefile`
+:::
+
+::: notes
+Glossaire : « Even with temperature set to 0, the results will not be fully deterministic and identical inputs may produce different outputs across API calls. » Rappel module 1, slide « Limites structurelles ».
+Approche outillée : c'est l'organisation d'un rapport récurrent en production. Les chiffres viennent d'un code testé, identiques à chaque exécution et vérifiables ; le modèle ne rédige que les faits marquants, depuis des chiffres déjà calculés ; un mois coûte un appel au modèle.
+Approche directe : utile pour un document qui ne reviendra pas, ou pour mettre au point la forme du rapport avant de l'outiller. Chaque mois, l'agent relit le CSV et refait les calculs : rien ne garantit les mêmes méthodes d'un mois à l'autre, et chaque chiffre se revérifie.
+Le TP met cette recommandation à l'épreuve : les relevés des groupes (temps, coût, prompts, conformité) se comparent en restitution, surtout sur le mois suivant.
+:::
+
+## En production, le code calcule et le modèle rédige. {.statement kicker="Idée clé"}
+
+::: notes
+Découle de « Un rapport récurrent s'outille » et de « L'agent rédige à partir des chiffres calculés ».
+Transition : les deux TP, chacun dans sa section. Une moitié des groupes fait le 7A, l'autre le 7B.
+:::
+
+## TP 7A : rapport mensuel, approche directe {.tp duration="1h45"}
+
+Produire le rapport mensuel d'exploitation de septembre, puis d'octobre, à partir du CSV des incidents. L'agent écrit le rapport lui-même : il calcule les chiffres, écrit `rapport.md`, lance pandoc et relit le PDF, chaque mois dans une nouvelle session.
+
+Cette approche convient à un document ponctuel ou à un premier jet. Les relevés se comparent avec ceux du TP 7B, qui outille le même rapport.
+
+::: notes
+Durées visées : 10 min pour l'installation et le dossier, 15 pour produire et faire vérifier septembre, 15 pour noter et relever, 15 pour octobre, 15 pour noter et relever, 35 de marge (attente des commandes, corrections, relecture des PDF).
+Essai du 18 octobre 2026, Claude Code v2.1.302, `claude-sonnet-4-6`, prompts de l'énoncé en `claude -p` (relevé dans le corrigé). Septembre : chiffres exacts, calculés par un script Python passé à `python3` sans fichier. Défaut du premier PDF : titre affiché deux fois (titre des métadonnées et titre `#` du Markdown). L'agent avait annoncé 13 critères respectés en contrôlant `rapport.md` par un script, sans lire le PDF ; le prompt de vérification lui fait lire le PDF et corriger.
+Octobre : 12 sur 13. Deux durées des résolutions les plus longues fausses d'un dixième (163,2 au lieu de 163,3, 147,9 au lieu de 148,0) : `round` de Python n'arrondit pas au demi supérieur. L'agent a lu le PDF et déclaré les 13 critères respectés. Exemple à garder pour la restitution : l'agent vérifie avec la méthode qui a produit l'erreur, seule la comparaison aux références la voit.
+L'énoncé laisse l'agent libre de sa méthode de calcul. S'il écrit un script dans un fichier et le réutilise en octobre, le groupe glisse vers l'approche outillée : le noter pour la restitution.
+Faits marquants : l'agent ajoute volontiers une interprétation (« tension structurelle sur l'infrastructure ») que les chiffres ne portent pas. Le critère 12 ne la pénalise pas ; en parler en restitution.
+:::
+
+### Installer pandoc et WeasyPrint
+
+uv est installé depuis le TP 2. Sur la VM, l'installation demande le droit `sudo`.
+
+```console
+$ sudo apt install pandoc weasyprint
+$ pandoc --version
+$ weasyprint --version
+```
+
+::: attendu
+Sous Ubuntu 22.04 : `pandoc 2.9.2.1` et `WeasyPrint version 54.1`. Ces versions, et les suivantes, produisent le PDF du TP.
+:::
+
+::: indice
+Sur le poste : macOS, `brew install pandoc weasyprint` ; Windows, `winget install --source winget --exact --id JohnMacFarlane.Pandoc` et l'exécutable WeasyPrint des [releases GitHub](https://github.com/Kozea/WeasyPrint/releases).
+:::
+
+### Préparer le dossier
+
+```console
+$ mkdir ~/rapport
+$ cd ~/rapport
+$ cp ~/pandoc/incidents-2026-09.csv incidents.csv
+$ cp ~/pandoc/grille.md ~/pandoc/opencode.json .
+```
+
+Lire `grille.md` : colonnes du CSV, règles de calcul, 13 critères. `~/pandoc/references.md` donne les valeurs attendues, pour la notation : il reste hors du dossier, l'agent ne doit pas le lire.
+
+::: claude-code
+```console
+$ claude --permission-mode acceptEdits --model claude-sonnet-4-6
+```
+
+Accepter le dossier quand Claude Code le demande.
+:::
+
+::: opencode
+```console
+$ opencode
+```
+:::
+
+::: attendu
+Le dossier contient `incidents.csv`, `grille.md` et `opencode.json`. Claude Code : la barre d'état affiche `⏵⏵ accept edits on`. Open Code : le modèle Claude Sonnet 4.6 est affiché.
+:::
+
+### Produire le rapport de septembre
+
+Noter l'heure : le relevé de temps part de ce prompt.
+
+```prompt
+<context>
+incidents.csv : les incidents de septembre 2026, un par ligne. grille.md : le contenu attendu du rapport mensuel d'exploitation, ses règles de calcul et sa mise en page.
+</context>
+<instructions>
+Produis rapport.pdf, le rapport de septembre 2026 conforme à grille.md. Écris la source dans rapport.md et la mise en page dans rapport.css, puis convertis avec :
+pandoc rapport.md -s --css rapport.css --wrap=none --pdf-engine=weasyprint -o rapport.pdf
+</instructions>
+<verification>
+Relis rapport.pdf et vérifie chaque critère de grille.md. Corrige et reconvertis tant qu'un critère échoue.
+</verification>
+```
+
+Accepter les commandes de calcul et `pandoc`.
+
+::: attendu
+L'agent lit `incidents.csv` et `grille.md`, calcule les chiffres, souvent par un script Python lancé sans fichier, écrit `rapport.md` et `rapport.css`, puis lance `pandoc`. `rapport.pdf` existe. L'agent annonce les critères respectés.
+:::
+
+### Faire vérifier le PDF
+
+```prompt
+Lis rapport.pdf et vérifie-le avec grille.md, critère par critère. Pour chaque critère, réponds respecté ou non respecté, et cite la page qui le prouve. Corrige ensuite les critères non respectés et tout défaut de mise en page visible, puis reconvertis.
+```
+
+Ouvrir ensuite le PDF :
+
+```console
+$ xdg-open rapport.pdf
+```
+
+::: attendu
+Un tableau des 13 critères, une page citée pour chacun. Un contrôle fait sur `rapport.md` ne voit pas le rendu : ce prompt fait lire le PDF lui-même. Défaut fréquent corrigé à cette étape : le titre affiché deux fois. Noter l'heure : le temps de septembre s'arrête ici.
+:::
+
+### Noter et relever septembre
+
+Noter le PDF critère par critère avec `grille.md` et la section Septembre de `~/pandoc/references.md` : 1 point par critère entièrement respecté.
+
+::: claude-code
+Coût : `/usage`, ligne `Total cost`.
+:::
+
+::: opencode
+Coût : montant `$… spent` sous la zone de saisie.
+:::
+
+| Mois | Temps (min) | Coût ($) | Prompts | Critères (sur 13) |
+|---|---:|---:|---:|---:|
+| Septembre | | | | |
+| Octobre | | | | |
+
+Les prompts comptés sont ceux qui ont été tapés, réponses aux demandes de permission exclues.
+
+::: attendu
+La ligne Septembre est remplie. Un écart avec `references.md` se note comme critère non respecté, même si l'agent l'a déclaré respecté.
+:::
+
+### Produire le rapport d'octobre
+
+Quitter l'outil. Un mois plus tard, la conversation de septembre est fermée : le rapport d'octobre se fait dans une nouvelle session.
+
+```console
+$ cp ~/pandoc/incidents-2026-10.csv incidents.csv
+```
+
+::: claude-code
+```console
+$ claude --permission-mode acceptEdits --model claude-sonnet-4-6
+```
+:::
+
+::: opencode
+```console
+$ opencode
+```
+:::
+
+Noter l'heure, puis :
+
+```prompt
+<context>
+incidents.csv contient maintenant les incidents d'octobre 2026. rapport.md, rapport.css et rapport.pdf sont le rapport de septembre.
+</context>
+<instructions>
+Produis le rapport d'octobre 2026 conforme à grille.md : mets à jour rapport.md, puis reconvertis avec :
+pandoc rapport.md -s --css rapport.css --wrap=none --pdf-engine=weasyprint -o rapport.pdf
+</instructions>
+<verification>
+Lis rapport.pdf et vérifie-le avec grille.md, critère par critère, en citant la page qui le prouve. Corrige et reconvertis tant qu'un critère échoue.
+</verification>
+```
+
+::: attendu
+L'agent relit `grille.md` et le nouveau CSV, refait les calculs, met à jour `rapport.md`, reconvertit et rend un tableau des 13 critères. Les chiffres changent : 336 incidents, service paiement le plus touché. Rien ne garantit que les calculs suivent la même méthode qu'en septembre : chaque chiffre se recontrôle à la notation. Noter l'heure à la fin.
+:::
+
+### Noter et relever octobre
+
+Noter le PDF avec la section Octobre de `~/pandoc/references.md`, puis relever le coût de cette nouvelle session comme pour septembre et remplir la ligne Octobre.
+
+::: attendu
+Le tableau est complet. Garder `rapport.pdf` et le tableau pour la restitution.
+:::
+
+### Corrigé {.corrige}
+
+Les prompts de l'énoncé sont les prompts types. Le Markdown obtenu à l'essai pour septembre, après la vérification du PDF : le titre est écrit en `#` et n'est plus répété par les métadonnées.
+
+```markdown file="../tp/tp07-pandoc/corrige-7a/rapport-2026-09.md" lines="1-18"
+```
+
+Le PDF attendu a les chiffres de `~/pandoc/references.md` ; ses faits marquants et sa mise en page varient d'un essai à l'autre. Essai d'octobre, dans une nouvelle session : deux durées sont fausses d'un dixième.
+
+```markdown file="../tp/tp07-pandoc/corrige-7a/rapport-2026-10.md" lines="46-52"
+```
+
+163,25 h doit s'arrondir à 163,3 selon les règles de `grille.md`. Le script de l'agent arrondit par `round` de Python, qui donne 163,2. L'agent a vérifié le PDF et déclaré les 13 critères respectés : il contrôle avec la méthode qui a produit l'erreur.
+
+Relevé de l'essai, prompts joués en `claude -p`, sans temps de lecture humain :
+
+| Mois | Temps (min) | Coût ($) | Prompts | Critères (sur 13) |
+|---|---:|---:|---:|---:|
+| Septembre | 5 | 0,96 | 2 | 13 |
+| Octobre | 3 | 0,59 | 1 | 12 |
+
+## TP 7B : rapport mensuel, approche outillée {.tp duration="1h45"}
+
+Produire le même rapport avec des outils que l'agent écrit une fois : un script testé calcule les chiffres, un Makefile enchaîne script et pandoc. Le modèle ne rédige que les faits marquants.
+
+C'est l'organisation d'un rapport récurrent : chaque mois, `make faits` puis `make`. Les relevés se comparent avec ceux du TP 7A.
+
+::: notes
+Durées visées : 10 min pour l'installation et le dossier, 10 pour le script, 10 pour le template, la CSS et le Makefile, 5 pour `make faits` et `make`, 10 pour la vérification, 15 pour noter et relever, 10 pour octobre, 10 pour noter et relever, 25 de marge.
+Essai du 18 octobre 2026, Claude Code v2.1.302, `claude-sonnet-4-6`, prompts de l'énoncé en `claude -p` : script et 45 tests en 4 min 30 (0,93 $), template, CSS et Makefile en 2 min (0,38 $), `make faits` en 6 s (0,01 $), vérification du PDF en 7 min 30 (0,87 $). Tous les chiffres exacts dès le premier PDF ; la vérification a resserré la CSS pour tenir en deux pages. Défaut visible avant correction : colonne Titre coupée sur trois lignes (slide « Des colonnes de même largeur »).
+Octobre : `make faits` et `make` en 10 s, vérification en 2 min (0,34 $), 13 sur 13. Les faits marquants citaient un chiffre absent des agrégats (« dont quatre sur le service paiement »), compté par le modèle malgré la consigne ; exact, mais le critère 12 se vérifie sur chaque chiffre.
+`uv init` crée aussi `main.py`, `README.md` et un dépôt git : sans effet sur le TP.
+Pour tester `make`, l'agent peut créer un `faits.md` provisoire : `make faits` le remplace.
+Sous Open Code, `opencode run` ne développe pas `/faits-marquants` : le prompt de l'énoncé fait envoyer le corps du fichier de commande (`formateur/equivalences.md`). Non joué avec Open Code faute de clé Anthropic en local : à vérifier sur la VM.
+:::
+
+### Installer pandoc et WeasyPrint
+
+uv est installé depuis le TP 2. Sur la VM, l'installation demande le droit `sudo`.
+
+```console
+$ sudo apt install pandoc weasyprint
+$ pandoc --version
+$ weasyprint --version
+```
+
+::: attendu
+Sous Ubuntu 22.04 : `pandoc 2.9.2.1` et `WeasyPrint version 54.1`. Ces versions, et les suivantes, produisent le PDF du TP.
+:::
+
+::: indice
+Sur le poste : macOS, `brew install pandoc weasyprint` ; Windows, `winget install --source winget --exact --id JohnMacFarlane.Pandoc` et l'exécutable WeasyPrint des [releases GitHub](https://github.com/Kozea/WeasyPrint/releases).
+:::
+
+### Préparer le dossier
+
+```console
+$ mkdir ~/rapport
+$ cd ~/rapport
+$ cp ~/pandoc/incidents-2026-09.csv incidents.csv
+$ cp ~/pandoc/grille.md ~/pandoc/opencode.json .
+$ cp -r ~/pandoc/faits-marquants/. .
+```
+
+Lire `grille.md` : colonnes du CSV, règles de calcul, 13 critères. `~/pandoc/references.md` donne les valeurs attendues, pour la notation : il reste hors du dossier, l'agent ne doit pas le lire.
+
+::: claude-code
+Lire la commande fournie, `.claude/commands/faits-marquants.md`, puis :
+
+```console
+$ claude --permission-mode acceptEdits --model claude-sonnet-4-6
+```
+
+Accepter le dossier quand Claude Code le demande.
+:::
+
+::: opencode
+Lire la commande fournie, `.opencode/commands/faits-marquants.md`. Relever le coût du jour avant de commencer, ligne `cost` :
+
+```console
+$ opencode stats --cost --days 0
+$ opencode
+```
+:::
+
+::: attendu
+`ls -a` liste `.claude`, `.opencode`, `incidents.csv`, `grille.md` et `opencode.json`. La commande demande deux à quatre phrases, chiffres recopiés du JSON des agrégats sans calcul. Claude Code : la barre d'état affiche `⏵⏵ accept edits on`. Open Code : le modèle Claude Sonnet 4.6 est affiché.
+:::
+
+### Écrire le script et ses tests
+
+Noter l'heure : le relevé de temps part de ce prompt.
+
+```prompt
+<context>
+incidents.csv : les incidents de septembre 2026, un par ligne. grille.md : le contenu attendu du rapport mensuel d'exploitation et ses règles de calcul. Chaque mois, le rapport sera régénéré à partir d'un nouveau CSV de même schéma.
+</context>
+<instructions>
+Crée un projet uv pour Python 3.14, avec pytest en dépendance de développement. Écris rapport.py, avec deux sous-commandes :
+- agregats CSV JSON calcule tous les chiffres des tableaux de grille.md et les écrit en JSON ;
+- markdown JSON FAITS MD écrit le Markdown du rapport : métadonnées title, subtitle et lang, sections dans l'ordre de grille.md, texte du fichier FAITS sous « Faits marquants ».
+</instructions>
+<verification>
+Écris les tests pytest des calculs et du format des nombres, puis lance uv run pytest.
+</verification>
+```
+
+Accepter les commandes `uv`.
+
+::: attendu
+`uv init` crée `pyproject.toml` et `.python-version`. L'agent écrit `rapport.py` et `tests/test_rapport.py`, puis `uv run pytest` passe. Les tests couvrent l'arrondi, la virgule décimale et l'objectif atteint à durée égale.
+:::
+
+### Écrire le template, la CSS et le Makefile
+
+::: claude-code
+```prompt
+Écris template.html, le template pandoc du rapport, rapport.css, une mise en page A4 avec « Page n / total » en pied de chaque page, et un Makefile à deux cibles :
+- make produit rapport.pdf sans appeler le modèle : rapport.py agregats sur incidents.csv vers build/agregats.json, rapport.py markdown avec faits.md vers build/rapport.md, puis pandoc build/rapport.md -s --template template.html --css rapport.css --wrap=none --pdf-engine=weasyprint -o rapport.pdf ;
+- make faits envoie build/agregats.json sur l'entrée standard de claude -p "/faits-marquants" --model claude-sonnet-4-6 et écrit la réponse dans faits.md.
+N'exécute pas make faits.
+```
+:::
+
+::: opencode
+```prompt
+Écris template.html, le template pandoc du rapport, rapport.css, une mise en page A4 avec « Page n / total » en pied de chaque page, et un Makefile à deux cibles :
+- make produit rapport.pdf sans appeler le modèle : rapport.py agregats sur incidents.csv vers build/agregats.json, rapport.py markdown avec faits.md vers build/rapport.md, puis pandoc build/rapport.md -s --template template.html --css rapport.css --wrap=none --pdf-engine=weasyprint -o rapport.pdf ;
+- make faits envoie build/agregats.json sur l'entrée standard de opencode run -m anthropic/claude-sonnet-4-6 "<prompt>", où <prompt> est le corps de .opencode/commands/faits-marquants.md sans son en-tête, et écrit la réponse dans faits.md. opencode run ne développe pas /faits-marquants.
+N'exécute pas make faits.
+```
+:::
+
+::: attendu
+`template.html` contient `$title$`, `$subtitle$`, `$for(css)$` et `$body$`. `rapport.css` a une règle `@page` avec `size: A4` et `@bottom-center`. Le Makefile a une cible `faits` et produit `rapport.pdf` par défaut.
+:::
+
+### Rédiger les faits marquants et construire le PDF
+
+Dans un second terminal :
+
+```console
+$ cd ~/rapport
+$ make faits
+$ cat faits.md
+$ make
+$ xdg-open rapport.pdf
+```
+
+::: attendu
+`make faits` répond en quelques secondes. `faits.md` tient en un paragraphe qui nomme le service recherche (70 incidents) et la sévérité P2 (75,5 %). `make` lance le script puis `pandoc`, sans appel au modèle.
+:::
+
+::: indice
+Si `make faits` s'arrête sur `No rule to make target`, faire corriger le Makefile par l'agent en lui collant le message.
+:::
+
+### Faire vérifier le PDF
+
+```prompt
+Lis rapport.pdf et vérifie-le avec grille.md, critère par critère. Pour chaque critère, réponds respecté ou non respecté, et cite la page qui le prouve. Corrige ensuite les critères non respectés et tout défaut de mise en page visible dans les fichiers source, puis relance make.
+```
+
+::: attendu
+Un tableau des 13 critères, une page citée pour chacun. Les corrections portent sur `rapport.py`, `template.html` ou `rapport.css`, jamais sur `build/rapport.md`, régénéré par `make`. Noter l'heure : le temps de septembre s'arrête ici.
+:::
+
+### Noter et relever septembre
+
+Noter le PDF critère par critère avec `grille.md` et la section Septembre de `~/pandoc/references.md` : 1 point par critère entièrement respecté.
+
+::: claude-code
+Coût : `/usage`, ligne `Total cost`, plus celui de `make faits`, qui tourne hors de la session. Pour le mesurer, rejouer l'appel une fois en JSON dans le second terminal :
+
+```console
+$ claude -p "/faits-marquants" --model claude-sonnet-4-6 --output-format json \
+    < build/agregats.json | grep -o 'total_cost_usd[^,]*'
+```
+:::
+
+::: opencode
+Coût : relancer `opencode stats --cost --days 0` et retrancher le montant relevé au départ. La différence comprend la session et l'appel de `make faits`.
+:::
+
+| Mois | Temps (min) | Coût ($) | Prompts | Critères (sur 13) |
+|---|---:|---:|---:|---:|
+| Septembre | | | | |
+| Octobre | | | | |
+
+Les prompts comptés sont ceux qui ont été tapés, réponses aux demandes de permission exclues.
+
+::: attendu
+La ligne Septembre est remplie. Un écart avec `references.md` se note comme critère non respecté, même si l'agent l'a déclaré respecté.
+:::
+
+### Produire le rapport d'octobre
+
+Quitter l'outil. Noter l'heure, puis, dans le terminal :
+
+```console
+$ cp ~/pandoc/incidents-2026-10.csv incidents.csv
+$ make faits
+$ make
+```
+
+Faire vérifier le PDF dans une nouvelle session :
+
+::: claude-code
+```console
+$ claude --permission-mode acceptEdits --model claude-sonnet-4-6
+```
+:::
+
+::: opencode
+```console
+$ opencode
+```
+:::
+
+```prompt
+Lis rapport.pdf et vérifie-le avec grille.md, critère par critère. Pour chaque critère, réponds respecté ou non respecté, et cite la page qui le prouve.
+```
+
+::: attendu
+`make faits` réécrit `faits.md` pour octobre : le service paiement (88 incidents) et la sévérité P4 (74,0 %). `make` reconstruit le PDF en quelques secondes. Les chiffres viennent du script testé en septembre : seuls les faits marquants sont à recontrôler de près. Noter l'heure à la fin de la vérification.
+:::
+
+### Noter et relever octobre
+
+Noter le PDF avec la section Octobre de `~/pandoc/references.md`. Le coût d'octobre est celui de `make faits` et de la session de vérification, mesurés comme pour septembre. Remplir la ligne Octobre.
+
+::: attendu
+Le tableau est complet. Garder `rapport.pdf` et le tableau pour la restitution.
+:::
+
+### Corrigé {.corrige}
+
+Le script calcule les agrégats ; l'arrondi au dixième se fait au demi supérieur, et un incident résolu en une durée égale à l'objectif le respecte :
+
+```python file="../tp/tp07-pandoc/corrige-7b/rapport.py" lines="25-41"
+```
+
+Les tests comparent chaque tableau aux valeurs de référence, pour les deux mois :
+
+```python file="../tp/tp07-pandoc/corrige-7b/tests/test_rapport.py" lines="41-51"
+```
+
+Le Makefile sépare l'appel au modèle (`make faits`) de la construction du PDF (`make`) :
+
+```makefile file="../tp/tp07-pandoc/corrige-7b/Makefile" lines="6-37"
+```
+
+Le corrigé ajoute `faits.json`, copie des agrégats d'où vient `faits.md` : si le CSV change sans `make faits`, `make` s'arrête au lieu de publier des faits marquants périmés.
+
+Relevé de l'essai, en `claude -p` sans temps de lecture humain :
+
+| Mois | Temps (min) | Coût ($) | Prompts | Critères (sur 13) |
+|---|---:|---:|---:|---:|
+| Septembre | 14 | 2,19 | 3 | 13 |
+| Octobre | 2 | 0,35 | 1 | 13 |
+
+Le coût d'octobre est presque tout entier celui de la vérification par l'agent ; `make faits` coûte quelques centimes (de 0,01 à 0,09 $ mesurés, selon ce que le cache du modèle contient déjà).
+
+## Les deux approches comparées {kicker="Débrief"}
+
+| | Approche directe | Approche outillée |
+|---|---|---|
+| Septembre | 5 min, 0,96 $ | 14 min, 2,19 $ |
+| Octobre | 3 min, 0,59 $ | 2 min, 0,35 $ |
+| Critères respectés | 13, puis 12 sur 13 (critère 8 : deux durées mal arrondies) | 13, puis 13 sur 13 |
+| Chiffres calculés par | l'agent, à chaque session | `rapport.py`, testé |
+
+::: sources
+- Corrigés des TP 7A et 7B, essai du 18 octobre 2026 (`claude -p`, `claude-sonnet-4-6`)
+:::
+
+::: notes
+Débrief, 30 min : comparaison 15, discussion 15.
+Recopier au tableau, à côté de chaque colonne, les relevés des groupes 7A et 7B. Lire d'abord la ligne Octobre.
+Valeurs de l'essai sans temps de lecture humain : les temps des groupes seront plus longs.
+Prompts : 2 puis 1 en directe, 3 puis 1 en outillée.
+Critère 8 : « Résolutions les plus longues : les cinq bons identifiants, dans l'ordre, avec service, sévérité, titre et durée. » Détail des deux durées à la slide « Les chiffres : recalculés ou testés ».
+:::
+
+## Le coût se déplace vers le premier mois {kicker="Débrief"}
+
+| | Approche directe | Approche outillée |
+|---|---:|---:|
+| Septembre | 0,96 $ | 2,19 $ |
+| Octobre | 0,59 $ | 0,35 $ |
+
+En octobre, l'outillage ne paie que `make faits` et la vérification. `make faits` seul coûte quelques centimes.
+
+::: sources
+- Corrigés des TP 7A et 7B, essai du 18 octobre 2026
+:::
+
+::: notes
+Septembre outillé : l'agent écrit script, tests, template, CSS et Makefile.
+`make faits` mesuré de 0,01 à 0,09 $ selon le cache du modèle. La vérification d'octobre (session interactive) fait l'essentiel des 0,35 $.
+En directe, chaque mois refait tout le travail : lecture du CSV, calculs, rédaction, relecture.
+Groupes 7A qui ont réutilisé un script en octobre : ils ont glissé vers l'approche outillée, à faire raconter.
+:::
+
+## Les chiffres : recalculés ou testés {kicker="Débrief"}
+
+| Incident (octobre) | Approche directe | Référence |
+|---|---:|---:|
+| INC-2610-0040 | 163,2 h | 163,3 h |
+| INC-2610-0205 | 147,9 h | 148,0 h |
+
+En directe, l'agent a recalculé octobre et mal arrondi deux durées, sans le voir. En outillée, les tests comparent le script aux références.
+
+::: sources
+- Corrigé du TP 7A : `tp/tp07-pandoc/corrige-7a/rapport-2026-10.md` ; corrigé du TP 7B : `tests/test_rapport.py`
+- [Python, Built-in Functions : round](https://docs.python.org/3/library/functions.html#round)
+:::
+
+::: notes
+Cause : `round` de Python. Doc : « if two multiples are equally close, rounding is done toward the even choice » ; « The behavior of round() for floats can be surprising [...] most decimal fractions can't be represented exactly as a float. »
+163,25 h (9 795 min) s'écrit exactement en binaire : arrondi au pair, 163,2. 147,95 h (8 877 min) est stocké un peu en dessous : 147,9. La grille demande le demi supérieur.
+L'agent a lu le PDF et annoncé 13 critères sur 13 : il a vérifié avec la méthode qui a produit l'erreur.
+Valeurs de référence : `tp/tp07-pandoc/preparation/references.md`.
+Demander aux groupes 7A s'ils ont trouvé l'écart, et comment.
+Texte rédigé, dans les deux approches : les faits marquants du 7A ajoutent une conclusion que les chiffres ne portent pas (« suggère une tension structurelle sur l'infrastructure », septembre). Le critère 12 ne vérifie que les chiffres cités. La commande `faits-marquants` du 7B demande de recopier les chiffres sans en calculer ; `faits.md` se relit quand même avant publication.
+:::
+
+## L'outillage coûte au premier mois et fiabilise les suivants. {.statement kicker="Idée clé"}
+
+::: notes
+Découle de « Le coût se déplace vers le premier mois » et de « Les chiffres : recalculés ou testés ».
+Confirme la slide « Un rapport récurrent s'outille », vue avant le TP.
+:::
+
+## Discussion {kicker="Débrief"}
+
+- Quels relevés diffèrent de ceux de l'essai, et pourquoi ?
+- Au bout de combien de mois l'outillage est-il rentable ?
+- Dans quel cas l'approche directe suffit-elle ?
+- Que faudrait-il de plus pour publier ce rapport chaque mois ?
+
+::: notes
+Discussion libre, 15 min, à partir des relevés au tableau.
+Pistes si la salle reste silencieuse : document ponctuel ou premier jet pour mettre au point la forme (approche directe) ; planification de `make` (cron, CI), relecture humaine de `faits.md`, archivage des PDF publiés (approche outillée).
+Différences constatées entre Open Code et Claude Code : `opencode run` ne développe pas la commande, mesure du coût.
 :::
 
 ## Glossaire {kicker="Glossaire"}
