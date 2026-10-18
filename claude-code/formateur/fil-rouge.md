@@ -135,11 +135,11 @@ Extensions fournies :
 | slash command `new-route` : une route et son test | `.claude/skills/new-route/SKILL.md`, `disable-model-invocation: true` | `.opencode/commands/new-route.md` |
 | skill `schema-migration`, appuyé sur `PRAGMA user_version` | `.claude/skills/schema-migration/` | le même répertoire, lu par Open Code |
 | `ruff format` et `pytest` après chaque édition | hook `PostToolUse` sur `Edit\|Write` dans `.claude/settings.json`, script `.claude/hooks/check.sh` | clé `formatter` de `opencode.json` et plugin `.opencode/plugins/run-tests.js` |
-| refus d'éditer `uv.lock` | hook `PreToolUse`, code de sortie 2 | plugin, `ctx.permission.hook("evaluate")` |
+| refus d'éditer `uv.lock` | hook `PreToolUse`, code de sortie 2 | règle `"uv.lock": "deny"` de la permission `edit` dans `opencode.json` |
 
-Travail : lister les extensions (`/skills`, `/hooks`, menu `/`). Lire `new-route`, puis l'utiliser pour ajouter `GET /stats` (taux d'occupation par salle). Demander une modification qui casse un test et observer le retour de `pytest` lu par l'agent, puis demander de modifier `uv.lock` et observer le refus. Demander une colonne `equipment` sur les salles sans nommer le skill et vérifier que `schema-migration` est chargé. Vérifier par `git status` ce qui sera partagé.
+Travail : lister les extensions (`/skills`, `/hooks`, menu `/`). Lire `new-route`, puis l'utiliser pour ajouter `GET /stats?day=…` : minutes réservées et taux d'occupation de chaque salle, rapportés aux 720 minutes de 8 h à 20 h et arrondis à l'entier inférieur. Demander une modification qui casse un test et observer le retour de `pytest` lu par l'agent, puis demander de modifier `uv.lock` et observer le refus. Demander une colonne `equipment` sur les salles sans nommer le skill et vérifier que `schema-migration` est chargé. Vérifier par `git status` ce qui sera partagé, puis commiter les extensions.
 
-Arrivée : extensions versionnées, route `GET /stats`, migration appliquée. Deux commits.
+Arrivée : route `GET /stats`, champ `equipment` et sa migration, extensions versionnées. Trois commits. Corrigé dans `tp/tp06/`, à côté de `extensions/`.
 
 ## Contenu exigé du code de départ
 
@@ -156,4 +156,4 @@ La trajectoire impose ces éléments au code de départ :
 
 ## Distribution
 
-Chaque stagiaire trouve sur la VM l'archive `~/Documents/claude-code.zip`, produite à partir du build. Elle contient à sa racine le support `claude-code.html` (copie de `dist/index.html`) et le dossier `fil-rouge/`, sans `.venv` ni caches. `unzip ~/Documents/claude-code.zip -d ~` crée donc `~/claude-code.html` et `~/fil-rouge`, chemin utilisé par les modules et les TP. Sans `unzip`, `python3 -m zipfile -e` fait la même extraction avec le Python 3.10 de la VM. Avec Claude Code sur le poste, le stagiaire copie d'abord l'archive depuis la VM.
+Chaque stagiaire trouve sur la VM l'archive `~/Documents/claude-code.zip`, produite à partir du build. Elle contient à sa racine le support `claude-code.html` (copie de `dist/index.html`), le dossier `fil-rouge/`, sans `.venv` ni caches, et le dossier `extensions/` (copie de `tp/tp06/extensions/`, fichiers cachés compris), copié dans le fil rouge au TP 6. `unzip ~/Documents/claude-code.zip -d ~` crée donc `~/claude-code.html`, `~/fil-rouge` et `~/extensions`, chemins utilisés par les modules et les TP. Les hooks sont lancés par `bash` : ils fonctionnent même si l'extraction perd le droit d'exécution des scripts. Sans `unzip`, `python3 -m zipfile -e` fait la même extraction avec le Python 3.10 de la VM. Avec Claude Code sur le poste, le stagiaire copie d'abord l'archive depuis la VM.
