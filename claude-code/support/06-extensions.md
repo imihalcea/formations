@@ -178,7 +178,7 @@ Le texte qui suit `/new-route` remplace `$ARGUMENTS` dans le fichier. `$0` dési
 « `$ARGUMENTS` : All arguments passed when invoking the skill. When no placeholder receives an argument, Claude Code appends them as `ARGUMENTS: <value>`. »
 « Access a specific argument by 0-based index » : `$ARGUMENTS[0]`, abrégé `$0`.
 Autres substitutions : `${CLAUDE_SKILL_DIR}` (répertoire du skill), `${CLAUDE_SESSION_ID}`, `${CLAUDE_PROJECT_DIR}`.
-Prompt utilisé au TP 6 pour ajouter `GET /stats`.
+Forme courte du prompt du TP 6, qui précise le calcul du taux.
 :::
 
 ## Insérer la sortie d'une commande shell {kicker="Slash commands"}
@@ -1022,14 +1022,15 @@ Une extension commitée passe en revue de code comme le reste du dépôt.
 
 ## TP 6 : observer des extensions {.tp duration="1h20"}
 
-Copier dans le fil rouge les extensions fournies, puis les lister, les lire et les déclencher : une slash command, un skill et deux hooks. Aucune extension n'est à écrire. Le TP se termine par deux commits.
+Copier dans le fil rouge les extensions fournies, puis les lister, les lire et les déclencher : une slash command, un skill et deux hooks. Aucune extension n'est à écrire. Le TP se termine par trois commits : une route, une migration, les extensions.
 
 Prérequis : TP 5 terminé et commité.
 
 ::: notes
-Étapes de l'énoncé : #28.
+Durées visées : 5 min pour la copie, 10 pour lister, 20 pour `/new-route`, 20 pour les hooks, 20 pour le skill, 5 pour le partage.
 Les extensions viennent du dossier `extensions/` de l'archive : intégrées au fil rouge dès le départ, elles auraient fait tourner le hook pendant les TP 2 à 5.
-Sous Open Code, le même dossier apporte `.opencode/commands/`, `.opencode/plugins/` et un `opencode.json` qui déclare le formateur.
+Sous Open Code, le même dossier apporte `.opencode/commands/`, `.opencode/plugins/` et un `opencode.json` qui déclare le formateur et refuse l'édition de `uv.lock`.
+Vérifié le 18 octobre 2026 sous Claude Code v2.1.302 (`claude-sonnet-4-6`) : retour de `pytest` par le hook, refus de `uv.lock`, `new-route` absent de la liste de skills du modèle. Sous Open Code v2.0.26, avec un autre modèle faute de clé Anthropic : refus de `uv.lock` (`Permission denied: edit`, même avec `--auto`). Le plugin `run-tests.js` et le formateur restent à vérifier à la répétition (#35).
 :::
 
 ### Copier les extensions
@@ -1057,6 +1058,159 @@ $ opencode
 ::: attendu
 `git status` liste `.claude/` et `.opencode/` comme nouveaux, et `opencode.json` comme modifié.
 :::
+
+### Lister les extensions
+
+::: claude-code
+```prompt
+/skills
+```
+
+Puis `/hooks`, puis taper `/new` sans valider.
+:::
+
+::: opencode
+```prompt
+/skills
+```
+
+Puis taper `/new` sans valider. Dans un second terminal, lire `opencode.json` et `.opencode/plugins/run-tests.js`.
+:::
+
+::: attendu
+Les skills du projet : `new-route` et `schema-migration`. Le menu `/` propose `/new-route`. Claude Code : `/hooks` montre un hook `PreToolUse` et un hook `PostToolUse` sur `Edit|Write`, venus des réglages du projet. Open Code : `opencode.json` déclare le formateur `ruff` et la règle `deny` sur `uv.lock` ; le plugin lance `pytest` après chaque édition.
+:::
+
+### Ajouter une route avec /new-route
+
+Lire d'abord le fichier de la commande : son en-tête, `$ARGUMENTS` et la commande entre `` !` `` et `` ` ``.
+
+::: claude-code
+Fichier : `.claude/skills/new-route/SKILL.md`.
+:::
+
+::: opencode
+Fichier : `.opencode/commands/new-route.md`.
+:::
+
+```prompt
+/new-route GET /stats?day=YYYY-MM-DD booked minutes and occupancy_percent of each room that day, occupancy_percent = booked_minutes * 100 // 720 (8:00 to 20:00)
+```
+
+Vérifier la route dans un second terminal, l'API démarrée par `uv run uvicorn rooms.main:app --reload` :
+
+```console
+$ curl "http://127.0.0.1:8000/stats?day=2027-01-11"
+```
+
+Puis :
+
+```prompt
+Commite la route GET /stats et ses tests avec un message qui les décrit. Ne commite pas les extensions.
+```
+
+::: attendu
+L'agent ne cherche pas les routes existantes : leur liste est dans le prompt. Il ajoute la route dans `rooms/routes.py`, le schéma dans `rooms/schemas.py` et un test dans `tests/test_routes.py`, puis lance `uv run pytest -q`. Avec les données de `seed.py`, `curl` renvoie 150 minutes et 20 % pour Atlas, 510 et 70 % pour Boreal, 360 et 50 % pour Cape. `git log --oneline` montre un commit de plus, et `git status --short` liste encore les extensions.
+:::
+
+::: indice
+Si la base n'a aucune salle, la remplir par `uv run python -m rooms.seed`.
+:::
+
+### Observer le retour des tests
+
+```prompt
+Dans rooms/conflicts.py, considère que deux créneaux qui se touchent se chevauchent : remplace < par <= dans overlaps.
+```
+
+::: claude-code
+`Ctrl+O` affiche le résultat du hook.
+:::
+
+::: opencode
+Le résultat du plugin s'ajoute à celui de l'outil d'édition.
+:::
+
+::: attendu
+Après l'édition, `pytest` tourne sans que l'agent le demande. L'agent rapporte les tests en échec, dont `test_available_rooms`. L'édition reste appliquée. Si l'agent modifie les tests pour les faire passer, l'interrompre par `Échap`.
+:::
+
+### Observer un refus
+
+Annuler d'abord la modification précédente, dans un second terminal :
+
+```console
+$ git restore rooms tests
+```
+
+```prompt
+Ajoute la ligne « # generated by uv » en tête de uv.lock.
+```
+
+Refuser toute commande shell qui modifierait `uv.lock`.
+
+::: attendu
+L'édition est refusée avant d'avoir lieu. Claude Code : l'agent cite le message du hook, `Blocked: uv.lock is generated by uv…`. Open Code : l'outil d'édition échoue avec `Permission denied: edit`. `git status --short` ne liste pas `uv.lock`.
+:::
+
+### Ajouter une colonne avec le skill
+
+```prompt
+Ajoute aux salles un champ equipment : texte libre comme « projector, whiteboard », vide par défaut, fourni à la création et renvoyé par GET /rooms.
+```
+
+Vérifier les salles existantes dans le second terminal :
+
+```console
+$ curl http://127.0.0.1:8000/rooms
+```
+
+Puis :
+
+```prompt
+Commite le champ equipment, sa migration et ses tests avec un message qui les décrit. Ne commite pas les extensions.
+```
+
+::: attendu
+L'agent charge `schema-migration` sans qu'on le nomme (Claude Code : ligne `Skill(schema-migration)` ; Open Code : appel de l'outil `skill`). Il ajoute une entrée à la fin de `MIGRATIONS` dans `rooms/db.py`, sans modifier la précédente, et un test de migration dans `tests/test_db.py`. `rooms/seed.py` ne change pas. `curl` montre `"equipment": ""` pour les salles de `seed.py` : la base existante a été migrée. `git log --oneline` montre un commit de plus.
+:::
+
+### Partager les extensions
+
+```console
+$ git status --short
+```
+
+```prompt
+Commite .claude/, .opencode/ et opencode.json avec un message qui décrit les extensions.
+```
+
+::: attendu
+Avant le commit, `git status` liste `.claude/`, `.opencode/` et `opencode.json`, sans `.claude/settings.local.json` même si ce fichier existe. Après, `git log --oneline` montre trois commits de plus que l'état de départ et `git status` ne montre aucun changement.
+:::
+
+### Corrigé {.corrige}
+
+Le calcul de l'occupation, appelé par la route `GET /stats` :
+
+```python file="../tp/tp06/rooms/stats.py" lines="1-21"
+```
+
+```python file="../tp/tp06/rooms/routes.py" lines="125-128"
+```
+
+```python file="../tp/tp06/tests/test_routes.py" lines="159-173"
+```
+
+La migration ajoutée à la fin de `MIGRATIONS`, et son test sur une base créée à la version précédente :
+
+```python file="../tp/tp06/rooms/db.py" lines="26-28"
+```
+
+```python file="../tp/tp06/tests/test_db.py" lines="22-33"
+```
+
+`add_room` reçoit `equipment` avec une valeur par défaut : `seed.py` reste inchangé.
 
 ## Glossaire {kicker="Glossaire"}
 
