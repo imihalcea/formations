@@ -1,0 +1,297 @@
+id,ouverture,service,severite,categorie,titre,statut,duree_resolution_min
+INC-2609-0001,2026-09-01T00:18,recherche,P4,capacité,Pic de charge non absorbé,résolu,1786
+INC-2609-0002,2026-09-01T01:02,recherche,P3,capacité,Mémoire saturée sur les instances,résolu,606
+INC-2609-0003,2026-09-01T01:53,commandes,P4,base de données,Requêtes lentes sur la base principale,résolu,5074
+INC-2609-0004,2026-09-01T06:07,authentification,P3,déploiement,Variable de configuration manquante,résolu,2093
+INC-2609-0005,2026-09-01T06:36,authentification,P3,dépendance externe,Fournisseur indisponible,résolu,4653
+INC-2609-0006,2026-09-01T11:00,recherche,P4,déploiement,Rollback d'une version défectueuse,résolu,2892
+INC-2609-0007,2026-09-01T12:35,authentification,P4,réseau,Perte de paquets entre zones,résolu,4592
+INC-2609-0008,2026-09-01T16:23,paiement,P3,capacité,Pic de charge non absorbé,résolu,612
+INC-2609-0009,2026-09-01T18:14,commandes,P2,réseau,Certificat TLS expiré,résolu,319
+INC-2609-0010,2026-09-01T19:22,recherche,P2,dépendance externe,Réponses invalides d'un partenaire,résolu,322
+INC-2609-0011,2026-09-01T21:40,notifications,P4,dépendance externe,Latence élevée d'un service tiers,résolu,2103
+INC-2609-0012,2026-09-02T00:25,recherche,P3,dépendance externe,Fournisseur indisponible,résolu,464
+INC-2609-0013,2026-09-02T00:55,recherche,P3,capacité,Mémoire saturée sur les instances,résolu,173
+INC-2609-0014,2026-09-02T02:26,commandes,P3,base de données,Saturation du pool de connexions,résolu,726
+INC-2609-0015,2026-09-02T07:15,catalogue,P3,réseau,Résolution DNS en échec,résolu,386
+INC-2609-0016,2026-09-02T08:55,notifications,P4,dépendance externe,Latence élevée d'un service tiers,résolu,5574
+INC-2609-0017,2026-09-02T12:14,authentification,P3,déploiement,Variable de configuration manquante,résolu,168
+INC-2609-0018,2026-09-02T12:54,notifications,P3,déploiement,Rollback d'une version défectueuse,résolu,1278
+INC-2609-0019,2026-09-02T18:01,catalogue,P2,capacité,Disque plein sur un nœud,résolu,56
+INC-2609-0020,2026-09-02T18:53,commandes,P3,dépendance externe,Latence élevée d'un service tiers,résolu,1559
+INC-2609-0021,2026-09-02T21:55,authentification,P2,base de données,Requêtes lentes sur la base principale,résolu,134
+INC-2609-0022,2026-09-02T23:09,paiement,P3,base de données,Verrou bloquant sur une table,résolu,712
+INC-2609-0023,2026-09-03T02:06,recherche,P4,réseau,Certificat TLS expiré,résolu,4024
+INC-2609-0024,2026-09-03T02:25,commandes,P4,déploiement,Variable de configuration manquante,résolu,1257
+INC-2609-0025,2026-09-03T03:27,recherche,P3,déploiement,Régression après mise en production,résolu,1280
+INC-2609-0026,2026-09-03T04:25,recherche,P3,dépendance externe,Réponses invalides d'un partenaire,résolu,647
+INC-2609-0027,2026-09-03T06:19,catalogue,P4,capacité,Disque plein sur un nœud,résolu,4140
+INC-2609-0028,2026-09-03T15:35,paiement,P2,dépendance externe,Quota d'API tiers dépassé,résolu,752
+INC-2609-0029,2026-09-03T19:17,commandes,P4,capacité,Mémoire saturée sur les instances,résolu,4217
+INC-2609-0030,2026-09-04T03:24,recherche,P4,capacité,Pic de charge non absorbé,résolu,619
+INC-2609-0031,2026-09-04T03:35,paiement,P2,capacité,File de messages en débordement,résolu,226
+INC-2609-0032,2026-09-04T07:45,catalogue,P4,déploiement,Variable de configuration manquante,résolu,4864
+INC-2609-0033,2026-09-04T08:04,catalogue,P2,dépendance externe,Réponses invalides d'un partenaire,résolu,256
+INC-2609-0034,2026-09-04T16:59,notifications,P3,dépendance externe,Fournisseur indisponible,résolu,580
+INC-2609-0035,2026-09-04T19:02,authentification,P3,réseau,Perte de paquets entre zones,résolu,1432
+INC-2609-0036,2026-09-04T20:51,commandes,P4,dépendance externe,Quota d'API tiers dépassé,résolu,2553
+INC-2609-0037,2026-09-05T01:15,commandes,P4,base de données,Requêtes lentes sur la base principale,résolu,26689
+INC-2609-0038,2026-09-05T01:20,paiement,P4,capacité,File de messages en débordement,résolu,4405
+INC-2609-0039,2026-09-05T02:33,recherche,P4,dépendance externe,Quota d'API tiers dépassé,résolu,1621
+INC-2609-0040,2026-09-05T04:33,catalogue,P4,réseau,Résolution DNS en échec,résolu,8136
+INC-2609-0041,2026-09-05T07:40,commandes,P3,capacité,Mémoire saturée sur les instances,résolu,408
+INC-2609-0042,2026-09-05T09:45,catalogue,P3,base de données,Saturation du pool de connexions,résolu,937
+INC-2609-0043,2026-09-05T10:55,catalogue,P4,base de données,Verrou bloquant sur une table,résolu,2438
+INC-2609-0044,2026-09-05T13:20,recherche,P4,capacité,File de messages en débordement,résolu,4420
+INC-2609-0045,2026-09-05T14:29,authentification,P4,réseau,Certificat TLS expiré,résolu,1757
+INC-2609-0046,2026-09-05T18:05,commandes,P4,base de données,Requêtes lentes sur la base principale,résolu,4296
+INC-2609-0047,2026-09-05T18:39,catalogue,P2,capacité,Mémoire saturée sur les instances,résolu,621
+INC-2609-0048,2026-09-05T19:36,commandes,P3,réseau,Timeouts vers le répartiteur de charge,résolu,1972
+INC-2609-0049,2026-09-05T22:27,recherche,P4,réseau,Certificat TLS expiré,résolu,1326
+INC-2609-0050,2026-09-05T23:24,recherche,P4,base de données,Requêtes lentes sur la base principale,résolu,871
+INC-2609-0051,2026-09-06T01:24,recherche,P4,base de données,Saturation du pool de connexions,résolu,1640
+INC-2609-0052,2026-09-06T02:56,notifications,P3,base de données,Requêtes lentes sur la base principale,résolu,409
+INC-2609-0053,2026-09-06T05:37,recherche,P4,base de données,Verrou bloquant sur une table,résolu,2822
+INC-2609-0054,2026-09-06T06:05,authentification,P3,réseau,Timeouts vers le répartiteur de charge,résolu,1420
+INC-2609-0055,2026-09-06T06:38,recherche,P2,base de données,Verrou bloquant sur une table,résolu,312
+INC-2609-0056,2026-09-06T07:24,recherche,P3,réseau,Timeouts vers le répartiteur de charge,résolu,414
+INC-2609-0057,2026-09-06T07:56,catalogue,P2,base de données,Réplication en retard,résolu,148
+INC-2609-0058,2026-09-06T09:30,commandes,P3,déploiement,Régression après mise en production,résolu,1209
+INC-2609-0059,2026-09-06T11:52,paiement,P4,dépendance externe,Latence élevée d'un service tiers,résolu,8190
+INC-2609-0060,2026-09-06T22:09,paiement,P2,capacité,Pic de charge non absorbé,résolu,245
+INC-2609-0061,2026-09-07T01:18,notifications,P4,réseau,Timeouts vers le répartiteur de charge,résolu,3172
+INC-2609-0062,2026-09-07T01:38,recherche,P3,capacité,Mémoire saturée sur les instances,résolu,510
+INC-2609-0063,2026-09-07T06:07,catalogue,P3,dépendance externe,Réponses invalides d'un partenaire,résolu,952
+INC-2609-0064,2026-09-07T08:38,commandes,P3,déploiement,Rollback d'une version défectueuse,résolu,738
+INC-2609-0065,2026-09-07T17:15,paiement,P4,réseau,Perte de paquets entre zones,résolu,4945
+INC-2609-0066,2026-09-07T17:32,authentification,P3,déploiement,Régression après mise en production,résolu,1166
+INC-2609-0067,2026-09-08T01:36,commandes,P3,dépendance externe,Latence élevée d'un service tiers,résolu,349
+INC-2609-0068,2026-09-08T03:29,recherche,P3,dépendance externe,Latence élevée d'un service tiers,résolu,640
+INC-2609-0069,2026-09-08T03:50,paiement,P4,dépendance externe,Fournisseur indisponible,résolu,3873
+INC-2609-0070,2026-09-08T04:45,paiement,P3,base de données,Saturation du pool de connexions,résolu,1210
+INC-2609-0071,2026-09-08T06:38,recherche,P2,base de données,Requêtes lentes sur la base principale,résolu,423
+INC-2609-0072,2026-09-08T07:05,paiement,P2,base de données,Réplication en retard,résolu,309
+INC-2609-0073,2026-09-08T10:07,recherche,P3,déploiement,Régression après mise en production,résolu,1599
+INC-2609-0074,2026-09-08T10:12,catalogue,P3,réseau,Perte de paquets entre zones,résolu,1442
+INC-2609-0075,2026-09-08T12:58,authentification,P4,capacité,Mémoire saturée sur les instances,résolu,1505
+INC-2609-0076,2026-09-08T13:28,commandes,P3,déploiement,Variable de configuration manquante,résolu,459
+INC-2609-0077,2026-09-08T14:55,authentification,P3,réseau,Perte de paquets entre zones,résolu,690
+INC-2609-0078,2026-09-08T14:58,authentification,P3,réseau,Timeouts vers le répartiteur de charge,résolu,490
+INC-2609-0079,2026-09-08T17:40,authentification,P3,base de données,Réplication en retard,résolu,2039
+INC-2609-0080,2026-09-08T18:44,authentification,P3,réseau,Perte de paquets entre zones,résolu,759
+INC-2609-0081,2026-09-09T00:37,catalogue,P4,capacité,Pic de charge non absorbé,résolu,1372
+INC-2609-0082,2026-09-09T02:03,recherche,P4,capacité,File de messages en débordement,résolu,3858
+INC-2609-0083,2026-09-09T03:37,catalogue,P2,réseau,Timeouts vers le répartiteur de charge,résolu,1102
+INC-2609-0084,2026-09-09T04:43,catalogue,P3,capacité,File de messages en débordement,résolu,630
+INC-2609-0085,2026-09-09T07:56,commandes,P4,déploiement,Variable de configuration manquante,résolu,1646
+INC-2609-0086,2026-09-09T08:35,authentification,P3,base de données,Réplication en retard,résolu,1540
+INC-2609-0087,2026-09-09T13:31,authentification,P2,réseau,Timeouts vers le répartiteur de charge,résolu,188
+INC-2609-0088,2026-09-09T16:04,catalogue,P3,réseau,Perte de paquets entre zones,résolu,354
+INC-2609-0089,2026-09-09T19:20,catalogue,P3,dépendance externe,Réponses invalides d'un partenaire,résolu,709
+INC-2609-0090,2026-09-09T20:13,authentification,P3,dépendance externe,Latence élevée d'un service tiers,résolu,1584
+INC-2609-0091,2026-09-09T20:53,recherche,P3,base de données,Saturation du pool de connexions,résolu,1516
+INC-2609-0092,2026-09-09T23:43,authentification,P2,réseau,Résolution DNS en échec,résolu,228
+INC-2609-0093,2026-09-10T00:25,authentification,P4,base de données,Verrou bloquant sur une table,résolu,794
+INC-2609-0094,2026-09-10T06:14,commandes,P3,déploiement,Migration interrompue,résolu,833
+INC-2609-0095,2026-09-10T06:20,recherche,P4,capacité,Mémoire saturée sur les instances,résolu,2466
+INC-2609-0096,2026-09-10T07:34,authentification,P4,capacité,Pic de charge non absorbé,résolu,1434
+INC-2609-0097,2026-09-10T15:27,catalogue,P3,base de données,Requêtes lentes sur la base principale,résolu,1362
+INC-2609-0098,2026-09-10T16:55,recherche,P4,base de données,Réplication en retard,résolu,2014
+INC-2609-0099,2026-09-10T22:54,catalogue,P3,dépendance externe,Fournisseur indisponible,résolu,785
+INC-2609-0100,2026-09-11T00:04,recherche,P3,base de données,Saturation du pool de connexions,résolu,628
+INC-2609-0101,2026-09-11T04:52,notifications,P3,déploiement,Régression après mise en production,résolu,2588
+INC-2609-0102,2026-09-11T06:23,commandes,P4,capacité,Mémoire saturée sur les instances,résolu,1594
+INC-2609-0103,2026-09-11T12:51,catalogue,P3,capacité,Mémoire saturée sur les instances,résolu,1050
+INC-2609-0104,2026-09-11T14:36,notifications,P3,déploiement,Rollback d'une version défectueuse,résolu,382
+INC-2609-0105,2026-09-11T19:55,notifications,P3,capacité,Pic de charge non absorbé,résolu,1048
+INC-2609-0106,2026-09-11T20:29,commandes,P4,dépendance externe,Quota d'API tiers dépassé,résolu,2061
+INC-2609-0107,2026-09-12T02:31,catalogue,P3,déploiement,Variable de configuration manquante,résolu,558
+INC-2609-0108,2026-09-12T02:54,paiement,P2,capacité,Pic de charge non absorbé,résolu,326
+INC-2609-0109,2026-09-12T04:16,commandes,P3,réseau,Résolution DNS en échec,résolu,1558
+INC-2609-0110,2026-09-12T09:36,authentification,P4,déploiement,Variable de configuration manquante,résolu,3828
+INC-2609-0111,2026-09-12T16:30,catalogue,P1,base de données,Réplication en retard,résolu,190
+INC-2609-0112,2026-09-12T16:38,notifications,P4,dépendance externe,Fournisseur indisponible,résolu,2546
+INC-2609-0113,2026-09-12T22:04,commandes,P1,réseau,Timeouts vers le répartiteur de charge,résolu,311
+INC-2609-0114,2026-09-12T22:22,catalogue,P4,capacité,File de messages en débordement,résolu,1891
+INC-2609-0115,2026-09-12T22:52,recherche,P3,capacité,Disque plein sur un nœud,résolu,6205
+INC-2609-0116,2026-09-13T04:00,paiement,P2,réseau,Timeouts vers le répartiteur de charge,résolu,423
+INC-2609-0117,2026-09-13T04:17,paiement,P3,capacité,File de messages en débordement,résolu,616
+INC-2609-0118,2026-09-13T04:45,commandes,P4,dépendance externe,Fournisseur indisponible,résolu,3205
+INC-2609-0119,2026-09-13T07:09,recherche,P1,déploiement,Rollback d'une version défectueuse,résolu,108
+INC-2609-0120,2026-09-13T11:38,authentification,P2,déploiement,Variable de configuration manquante,résolu,365
+INC-2609-0121,2026-09-13T12:37,notifications,P4,dépendance externe,Latence élevée d'un service tiers,résolu,1755
+INC-2609-0122,2026-09-13T15:49,catalogue,P4,réseau,Perte de paquets entre zones,résolu,1419
+INC-2609-0123,2026-09-13T16:39,catalogue,P4,dépendance externe,Latence élevée d'un service tiers,résolu,1017
+INC-2609-0124,2026-09-13T18:41,commandes,P1,déploiement,Migration interrompue,résolu,119
+INC-2609-0125,2026-09-13T19:19,recherche,P3,base de données,Réplication en retard,résolu,2284
+INC-2609-0126,2026-09-13T20:43,paiement,P3,déploiement,Régression après mise en production,résolu,542
+INC-2609-0127,2026-09-13T22:27,paiement,P3,capacité,Mémoire saturée sur les instances,résolu,2901
+INC-2609-0128,2026-09-14T03:41,recherche,P3,base de données,Saturation du pool de connexions,résolu,477
+INC-2609-0129,2026-09-14T06:34,notifications,P3,capacité,Mémoire saturée sur les instances,résolu,2841
+INC-2609-0130,2026-09-14T07:08,notifications,P2,réseau,Timeouts vers le répartiteur de charge,résolu,138
+INC-2609-0131,2026-09-14T07:15,recherche,P4,capacité,File de messages en débordement,résolu,3136
+INC-2609-0132,2026-09-14T08:23,recherche,P3,réseau,Perte de paquets entre zones,résolu,760
+INC-2609-0133,2026-09-14T08:33,catalogue,P3,base de données,Réplication en retard,résolu,2083
+INC-2609-0134,2026-09-14T10:01,recherche,P4,capacité,Pic de charge non absorbé,résolu,948
+INC-2609-0135,2026-09-14T20:03,notifications,P3,réseau,Certificat TLS expiré,résolu,3880
+INC-2609-0136,2026-09-14T21:56,recherche,P4,dépendance externe,Réponses invalides d'un partenaire,résolu,2184
+INC-2609-0137,2026-09-15T02:19,paiement,P3,déploiement,Rollback d'une version défectueuse,résolu,475
+INC-2609-0138,2026-09-15T03:14,paiement,P2,base de données,Requêtes lentes sur la base principale,résolu,117
+INC-2609-0139,2026-09-15T15:10,recherche,P4,déploiement,Migration interrompue,résolu,1119
+INC-2609-0140,2026-09-15T18:50,paiement,P3,capacité,File de messages en débordement,résolu,716
+INC-2609-0141,2026-09-15T23:07,notifications,P2,dépendance externe,Réponses invalides d'un partenaire,résolu,217
+INC-2609-0142,2026-09-16T00:06,commandes,P3,base de données,Réplication en retard,résolu,1452
+INC-2609-0143,2026-09-16T04:10,authentification,P3,réseau,Timeouts vers le répartiteur de charge,résolu,606
+INC-2609-0144,2026-09-16T04:50,paiement,P4,déploiement,Régression après mise en production,résolu,1846
+INC-2609-0145,2026-09-16T09:24,recherche,P3,déploiement,Migration interrompue,résolu,649
+INC-2609-0146,2026-09-16T16:58,catalogue,P3,dépendance externe,Fournisseur indisponible,résolu,580
+INC-2609-0147,2026-09-16T16:59,paiement,P2,capacité,Disque plein sur un nœud,résolu,194
+INC-2609-0148,2026-09-16T22:00,notifications,P4,dépendance externe,Quota d'API tiers dépassé,résolu,2104
+INC-2609-0149,2026-09-17T00:16,catalogue,P2,déploiement,Régression après mise en production,résolu,499
+INC-2609-0150,2026-09-17T01:23,recherche,P4,dépendance externe,Réponses invalides d'un partenaire,résolu,1418
+INC-2609-0151,2026-09-17T02:15,catalogue,P3,dépendance externe,Quota d'API tiers dépassé,résolu,1141
+INC-2609-0152,2026-09-17T02:34,commandes,P3,capacité,Pic de charge non absorbé,résolu,1978
+INC-2609-0153,2026-09-17T04:28,recherche,P3,base de données,Verrou bloquant sur une table,résolu,1351
+INC-2609-0154,2026-09-17T09:44,paiement,P4,dépendance externe,Quota d'API tiers dépassé,résolu,12205
+INC-2609-0155,2026-09-17T11:23,recherche,P2,capacité,Disque plein sur un nœud,résolu,130
+INC-2609-0156,2026-09-17T12:13,recherche,P3,réseau,Perte de paquets entre zones,résolu,4132
+INC-2609-0157,2026-09-17T12:37,catalogue,P3,réseau,Perte de paquets entre zones,résolu,493
+INC-2609-0158,2026-09-17T12:41,recherche,P2,dépendance externe,Quota d'API tiers dépassé,résolu,482
+INC-2609-0159,2026-09-17T15:38,recherche,P2,dépendance externe,Quota d'API tiers dépassé,résolu,211
+INC-2609-0160,2026-09-17T16:27,recherche,P2,capacité,File de messages en débordement,résolu,215
+INC-2609-0161,2026-09-17T17:15,catalogue,P3,base de données,Requêtes lentes sur la base principale,résolu,562
+INC-2609-0162,2026-09-17T18:26,recherche,P2,dépendance externe,Réponses invalides d'un partenaire,résolu,371
+INC-2609-0163,2026-09-17T18:33,recherche,P2,capacité,Pic de charge non absorbé,résolu,244
+INC-2609-0164,2026-09-17T23:31,paiement,P3,base de données,Verrou bloquant sur une table,résolu,970
+INC-2609-0165,2026-09-18T03:56,catalogue,P4,capacité,File de messages en débordement,résolu,2180
+INC-2609-0166,2026-09-18T04:44,recherche,P2,déploiement,Migration interrompue,résolu,243
+INC-2609-0167,2026-09-18T07:06,paiement,P3,capacité,File de messages en débordement,résolu,282
+INC-2609-0168,2026-09-18T12:28,authentification,P3,déploiement,Variable de configuration manquante,résolu,555
+INC-2609-0169,2026-09-18T12:35,catalogue,P2,capacité,File de messages en débordement,résolu,502
+INC-2609-0170,2026-09-18T13:15,catalogue,P3,capacité,Mémoire saturée sur les instances,résolu,1220
+INC-2609-0171,2026-09-18T20:30,authentification,P3,déploiement,Régression après mise en production,résolu,1017
+INC-2609-0172,2026-09-18T21:05,catalogue,P4,capacité,Mémoire saturée sur les instances,résolu,1371
+INC-2609-0173,2026-09-18T21:47,recherche,P3,capacité,File de messages en débordement,résolu,675
+INC-2609-0174,2026-09-19T00:27,commandes,P3,capacité,File de messages en débordement,résolu,981
+INC-2609-0175,2026-09-19T08:24,authentification,P4,déploiement,Régression après mise en production,résolu,2227
+INC-2609-0176,2026-09-19T09:13,paiement,P3,dépendance externe,Fournisseur indisponible,résolu,883
+INC-2609-0177,2026-09-19T11:22,authentification,P3,capacité,Disque plein sur un nœud,résolu,609
+INC-2609-0178,2026-09-19T11:32,paiement,P3,capacité,Pic de charge non absorbé,résolu,1123
+INC-2609-0179,2026-09-19T14:14,recherche,P2,déploiement,Migration interrompue,résolu,457
+INC-2609-0180,2026-09-19T15:46,commandes,P4,capacité,File de messages en débordement,résolu,3109
+INC-2609-0181,2026-09-19T15:56,catalogue,P4,capacité,File de messages en débordement,résolu,4643
+INC-2609-0182,2026-09-19T17:04,paiement,P3,capacité,Disque plein sur un nœud,résolu,757
+INC-2609-0183,2026-09-19T17:21,catalogue,P4,réseau,Timeouts vers le répartiteur de charge,résolu,11228
+INC-2609-0184,2026-09-19T22:29,catalogue,P3,réseau,Timeouts vers le répartiteur de charge,résolu,186
+INC-2609-0185,2026-09-19T23:49,authentification,P2,base de données,Verrou bloquant sur une table,résolu,415
+INC-2609-0186,2026-09-20T01:07,notifications,P3,réseau,Perte de paquets entre zones,résolu,574
+INC-2609-0187,2026-09-20T02:53,notifications,P3,base de données,Saturation du pool de connexions,résolu,1318
+INC-2609-0188,2026-09-20T05:34,recherche,P3,réseau,Perte de paquets entre zones,résolu,1309
+INC-2609-0189,2026-09-20T07:27,commandes,P4,déploiement,Variable de configuration manquante,résolu,1091
+INC-2609-0190,2026-09-20T07:42,catalogue,P4,réseau,Timeouts vers le répartiteur de charge,résolu,6631
+INC-2609-0191,2026-09-20T09:58,catalogue,P2,dépendance externe,Quota d'API tiers dépassé,résolu,412
+INC-2609-0192,2026-09-20T11:41,recherche,P3,dépendance externe,Quota d'API tiers dépassé,résolu,1684
+INC-2609-0193,2026-09-20T12:31,recherche,P3,base de données,Réplication en retard,résolu,450
+INC-2609-0194,2026-09-20T15:07,paiement,P4,dépendance externe,Fournisseur indisponible,résolu,1579
+INC-2609-0195,2026-09-20T15:45,authentification,P3,base de données,Saturation du pool de connexions,résolu,672
+INC-2609-0196,2026-09-20T17:36,catalogue,P1,base de données,Réplication en retard,résolu,553
+INC-2609-0197,2026-09-20T21:12,catalogue,P4,réseau,Timeouts vers le répartiteur de charge,résolu,4128
+INC-2609-0198,2026-09-21T00:17,recherche,P4,réseau,Timeouts vers le répartiteur de charge,résolu,2950
+INC-2609-0199,2026-09-21T02:43,catalogue,P4,réseau,Perte de paquets entre zones,résolu,3490
+INC-2609-0200,2026-09-21T02:56,recherche,P4,réseau,Certificat TLS expiré,résolu,1137
+INC-2609-0201,2026-09-21T05:47,recherche,P4,réseau,Résolution DNS en échec,résolu,812
+INC-2609-0202,2026-09-21T12:39,paiement,P3,réseau,Certificat TLS expiré,résolu,698
+INC-2609-0203,2026-09-21T20:56,commandes,P2,déploiement,Rollback d'une version défectueuse,résolu,300
+INC-2609-0204,2026-09-21T22:12,paiement,P3,base de données,Réplication en retard,résolu,867
+INC-2609-0205,2026-09-22T00:19,recherche,P3,capacité,Mémoire saturée sur les instances,résolu,1305
+INC-2609-0206,2026-09-22T00:23,catalogue,P2,base de données,Verrou bloquant sur une table,résolu,622
+INC-2609-0207,2026-09-22T01:32,authentification,P3,base de données,Saturation du pool de connexions,résolu,1868
+INC-2609-0208,2026-09-22T06:39,paiement,P4,capacité,Pic de charge non absorbé,résolu,1793
+INC-2609-0209,2026-09-22T07:43,authentification,P1,déploiement,Régression après mise en production,résolu,165
+INC-2609-0210,2026-09-22T08:17,recherche,P3,base de données,Requêtes lentes sur la base principale,résolu,602
+INC-2609-0211,2026-09-22T09:22,commandes,P4,base de données,Saturation du pool de connexions,résolu,855
+INC-2609-0212,2026-09-22T16:41,commandes,P2,dépendance externe,Réponses invalides d'un partenaire,résolu,251
+INC-2609-0213,2026-09-22T17:48,commandes,P4,déploiement,Variable de configuration manquante,résolu,6724
+INC-2609-0214,2026-09-22T22:58,recherche,P3,dépendance externe,Quota d'API tiers dépassé,résolu,625
+INC-2609-0215,2026-09-23T01:33,commandes,P2,déploiement,Rollback d'une version défectueuse,résolu,555
+INC-2609-0216,2026-09-23T05:09,authentification,P3,déploiement,Variable de configuration manquante,résolu,2559
+INC-2609-0217,2026-09-23T09:02,recherche,P4,déploiement,Régression après mise en production,résolu,2279
+INC-2609-0218,2026-09-23T10:50,catalogue,P4,réseau,Résolution DNS en échec,résolu,1156
+INC-2609-0219,2026-09-23T14:08,catalogue,P3,dépendance externe,Latence élevée d'un service tiers,résolu,250
+INC-2609-0220,2026-09-23T17:26,recherche,P3,base de données,Saturation du pool de connexions,résolu,1931
+INC-2609-0221,2026-09-23T19:11,notifications,P4,dépendance externe,Fournisseur indisponible,résolu,4523
+INC-2609-0222,2026-09-23T19:29,notifications,P3,déploiement,Régression après mise en production,résolu,1139
+INC-2609-0223,2026-09-23T21:52,authentification,P3,dépendance externe,Latence élevée d'un service tiers,résolu,1598
+INC-2609-0224,2026-09-23T22:05,paiement,P3,réseau,Certificat TLS expiré,résolu,1658
+INC-2609-0225,2026-09-23T23:23,notifications,P4,base de données,Verrou bloquant sur une table,résolu,2079
+INC-2609-0226,2026-09-23T23:47,recherche,P4,dépendance externe,Latence élevée d'un service tiers,résolu,4726
+INC-2609-0227,2026-09-24T02:16,paiement,P3,réseau,Résolution DNS en échec,résolu,1451
+INC-2609-0228,2026-09-24T04:30,commandes,P4,réseau,Perte de paquets entre zones,résolu,5080
+INC-2609-0229,2026-09-24T04:36,notifications,P4,réseau,Timeouts vers le répartiteur de charge,résolu,4028
+INC-2609-0230,2026-09-24T05:19,authentification,P2,réseau,Timeouts vers le répartiteur de charge,résolu,151
+INC-2609-0231,2026-09-24T06:07,notifications,P2,réseau,Certificat TLS expiré,résolu,414
+INC-2609-0232,2026-09-24T10:15,commandes,P4,réseau,Timeouts vers le répartiteur de charge,résolu,460
+INC-2609-0233,2026-09-24T11:05,authentification,P2,déploiement,Régression après mise en production,résolu,340
+INC-2609-0234,2026-09-24T11:05,paiement,P3,base de données,Requêtes lentes sur la base principale,résolu,1312
+INC-2609-0235,2026-09-24T12:32,catalogue,P4,déploiement,Variable de configuration manquante,résolu,5450
+INC-2609-0236,2026-09-24T12:36,commandes,P3,déploiement,Régression après mise en production,résolu,201
+INC-2609-0237,2026-09-24T14:27,notifications,P4,dépendance externe,Réponses invalides d'un partenaire,résolu,894
+INC-2609-0238,2026-09-24T15:01,commandes,P3,déploiement,Variable de configuration manquante,résolu,2565
+INC-2609-0239,2026-09-25T00:22,recherche,P3,déploiement,Migration interrompue,résolu,937
+INC-2609-0240,2026-09-25T00:24,commandes,P2,base de données,Requêtes lentes sur la base principale,résolu,581
+INC-2609-0241,2026-09-25T00:30,notifications,P3,capacité,Mémoire saturée sur les instances,résolu,567
+INC-2609-0242,2026-09-25T03:49,paiement,P4,déploiement,Migration interrompue,résolu,1639
+INC-2609-0243,2026-09-25T05:49,catalogue,P3,réseau,Résolution DNS en échec,résolu,255
+INC-2609-0244,2026-09-25T08:11,notifications,P3,réseau,Résolution DNS en échec,résolu,1527
+INC-2609-0245,2026-09-25T09:02,notifications,P4,réseau,Perte de paquets entre zones,résolu,2050
+INC-2609-0246,2026-09-25T09:35,recherche,P4,capacité,Disque plein sur un nœud,résolu,1522
+INC-2609-0247,2026-09-25T14:01,catalogue,P1,capacité,Disque plein sur un nœud,résolu,34
+INC-2609-0248,2026-09-25T19:55,commandes,P2,capacité,Mémoire saturée sur les instances,résolu,538
+INC-2609-0249,2026-09-25T21:42,catalogue,P3,réseau,Timeouts vers le répartiteur de charge,résolu,829
+INC-2609-0250,2026-09-25T23:15,paiement,P3,réseau,Timeouts vers le répartiteur de charge,résolu,1063
+INC-2609-0251,2026-09-26T03:10,catalogue,P4,base de données,Réplication en retard,résolu,5560
+INC-2609-0252,2026-09-26T09:40,recherche,P3,dépendance externe,Réponses invalides d'un partenaire,résolu,619
+INC-2609-0253,2026-09-26T10:42,paiement,P3,dépendance externe,Latence élevée d'un service tiers,résolu,841
+INC-2609-0254,2026-09-26T12:01,notifications,P4,dépendance externe,Fournisseur indisponible,résolu,2033
+INC-2609-0255,2026-09-26T12:07,paiement,P3,capacité,File de messages en débordement,résolu,897
+INC-2609-0256,2026-09-26T16:47,commandes,P3,déploiement,Migration interrompue,résolu,715
+INC-2609-0257,2026-09-26T17:14,commandes,P4,réseau,Résolution DNS en échec,résolu,1600
+INC-2609-0258,2026-09-26T17:34,catalogue,P4,déploiement,Rollback d'une version défectueuse,résolu,3848
+INC-2609-0259,2026-09-26T19:46,authentification,P3,réseau,Certificat TLS expiré,résolu,1316
+INC-2609-0260,2026-09-26T21:16,recherche,P4,base de données,Réplication en retard,résolu,3653
+INC-2609-0261,2026-09-26T22:19,catalogue,P4,base de données,Saturation du pool de connexions,résolu,1514
+INC-2609-0262,2026-09-26T23:42,commandes,P2,réseau,Timeouts vers le répartiteur de charge,résolu,1107
+INC-2609-0263,2026-09-27T02:56,catalogue,P3,dépendance externe,Latence élevée d'un service tiers,résolu,1394
+INC-2609-0264,2026-09-27T04:20,commandes,P1,dépendance externe,Réponses invalides d'un partenaire,résolu,106
+INC-2609-0265,2026-09-27T04:24,commandes,P3,déploiement,Migration interrompue,résolu,1102
+INC-2609-0266,2026-09-27T05:58,recherche,P2,capacité,File de messages en débordement,résolu,417
+INC-2609-0267,2026-09-27T06:03,catalogue,P4,base de données,Réplication en retard,résolu,4360
+INC-2609-0268,2026-09-27T09:06,paiement,P4,capacité,File de messages en débordement,résolu,2989
+INC-2609-0269,2026-09-27T10:36,authentification,P4,capacité,Mémoire saturée sur les instances,résolu,2612
+INC-2609-0270,2026-09-27T12:34,commandes,P3,capacité,Pic de charge non absorbé,résolu,535
+INC-2609-0271,2026-09-27T13:06,authentification,P4,réseau,Perte de paquets entre zones,résolu,773
+INC-2609-0272,2026-09-27T16:27,catalogue,P3,réseau,Perte de paquets entre zones,résolu,299
+INC-2609-0273,2026-09-27T16:40,paiement,P3,déploiement,Migration interrompue,résolu,804
+INC-2609-0274,2026-09-27T17:25,paiement,P3,base de données,Requêtes lentes sur la base principale,résolu,578
+INC-2609-0275,2026-09-28T04:22,paiement,P3,capacité,File de messages en débordement,résolu,1410
+INC-2609-0276,2026-09-28T05:05,catalogue,P3,réseau,Résolution DNS en échec,résolu,1141
+INC-2609-0277,2026-09-28T06:51,authentification,P4,dépendance externe,Latence élevée d'un service tiers,résolu,2104
+INC-2609-0278,2026-09-28T07:17,recherche,P4,capacité,File de messages en débordement,résolu,1667
+INC-2609-0279,2026-09-28T14:44,catalogue,P3,capacité,Disque plein sur un nœud,résolu,1372
+INC-2609-0280,2026-09-28T15:46,commandes,P2,capacité,Disque plein sur un nœud,résolu,210
+INC-2609-0281,2026-09-28T16:18,commandes,P4,dépendance externe,Latence élevée d'un service tiers,résolu,4194
+INC-2609-0282,2026-09-28T19:35,paiement,P3,déploiement,Migration interrompue,résolu,194
+INC-2609-0283,2026-09-29T03:43,commandes,P4,réseau,Perte de paquets entre zones,résolu,3111
+INC-2609-0284,2026-09-29T05:29,authentification,P3,réseau,Certificat TLS expiré,résolu,540
+INC-2609-0285,2026-09-29T14:10,catalogue,P4,réseau,Perte de paquets entre zones,résolu,4887
+INC-2609-0286,2026-09-29T15:13,paiement,P4,capacité,Mémoire saturée sur les instances,résolu,1005
+INC-2609-0287,2026-09-29T21:57,recherche,P4,capacité,File de messages en débordement,résolu,4133
+INC-2609-0288,2026-09-29T22:45,catalogue,P3,déploiement,Variable de configuration manquante,résolu,850
+INC-2609-0289,2026-09-30T00:56,paiement,P2,réseau,Timeouts vers le répartiteur de charge,résolu,200
+INC-2609-0290,2026-09-30T02:42,authentification,P2,base de données,Saturation du pool de connexions,résolu,942
+INC-2609-0291,2026-09-30T04:17,recherche,P3,réseau,Perte de paquets entre zones,en cours,
+INC-2609-0292,2026-09-30T06:18,paiement,P3,capacité,Pic de charge non absorbé,en cours,
+INC-2609-0293,2026-09-30T08:54,authentification,P4,dépendance externe,Réponses invalides d'un partenaire,en cours,
+INC-2609-0294,2026-09-30T09:42,recherche,P1,capacité,Mémoire saturée sur les instances,résolu,167
+INC-2609-0295,2026-09-30T13:40,authentification,P4,déploiement,Régression après mise en production,en cours,
+INC-2609-0296,2026-09-30T20:34,authentification,P4,capacité,File de messages en débordement,en cours,
