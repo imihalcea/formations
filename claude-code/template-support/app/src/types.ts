@@ -22,7 +22,8 @@ export type Slide =
   | (Base & { kind: "quote"; quoteHtml: string; author?: string })
   | (Base & { kind: "compare"; claudeHtml: string; opencodeHtml: string })
   | (Base & { kind: "tp"; tpId: string; introHtml: string; stepTitles: string[]; duration?: string })
-  | (Base & { kind: "end"; subtitleHtml?: string });
+  | (Base & { kind: "end"; subtitleHtml?: string })
+  | (Base & { kind: "carte"; carte: Carte });
 
 export type SlideKind = Slide["kind"];
 
@@ -44,5 +45,22 @@ export type Tp = {
   steps: TpStep[];
   corrigeHtml?: string;
 };
+
+// Carte mentale compilée depuis carte-mentale.yaml : formation, modules, sections, concepts.
+// `slide` est l'indice de la slide qui présente le concept ; `voir` liste des identifiants de concepts.
+export type CarteConcept = {
+  id: string;
+  name: string;
+  definitionHtml: string;
+  slide?: number;
+  outils?: { claudeHtml: string; opencodeHtml: string };
+  voir: string[];
+};
+
+export type CarteSection = { id: string; title: string; concepts: CarteConcept[] };
+
+export type CarteModule = { id: string; number: string; title: string; sections: CarteSection[] };
+
+export type Carte = { title: string; modules: CarteModule[] };
 
 export type Deck = { sections: Section[]; slides: Slide[]; tps: Tp[] };

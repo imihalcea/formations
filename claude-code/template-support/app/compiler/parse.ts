@@ -1,7 +1,8 @@
-import { readFileSync, readdirSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { dirname, extname, join, resolve } from "node:path";
 import markdownit, { type MarkdownIt } from "markdown-it";
 import { createHighlighter, type Highlighter } from "shiki";
+import { CARTE_FILE, compileCarte } from "./carte.ts";
 import type { Deck, Section, Slide, SlideKind, Tp, TpSegment, TpStep } from "../src/types.ts";
 
 // Langages colorés dans les blocs de code. `console` désigne une session terminal
@@ -79,6 +80,14 @@ export async function compileDeck(dir: string): Promise<Deck> {
 
   const modules = sections.flatMap((s) => (s.number ? [{ number: s.number, title: s.title }] : []));
   for (const s of slides) if (s.kind === "agenda") s.modules = modules;
+
+  // La carte mentale forme la dernière section, après la clôture : une slide qui ouvre la page de la carte.
+  const cartePath = join(dir, CARTE_FILE);
+  if (existsSync(cartePath)) {
+    const carte = compileCarte(cartePath, sections, slides, md);
+    slides.push({ section: sections.length, title: carte.title, kicker: "Carte mentale", sourcesHtml: [], notesHtml: "", origin: `${CARTE_FILE}:1`, kind: "carte", carte });
+    sections.push({ title: "Carte mentale" });
+  }
   return { sections, slides, tps };
 }
 
@@ -354,6 +363,8 @@ function buildSlide(b: Block, ctx: Ctx): Slide {
       return fail("le type module-title est généré par le titre « # »");
     case "tp":
       return fail("un TP est compilé par buildTp");
+    case "carte":
+      return fail(`la carte mentale s'écrit dans ${CARTE_FILE}`);
   }
 }
 

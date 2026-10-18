@@ -13,7 +13,7 @@ function supportWith(files: Record<string, string>): string {
 describe("compileDeck", () => {
   it("compile le support d'exemple", async () => {
     const deck = await compileDeck(join(import.meta.dirname, "../exemple"));
-    expect(deck.sections.map((s) => s.number ?? s.title)).toEqual(["Ouverture", "01", "02", "Clôture"]);
+    expect(deck.sections.map((s) => s.number ?? s.title)).toEqual(["Ouverture", "01", "02", "Clôture", "Carte mentale"]);
     const agenda = deck.slides.find((s) => s.kind === "agenda");
     expect(agenda?.kind === "agenda" && agenda.modules.map((m) => m.number)).toEqual(["01", "02"]);
     expect(deck.slides.filter((s) => s.kind === "module-title")).toHaveLength(2);
@@ -95,5 +95,59 @@ describe("compileDeck", () => {
   it("refuse une image introuvable", async () => {
     const dir = supportWith({ "01-m.md": "# M\n\n## X\n\n![](images/absente.png)\n" });
     await expect(compileDeck(dir)).rejects.toThrow("Image introuvable");
+  });
+});
+
+describe("carte mentale", () => {
+  const module = (concepts: string) =>
+    `titre: F\nmodules:\n  - module: "01"\n    titre: M\n    sections:\n      - section: S\n        concepts:\n${concepts}`;
+  const md = "# M\n\n## Une slide\n\n## Autre\n";
+
+  it("compile la carte du support d'exemple en dernière section", async () => {
+    const deck = await compileDeck(join(import.meta.dirname, "../exemple"));
+    const slide = deck.slides.at(-1)!;
+    expect(slide.kind).toBe("carte");
+    expect(slide.section).toBe(deck.sections.length - 1);
+    if (slide.kind !== "carte") return;
+    const [liste, numerotee] = slide.carte.modules[0]!.sections[0]!.concepts;
+    expect(deck.slides[liste!.slide!]!.title).toBe("Liste à puces");
+    expect(numerotee!.voir).toEqual([liste!.id]);
+    const contexte = slide.carte.modules[1]!.sections[0]!.concepts[1]!;
+    expect(contexte.outils).toEqual({ claudeHtml: "<code>CLAUDE.md</code>", opencodeHtml: "<code>AGENTS.md</code>" });
+  });
+
+  it("refuse un titre de slide inexistant, avec sa ligne", async () => {
+    const yaml = module("          - concept: C\n            definition: D\n            slide: 01-m.md#Absente\n");
+    const dir = supportWith({ "01-m.md": md, "carte-mentale.yaml": yaml });
+    await expect(compileDeck(dir)).rejects.toThrow("carte-mentale.yaml:10 : « slide » : aucune slide « Absente » dans 01-m.md");
+  });
+
+  it("refuse un lien voir vers un concept inconnu", async () => {
+    const yaml = module("          - concept: C\n            definition: D\n            voir: [Inconnu]\n");
+    const dir = supportWith({ "01-m.md": md, "carte-mentale.yaml": yaml });
+    await expect(compileDeck(dir)).rejects.toThrow("carte-mentale.yaml:10 : « voir » : concept « Inconnu » introuvable");
+  });
+
+  it("refuse un champ inconnu et un champ obligatoire manquant", async () => {
+    const inconnu = module("          - concept: C\n            definition: D\n            lien: x\n");
+    await expect(compileDeck(supportWith({ "01-m.md": md, "carte-mentale.yaml": inconnu }))).rejects.toThrow(
+      "carte-mentale.yaml:10 : champ inconnu « lien » dans concept",
+    );
+    const manquant = module("          - concept: C\n");
+    await expect(compileDeck(supportWith({ "01-m.md": md, "carte-mentale.yaml": manquant }))).rejects.toThrow(
+      "carte-mentale.yaml:8 : champ « definition » manquant dans concept",
+    );
+  });
+
+  it("refuse une carte à laquelle manque un module", async () => {
+    const yaml = module("          - concept: C\n            definition: D\n");
+    const dir = supportWith({ "01-m.md": md, "02-n.md": "# N\n", "carte-mentale.yaml": yaml });
+    await expect(compileDeck(dir)).rejects.toThrow("module absent de la carte : 02");
+  });
+
+  it("refuse un concept en double", async () => {
+    const yaml = module("          - concept: C\n            definition: D\n          - concept: C\n            definition: E\n");
+    const dir = supportWith({ "01-m.md": md, "carte-mentale.yaml": yaml });
+    await expect(compileDeck(dir)).rejects.toThrow("carte-mentale.yaml:10 : concept « C » en double");
   });
 });
