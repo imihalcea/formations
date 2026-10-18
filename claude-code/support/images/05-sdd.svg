@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 400" width="1680" height="400">
+  <g>
+    <rect x="0" y="0" width="1680" height="120" rx="12" class="deck"/>
+    <rect x="0" y="0" width="1680" height="6" class="accent"/>
+    <text x="32" y="50" class="accent mono" font-size="24" font-weight="600">01  UNE FOIS PAR PROJET</text>
+    <text x="1648" y="50" class="muted" font-size="26" text-anchor="end">principes du projet</text>
+    <text x="32" y="100" class="ink" font-size="30"><tspan class="mono">constitution</tspan>, écrite dans <tspan class="mono">memory/constitution.md</tspan></text>
+  </g>
+
+  <text x="32" y="186" class="accent mono" font-size="24" font-weight="600">02  À CHAQUE FONCTIONNALITÉ</text>
+
+  <g>
+    <rect x="0" y="206" width="288" height="110" rx="12" class="deck"/>
+    <text x="144" y="252" class="ink mono" font-size="30" text-anchor="middle">specify</text>
+    <text x="144" y="294" class="ink mono" font-size="24" text-anchor="middle">spec.md</text>
+    <rect x="348" y="206" width="288" height="110" rx="12" class="deck"/>
+    <text x="492" y="252" class="ink mono" font-size="30" text-anchor="middle">plan</text>
+    <text x="492" y="294" class="ink mono" font-size="24" text-anchor="middle">plan.md</text>
+    <rect x="696" y="206" width="288" height="110" rx="12" class="deck"/>
+    <text x="840" y="252" class="ink mono" font-size="30" text-anchor="middle">tasks</text>
+    <text x="840" y="294" class="ink mono" font-size="24" text-anchor="middle">tasks.md</text>
+    <rect x="1044" y="206" width="288" height="110" rx="12" class="deck"/>
+    <text x="1188" y="252" class="ink mono" font-size="30" text-anchor="middle">implement</text>
+    <text x="1188" y="294" class="ink" font-size="24" text-anchor="middle">code et tests</text>
+    <rect x="1392" y="206" width="288" height="110" rx="12" class="deck"/>
+    <text x="1536" y="252" class="ink mono" font-size="30" text-anchor="middle">converge</text>
+    <text x="1536" y="294" class="ink" font-size="24" text-anchor="middle">écarts relevés</text>
+  </g>
+
+  <g>
+    <path d="M298 261 H328 M646 261 H676 M994 261 H1024 M1342 261 H1372" class="stroke-ink" stroke-width="4"/>
+    <path d="M338 261 L324 252 L324 270 Z M686 261 L672 252 L672 270 Z M1034 261 L1020 252 L1020 270 Z M1382 261 L1368 252 L1368 270 Z" class="ink"/>
+  </g>
+
+  <path d="M1536 316 V356 H1188 V330" class="stroke-accent" stroke-width="4" stroke-dasharray="12 8"/>
+  <path d="M1188 320 L1179 334 L1197 334 Z" class="accent"/>
+  <text x="1362" y="392" class="accent" font-size="26" text-anchor="middle">jusqu'à « Converged »</text>
+</svg>

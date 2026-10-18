@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 460" width="1680" height="460">
+  <path d="M160 330 H1640 M160 237 H1640 M160 143 H1640 M160 50 H1640" class="stroke-muted" stroke-width="2"/>
+  <text x="140" y="339" class="ink mono" font-size="24" text-anchor="end">50 %</text>
+  <text x="140" y="246" class="ink mono" font-size="24" text-anchor="end">60 %</text>
+  <text x="140" y="152" class="ink mono" font-size="24" text-anchor="end">70 %</text>
+  <text x="140" y="59" class="ink mono" font-size="24" text-anchor="end">80 %</text>
+  <path d="M160 273 H1640" class="stroke-ink" stroke-width="3" stroke-dasharray="12 8"/>
+  <text x="1180" y="259" class="ink" font-size="26" text-anchor="end">sans aucun document : 56 %</text>
+  <path d="M200 89 L495 263 L863 295 L1232 280 L1600 207" class="stroke-accent" stroke-width="6"/>
+  <circle cx="200" cy="89" r="12" class="accent"/>
+  <text x="224" y="75" class="accent display" font-size="40" text-anchor="start">76 %</text>
+  <circle cx="495" cy="263" r="12" class="accent"/>
+  <text x="495" y="237" class="accent display" font-size="40" text-anchor="middle">57 %</text>
+  <circle cx="863" cy="295" r="12" class="accent"/>
+  <text x="863" y="353" class="accent display" font-size="40" text-anchor="middle">54 %</text>
+  <circle cx="1232" cy="280" r="12" class="accent"/>
+  <text x="1232" y="338" class="accent display" font-size="40" text-anchor="middle">55 %</text>
+  <circle cx="1600" cy="207" r="12" class="accent"/>
+  <text x="1620" y="181" class="accent display" font-size="40" text-anchor="end">63 %</text>
+  <text x="200" y="416" class="ink mono" font-size="24" text-anchor="middle">1er</text>
+  <text x="495" y="416" class="ink mono" font-size="24" text-anchor="middle">5e</text>
+  <text x="863" y="416" class="ink mono" font-size="24" text-anchor="middle">10e</text>
+  <text x="1232" y="416" class="ink mono" font-size="24" text-anchor="middle">15e</text>
+  <text x="1600" y="416" class="ink mono" font-size="24" text-anchor="middle">20e</text>
+  <text x="900" y="456" class="ink" font-size="28" text-anchor="middle">position du document qui contient la réponse, parmi 20</text>
+</svg>

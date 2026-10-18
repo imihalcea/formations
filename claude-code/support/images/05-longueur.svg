@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 430" width="1680" height="430">
+  <path d="M160 330 H1640 M160 260 H1640 M160 190 H1640 M160 120 H1640 M160 50 H1640" class="stroke-muted" stroke-width="2"/>
+  <text x="140" y="339" class="ink mono" font-size="24" text-anchor="end">0 %</text>
+  <text x="140" y="269" class="ink mono" font-size="24" text-anchor="end">25 %</text>
+  <text x="140" y="199" class="ink mono" font-size="24" text-anchor="end">50 %</text>
+  <text x="140" y="129" class="ink mono" font-size="24" text-anchor="end">75 %</text>
+  <text x="140" y="59" class="ink mono" font-size="24" text-anchor="end">100 %</text>
+  <path d="M200 91 L480 95 L760 113 L1040 157 L1320 202 L1600 247" class="stroke-accent" stroke-width="6"/>
+  <circle cx="200" cy="91" r="12" class="accent"/>
+  <text x="200" y="65" class="accent display" font-size="40" text-anchor="middle">85 %</text>
+  <circle cx="480" cy="95" r="12" class="accent"/>
+  <text x="480" y="69" class="accent display" font-size="40" text-anchor="middle">84 %</text>
+  <circle cx="760" cy="113" r="12" class="accent"/>
+  <text x="760" y="87" class="accent display" font-size="40" text-anchor="middle">78 %</text>
+  <circle cx="1040" cy="157" r="12" class="accent"/>
+  <text x="1040" y="131" class="accent display" font-size="40" text-anchor="middle">62 %</text>
+  <circle cx="1320" cy="202" r="12" class="accent"/>
+  <text x="1320" y="176" class="accent display" font-size="40" text-anchor="middle">46 %</text>
+  <circle cx="1600" cy="247" r="12" class="accent"/>
+  <text x="1620" y="221" class="accent display" font-size="40" text-anchor="end">30 %</text>
+  <text x="200" y="376" class="ink mono" font-size="24" text-anchor="middle">1 000</text>
+  <text x="480" y="376" class="ink mono" font-size="24" text-anchor="middle">2 000</text>
+  <text x="760" y="376" class="ink mono" font-size="24" text-anchor="middle">4 000</text>
+  <text x="1040" y="376" class="ink mono" font-size="24" text-anchor="middle">8 000</text>
+  <text x="1320" y="376" class="ink mono" font-size="24" text-anchor="middle">16 000</text>
+  <text x="1600" y="376" class="ink mono" font-size="24" text-anchor="middle">32 000</text>
+  <text x="900" y="424" class="ink" font-size="28" text-anchor="middle">tokens de texte autour de l'information cherchée</text>
+</svg>

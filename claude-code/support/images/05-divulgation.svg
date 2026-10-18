@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 420" width="1680" height="420">
+  <g>
+    <rect x="0" y="0" width="1680" height="120" rx="12" class="deck"/>
+    <rect x="0" y="0" width="1680" height="6" class="accent"/>
+    <text x="32" y="50" class="accent mono" font-size="24" font-weight="600">01  AU LANCEMENT</text>
+    <text x="1648" y="50" class="muted" font-size="26" text-anchor="end">à chaque session</text>
+    <text x="32" y="100" class="ink" font-size="30"><tspan class="mono">CLAUDE.md</tspan> racine, fichiers importés par <tspan class="mono">@</tspan></text>
+  </g>
+
+  <g>
+    <rect x="0" y="148" width="1680" height="120" rx="12" class="deck"/>
+    <rect x="0" y="148" width="1680" height="6" class="accent"/>
+    <text x="32" y="198" class="accent mono" font-size="24" font-weight="600">02  À LA LECTURE D'UN FICHIER</text>
+    <text x="1648" y="198" class="muted" font-size="26" text-anchor="end">selon les fichiers touchés</text>
+    <text x="32" y="248" class="ink" font-size="30"><tspan class="mono">rooms/CLAUDE.md</tspan>, règle de <tspan class="mono">.claude/rules/</tspan> avec <tspan class="mono">paths</tspan></text>
+  </g>
+
+  <g>
+    <rect x="2" y="298" width="1676" height="116" rx="12" class="stroke-muted" stroke-width="3" stroke-dasharray="12 8"/>
+    <text x="32" y="346" class="accent mono" font-size="24" font-weight="600">03  QUAND LA TÂCHE L'EXIGE</text>
+    <text x="1648" y="346" class="muted" font-size="26" text-anchor="end">selon la demande</text>
+    <text x="32" y="394" class="ink" font-size="30">fichier cité sans <tspan class="mono">@</tspan>, skill (module 6)</text>
+  </g>
+</svg>

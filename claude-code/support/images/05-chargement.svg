@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 540" width="1680" height="540">
+  <text x="0" y="24" class="accent mono" font-size="22" font-weight="600" letter-spacing="3">AU LANCEMENT DANS ~/fil-rouge</text>
+
+  <g>
+    <rect x="0" y="50" width="372" height="260" rx="12" class="deck"/>
+    <rect x="0" y="50" width="372" height="6" class="accent"/>
+    <text x="32" y="114" class="accent mono" font-size="24" font-weight="600">01</text>
+    <text x="32" y="170" class="ink display" font-size="38">Géré</text>
+    <text x="32" y="226" class="ink mono" font-size="24">/etc/claude-code/</text>
+    <text x="32" y="262" class="ink mono" font-size="24">CLAUDE.md</text>
+  </g>
+  <path d="M380 180 H420" class="stroke-accent" stroke-width="5"/>
+  <path d="M414 167 L432 180 L414 193 Z" class="accent"/>
+
+  <g>
+    <rect x="436" y="50" width="372" height="260" rx="12" class="deck"/>
+    <rect x="436" y="50" width="372" height="6" class="accent"/>
+    <text x="468" y="114" class="accent mono" font-size="24" font-weight="600">02</text>
+    <text x="468" y="170" class="ink display" font-size="38">Utilisateur</text>
+    <text x="468" y="226" class="ink mono" font-size="24">~/.claude/</text>
+    <text x="468" y="262" class="ink mono" font-size="24">CLAUDE.md</text>
+  </g>
+  <path d="M816 180 H856" class="stroke-accent" stroke-width="5"/>
+  <path d="M850 167 L868 180 L850 193 Z" class="accent"/>
+
+  <g>
+    <rect x="872" y="50" width="372" height="260" rx="12" class="deck"/>
+    <rect x="872" y="50" width="372" height="6" class="accent"/>
+    <text x="904" y="114" class="accent mono" font-size="24" font-weight="600">03</text>
+    <text x="904" y="170" class="ink display" font-size="38">Projet</text>
+    <text x="904" y="226" class="ink mono" font-size="24">~/fil-rouge/</text>
+    <text x="904" y="262" class="ink mono" font-size="24">CLAUDE.md</text>
+  </g>
+  <path d="M1252 180 H1292" class="stroke-accent" stroke-width="5"/>
+  <path d="M1286 167 L1304 180 L1286 193 Z" class="accent"/>
+
+  <g>
+    <rect x="1308" y="50" width="372" height="260" rx="12" class="deck"/>
+    <rect x="1308" y="50" width="372" height="6" class="accent"/>
+    <text x="1340" y="114" class="accent mono" font-size="24" font-weight="600">04</text>
+    <text x="1340" y="170" class="ink display" font-size="38">Local</text>
+    <text x="1340" y="226" class="ink mono" font-size="24">~/fil-rouge/</text>
+    <text x="1340" y="262" class="ink mono" font-size="24">CLAUDE.local.md</text>
+  </g>
+
+  <text x="0" y="356" class="muted" font-size="26">lu en premier</text>
+  <text x="1680" y="356" class="muted" font-size="26" text-anchor="end">lu en dernier</text>
+
+  <g>
+    <rect x="2" y="392" width="1676" height="146" rx="12" class="stroke-muted" stroke-width="3" stroke-dasharray="12 8"/>
+    <text x="32" y="450" class="accent mono" font-size="24" font-weight="600">À LA DEMANDE</text>
+    <text x="32" y="502" class="ink" font-size="30"><tspan class="mono">rooms/CLAUDE.md</tspan> se charge quand Claude lit ou modifie un fichier de <tspan class="mono">rooms/</tspan></text>
+  </g>
+</svg>
