@@ -81,6 +81,10 @@ body { background-color: var(--deck); color: var(--deck-foreground); }
 .slide-md th { text-align: left; font-weight: 600; padding: 16px 24px 16px 0; border-bottom: 4px solid var(--slide-accent); }
 .slide-md td { padding: 16px 24px 16px 0; border-bottom: 2px solid var(--deck-muted); vertical-align: top; }
 .slide-md img { max-height: 720px; max-width: 100%; margin-inline: auto; }
+.slide-md blockquote {
+  font-family: var(--font-display); font-size: var(--slide-subtitle); line-height: 1.15;
+  padding-left: 44px; border-left: 6px solid var(--slide-accent);
+}
 
 /* Schémas SVG insérés en ligne : classes de couleur et de police de la charte. */
 .slide-svg { display: block; width: 100%; height: auto; max-height: 720px; margin-inline: auto; font-family: var(--font-sans); }
