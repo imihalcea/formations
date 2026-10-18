@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { Section, Slide, SlideKind } from "./types";
 import { addCopyButtons } from "./copy";
+import { CartePreview } from "./Carte";
 
 export const TOOL_LABELS = { claude: "Claude Code", opencode: "Open Code" };
 
@@ -243,6 +244,8 @@ function ContentBody({ slide }: { slide: Slide }) {
           ))}
         </div>
       );
+    case "carte":
+      return <CartePreview carte={slide.carte} />;
     default:
       return null;
   }

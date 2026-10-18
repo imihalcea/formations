@@ -183,3 +183,28 @@ body { background-color: var(--deck); color: var(--deck-foreground); }
   border-radius: 12px; background: oklch(0.54 0.21 262 / 7%); border-left: 6px solid var(--slide-accent);
 }
 .tp-md pre.prompt code, .slide-md pre.prompt code { font-family: inherit; }
+
+/* Carte mentale : arbre SVG de la slide d'aperçu et de la page #carte. */
+.carte-svg { font-family: var(--font-sans); user-select: none; touch-action: none; }
+.carte-svg .display { font-family: var(--font-display); }
+.carte-svg .edge { fill: none; stroke: var(--deck-muted); stroke-width: 1.5; }
+.carte-svg .edge.on { stroke: var(--slide-accent); stroke-width: 2.5; }
+.carte-svg .voir { fill: none; stroke: var(--slide-accent); stroke-width: 1.25; stroke-dasharray: 4 4; opacity: 0.5; }
+.carte-svg .voir.on { opacity: 1; stroke-width: 2; }
+.carte-svg .label { fill: var(--slide-ink); }
+.carte-svg .num { fill: var(--slide-accent); font-family: var(--font-mono); font-weight: 600; }
+.carte-svg .node.on .label, .carte-svg .node.match .label { fill: var(--slide-accent); }
+.carte-svg .node.match .label { text-decoration: underline; text-underline-offset: 3px; }
+.carte-svg .sel { fill: oklch(0.54 0.21 262 / 12%); }
+.carte-svg .hit { fill: transparent; }
+.carte-svg [role="treeitem"] { cursor: pointer; }
+.carte-svg .root-box { fill: var(--slide-ink); }
+.carte-svg .root-label { fill: var(--slide-paper); }
+.carte-svg .count { fill: var(--slide-ink); opacity: 0.45; }
+.carte-svg .handle { fill: var(--slide-paper); stroke: var(--slide-accent); stroke-width: 1.5; }
+.carte-svg .handle.closed { fill: var(--slide-accent); }
+.carte-md { font-size: 16px; line-height: 1.55; }
+.carte-md code {
+  font-family: var(--font-mono); font-size: 0.86em; padding: 0.1em 0.35em; border-radius: 4px;
+  background: oklch(0.54 0.21 262 / 9%);
+}

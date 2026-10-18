@@ -3,13 +3,17 @@ import { ChevronLeft, ChevronRight, LayoutGrid, Maximize, Minimize, Presentation
 import deck from "virtual:deck";
 import { ScaledSlide } from "./SlideView";
 import { TpPage } from "./TpPage";
+import { CartePage } from "./Carte";
 
 const { slides, sections, tps } = deck;
 const total = slides.length;
 const clamp = (k: number) => Math.min(Math.max(0, k), total - 1);
 const indexFromHash = () => clamp((parseInt(location.hash.slice(1), 10) || 1) - 1);
-// L'URL désigne une slide (#12) ou une page de TP (#tp-03).
+// L'URL désigne une slide (#12), une page de TP (#tp-03) ou la carte mentale (#carte).
 const tpFromHash = () => tps.find((t) => `#${t.id}` === location.hash);
+const carteIndex = slides.findIndex((s) => s.kind === "carte");
+const carteSlide = slides[carteIndex];
+const carteFromHash = () => carteIndex >= 0 && location.hash === "#carte";
 const label = (k: number) => slides[k]!.title || slides[k]!.kicker || sections[slides[k]!.section]!.title;
 
 // La vue présentateur est la même page ouverte avec ?vue=presentateur. Les deux fenêtres
@@ -18,8 +22,9 @@ const presenter = new URLSearchParams(location.search).get("vue") === "presentat
 type Msg = { type: "deck-goto"; index: number };
 
 export function Deck() {
-  const [i, setI] = useState(() => tpFromHash()?.slideIndex ?? indexFromHash());
+  const [i, setI] = useState(() => tpFromHash()?.slideIndex ?? (carteFromHash() ? carteIndex : indexFromHash()));
   const [tpId, setTpId] = useState(() => tpFromHash()?.id ?? null);
+  const [carteOpen, setCarteOpen] = useState(carteFromHash);
   const [notes, setNotes] = useState(false);
   const [grid, setGrid] = useState(false);
   const [fs, setFs] = useState(false);
@@ -30,6 +35,7 @@ export function Deck() {
   const show = useCallback((k: number) => {
     setI(k);
     setTpId(null);
+    setCarteOpen(false);
     history.replaceState(null, "", `#${k + 1}`);
   }, []);
 
@@ -53,9 +59,17 @@ export function Deck() {
       if (e.data?.type === "deck-goto") show(clamp(e.data.index));
     };
     const onHash = () => {
+      if (carteFromHash()) {
+        setCarteOpen(true);
+        setTpId(null);
+        setI(carteIndex);
+        setGrid(false);
+        return;
+      }
       const tp = tpFromHash();
       if (!tp) return show(indexFromHash());
       setTpId(tp.id);
+      setCarteOpen(false);
       setI(tp.slideIndex);
       setGrid(false);
     };
@@ -71,12 +85,13 @@ export function Deck() {
   }, [show]);
 
   const tp = presenter ? undefined : tps.find((t) => t.id === tpId);
+  const carte = !presenter && carteOpen && carteSlide?.kind === "carte" ? carteSlide.carte : undefined;
   const openTp = (id: string) => (location.hash = id);
   const closeTp = () => (location.hash = String(i + 1));
 
   useEffect(() => {
-    document.title = tp ? tp.title : `${i + 1}/${total} · ${label(i)}`;
-  }, [i, tp]);
+    document.title = tp ? tp.title : carte ? "Carte mentale" : `${i + 1}/${total} · ${label(i)}`;
+  }, [i, tp, carte]);
 
   const toggleFs = () => (document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen());
 
@@ -84,8 +99,8 @@ export function Deck() {
     const onKey = (e: KeyboardEvent) => {
       if (e.ctrlKey || e.metaKey || e.altKey) return;
       const key = e.key.toLowerCase();
-      // Sur une page de TP, les flèches et l'espace font défiler la page.
-      if (tp) {
+      // Sur une page de TP, les flèches et l'espace font défiler la page ; sur la carte, elles la parcourent.
+      if (tp || carte) {
         if (key === "escape") closeTp();
         return;
       }
@@ -165,6 +180,15 @@ export function Deck() {
                   {all.length > 1 ? (/^TP \S+(?= :)/.exec(t.title)?.[0] ?? `TP ${n + 1}`) : "TP"}
                 </button>
               ))}
+            {k === s.section && k === carteSlide?.section && (
+              <button
+                title="Carte mentale"
+                onClick={() => (location.hash = "carte")}
+                className={`rounded-full border px-2.5 py-0.5 font-mono transition-colors ${carte ? "border-slide-accent bg-slide-accent text-slide-paper" : "border-slide-accent text-slide-accent hover:bg-slide-accent/10"}`}
+              >
+                Carte
+              </button>
+            )}
             {k === s.section && debrief(k) && (
               <button
                 title="Débrief"
@@ -191,6 +215,8 @@ export function Deck() {
 
       {tp ? (
         <TpPage key={tp.id} tp={tp} section={sections[tp.section]!} onBack={closeTp} />
+      ) : carte ? (
+        <CartePage carte={carte} onBack={closeTp} />
       ) : grid ? (
         <div className="flex-1 overflow-auto p-6">
           <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4">
@@ -221,7 +247,7 @@ export function Deck() {
         </div>
       )}
 
-      {notes && !grid && !tp && (
+      {notes && !grid && !tp && !carte && (
         <div className="flex gap-6 border-t border-deck-muted px-6 py-4">
           <div className="flex-1">
             <p className="mb-1 text-[11px] uppercase tracking-widest text-slide-accent">Notes d'animation</p>
