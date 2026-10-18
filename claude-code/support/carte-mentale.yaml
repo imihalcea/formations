@@ -1,0 +1,826 @@
+titre: Claude Code et Open Code en ligne de commande
+modules:
+  - module: "01"
+    titre: Les LLM au service du développement
+    sections:
+      - section: Le modèle
+        concepts:
+          - concept: LLM
+            definition: Grand modèle de langage, pré-entraîné puis affiné, qui prédit le mot suivant.
+            slide: 01-llm-developpement.md#Prédire le mot suivant
+          - concept: Token
+            definition: "Unité de texte traitée par le modèle : 1M tokens représentent environ 555 000 mots."
+            slide: 01-llm-developpement.md#Le texte découpé en tokens
+          - concept: Pré-entraînement
+            definition: Apprentissage de la prédiction du mot suivant.
+            slide: 01-llm-developpement.md#Du modèle brut à l'assistant
+          - concept: Fine-tuning et RLHF
+            definition: Entraînements qui font du modèle brut un assistant.
+            slide: 01-llm-developpement.md#Du modèle brut à l'assistant
+          - concept: Prompt système
+            definition: Instructions envoyées par l'outil avant la conversation.
+            slide: 01-llm-developpement.md#Ce que voit le modèle
+          - concept: Fenêtre de contexte
+            definition: "Tout ce que le modèle voit pour répondre : prompt système, outils, CLAUDE.md, messages, résultats d'outils."
+            slide: 01-llm-developpement.md#Ce que voit le modèle
+            voir: [Context rot, Compaction]
+          - concept: Session
+            definition: Conversation avec son propre contexte, qui grandit à chaque tour ; une nouvelle session repart d'un contexte vide.
+            slide: 01-llm-developpement.md#Le contexte grandit à chaque tour
+          - concept: Modèles Claude
+            definition: Fable, Opus, Sonnet et Haiku, avec un contexte de 1M tokens et des connaissances fiables jusqu'en juin 2026.
+            slide: 01-llm-developpement.md#Les modèles d'octobre 2026
+          - concept: Facturation
+            definition: Forfait Pro ou Max, siège Team ou Enterprise, ou paiement au token par l'API.
+            slide: 01-llm-developpement.md#Abonnements et facturation
+      - section: L'agent
+        concepts:
+          - concept: Harnais
+            definition: Outils, contexte et boucle autour du modèle.
+            slide: 01-llm-developpement.md#Le harnais autour du modèle
+          - concept: Outil
+            definition: "Action que le harnais met à disposition du modèle : lire, éditer, lancer une commande."
+            slide: 01-llm-developpement.md#Le harnais autour du modèle
+          - concept: Boucle agentique
+            definition: Rassembler le contexte, agir, vérifier, recommencer.
+            slide: 01-llm-developpement.md#La boucle agentique
+            voir: [Boucle de vérification]
+          - concept: Assistants de code
+            definition: Claude Code, Open Code, GitHub Copilot, Codex CLI et Gemini CLI, comparés par surfaces, licence et modèles.
+            slide: 01-llm-developpement.md#Panorama des assistants
+      - section: Apports
+        concepts:
+          - concept: Usages courants
+            definition: Écrire des tests, commiter, relire du code, analyser des logs.
+            slide: 01-llm-developpement.md#Quelques exemples d'usage
+          - concept: Temps par tâche mesuré
+            definition: "Mesure de METR : +19 % de temps début 2025, puis -18 % et -4 % selon les participants en 2025-2026."
+            slide: 01-llm-developpement.md#Temps par tâche avec l'IA, mesuré par METR
+      - section: Limites
+        concepts:
+          - concept: Hallucination
+            definition: Texte faux ou incohérent avec le contexte fourni.
+            slide: 01-llm-developpement.md#Limites structurelles
+          - concept: Non-déterminisme
+            definition: Deux appels identiques peuvent donner des réponses différentes, même à température 0.
+            slide: 01-llm-developpement.md#Limites structurelles
+          - concept: Température
+            definition: Degré d'aléa dans le choix des mots.
+            slide: 01-llm-developpement.md#Limites structurelles
+          - concept: Date de coupure
+            definition: Limite des connaissances fiables du modèle.
+            slide: 01-llm-developpement.md#Limites structurelles
+          - concept: Context rot
+            definition: Baisse de précision quand le contexte s'allonge.
+            slide: 01-llm-developpement.md#Limites structurelles
+            voir: [Lost in the middle]
+      - section: Confidentialité
+        concepts:
+          - concept: Données envoyées
+            definition: Prompts et fichiers lus partent en TLS vers l'API ; transcriptions et sessions restent sur le poste.
+            slide: 01-llm-developpement.md#Ce qui part, ce qui reste
+          - concept: Transcription
+            definition: Enregistrement local d'une session.
+            slide: 01-llm-developpement.md#Ce qui part, ce qui reste
+          - concept: Entraînement et rétention
+            definition: Selon le compte, les données servent ou non à l'entraînement et sont conservées 30 jours ou 5 ans.
+            slide: 01-llm-developpement.md#Entraînement et rétention selon le compte
+          - concept: Protection des secrets
+            definition: Un `.env` lu part chez le fournisseur ; une règle deny en interdit la lecture.
+            slide: 01-llm-developpement.md#Secrets et contenu non fiable
+            outils:
+              claude-code: "`deny` sur `Read(./.env)` dans `settings.json`"
+              opencode: lecture de `*.env` soumise à `ask` par défaut
+            voir: ["Règle allow, ask, deny"]
+          - concept: Injection de prompt
+            definition: Instructions hostiles placées dans un contenu que l'agent lit.
+            slide: 01-llm-developpement.md#Secrets et contenu non fiable
+
+  - module: "02"
+    titre: Prise en main de Claude Code
+    sections:
+      - section: Installation
+        concepts:
+          - concept: Installation
+            definition: Script d'installation, puis `claude --version` et `claude doctor` ; les mises à jour sont automatiques.
+            slide: 02-prise-en-main.md#Installer et vérifier
+          - concept: Authentification
+            definition: Connexion par un compte Claude ou par une clé API Anthropic.
+            slide: 02-prise-en-main.md#S'authentifier
+            outils:
+              claude-code: navigateur au premier lancement, `claude auth login`
+              opencode: "`/connect` ou `opencode auth login`, avec une clé API"
+          - concept: Choix du modèle
+            definition: Le modèle se fixe au lancement, en session ou dans la configuration.
+            slide: 02-prise-en-main.md#Choisir le modèle
+            outils:
+              claude-code: "`--model claude-sonnet-4-6`, `/model`"
+              opencode: "`/models`, clé `model` de `opencode.json`"
+          - concept: Interfaces
+            definition: La même boucle dans le terminal, l'IDE, l'application desktop et le web.
+            slide: 02-prise-en-main.md#Une boucle, plusieurs interfaces
+      - section: Démarrage
+        concepts:
+          - concept: Confiance du dossier
+            definition: Accord donné au premier lancement dans un dossier ; ses règles allow, hooks et marketplaces s'appliquent ensuite.
+            slide: 02-prise-en-main.md#Lancer dans le projet
+            voir: [Droits d'un hook]
+          - concept: Répertoire de travail
+            definition: Dossier de lancement, accessible sans demande ; les autres le sont sur permission.
+            slide: 02-prise-en-main.md#Ce que voit l'agent au démarrage
+            outils:
+              claude-code: "`--add-dir`, `/add-dir`"
+              opencode: permission `external_directory`, aucun équivalent de `--add-dir`
+      - section: Contrôle
+        concepts:
+          - concept: Interrompre l'agent
+            definition: "`Esc` arrête l'agent ; `Enter` pendant le travail met un message en file."
+            slide: 02-prise-en-main.md#Reprendre la main
+          - concept: Checkpoint
+            definition: État des fichiers avant une édition de l'agent, restauré par `Esc Esc` ou `/rewind`.
+            slide: 02-prise-en-main.md#Reprendre la main
+            outils:
+              claude-code: "`Esc Esc`, `/rewind`"
+              opencode: "`/undo`, `/redo`"
+          - concept: Limites des checkpoints
+            definition: Les fichiers modifiés par Bash et les actions distantes ne sont pas restaurés ; git reste le filet.
+            slide: 02-prise-en-main.md#Ce que les checkpoints ne couvrent pas
+      - section: Permissions
+        concepts:
+          - concept: Permission
+            definition: Accord demandé pour un appel d'outil, donné une fois ou de façon durable.
+            slide: 02-prise-en-main.md#Une demande de permission
+          - concept: Approbation par outil
+            definition: En mode Manual, lectures sans demande ; Bash, éditions et accès web demandent.
+            slide: 02-prise-en-main.md#Ce qui demande une approbation
+      - section: Modes
+        concepts:
+          - concept: Mode de permission
+            definition: "Ce qui passe sans demande : `default`, `acceptEdits`, `plan`, `auto`, `dontAsk`, `bypassPermissions`."
+            slide: 02-prise-en-main.md#Six modes de permission
+            outils:
+              claude-code: six modes, `Shift+Tab`, `--permission-mode`
+              opencode: agents Build et Plan, `Shift+Tab`
+          - concept: Mode plan
+            definition: L'agent lit et propose sans rien modifier.
+            slide: 02-prise-en-main.md#Six modes de permission
+            outils:
+              claude-code: "`Shift+Tab`, `/plan`, `--permission-mode plan`"
+              opencode: agent Plan, `Shift+Tab`
+          - concept: Mode auto
+            definition: Mode de départ depuis la v2.1.283 ; un classifieur examine chaque action avant son exécution.
+            slide: 02-prise-en-main.md#Auto, mode de départ depuis la v2.1.283
+            outils:
+              claude-code: "`auto`"
+              opencode: aucun équivalent
+          - concept: Classifieur
+            definition: Modèle distinct qui examine les actions en mode auto.
+            slide: 02-prise-en-main.md#Auto, mode de départ depuis la v2.1.283
+          - concept: Chemin protégé
+            definition: Fichier jamais approuvé d'office, sauf en `bypassPermissions` ; `.git`, `.claude`, `.bashrc` par exemple.
+            slide: 02-prise-en-main.md#Ce qui reste soumis à demande
+      - section: Règles
+        concepts:
+          - concept: Règle allow, ask, deny
+            definition: Décision fixée pour un outil et un motif, appliquée par l'outil quelle que soit la demande du modèle.
+            slide: 02-prise-en-main.md#Règles allow, ask, deny
+            outils:
+              claude-code: "`permissions` de `settings.json` ; deny, puis ask, puis allow"
+              opencode: "`permissions` de `opencode.json` ; la dernière règle qui correspond l'emporte"
+          - concept: Fichiers de réglages
+            definition: Géré, local, projet et utilisateur, du plus prioritaire au moins prioritaire.
+            slide: 02-prise-en-main.md#Où vivent les réglages
+            outils:
+              claude-code: "`.claude/settings.json`, `.claude/settings.local.json`, `~/.claude/settings.json`"
+              opencode: "`opencode.json`, `~/.config/opencode/opencode.json`"
+      - section: Bonnes pratiques
+        concepts:
+          - concept: Explorer avant de modifier
+            definition: Poser en mode plan les questions qu'on poserait à un collègue.
+            slide: 02-prise-en-main.md#Explorer avant de modifier
+            voir: [Mode plan]
+          - concept: Moyen de vérifier
+            definition: "Une commande que l'agent lance lui-même : tests, build ou linter."
+            slide: 02-prise-en-main.md#Donner à l'agent un moyen de vérifier
+          - concept: Une session par tâche
+            definition: Vider le contexte entre deux tâches sans lien, reprendre une session plus tard.
+            slide: 02-prise-en-main.md#Une session par tâche
+            outils:
+              claude-code: "`/clear`, `claude -c`, `claude -r`"
+              opencode: "`/new`, `opencode -c`, `/sessions`"
+          - concept: /init
+            definition: Analyse le dépôt et écrit un premier fichier de contexte, ou propose d'améliorer celui qui existe.
+            slide: 02-prise-en-main.md#/init génère un CLAUDE.md
+            outils:
+              claude-code: crée `CLAUDE.md`
+              opencode: crée `AGENTS.md`
+            voir: [CLAUDE.md]
+
+  - module: "03"
+    titre: Explorer et comprendre un code existant
+    sections:
+      - section: Recherche
+        concepts:
+          - concept: Outil de lecture
+            definition: Lit un fichier ou cherche un motif, sans demande dans le répertoire de travail.
+            slide: 03-explorer.md#Les outils de lecture
+            outils:
+              claude-code: "`Read`, `grep` et `find` par Bash"
+              opencode: "`read`, `grep`, `glob`"
+          - concept: LSP
+            definition: Outil qui donne définitions, références et erreurs de type.
+            slide: 03-explorer.md#Les outils de lecture
+          - concept: Lecture par plage
+            definition: Lecture de quelques lignes d'un fichier ; un appel `Read` renvoie au plus 25 000 tokens.
+            slide: 03-explorer.md#Lire par plages
+          - concept: Sous-agent
+            definition: Agent lancé par la session, dans son propre contexte, qui ne renvoie qu'un résumé.
+            slide: 03-explorer.md#Le sous-agent Explore
+            voir: [Sous-agent personnalisé, Relecture en contexte neuf]
+          - concept: Explore
+            definition: Sous-agent intégré en lecture seule, aux niveaux quick, medium ou very thorough.
+            slide: 03-explorer.md#Le sous-agent Explore
+            outils:
+              claude-code: "`Explore`, choisi par l'agent"
+              opencode: "`explore`, aussi par `@explore`"
+      - section: Expliquer
+        concepts:
+          - concept: Mention @
+            definition: Fichier inclus dans le prompt sans appel de lecture.
+            slide: 03-explorer.md#Désigner un fichier avec @
+            outils:
+              claude-code: "`@chemin`"
+              opencode: "`@chemin`, `@chemin#44-61` pour une plage"
+            voir: [Import @]
+          - concept: Du général au particulier
+            definition: Vue d'ensemble, motifs d'architecture, modèles de données, puis une zone précise.
+            slide: 03-explorer.md#Du général au particulier
+          - concept: Traitement de bout en bout
+            definition: Suivre une requête de la route jusqu'à la base, appel par appel.
+            slide: 03-explorer.md#Suivre un traitement de bout en bout
+          - concept: Explication d'une dépendance
+            definition: Demander d'où vient un objet reçu et quand il est libéré.
+            slide: 03-explorer.md#Expliquer une dépendance
+      - section: Reformuler
+        concepts:
+          - concept: Demande exploitable
+            definition: Délimiter, désigner les sources, montrer un motif, décrire le symptôme.
+            slide: 03-explorer.md#Une demande exploitable
+            voir: [Périmètre d'une demande]
+          - concept: Reformulation
+            definition: Partir de ce qu'on veut, puis affiner d'après la réponse.
+            slide: 03-explorer.md#Reformuler en cours de route
+      - section: Modifier
+        concepts:
+          - concept: Edit
+            definition: Remplace une chaîne exacte, présente une seule fois dans le fichier.
+            slide: 03-explorer.md#Une modification ciblée
+          - concept: Write
+            definition: Crée un fichier ou l'écrase avec le contenu complet.
+            slide: 03-explorer.md#Une modification ciblée
+          - concept: Diff
+            definition: Différence entre deux états d'un fichier, affichée avant l'acceptation d'une édition.
+            slide: 03-explorer.md#Le diff avant l'acceptation
+          - concept: /diff
+            definition: Compare l'arbre de travail à `HEAD`, avec une vue par tour.
+            slide: 03-explorer.md#Relire avec /diff
+      - section: Contrôle
+        concepts:
+          - concept: Références au code
+            definition: Exiger le fichier et la ligne de chaque affirmation, puis rouvrir le code cité.
+            slide: 03-explorer.md#Une explication se vérifie
+          - concept: Périmètre d'une demande
+            definition: Fichiers et question qu'une demande délimite ; sans lui, l'exploration remplit le contexte.
+            slide: 03-explorer.md#Borner l'exploration
+
+  - module: "04"
+    titre: Générer, refactorer et tester
+    sections:
+      - section: Tests
+        concepts:
+          - concept: Génération de tests
+            definition: L'agent reprend le style, le framework et les assertions des tests existants.
+            slide: 04-generer-tester.md#Faire écrire des tests
+          - concept: Test de caractérisation
+            definition: Test qui fige le comportement actuel, défauts compris.
+            slide: 04-generer-tester.md#Le test de caractérisation
+          - concept: Cas tirés des données réelles
+            definition: Des montants déjà facturés deviennent des cas de test.
+            slide: 04-generer-tester.md#Des données réelles en plus des cas inventés
+      - section: Refactoring
+        concepts:
+          - concept: Comportement constant
+            definition: Mêmes sorties avant et après le refactoring, contrôlées par les tests de caractérisation.
+            slide: 04-generer-tester.md#Refactorer à comportement constant
+            voir: [Test de caractérisation]
+          - concept: Refactoring borné
+            definition: Aucune correction au passage ; un défaut trouvé se signale dans un commentaire.
+            slide: 04-generer-tester.md#Borner le refactoring
+          - concept: Échec d'un test de caractérisation
+            definition: Il signale un changement de comportement ; on corrige le code, et le test reste tel quel.
+            slide: 04-generer-tester.md#Quand un test échoue
+      - section: Effort
+        concepts:
+          - concept: Effort
+            definition: Quantité de raisonnement et de travail du modèle ; `low`, `medium`, `high` ou `max` pour Sonnet 4.6.
+            slide: 04-generer-tester.md#L'effort du modèle
+            outils:
+              claude-code: "`--effort`, `/effort`"
+              opencode: "variantes du modèle : `/variants`, `ctrl+t`"
+          - concept: Choix du niveau d'effort
+            definition: L'effort agit sur tous les tokens de sortie, appels d'outils compris ; durée et coût suivent.
+            slide: 04-generer-tester.md#Ce que l'effort change
+      - section: Générer
+        concepts:
+          - concept: Spécification
+            definition: Nomme fichiers et interfaces, dit ce qui sort du périmètre, finit par une vérification de bout en bout.
+            slide: 04-generer-tester.md#Une spécification exploitable
+            voir: [Spec Driven Development]
+          - concept: Plan avant implémentation
+            definition: En mode plan, l'agent propose un plan, corrigé dans l'éditeur par `Ctrl+G` avant l'implémentation.
+            slide: 04-generer-tester.md#Planifier, puis implémenter
+            voir: [Mode plan]
+          - concept: Test avant le code
+            definition: Un test qui échoue avant l'implémentation montre qu'il vérifie le nouveau comportement.
+            slide: 04-generer-tester.md#Le test avant le code
+      - section: Vérifier
+        concepts:
+          - concept: Boucle de vérification
+            definition: Contrôle qui décide si le travail est fini, dans le prompt, par `/goal`, par un hook `Stop` ou par un second avis.
+            slide: 04-generer-tester.md#La boucle de vérification
+            voir: [Hook Stop]
+          - concept: Preuve d'exécution
+            definition: La commande et sa sortie complète restent dans la conversation.
+            slide: 04-generer-tester.md#Exiger la preuve
+          - concept: Relecture en contexte neuf
+            definition: Diff relu sans l'historique de la conversation.
+            slide: 04-generer-tester.md#Relire dans un contexte neuf
+            outils:
+              claude-code: "`/code-review`, par un sous-agent"
+              opencode: "`/new`, puis `/review`"
+      - section: Documenter
+        concepts:
+          - concept: Documentation du code
+            definition: La consigne nomme le style et les fonctions visées, et exclut toute modification du code.
+            slide: 04-generer-tester.md#Documenter le code
+          - concept: Trailer de commit
+            definition: 'Ligne `Clé: valeur` en fin de message de commit, comme `Co-Authored-By`.'
+            slide: 04-generer-tester.md#Le message de commit
+            outils:
+              claude-code: "`Co-Authored-By` ajouté à chaque commit"
+              opencode: aucun équivalent
+
+  - module: "05"
+    titre: Prompting, CLAUDE.md, mémoire et contexte
+    sections:
+      - section: Prompting
+        concepts:
+          - concept: Test du collègue
+            definition: Un prompt se juge comme une consigne laissée à un collègue compétent qui ignore la tâche.
+            slide: 05-contexte-projet.md#Le test du collègue
+          - concept: Raison d'une consigne
+            definition: Une consigne motivée se généralise aux cas qu'elle ne nomme pas.
+            slide: 05-contexte-projet.md#Donner la raison
+          - concept: Verbe d'action
+            definition: « Améliore » fait modifier le code ; « peux-tu suggérer » obtient parfois des suggestions seules.
+            slide: 05-contexte-projet.md#Le verbe décide de l'action
+          - concept: Consigne positive
+            definition: Consigne qui décrit le résultat attendu ; un interdit laisse le modèle deviner quoi faire.
+            slide: 05-contexte-projet.md#Dire quoi faire
+          - concept: Balise XML
+            definition: Délimite une partie du prompt, pour que le modèle distingue consigne et contexte.
+            slide: 05-contexte-projet.md#Séparer les parties de la demande
+          - concept: Exemples dans le prompt
+            definition: Trois à cinq exemples variés fixent le format plus sûrement qu'une description.
+            slide: 05-contexte-projet.md#Montrer des exemples
+          - concept: Données longues en tête
+            definition: Le document long d'abord, la question à la fin.
+            slide: 05-contexte-projet.md#Les données longues en tête
+          - concept: Contenu apporté
+            definition: Entrée standard, fichier désigné par @, URL ou image collée.
+            slide: 05-contexte-projet.md#Apporter le contenu
+            outils:
+              claude-code: "`cat error.log | claude -p \"…\"`"
+              opencode: "`cat error.log | opencode run \"…\"`"
+      - section: CLAUDE.md
+        concepts:
+          - concept: CLAUDE.md
+            definition: Fichier Markdown lu au début de chaque session, que Claude suit au mieux, sans garantie.
+            slide: 05-contexte-projet.md#Ce qu'est CLAUDE.md
+            outils:
+              claude-code: "`CLAUDE.md`, sinon `AGENTS.md`"
+              opencode: "`AGENTS.md`"
+            voir: [Mémoire automatique, AGENTS.md]
+          - concept: Ce que le code ne dit pas
+            definition: Workflow, décisions et leur raison, interdits et pièges, environnement.
+            slide: 05-contexte-projet.md#Ce que le code ne dit pas
+          - concept: Une ligne, une question
+            definition: Retirer cette ligne ferait-il commettre une erreur à Claude ? Sinon, elle part ; cible de moins de 200 lignes.
+            slide: 05-contexte-projet.md#Une ligne, une question
+          - concept: Consigne vérifiable
+            definition: Consigne qui se contrôle sur le diff, comme `Use 2-space indentation`.
+            slide: 05-contexte-projet.md#Des consignes vérifiables
+          - concept: Marque IMPORTANT
+            definition: Signale une consigne souvent ignorée ; en marquer beaucoup annule l'effet.
+            slide: "05-contexte-projet.md#Une consigne ignorée : « IMPORTANT »"
+          - concept: Enrichir CLAUDE.md
+            definition: Quand Claude refait la même erreur, ou qu'une revue relève ce qu'il aurait dû savoir.
+            slide: 05-contexte-projet.md#Quand enrichir le fichier
+      - section: Portées
+        concepts:
+          - concept: Portée d'un CLAUDE.md
+            definition: Géré, utilisateur, projet ou local.
+            slide: 05-contexte-projet.md#Où vivent les fichiers
+            outils:
+              claude-code: "`/etc/claude-code/CLAUDE.md`, `~/.claude/CLAUDE.md`, `CLAUDE.md`, `CLAUDE.local.md`"
+              opencode: "`AGENTS.md` du projet, `~/.config/opencode/AGENTS.md`"
+          - concept: Ordre de chargement
+            definition: Du fichier géré au fichier local au lancement ; ceux des sous-répertoires quand Claude y lit ou modifie un fichier.
+            slide: 05-contexte-projet.md#L'ordre de chargement
+          - concept: Import @
+            definition: "`@chemin` dans CLAUDE.md charge le fichier au lancement, sans réduire le contexte consommé."
+            slide: 05-contexte-projet.md#Importer avec @
+            outils:
+              claude-code: "`@chemin`"
+              opencode: aucun équivalent
+          - concept: Citer sans importer
+            definition: Un chemin écrit sans @ reste du texte ; l'agent ouvre le fichier quand la consigne s'applique.
+            slide: 05-contexte-projet.md#Citer sans importer
+          - concept: Règle par chemin
+            definition: Règle chargée quand Claude lit un fichier qui correspond à son motif `paths`.
+            slide: 05-contexte-projet.md#Des règles par chemin
+            outils:
+              claude-code: "`.claude/rules/*.md` avec `paths`"
+              opencode: aucun équivalent
+          - concept: Divulgation progressive
+            definition: Chargement à la demande, au lancement, à la lecture d'un fichier ou quand la tâche l'exige.
+            slide: 05-contexte-projet.md#La divulgation progressive
+            voir: [Niveaux de lecture d'un skill]
+          - concept: /context
+            definition: Liste les fichiers chargés et l'occupation du contexte.
+            slide: 05-contexte-projet.md#Vérifier ce qui est chargé
+            outils:
+              claude-code: "`/context`"
+              opencode: aucun équivalent
+          - concept: AGENTS.md
+            definition: Fichier de contexte d'Open Code, lu par Claude Code en l'absence de CLAUDE.md.
+            slide: "05-contexte-projet.md#Open Code : AGENTS.md"
+      - section: Mémoire
+        concepts:
+          - concept: Mémoire automatique
+            definition: Notes que Claude écrit pour lui-même, de type user, feedback, project ou reference.
+            slide: 05-contexte-projet.md#La mémoire automatique
+            outils:
+              claude-code: "`~/.claude/projects/<projet>/memory/`"
+              opencode: aucun équivalent
+          - concept: MEMORY.md
+            definition: Index de la mémoire, dont les 200 premières lignes ou 25 Ko sont lus au démarrage.
+            slide: 05-contexte-projet.md#Où vit la mémoire
+          - concept: /memory
+            definition: Ouvre la mémoire pour la consulter et la corriger ; « Retiens… » y écrit un fait.
+            slide: 05-contexte-projet.md#Consulter et corriger
+            outils:
+              claude-code: "`/memory`"
+              opencode: aucun équivalent
+      - section: Contexte
+        concepts:
+          - concept: Remplissage du contexte
+            definition: Messages, fichiers lus et sorties de commande restent dans le contexte ; les consignes anciennes s'oublient.
+            slide: 05-contexte-projet.md#Le contexte se remplit
+            voir: [Context rot]
+          - concept: Précision et longueur
+            definition: L'exactitude baisse à mesure que le texte autour de l'information s'allonge.
+            slide: 05-contexte-projet.md#Plus de texte, moins de précision
+          - concept: Lost in the middle
+            definition: Une information placée au milieu du contexte est moins bien retrouvée.
+            slide: 05-contexte-projet.md#Lost in the middle
+          - concept: Dérive de conversation
+            definition: Tâches sans lien mêlées ou corrections ratées répétées ; `/clear`, puis un meilleur prompt.
+            slide: 05-contexte-projet.md#Deux dérives
+          - concept: Compaction
+            definition: Résumé structuré qui remplace la conversation à l'approche de la limite du contexte.
+            slide: 05-contexte-projet.md#La compaction
+            outils:
+              claude-code: "`/compact [instructions]`, automatique"
+              opencode: "`/compact` sans instructions, `compaction.auto`"
+          - concept: Ce qui survit à la compaction
+            definition: CLAUDE.md racine et mémoire sont relus sur le disque ; les consignes de la conversation sont résumées.
+            slide: 05-contexte-projet.md#Ce qui survit à la compaction
+          - concept: /btw
+            definition: Question annexe dont la réponse n'entre pas dans l'historique.
+            slide: 05-contexte-projet.md#Garder le contexte propre
+            outils:
+              claude-code: "`/btw`"
+              opencode: aucun équivalent
+          - concept: Reprise en session neuve
+            definition: L'état d'un travail long vit dans les fichiers et dans git ; le prompt dit où le chercher.
+            slide: 05-contexte-projet.md#Repartir d'une session neuve
+      - section: Spécification
+        concepts:
+          - concept: Spécification d'abord
+            definition: L'agent interroge le développeur, écrit `SPEC.md`, qu'une session neuve implémente.
+            slide: "05-contexte-projet.md#Une grande fonctionnalité : la spécification d'abord"
+          - concept: Spec Driven Development
+            definition: La spécification dit quoi et pourquoi, le plan dit comment ; chaque étape écrit un fichier relu.
+            slide: 05-contexte-projet.md#Le Spec Driven Development
+          - concept: Spec Kit
+            definition: Outil de GitHub qui installe les étapes du Spec Driven Development dans l'agent.
+            slide: 05-contexte-projet.md#Spec Kit dans les deux outils
+            outils:
+              claude-code: skills dans `.claude/skills`, `/speckit-specify`
+              opencode: commandes dans `.opencode/commands`
+      - section: Équipe
+        concepts:
+          - concept: CLAUDE.md versionné
+            definition: Commité et relu en revue ; les préférences personnelles vont dans `CLAUDE.local.md`, hors de git.
+            slide: 05-contexte-projet.md#Un fichier versionné
+          - concept: Audit du fichier
+            definition: "`/doctor prompt-audit` signale consignes obsolètes, références mortes et contradictions."
+            slide: 05-contexte-projet.md#Entretenir le fichier
+          - concept: Limites de CLAUDE.md
+            definition: Une consigne est suivie au mieux ; une règle deny ou un hook bloque à coup sûr.
+            slide: 05-contexte-projet.md#Ce que CLAUDE.md ne garantit pas
+            voir: [Hook, Skill]
+
+  - module: "06"
+    titre: Étendre Claude Code
+    sections:
+      - section: Extensions
+        concepts:
+          - concept: Types d'extension
+            definition: Slash command, skill, hook et plugin, tous fichiers du dépôt.
+            slide: 06-extensions.md#Quatre façons d'étendre l'outil
+          - concept: Choix d'une extension
+            definition: "Prompt répété : slash command ; procédure occasionnelle : skill ; action systématique : hook ; plusieurs dépôts : plugin."
+            slide: 06-extensions.md#Choisir selon le besoin
+          - concept: Extensions et contexte
+            definition: Un skill coûte sa description au démarrage, un hook seulement le texte qu'il renvoie.
+            slide: 06-extensions.md#Ce que chaque extension ajoute au contexte
+      - section: Slash commands
+        concepts:
+          - concept: Slash command
+            definition: Prompt enregistré dans un fichier Markdown, lancé par /nom.
+            slide: 06-extensions.md#Une slash command est un fichier Markdown
+            outils:
+              claude-code: "`.claude/skills/<nom>/SKILL.md` ou `.claude/commands/<nom>.md`"
+              opencode: "`.opencode/commands/<nom>.md`"
+            voir: [Skill]
+          - concept: Frontmatter
+            definition: En-tête YAML entre deux lignes `---`, qui décrit la commande.
+            slide: 06-extensions.md#En-tête et corps du fichier
+          - concept: Arguments
+            definition: "`$ARGUMENTS` reçoit le texte qui suit le nom de la commande."
+            slide: 06-extensions.md#Passer des arguments
+            outils:
+              claude-code: premier mot `$0`
+              opencode: premier mot `$1`
+          - concept: Sortie d'une commande shell
+            definition: "``!`commande` `` insère la sortie de la commande avant l'envoi du prompt."
+            slide: 06-extensions.md#Insérer la sortie d'une commande shell
+          - concept: disable-model-invocation
+            definition: Réserve le lancement à l'utilisateur.
+            slide: 06-extensions.md#Empêcher l'agent de la lancer seul
+          - concept: Commandes intégrées
+            definition: "`/code-review`, `/doctor` et `/loop`, écrites comme des skills ; `/skills` liste les skills."
+            slide: 06-extensions.md#/code-review et /doctor sont des slash commands intégrées
+      - section: Skills
+        concepts:
+          - concept: Skill
+            definition: Instructions chargées quand la description correspond à la tâche.
+            slide: 06-extensions.md#Un skill charge des instructions quand la tâche le demande
+            outils:
+              claude-code: "`.claude/skills/<nom>/SKILL.md`, lancé aussi par `/nom`"
+              opencode: lit aussi `.claude/skills/`, lancé aussi par `@nom`
+          - concept: Niveaux de lecture d'un skill
+            definition: La description à chaque session, `SKILL.md` quand le skill sert, `reference.md` sur renvoi.
+            slide: 06-extensions.md#Ce que l'agent lit et à quel moment
+          - concept: Description d'un skill
+            definition: Le modèle choisit un skill sur sa description, qui reprend les mots d'une demande.
+            slide: 06-extensions.md#La description déclenche le skill
+          - concept: Qui lance un skill
+            definition: "`disable-model-invocation: true` le réserve à l'utilisateur, `user-invocable: false` à l'agent."
+            slide: 06-extensions.md#Qui peut lancer un skill
+          - concept: Portée d'un skill
+            definition: Entreprise, personnel ou projet ; à nom égal, le skill personnel l'emporte.
+            slide: 06-extensions.md#Skills personnels, de projet, d'entreprise
+          - concept: Skill chargé
+            definition: Son contenu entre une fois dans la conversation ; après une compaction, ses 5 000 premiers tokens reviennent.
+            slide: 06-extensions.md#Un skill chargé reste dans la conversation
+            voir: [Compaction]
+          - concept: "context: fork"
+            definition: Exécute le skill dans un sous-agent, sans l'historique de la conversation.
+            slide: 06-extensions.md#Faire exécuter un skill par un sous-agent
+            voir: [Sous-agent]
+          - concept: Sous-agent personnalisé
+            definition: Fichier Markdown dont le corps devient le prompt système du sous-agent.
+            slide: 06-extensions.md#Écrire son propre sous-agent
+            outils:
+              claude-code: "`.claude/agents/<nom>.md`"
+              opencode: "`.opencode/agents/<nom>.md` avec `mode: subagent`"
+          - concept: Skill qui ne se déclenche pas
+            definition: Absent de la liste des skills, il n'est pas chargé ; présent mais ignoré, sa description est à revoir.
+            slide: 06-extensions.md#Quand le skill ne se déclenche pas
+      - section: Hooks
+        concepts:
+          - concept: Hook
+            definition: Commande lancée par l'outil à un événement prévu, quel que soit le choix du modèle.
+            slide: 06-extensions.md#Un hook s'exécute sans que l'agent décide
+            outils:
+              claude-code: clé `hooks` de `settings.json`
+              opencode: aucun hook déclaratif, plugin JavaScript
+            voir: [Plugin Open Code]
+          - concept: Événement
+            definition: Moment qui déclenche le hook, comme `PreToolUse`, `PostToolUse` ou `Stop`.
+            slide: 06-extensions.md#Les principaux événements
+          - concept: Matcher
+            definition: Filtre sur les outils visés par le hook, comme `Edit|Write`.
+            slide: "06-extensions.md#Un hook : un moment, un filtre, une commande"
+          - concept: Entrée du hook
+            definition: Le script lit l'action en JSON sur son entrée standard.
+            slide: 06-extensions.md#Le hook reçoit l'action en JSON
+          - concept: Code de retour
+            definition: 0 laisse l'action suivre son cours, 2 la bloque et transmet le message d'erreur au modèle.
+            slide: 06-extensions.md#Le code de retour du script décide de la suite
+          - concept: Ce que le modèle lit du hook
+            definition: Après un `PostToolUse`, la sortie standard va au journal ; seul le message d'un code 2 parvient au modèle.
+            slide: 06-extensions.md#Ce que le modèle lit du hook
+          - concept: Hook PreToolUse
+            definition: Refuse une action avant son exécution ; l'agent reçoit la raison du refus.
+            slide: 06-extensions.md#Bloquer la modification d'un fichier
+            outils:
+              claude-code: hook `PreToolUse` sur `Edit|Write`
+              opencode: règle `deny` de `opencode.json` pour un fichier
+          - concept: Hook Stop
+            definition: Avec le code 2, empêche Claude de terminer son tour ; `stop_hook_active` signale une reprise.
+            slide: 06-extensions.md#Empêcher la fin du tour tant que les tests échouent
+          - concept: Hooks et permissions
+            definition: Un hook peut refuser une action, même en `bypassPermissions` ; il n'autorise jamais ce qu'une règle interdit.
+            slide: 06-extensions.md#Un hook ne contourne pas les permissions
+          - concept: Tester un hook
+            definition: Le script se teste seul, hors session ; `/hooks` liste les hooks, `Ctrl+O` affiche leur résultat.
+            slide: 06-extensions.md#Voir ce qu'un hook a fait
+          - concept: Droits d'un hook
+            definition: Un hook exécute n'importe quelle commande avec les droits de l'utilisateur ; il se lit avant d'être accepté.
+            slide: 06-extensions.md#Un hook s'exécute avec les droits de l'utilisateur
+          - concept: Formatage après édition
+            definition: Formate chaque fichier modifié par l'agent.
+            slide: "06-extensions.md#Open Code : formateur et plugin"
+            outils:
+              claude-code: hook `PostToolUse` sur `Edit|Write`
+              opencode: clé `formatter` de `opencode.json`
+          - concept: Plugin Open Code
+            definition: Module JavaScript qui réagit aux appels d'outils et peut compléter leur résultat.
+            slide: "06-extensions.md#Open Code : un plugin v2"
+            outils:
+              claude-code: aucun équivalent
+              opencode: "`.opencode/plugins/<nom>.js`"
+      - section: Équipe
+        concepts:
+          - concept: Workflow d'équipe
+            definition: CLAUDE.md, slash command, hook et skill couvrent chacun une étape du travail.
+            slide: 06-extensions.md#Un workflow d'équipe
+          - concept: Extensions commitées
+            definition: Réglages, skills et agents du projet se commitent ; les réglages locaux restent personnels.
+            slide: 06-extensions.md#Les extensions se commitent avec le code
+            outils:
+              claude-code: "`.claude/`, `.mcp.json` ; `.claude/settings.local.json` exclu"
+              opencode: "`opencode.json`, `.opencode/`"
+          - concept: Plugin
+            definition: Paquet qui regroupe des extensions pour plusieurs dépôts ; ses skills portent son nom en préfixe.
+            slide: 06-extensions.md#Regrouper ses extensions dans un plugin
+            outils:
+              claude-code: "`.claude-plugin/plugin.json`, `/plugin`"
+              opencode: paquet npm ou git dans `plugins` de `opencode.json`
+          - concept: Marketplace
+            definition: Dépôt qui liste des plugins dans `.claude-plugin/marketplace.json`.
+            slide: 06-extensions.md#Installer un plugin depuis une marketplace
+            outils:
+              claude-code: "`/plugin marketplace add`"
+              opencode: aucun équivalent
+          - concept: Plugin activé pour le dépôt
+            definition: "`extraKnownMarketplaces` et `enabledPlugins` dans `.claude/settings.json` l'activent pour chaque développeur."
+            slide: 06-extensions.md#Activer un plugin pour tout le dépôt
+          - concept: Droits d'un plugin
+            definition: Un plugin activé peut exécuter du code sur le poste ; il se lit avant d'être installé.
+            slide: 06-extensions.md#Un plugin s'exécute avec vos droits
+            voir: [Droits d'un hook]
+
+  - module: "07"
+    titre: Livrable documentaire avec pandoc
+    sections:
+      - section: Notions
+        concepts:
+          - concept: pandoc
+            definition: Convertisseur de documents, qui lit 47 formats et en écrit 67.
+            slide: 07-pandoc.md#pandoc convertit un document d'un format à un autre
+          - concept: Chaîne de production
+            definition: pandoc, un template, une CSS paginée et WeasyPrint produisent le PDF.
+            slide: 07-pandoc.md#Les quatre pièces de la chaîne
+      - section: Piloter
+        concepts:
+          - concept: Écrire, convertir, relire
+            definition: L'agent écrit la source, lance pandoc, relit le PDF et corrige la source si un critère échoue.
+            slide: 07-pandoc.md#L'agent écrit, convertit, relit
+          - concept: Source texte
+            definition: Le Markdown se relit en diff et se versionne ; le PDF se régénère depuis lui.
+            slide: 07-pandoc.md#La source est un fichier texte
+          - concept: Lecture d'un PDF
+            definition: L'agent lit le PDF qu'il produit pour le vérifier.
+            slide: 07-pandoc.md#L'agent lit le PDF qu'il produit
+            outils:
+              claude-code: "`Read`, par plages de 20 pages au-delà de 10 pages, avec `pdftoppm`"
+              opencode: "`read` transmet le PDF entier, jusqu'à 20 Mio"
+          - concept: Grille de vérification
+            definition: Critères écrits que l'agent vérifie un à un, en citant la page qui le prouve.
+            slide: 07-pandoc.md#Vérifier contre une grille écrite
+          - concept: Coût d'une session
+            definition: Chaque relecture coûte des tokens, que l'outil affiche avec un coût estimé.
+            slide: 07-pandoc.md#Chaque relecture coûte des tokens
+            outils:
+              claude-code: "`/usage`"
+              opencode: zone de saisie et panneau latéral « Context »
+      - section: Chaîne
+        concepts:
+          - concept: Représentation commune
+            definition: Un lecteur produit un arbre du document, qu'un écrivain convertit dans le format de sortie.
+            slide: 07-pandoc.md#pandoc passe par une représentation commune
+          - concept: WeasyPrint
+            definition: Moteur qui transforme du HTML et sa CSS en PDF, choisi par `--pdf-engine=weasyprint`.
+            slide: 07-pandoc.md#Le PDF passe par HTML et CSS
+          - concept: Options de pandoc
+            definition: "`-s` produit un document complet, `--template` et `--css` le mettent en forme, `--wrap=none` évite les coupures."
+            slide: 07-pandoc.md#La commande, option par option
+          - concept: Métadonnées
+            definition: Bloc YAML en tête du Markdown, dont chaque champ devient une variable du template.
+            slide: 07-pandoc.md#Les métadonnées en tête du Markdown
+            voir: [Template]
+          - concept: Tableau Markdown
+            definition: Les deux-points de la ligne de séparation alignent la colonne.
+            slide: 07-pandoc.md#Les tableaux Markdown
+          - concept: Installation de pandoc
+            definition: "`sudo apt install pandoc weasyprint` suffit sous Ubuntu 22.04 et 24.04."
+            slide: 07-pandoc.md#Installer pandoc et WeasyPrint
+      - section: Template et CSS
+        concepts:
+          - concept: Template
+            definition: Squelette HTML de la page, où `$title$` et `$body$` reçoivent métadonnées et contenu.
+            slide: "07-pandoc.md#Le template : du HTML avec des variables"
+          - concept: Conditions et boucles
+            definition: "`$if$` insère un bloc si la variable existe, `$for$` le répète pour chaque valeur."
+            slide: 07-pandoc.md#Conditions et boucles
+          - concept: Template par défaut
+            definition: "`pandoc -D html` l'affiche, pour le copier puis le modifier."
+            slide: 07-pandoc.md#Partir du template par défaut
+          - concept: CSS paginée
+            definition: Feuille de style qui décrit des pages imprimées.
+            slide: "07-pandoc.md#Le format de la page : @page"
+          - concept: "@page"
+            definition: Règle CSS du format du papier et des marges de chaque page.
+            slide: "07-pandoc.md#Le format de la page : @page"
+          - concept: Numérotation des pages
+            definition: "`counter(page)` et `counter(pages)` dans une marge de `@page`."
+            slide: 07-pandoc.md#Numéroter les pages
+          - concept: Sauts de page
+            definition: "`break-after`, `break-inside` et `break-before` contrôlent les coupures entre pages."
+            slide: 07-pandoc.md#Contrôler les sauts de page
+          - concept: Largeur des colonnes
+            definition: Au-delà de 72 caractères par ligne, pandoc fixe les largeurs d'après les tirets de la ligne de séparation.
+            slide: 07-pandoc.md#Des colonnes de même largeur
+      - section: Données
+        concepts:
+          - concept: Approche directe
+            definition: L'agent lit le CSV, calcule les chiffres et rédige ; il refait les calculs chaque mois.
+            slide: 07-pandoc.md#L'approche directe
+          - concept: Approche outillée
+            definition: Un script écrit une fois calcule les chiffres ; `make` le relance chaque mois.
+            slide: 07-pandoc.md#L'approche outillée
+          - concept: Agrégat
+            definition: Chiffre calculé sur les données, à partir duquel l'agent rédige sans relire le CSV.
+            slide: 07-pandoc.md#L'agent rédige à partir des chiffres calculés
+      - section: Industrialisation
+        concepts:
+          - concept: Makefile
+            definition: Fichier des règles de `make`, qui reconstruit un fichier quand une de ses dépendances est plus récente.
+            slide: 07-pandoc.md#Un Makefile enchaîne les étapes
+          - concept: Règle de make
+            definition: La cible, ses dépendances, puis la commande qui la produit, indentée par une tabulation.
+            slide: "07-pandoc.md#Une règle : cible, dépendances, commande"
+          - concept: Mode non interactif
+            definition: L'agent répond sans session ; l'entrée standard s'ajoute au prompt.
+            slide: 07-pandoc.md#Appeler l'agent sans session
+            outils:
+              claude-code: "`claude -p \"/nom\"`, slash command développée"
+              opencode: "`opencode run \"…\"`, slash command non développée"
+            voir: [Slash command]
+          - concept: Cible du modèle
+            definition: "`make faits` appelle le modèle une fois par mois ; `make` reconstruit le PDF sans l'appeler."
+            slide: 07-pandoc.md#L'appel au modèle a sa propre cible
+          - concept: Fichiers versionnés
+            definition: Script, tests, template, CSS, Makefile et commande se versionnent ; `build/` et le PDF se régénèrent.
+            slide: 07-pandoc.md#Ce qui se versionne
+      - section: Choisir
+        concepts:
+          - concept: Choix de l'approche
+            definition: Un document ponctuel se fait en approche directe, un rapport publié chaque mois s'outille.
+            slide: 07-pandoc.md#Un rapport récurrent s'outille
+            voir: [Approche directe, Approche outillée]
