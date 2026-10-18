@@ -118,7 +118,7 @@ Le TP 4 dure 35 minutes, et cette étape en prend une part importante. Le plan d
 
 Départ : état d'arrivée du TP 4.
 
-Travail : lancer `/init` et lire le `CLAUDE.md` généré. Le compléter avec les conventions implicites, absentes du fichier généré. Rédiger une demande structurée pour la spécification des réservations récurrentes hebdomadaires : toutes les occurrences sont créées dans une transaction, ou aucune si l'une est en conflit. Vérifier que l'implémentation respecte les conventions du `CLAUDE.md`. Passer à une seconde tâche dans une session neuve, puis compacter une session longue et comparer.
+Travail : générer le fichier de contexte par `/init` interactif (`CLAUDE_CODE_NEW_INIT=1`, Claude Code) ou par un prompt qui l'imite (Open Code), en donnant les conventions implicites en réponse aux questions de l'agent. Rédiger une demande structurée pour la spécification des réservations récurrentes hebdomadaires : toutes les occurrences sont créées dans une transaction, ou aucune si l'une est en conflit. Vérifier que l'implémentation respecte les conventions du `CLAUDE.md`. Passer à une seconde tâche dans une session neuve, puis compacter une session longue et comparer.
 
 Arrivée : fichier de contexte commité, route `POST /bookings/weekly` testée. Deux commits.
 

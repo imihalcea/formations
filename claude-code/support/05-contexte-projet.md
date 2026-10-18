@@ -1104,20 +1104,28 @@ Prérequis : TP 4 terminé et commité.
 ::: notes
 Étapes de l'énoncé : #24.
 Sous Claude Code, `/init` crée `CLAUDE.md` ; sous Open Code, `AGENTS.md`. Chaque outil garde son fichier, sans renommage.
+Essai du 18 octobre 2026, copie du fil rouge, `claude-sonnet-4-6` :
+- Claude Code v2.1.302, `CLAUDE_CODE_NEW_INIT=1` : deux questions de cadrage (fichiers, skills et hooks), exploration par un sous-agent Explore (approbations : `git worktree list`, `ls` de fichiers de config d'autres outils), deux questions (conventions git, contexte), proposition à valider, puis écriture. `CLAUDE.md` de 35 lignes : commandes, ruff, dates naïves, centimes, `seed.py`, `pytest -q` avant commit. Après l'écriture, l'agent continue sur des « optimisations supplémentaires » (vérification de `gh`) : interrompre par `Esc` si besoin.
+- Open Code v2.0.26, prompt ci-dessus : sous-agent Explore (une dizaine d'approbations bash en lecture), 7 questions par l'outil `question` ([`question.ts`](https://github.com/anomalyco/opencode/blob/v2.0.26/packages/core/src/tool/plugin/question.ts)), proposition affichée, écriture après accord. `AGENTS.md` de 79 lignes. Raison inventée par l'agent : « Pas d'authentification : hors périmètre de cet exercice ».
+`/init` sans la variable reste le comportement par défaut de Claude Code ; la doc présente le flux interactif comme une option.
 La mémoire automatique reste hors du TP : aucun équivalent Open Code.
 :::
 
 ### Générer le fichier de contexte
 
+L'agent explore le dépôt, puis pose des questions sur ce que le code ne dit pas. Y répondre avec le workflow et les interdits du projet, par exemple « Montants toujours en centimes entiers. Ne jamais modifier rooms/seed.py sans accord. » Les commandes de lecture lancées pendant l'exploration demandent une approbation.
+
 ::: claude-code
 ```console
 $ cd ~/fil-rouge
-$ claude --permission-mode default --model claude-sonnet-4-6
+$ CLAUDE_CODE_NEW_INIT=1 claude --permission-mode default --model claude-sonnet-4-6
 ```
 
 ```prompt
 /init
 ```
+
+Choisir « CLAUDE.md projet », puis « Non, juste CLAUDE.md » : skills et hooks viennent au module 6.
 :::
 
 ::: opencode
@@ -1127,12 +1135,12 @@ $ opencode
 ```
 
 ```prompt
-/init
+Crée AGENTS.md pour ce projet. Explore d'abord le dépôt avec un sous-agent. Pose-moi ensuite, avec l'outil question, les questions sur ce que le code ne dit pas : workflow (tests, commits), décisions et leurs raisons, interdits. Montre-moi enfin le contenu proposé et attends mon accord avant d'écrire le fichier.
 ```
 :::
 
 ::: attendu
-Un `CLAUDE.md` (Claude Code) ou un `AGENTS.md` (Open Code) à la racine du projet. Il donne les commandes `uv run` et décrit l'architecture, sans les conventions des dates, du SQL et des erreurs.
+L'agent montre le contenu proposé avant d'écrire `CLAUDE.md` (Claude Code) ou `AGENTS.md` (Open Code) à la racine du projet. Le fichier donne les commandes `uv run` et reprend les réponses. Les raisons qu'il attribue aux décisions sont à relire : l'agent en propose sans les connaître.
 :::
 
 ## Glossaire {kicker="Glossaire"}
