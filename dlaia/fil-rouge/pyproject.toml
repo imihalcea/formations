@@ -1,0 +1,27 @@
+[project]
+name = "bookit"
+version = "0.1.0"
+description = "Réservation de ressources, projet fil rouge de la formation DLAIA"
+requires-python = ">=3.14"
+dependencies = [
+    "fastapi",
+    "uvicorn",
+]
+
+[dependency-groups]
+dev = [
+    "httpx2",
+    "pytest",
+    "pytest-bdd",
+    "ruff",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
