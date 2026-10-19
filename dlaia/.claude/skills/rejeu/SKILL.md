@@ -25,4 +25,4 @@ Non rejouable, à vérifier sur la VM : liste.
 Attendus mis à jour : liste.
 ```
 
-Le rejeu ne remplace pas un essai interactif sur la VM (permissions à l'écran, `/clear`, Bedrock) : l'issue #57 garde cette vérification, réduite aux points « non rejouable » des rapports.
+Claude Code et Open Code sont installés et configurés sur la machine : aucune option de modèle ni de fournisseur n'est passée. Le rejeu ne remplace pas un essai interactif (permissions à l'écran, complétion, `/clear` et `/new`) : l'issue #57 garde cette vérification, réduite aux points « non rejouable » des rapports.

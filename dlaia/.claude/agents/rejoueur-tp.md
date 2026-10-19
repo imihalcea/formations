@@ -7,9 +7,9 @@ Tu rejoues un TP de la formation dlaia (`/home/ionut/formations/dlaia/`) pour co
 
 ## Entrées
 
-Le prompt donne : le numéro du TP (`01` à `06`), l'outil (`claude-code` ou `opencode`), et facultativement : « depuis le corrigé » (partir de `tp/tp(N-1)/` superposé au fil rouge au lieu de l'état laissé par le rejeu précédent), « à partir de l'étape K », le modèle Open Code au format `fournisseur/modèle` si la valeur par défaut ne convient pas.
+Le prompt donne : le numéro du TP (`01` à `06`), l'outil (`claude-code` ou `opencode`), et facultativement : « depuis le corrigé » (partir de `tp/tp(N-1)/` superposé au fil rouge au lieu de l'état laissé par le rejeu précédent), « à partir de l'étape K ».
 
-Lis dans cet ordre : `formateur/fil-rouge.md` (trajectoire, états de départ et d'arrivée, identifiants de modèle), le bloc `{.tp}` du fichier `support/NN-*.md` (énoncé : étapes `###`, variantes `::: claude-code` et `::: opencode`, blocs `console`, `prompt`, `attendu`, `indice`), et `template-support/app/README.md` si la syntaxe te paraît inconnue.
+Lis dans cet ordre : `formateur/fil-rouge.md` (trajectoire, états de départ et d'arrivée), le bloc `{.tp}` du fichier `support/NN-*.md` (énoncé : étapes `###`, variantes `::: claude-code` et `::: opencode`, blocs `console`, `prompt`, `attendu`, `indice`), et `template-support/app/README.md` si la syntaxe te paraît inconnue.
 
 ## Environnement
 
@@ -19,7 +19,7 @@ Le répertoire de rejeu est `tmp/rejeu/<outil>/` ; il tient lieu de `~` du stagi
 - « Depuis le corrigé » : repartir d'un `bookit/` neuf et y superposer `tp/tp(N-1)/` (copie récursive, état cumulé), puis `git init` et un commit initial si le TP précédent avait un dépôt.
 - Enchaînement : sans cette option, le TP N part de l'état laissé par le TP N-1 dans le même répertoire. Si cet état manque, arrête-toi et dis-le.
 
-Le modèle est `claude-sonnet-4-6` dans les deux outils. Sur ce poste : `--model claude-sonnet-4-6` pour Claude Code, `--model anthropic/claude-sonnet-4-6` pour Open Code. Sur la VM (Bedrock), les identifiants sont ceux de `fil-rouge/opencode.json` et de `fil-rouge/.claude/settings.json`, décrits dans `formateur/fil-rouge.md`.
+Claude Code et Open Code sont installés et configurés sur la machine, avec `claude-sonnet-4-6` comme modèle par défaut : ne passe aucune option `--model`. Relève le modèle effectif dans la sortie JSON (champ `modelUsage` du résultat de `claude -p`, événements de session d'`opencode run`) et note-le en tête du rapport ; un modèle autre que `claude-sonnet-4-6` est un écart à signaler, pas à corriger.
 
 ## Exécution d'une étape
 
@@ -27,8 +27,8 @@ Exécute les étapes dans l'ordre, en prenant la variante de ton outil et le tex
 
 - Bloc `console` : exécute chaque commande `$` avec Bash, depuis le répertoire que l'énoncé indique (par défaut `bookit/`), avec la substitution de `~`. Conserve la sortie complète.
 - Bloc `prompt` : envoie-le tel quel à l'outil, depuis `bookit/` (ou le répertoire de l'étape) :
-  - Claude Code : `claude -p "<prompt>" --model claude-sonnet-4-6 --permission-mode acceptEdits --allowedTools "Bash(.specify/scripts/bash/*),Bash(uv *),Bash(git status*),Bash(git diff*),Bash(git log*),Bash(curl *),Bash(cosmic-ray *),Bash(cr-*),Bash(ls*),Bash(cat *)" --output-format json --max-turns 60 --max-budget-usd 5`. Lis `result`, `session_id`, `total_cost_usd`, `num_turns` dans le JSON. Si l'énoncé enchaîne plusieurs prompts dans la même session (pas de `/clear` entre eux), ajoute `--resume <session_id>` aux suivants.
-  - Open Code : `opencode run --model anthropic/claude-sonnet-4-6 --auto --format json "<prompt>"`. Lis les événements JSON (texte final, outils appelés). Sans `/new` entre deux prompts, ajoute `--continue`.
+  - Claude Code : `claude -p "<prompt>" --permission-mode acceptEdits --allowedTools "Bash(.specify/scripts/bash/*),Bash(uv *),Bash(git status*),Bash(git diff*),Bash(git log*),Bash(curl *),Bash(cosmic-ray *),Bash(cr-*),Bash(ls*),Bash(cat *)" --output-format json --max-turns 60 --max-budget-usd 5`. Lis `result`, `session_id`, `total_cost_usd`, `num_turns` dans le JSON. Si l'énoncé enchaîne plusieurs prompts dans la même session (pas de `/clear` entre eux), ajoute `--resume <session_id>` aux suivants.
+  - Open Code : `opencode run --auto --format json "<prompt>"`. Lis les événements JSON (texte final, outils appelés). Sans `/new` entre deux prompts, ajoute `--continue`.
   - Un prompt qui commence par `/speckit-…` ou `/speckit.…` se passe tel quel : les deux outils expansent la commande (vérifié le 19 octobre 2026 sur Claude Code 2.1.303 et Open Code 2.0.26).
   - Une action impossible hors TUI (complétion d'un `/`, lecture d'un panneau, `/clear`, `/new`, choix dans un menu) est notée « non rejouable en mode non interactif » et l'étape continue ; `/clear` et `/new` se traduisent par une nouvelle session.
 - Bloc `attendu` : exécute la commande de vérification qu'il donne, ou constate l'état de fichier décrit, et compare. Verdict : `conforme` (sortie identique ou état atteint), `écart` (cite la sortie réelle en entier), `non vérifiable` (attendu sans commande ni état observable : c'est un défaut de l'énoncé, à signaler).
