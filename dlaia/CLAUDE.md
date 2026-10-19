@@ -78,7 +78,8 @@ La formation dure deux journées, cadre nominal. Les durées ci-dessous sont ind
 - Le code des TP est exécuté sous Python 3.14 avec `uv run` avant d'être livré ; les corrigés passent leurs propres tests.
 - **Un seul nom par notion** : `formateur/lexique.md` fait foi. Un terme y entre avec le plan du module qui l'introduit ; les slides, les notes et les énoncés l'emploient sous cette forme seulement.
 - **Relecture selon `formateur/relecture.md`** : chaque critère y porte un code (V1, C2, P4…) que les constats citent. Les sous-agents `relecteur` et `verificateur-sources` (`.claude/agents/`) l'appliquent en lecture seule.
-- **Un module se prépare par le skill `/module NN plan`** (plan relu, puis validé par l'utilisateur) **et se livre par `/module NN`** (slides, TP, corrigé, démonstrations, captures, relecture, commits, rapport), sans validation intermédiaire.
+- **Un module se prépare par le skill `/module NN plan`** (plan relu, puis validé par l'utilisateur) **et se livre par `/module NN`** (slides, TP, corrigé, rejeu du TP, démonstrations, captures, relecture, commits, rapport), sans validation intermédiaire.
+- **Chaque TP est rejoué en mode non interactif** par le skill `/rejeu NN` (sous-agent `rejoueur-tp`, `claude -p` et `opencode run` avec `claude-sonnet-4-6`, dans `tmp/rejeu/<outil>/`) avant d'être livré ; `/rejeu tous` enchaîne les six TP depuis l'archive. Les valeurs des `attendu` sont celles observées au rejeu. Ce qui ne se rejoue pas hors TUI est vérifié à la main sur la VM (issue #57).
 
 ### Qualité pédagogique des slides
 
