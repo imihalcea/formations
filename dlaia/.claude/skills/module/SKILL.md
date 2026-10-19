@@ -58,23 +58,25 @@ Préalable : le plan validé est le dernier commentaire de l'issue « plan des s
 
 1. Lexique : ajouter les « Notions introduites » du plan à `formateur/lexique.md`, dans la section du module, en confirmant ou corrigeant les définitions provisoires.
 2. Slides : rédiger `dlaia/support/NN-titre.md` selon le plan : une slide par ligne du gabarit, notes d'animation sur chaque slide, schémas SVG dans `support/images/NN-nom.svg` avec les classes de la charte, glossaire du module en fin de fichier tiré du lexique, sources dans `::: sources`. Consulter chaque source avant de la citer.
-3. TP : rédiger le bloc `{.tp}` en fin de fichier et le corrigé dans `tp/tpNN/` (état cumulé) ; déposer les fichiers fournis dans `tp/fichiers/` ; superposer le corrigé au fil rouge dans un répertoire temporaire et exécuter `uv run pytest -q` sous Python 3.14 ; citer le corrigé par `file=`.
-4. Démonstrations : les écrire dans les notes des slides qui les portent (prompt, déroulé, résultat attendu), sans relevé inventé : ce qui n'a pas été essayé est marqué « à relever à l'essai ».
-5. Build et captures : `npm run build`, puis `npm run captures -- --module NN`. Corriger toute slide signalée en débordement, puis relancer.
-6. Relecture : lancer en parallèle `relecteur` (mode `slides` sur le fichier, dossier `tmp/captures/`, puis mode `tp` sur le même fichier) et `verificateur-sources` sur le fichier. Corriger chaque constat ou le refuser avec une raison d'une phrase. Pour une source `partiel` ou `contredit`, corriger la slide ou remplacer la source ; pour `inaccessible`, chercher une autre source ou retirer le fait. Rebuild, recaptures, puis relancer `relecteur` sur le fichier une seconde fois. Deux passes au plus : les constats restants vont dans le rapport.
-7. Commits, un par issue, dans cet ordre : slides (`Module NN : … (closes #N)`), TP et corrigé (`TP NN : … (closes #N)`), démonstrations (`Module NN : démonstrations … (closes #N)`), lexique si modifié (`Formateur : lexique du module NN`). `npm run build` passe avant le premier commit ; `git status --short` est vide après le dernier.
-8. Rapport à l'utilisateur, dans ce format :
+3. TP : rédiger le bloc `{.tp}` en fin de fichier et le corrigé dans `tp/tpNN/` (état cumulé) ; déposer les fichiers fournis dans `tp/fichiers/` ; superposer le corrigé au fil rouge dans un répertoire temporaire et exécuter `uv run pytest -q` sous Python 3.14 ; citer le corrigé par `file=`. Les `attendu` sont écrits comme des commandes à sortie connue, la sortie restant « à relever » jusqu'au rejeu.
+4. Rejeu : appliquer le skill `rejeu` au TP du module, dans les deux outils (sous-agent `rejoueur-tp`, un par outil, en parallèle, enchaîné sur l'état laissé par le TP précédent ou « depuis le corrigé » si cet état manque). Reporter les sorties observées dans les `attendu` et les notes de la slide de lancement (durées, permissions, nombre de tours), durcir les prompts qui ont dérivé, puis rejouer les étapes modifiées jusqu'à deux rejeux conformes de suite par outil. Les points « non rejouable » vont dans les notes, à vérifier sur la VM.
+5. Démonstrations : les écrire dans les notes des slides qui les portent (prompt, déroulé, résultat attendu). Les jouer en mode non interactif avec la même méthode que le rejeu (`claude -p`, `opencode run`) et consigner le résultat observé ; ce qui n'a pas pu être joué est marqué « à relever à l'essai ».
+6. Build et captures : `npm run build`, puis `npm run captures -- --module NN`. Corriger toute slide signalée en débordement, puis relancer.
+7. Relecture : lancer en parallèle `relecteur` (mode `slides` sur le fichier, dossier `tmp/captures/`, puis mode `tp` sur le même fichier) et `verificateur-sources` sur le fichier. Corriger chaque constat ou le refuser avec une raison d'une phrase. Pour une source `partiel` ou `contredit`, corriger la slide ou remplacer la source ; pour `inaccessible`, chercher une autre source ou retirer le fait. Rebuild, recaptures, puis relancer `relecteur` sur le fichier une seconde fois. Deux passes au plus : les constats restants vont dans le rapport.
+8. Commits, un par issue, dans cet ordre : slides (`Module NN : … (closes #N)`), TP et corrigé (`TP NN : … (closes #N)`), démonstrations (`Module NN : démonstrations … (closes #N)`), lexique et fil rouge si modifiés (`Formateur : …`). `npm run build` passe avant le premier commit ; `git status --short` est vide après le dernier.
+9. Rapport à l'utilisateur, dans ce format :
 
 ```
 ## Module NN livré
 
 Slides : N (dont N idées clés, N compare, N SVG). TP : N étapes, N commits attendus, corrigé testé. Démonstrations : N.
+Rejeu : Claude Code N/N étapes conformes, Open Code N/N ; N attendus relevés ; N prompts durcis ; non rejouable : liste.
 Relecture : N constats en première passe, N en seconde ; N corrigés, N refusés :
 - « Titre » C1 : raison du refus
 Sources : N vérifiées ; N corrigées ; N remplacées ou retirées :
 - « Titre » : ce qui a changé
 Captures : tmp/captures/NN-*.png, aucun débordement.
-Doutes : ce qui reste à relever à l'essai, ce qui attend une décision.
+Doutes : ce qui reste à relever sur la VM, ce qui attend une décision.
 Commits : liste des hash et messages.
 ```
 

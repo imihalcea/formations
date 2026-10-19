@@ -67,3 +67,4 @@ Référence : `formateur/fil-rouge.md` pour les états de départ et d'arrivée.
 - T7. La durée annoncée est tenable : une étape à prompt, dix minutes au plus ; une étape de relecture, cinq.
 - T8. L'énoncé ne révèle aucune réponse du débrief ; un repli `::: indice` existe pour chaque étape où l'agent peut dériver.
 - T9. Les prompts fournis sont copiables tels quels (bloc `prompt`) et nomment la commande Spec Kit propre à chaque outil.
+- T10. Chaque valeur d'un `attendu` (nombre de tests, de questions, de tâches, de mutants, code HTTP, nom de fichier) provient d'un rejeu consigné dans `tmp/rejeu/rapport-tpNN-<outil>.md`, conforme dans les deux outils. Une valeur estimée ou marquée « à relever » est un constat.
