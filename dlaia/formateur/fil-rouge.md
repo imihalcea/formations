@@ -1,20 +1,20 @@
 # Fil rouge bookit
 
-Trajectoire du projet fil rouge de TP en TP (issue #52) et environnement technique sur lequel il tourne. Les relevés datés ci-dessous ont été faits le 19 octobre 2026 sur le poste de préparation ; la section « À vérifier sur la VM » liste ce qui reste à confirmer sur la machine des stagiaires.
+Trajectoire du projet fil rouge de TP en TP (issue #52) et environnement technique sur lequel il tourne. Les relevés datés ci-dessous ont été faits le 19 octobre 2026 sur le poste de préparation, puis confirmés le même jour sur la VM des stagiaires (seule différence : Open Code v2.0.32 sur la VM).
 
 ## Environnement (issue #48)
 
 ### Versions relevées
 
-| Composant | Poste de préparation (19 octobre 2026) | Exigence du support |
-|---|---|---|
-| Python | 3.14.4 (`uv python list`) | 3.14, géré par uv |
-| uv | 0.11.19 | |
-| Claude Code | 2.1.303 | 2.1.277 au moins : lecture d'`AGENTS.md` à défaut de `CLAUDE.md` |
-| Open Code | v2.0.26 | v2 |
-| Spec Kit | 1.2.2, épinglé par `uv tool install specify-cli==1.2.2` | 1.2.2 |
-| cosmic-ray | 8.7.0 | |
-| pytest | 9.1.1 | |
+| Composant | Poste de préparation | VM (19 octobre 2026) | Exigence du support |
+|---|---|---|---|
+| Python | 3.14.4 (`uv python list`) | 3.14 | 3.14, géré par uv |
+| uv | 0.11.19 | conforme | |
+| Claude Code | 2.1.303 | conforme | 2.1.277 au moins : lecture d'`AGENTS.md` à défaut de `CLAUDE.md` |
+| Open Code | v2.0.26 | v2.0.32 | v2 |
+| Spec Kit | 1.2.2, épinglé par `uv tool install specify-cli==1.2.2` | 1.2.2 | 1.2.2 |
+| cosmic-ray | 8.7.0 | | |
+| pytest | 9.1.1 | | |
 
 ### Mutation testing : cosmic-ray conservé
 
@@ -59,7 +59,9 @@ En mode non interactif (`opencode run`), une commande `ask` est refusée d'offic
 
 `fil-rouge/.claude/settings.json` : `model` épinglé à `claude-sonnet-4-6`, règles `allow` pour `Bash(uv run pytest *)` et `Bash(.specify/scripts/bash/*)` (https://code.claude.com/docs/en/permissions, « Wildcard patterns »). L'activation de Bedrock (`CLAUDE_CODE_USE_BEDROCK`, région) reste dans la configuration globale de la VM : le fil rouge ne porte aucune variable d'environnement.
 
-### À vérifier sur la VM
+### Contrôles faits sur la VM (19 octobre 2026)
+
+Tous conformes, Open Code en v2.0.32. À rejouer si la VM est reconstruite :
 
 - Versions installées : `claude --version` (2.1.277 au moins), `opencode --version` (v2), `uv --version`, `uv python list` (3.14), `specify --version` (1.2.2).
 - Région et profils : `aws bedrock list-inference-profiles --region <région> --query 'inferenceProfileSummaries[?contains(inferenceProfileId, \`sonnet-4-6\`)].inferenceProfileId'`. Si la VM tourne hors `eu-*`, remplacer `eu.` par le préfixe de la région (ou `global.`) dans `opencode.json`, et ajuster `options.region`.
