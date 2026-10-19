@@ -2,7 +2,7 @@
 
 ## Développement logiciel assisté par l'IA {.title kicker="Formation"}
 
-Piloter un agent de code avec le Spec Driven Development et GitHub Spec Kit
+Piloter un agent de code
 
 ::: notes
 Accueil, horaires, pauses, tour de table : attentes, outils déjà utilisés, projets en cours.
