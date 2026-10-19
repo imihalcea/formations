@@ -33,7 +33,7 @@ Le skill `support-formation-html` ne doit pas être utilisé sur ce projet.
 
 ## Commandes
 
-Depuis `template-support/app/` : `npm run build` génère `dist/index.html` à partir de `support/`, `npm run archive` assemble `dist/dlaia.zip` à partir du support compilé, de `fil-rouge/` et de `tp/fichiers/`, `npm run dist` enchaîne les deux, `npm run dev` sert le support avec rechargement à chaud, `npm run dev:exemple` sert le contenu de démonstration, `npm test` lance les tests du compilateur, `npm run typecheck` vérifie les types.
+Depuis `template-support/app/` : `npm run build` génère `dist/index.html` à partir de `support/`, `npm run archive` assemble `dist/dlaia.zip` à partir du support compilé, de `fil-rouge/` et de `tp/fichiers/`, `npm run dist` enchaîne les deux, `npm run dev` sert le support avec rechargement à chaud, `npm run dev:exemple` sert le contenu de démonstration, `npm run captures` (option `-- --module NN`) capture chaque slide du support compilé en PNG dans `tmp/captures/` et signale les débordements, `npm test` lance les tests du compilateur, `npm run typecheck` vérifie les types.
 
 ## Contexte pédagogique et contraintes techniques
 
@@ -76,6 +76,9 @@ La formation dure deux journées, cadre nominal. Les durées ci-dessous sont ind
   - les listes à puces et le gras quand une phrase suffit ;
   - les triades décoratives (trois adjectifs, trois exemples) par réflexe.
 - Le code des TP est exécuté sous Python 3.14 avec `uv run` avant d'être livré ; les corrigés passent leurs propres tests.
+- **Un seul nom par notion** : `formateur/lexique.md` fait foi. Un terme y entre avec le plan du module qui l'introduit ; les slides, les notes et les énoncés l'emploient sous cette forme seulement.
+- **Relecture selon `formateur/relecture.md`** : chaque critère y porte un code (V1, C2, P4…) que les constats citent. Les sous-agents `relecteur` et `verificateur-sources` (`.claude/agents/`) l'appliquent en lecture seule.
+- **Un module se prépare par le skill `/module NN plan`** (plan relu, puis validé par l'utilisateur) **et se livre par `/module NN`** (slides, TP, corrigé, démonstrations, captures, relecture, commits, rapport), sans validation intermédiaire.
 
 ### Qualité pédagogique des slides
 
