@@ -1,0 +1,9 @@
+{
+  "model": "claude-sonnet-4-6",
+  "permissions": {
+    "allow": [
+      "Bash(uv run pytest *)",
+      "Bash(.specify/scripts/bash/*)"
+    ]
+  }
+}

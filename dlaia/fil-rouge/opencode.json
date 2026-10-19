@@ -1,0 +1,19 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "amazon-bedrock/eu.anthropic.claude-sonnet-4-6",
+  "provider": {
+    "amazon-bedrock": {
+      "options": {
+        "region": "eu-west-1"
+      }
+    }
+  },
+  "permission": {
+    "edit": "ask",
+    "bash": {
+      "*": "ask",
+      "uv run pytest*": "allow",
+      ".specify/scripts/bash/*": "allow"
+    }
+  }
+}
