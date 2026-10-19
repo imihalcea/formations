@@ -19,7 +19,7 @@ $ npm test               # tests du compilateur Markdown
 $ npm run typecheck
 ```
 
-`npm run build` vide `dist/` avant d'écrire : tout fichier déposé à la main dans `dist/` est perdu. L'archive distribuée aux stagiaires, `dist/dlaia.zip`, est toujours produite par `npm run archive` après le build. Elle contient `dlaia/dlaia.html` (le support), `dlaia/bookit/` (le fil rouge, sans environnement virtuel ni caches) et `dlaia/fichiers/` (les fichiers fournis par les TP, copie de `tp/fichiers/`). Le stagiaire l'extrait par `unzip dlaia.zip -d ~`.
+`npm run build` vide `dist/` avant d'écrire : tout fichier déposé à la main dans `dist/` est perdu. L'archive distribuée aux stagiaires, `dist/dlaia.zip`, est toujours produite par `npm run archive` après le build. Elle contient à plat `dlaia.html` (le support), `bookit/` (le fil rouge, sans environnement virtuel ni caches) et `fichiers/` (les fichiers fournis par les TP, copie de `tp/fichiers/`). Le stagiaire l'extrait par `unzip dlaia.zip -d ~` et obtient `~/dlaia.html`, `~/bookit/` et `~/fichiers/`.
 
 En développement, une slide dont le contenu déborde du canevas est encadrée en rouge et signalée dans la console.
 

@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Assemble l'archive distribuée aux stagiaires : dist/dlaia.zip.
-# Contenu : dlaia/dlaia.html (support compilé), dlaia/bookit/ (fil rouge),
-# dlaia/fichiers/ (fichiers fournis par les TP). À lancer après npm run build.
+# Contenu, à plat : dlaia.html (support compilé), bookit/ (fil rouge),
+# fichiers/ (fichiers fournis par les TP). Extraite par unzip -d ~ en ~/dlaia.html,
+# ~/bookit/ et ~/fichiers/. À lancer après npm run build.
 set -euo pipefail
 
 cd "$(dirname "$0")/../../.."   # racine de la formation : dlaia/
@@ -17,5 +18,5 @@ if [[ -d tp/fichiers ]]; then
   rsync -a tp/fichiers/ dist/dlaia/fichiers/
 fi
 
-(cd dist && zip -qr dlaia.zip dlaia)
+(cd dist/dlaia && zip -qr ../dlaia.zip .)
 echo "dist/dlaia.zip : $(unzip -l dist/dlaia.zip | tail -1 | awk '{print $2}') fichiers"
