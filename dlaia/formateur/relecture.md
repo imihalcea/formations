@@ -9,7 +9,7 @@ Les critères reprennent `CLAUDE.md` (« Rédaction du support », « Qualité p
 Référence : `formateur/lexique.md`.
 
 - V1. Chaque notion employée figure au lexique, sous la forme exacte de la colonne « Terme ». Un mot de la colonne « À ne pas employer » est un constat.
-- V2. Un terme introduit par ce module est défini sur une slide avant toute slide qui l'emploie, et cette slide figure dans « Notions introduites » du plan.
+- V2. Un terme introduit par ce module est défini sur une slide avant toute slide qui l'emploie, et cette slide figure dans « Notions introduites » du plan. Une étiquette de schéma, un en-tête de tableau ou une phrase vaut définition ; le glossaire la reprend.
 - V3. Aucun terme d'un module ultérieur (colonne « Introduit » supérieure au module relu).
 - V4. Un sigle est développé une fois, sur la slide qui le définit, puis employé seul. Aucun sigle non défini à l'écran.
 - V5. Une même notion garde le même nom d'une slide à l'autre : deux mots pour une notion est un constat, même si les deux sont au lexique.
@@ -21,12 +21,14 @@ Référence : `formateur/lexique.md`.
 - C3. Un kicker nomme la section par son sujet, en un à trois mots, identique sur toutes les slides de la section.
 - C4. Chaque phrase d'une slide se lit seule, sans le discours du formateur. Ce qui a besoin du discours va dans les notes.
 - C5. Un exemple inventé porte la mention « illustration » ; une liste partielle est présentée comme telle.
+- C6. Une phrase sous un support visuel porte une seule information, en vingt mots au plus. Une phrase qui cumule définition, règle d'outil et limite chiffrée est un constat.
+- C7. Un exemple est l'archétype de la notion qu'il illustre (un ADR : une décision d'architecture ; une exigence EARS : une règle métier). Un exemple à la marge de la notion est un constat.
 
 ## P. Progression
 
 - P1. Chaque slide répond à une question que la précédente a fait naître, ou ouvre une section annoncée par son kicker. Un saut (nouvelle notion sans amorce, retour en arrière, slide isolée) est un constat qui cite les deux slides.
 - P2. Aucune notion n'est employée avant sa slide de définition, dans ce module ou dans un module antérieur.
-- P3. Une idée clé dit de quoi elle découle : elle conclut les slides qui la précèdent dans la section, sans apporter de notion nouvelle.
+- P3. Une idée clé dit de quoi elle découle : elle conclut les slides qui la précèdent dans la section avec ses propres mots. Elle ne reprend ni le mot central d'une idée clé antérieure (y compris des modules précédents) ni une phrase d'une slide de la section ; elle peut nommer l'acteur, le rôle ou les artefacts que la suite développe.
 - P4. La première section du module reprend ce que le module précédent a laissé en suspens (sa dernière idée clé, son TP, une question ouverte).
 - P5. Une slide `compare` suit la slide qui présente la notion comparée, jamais l'inverse.
 - P6. La slide de lancement du TP arrive après toutes les notions que le TP mobilise.
@@ -40,6 +42,9 @@ Référence : `formateur/lexique.md`.
 - S5. Une slide tient en une idée : deux phrases courtes ou quatre éléments brefs au plus. Au-delà, scinder.
 - S6. Une slide qui ne contient que du détail technique (variables d'environnement, chemins secondaires, cas rares) est à supprimer ou à déplacer dans les notes.
 - S7. Sur la capture, le contenu occupe la hauteur du canevas sans déborder : ni encadré rouge ni grand vide sous deux lignes de texte.
+- S8. Le texte sous un schéma, un tableau ou un bloc de code apporte ce que le support ne montre pas. Une phrase qui le paraphrase est un constat ; un schéma seul, centré, est conforme.
+- S9. Une case ou une ligne de tableau qui marque un manque le dit elle-même ; une phrase qui explique un vide est un constat.
+- S10. Une énumération de trois éléments ou plus est en liste ou en tableau ; une phrase qui les aligne est un constat.
 
 ## R. Règles de rédaction
 
@@ -50,6 +55,8 @@ Rappel des interdits de `CLAUDE.md`, vérifiables par recherche de motif.
 - R3. Aucun superlatif, aucune formule d'enthousiasme ou de motivation.
 - R4. Aucune mention des stagiaires, du formateur ou de la situation de formation sur une slide (notes et énoncés exceptés).
 - R5. Aucune liste à puces ni gras là où une phrase suffit ; aucune triade décorative.
+- R9. Aucune énumération en « ni… ni… ni » : deux « ni » au plus, sinon phrase affirmative ou liste en « et ».
+- R10. Les mots-clés d'un format sont en français (localisation officielle, sinon traduction constante signalée) ; un mot-clé anglais dans une phrase française est un constat, hors citation d'une source.
 - R6. Chaque slide qui avance un fait cite sa source dans `::: sources` ; chaque commande, option et nom de fichier d'outil cité est vérifié dans la documentation officielle (vérification par l'agent `verificateur-sources`).
 - R7. Le modèle est désigné par `claude-sonnet-4-6` ou « Claude Sonnet 4.6 », jamais par l'alias `sonnet`.
 - R8. Orthographe et accentuation complètes, y compris sur les majuscules ; identifiants et commandes dans leur forme d'origine.

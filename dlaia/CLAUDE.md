@@ -88,6 +88,14 @@ La qualité pédagogique prime sur la durée annoncée d'un module : le formateu
 
 - **Une idée par slide**, deux phrases courtes ou quatre éléments brefs au plus. Au-delà, scinder la slide plutôt que condenser le texte.
 - **Un titre de cinq mots au plus**, compréhensible seul ; le détail va dans le corps de la slide. Les idées clés (`statement`) suivent leur propre règle ci-dessous.
+- **Le texte sous un support visuel apporte ce que le support ne montre pas** : une conséquence, une clé de lecture, un chiffre. Une phrase qui paraphrase le schéma, le tableau ou le bloc de code se supprime ; le schéma seul suffit. Test : cacher le support et lire la phrase, puis l'inverse ; si les deux disent la même chose, la phrase part.
+- **Une phrase de fin porte une seule information**, en vingt mots au plus. Une définition, une règle d'outil et une limite chiffrée ne tiennent pas dans la même phrase : une seule reste, les autres vont dans les notes.
+- **Un manque se montre, il ne se commente pas** : la case ou la ligne de tableau dit elle-même ce qui manque (« aucun test pour le dire ») ; aucune phrase ne vient expliquer un vide. Quand une référence porte l'argument, le lien source remplace la phrase.
+- **Une idée clé apporte ses propres mots** : elle ne reprend ni le mot central d'une idée clé antérieure (vérifier par `grep` des `.statement` des modules précédents) ni la phrase d'une slide qu'elle conclut. Elle nomme l'acteur, le rôle ou les artefacts que la suite développe.
+- **Une énumération de trois éléments ou plus se présente en liste ou en tableau**, jamais en phrase. Une phrase qui aligne des compléments se coupe ou devient une liste.
+- **Un exemple est l'archétype de la notion** : un ADR montre une décision d'architecture (structure, dépendances, technologie), une exigence EARS une règle métier, un scénario Gherkin un cas tranché. Un exemple à la marge de la notion est remplacé, même s'il est exact.
+- **Mots-clés d'un format en français** : la localisation officielle quand elle existe (Gherkin, `# language: fr`), sinon une traduction constante signalée comme telle (EARS). Une phrase française ne contient aucun mot-clé anglais ; identifiants, commandes et noms de fichiers restent dans leur forme d'origine.
+- **Aucune énumération en « ni… ni… ni »** : phrase affirmative, liste en « et », ou deux phrases.
 - **Montrer avant d'expliquer** : chaque notion abstraite a un support visuel (schéma SVG dans `support/images/`, commande réelle, extrait de code, sortie de terminal). Un exemple inventé porte la mention « illustration ».
 - **Des exemples présentés comme tels** : le titre ou une phrase indique qu'une liste est partielle, pour qu'elle ne passe pas pour exhaustive.
 - **Des chiffres lisibles d'un coup d'œil** : légende de trois à cinq mots. Intervalles de confiance, effectifs et méthode vont dans les notes. Aucune abréviation non définie à l'écran.
