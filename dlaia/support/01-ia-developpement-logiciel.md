@@ -484,7 +484,7 @@ Rien n'a été écrit avant : aucune règle à laquelle comparer. Rien n'a été
 La frontière est le coût d'une erreur ; le même agent sert dans les deux zones.
 :::
 
-## L'intention écrite, versionnée, vérifiée, à la place du vibe coding {kicker="Vibe coding"}
+## L'intention écrite, versionnée, vérifiée, à la place du vibe coding {kicker="L'intention écrite"}
 
 ![Chaîne intention écrite, versionnée, code, vérifié, avec une flèche de retour : conforme à ce qui était écrit ?](images/01-intention.svg)
 
@@ -496,7 +496,7 @@ Ce que la session perd (slide « À la fin de la session, seul le dépôt reste 
 Le module 2 nomme la méthode (Spec Driven Development) et l'outil (Spec Kit). Ici, seule la chaîne compte.
 :::
 
-## Écrire l'intention avant le code permet de vérifier le code contre elle. {.statement kicker="Vibe coding"}
+## Écrire l'intention avant le code permet de vérifier le code contre elle. {.statement kicker="L'intention écrite"}
 
 ::: notes
 Conclut la section : citation, définition, coût d'une erreur, chaîne de l'intention. Le module 2 part d'ici.
