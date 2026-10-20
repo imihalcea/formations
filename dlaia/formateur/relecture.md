@@ -55,7 +55,7 @@ Rappel des interdits de `CLAUDE.md`, vérifiables par recherche de motif.
 - R3. Aucun superlatif, aucune formule d'enthousiasme ou de motivation.
 - R4. Aucune mention des stagiaires, du formateur ou de la situation de formation sur une slide (notes et énoncés exceptés).
 - R5. Aucune liste à puces ni gras là où une phrase suffit ; aucune triade décorative.
-- R9. Aucune énumération en « ni… ni… ni » : deux « ni » au plus, sinon phrase affirmative ou liste en « et ».
+- R9. Une phrase se lit d'une traite : la répétition d'un même connecteur (« ni… ni… ni »), une négation en série ou une subordonnée imbriquée est un constat ; la phrase se coupe ou devient une liste.
 - R10. Les mots-clés d'un format sont en français (localisation officielle, sinon traduction constante signalée) ; un mot-clé anglais dans une phrase française est un constat, hors citation d'une source.
 - R6. Chaque slide qui avance un fait cite sa source dans `::: sources` ; chaque commande, option et nom de fichier d'outil cité est vérifié dans la documentation officielle (vérification par l'agent `verificateur-sources`).
 - R7. Le modèle est désigné par `claude-sonnet-4-6` ou « Claude Sonnet 4.6 », jamais par l'alias `sonnet`.

@@ -95,7 +95,7 @@ La qualité pédagogique prime sur la durée annoncée d'un module : le formateu
 - **Une énumération de trois éléments ou plus se présente en liste ou en tableau**, jamais en phrase. Une phrase qui aligne des compléments se coupe ou devient une liste.
 - **Un exemple est l'archétype de la notion** : un ADR montre une décision d'architecture (structure, dépendances, technologie), une exigence EARS une règle métier, un scénario Gherkin un cas tranché. Un exemple à la marge de la notion est remplacé, même s'il est exact.
 - **Mots-clés d'un format en français** : la localisation officielle quand elle existe (Gherkin, `# language: fr`), sinon une traduction constante signalée comme telle (EARS). Une phrase française ne contient aucun mot-clé anglais ; identifiants, commandes et noms de fichiers restent dans leur forme d'origine.
-- **Aucune énumération en « ni… ni… ni »** : phrase affirmative, liste en « et », ou deux phrases.
+- **Une phrase se lit d'une traite** : aucune répétition du même connecteur (« ni… ni… ni », « ou… ou… »), aucune négation en série, aucune subordonnée imbriquée. Une phrase lourde se coupe en deux ou devient une liste.
 - **Montrer avant d'expliquer** : chaque notion abstraite a un support visuel (schéma SVG dans `support/images/`, commande réelle, extrait de code, sortie de terminal). Un exemple inventé porte la mention « illustration ».
 - **Des exemples présentés comme tels** : le titre ou une phrase indique qu'une liste est partielle, pour qu'elle ne passe pas pour exhaustive.
 - **Des chiffres lisibles d'un coup d'œil** : légende de trois à cinq mots. Intervalles de confiance, effectifs et méthode vont dans les notes. Aucune abréviation non définie à l'écran.
