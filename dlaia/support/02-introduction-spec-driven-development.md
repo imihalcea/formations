@@ -45,7 +45,7 @@ Chacune des quatre cases reçoit un artefact dans la suite du module : décision
 Conclut les deux slides précédentes et reprend la dernière idée clé du module 1 : la méthode et les artefacts restent quand le modèle et le harnais changent. Le prompt est l'unité de la session ; l'intention écrite est l'unité du projet. La section suivante donne son nom à la méthode.
 :::
 
-## Le Spec Driven Development : la spécification écrite précède et pilote le code {kicker="Le SDD"}
+## La spécification précède le code {kicker="Le SDD"}
 
 ![Suite spécification, versionnée, code, vérifié, avec une flèche de retour : le code est vérifié contre la spécification](images/02-sdd.svg)
 
@@ -64,7 +64,7 @@ README : « Define what and why before deciding how to build it. » `spec-driven
 Spec Kit est nommé ici ; son installation et ses commandes viennent dans la section « Spec Kit ».
 :::
 
-## Le workflow SDD : une constitution par projet, quatre artefacts par spécification {kicker="Le SDD"}
+## Une constitution, quatre artefacts {kicker="Le SDD"}
 
 ![Un bloc constitution en amont, puis une frise à quatre étapes : spécification, plan, tâches, code et tests, un fichier sous chaque étape, un repère point de contrôle après chaque étape](images/02-workflow.svg)
 
@@ -82,7 +82,7 @@ Les quatre losanges, un après chaque étape, sont les points de contrôle, déf
 Plan et tâches sont définis ici en une ligne ; le module 5 en fait le contenu (plan sous contrôle de la constitution, une tâche par session).
 :::
 
-## À chaque point de contrôle, le développeur relit l'artefact et décide {kicker="Le SDD"}
+## Le développeur relit et décide {kicker="Le SDD"}
 
 | Point de contrôle | Ce qui est relu | Ce qui est décidé |
 |---|---|---|
@@ -100,9 +100,9 @@ Un point de contrôle est le moment du workflow où le développeur lit l'artefa
 
 ::: notes
 Blog : « The process builds in explicit checkpoints for you to critique what's been generated » ; « Crucially, your role isn't just to steer. It's to verify. » `spec-driven.md` : « team-reviewed specifications », et, pour les tests, « Tests are validated and approved by the user » avant tout code.
-L'agent produit, le développeur vérifie : même partage que la slide « Avec l'agent, le développeur formule, puis relit » du module 1, répété à chaque étape.
+L'agent produit, le développeur vérifie : même partage que la slide « Le développeur formule, puis relit » du module 1, répété à chaque étape.
 « Puis le commite » : c'est la règle des TP, le stagiaire commite lui-même après chaque étape ; l'agent ne commite pas. Le commit est la trace de la décision.
-Dans Spec Kit, le fichier de workflow nomme ces moments `gate` ; la slide « Le workflow speckit » le montre.
+Dans Spec Kit, le fichier de workflow nomme ces moments `gate` ; la slide « Le workflow speckit, six étapes » le montre.
 :::
 
 ## Chaque étape du workflow produit un artefact relu par un humain. {.statement kicker="Le SDD"}
@@ -111,7 +111,7 @@ Dans Spec Kit, le fichier de workflow nomme ces moments `gate` ; la slide « Le 
 Conclut les trois slides de la section : la méthode, ses étapes et ses artefacts, le point de contrôle. La section suivante ouvre le premier artefact, la spécification.
 :::
 
-## La spécification : ce que le logiciel doit faire et pourquoi {kicker="La spécification"}
+## Quatre sections imposées {kicker="La spécification"}
 
 ```markdown
 # Feature Specification: [FEATURE NAME]
@@ -157,7 +157,7 @@ Dans bookit, chaque règle métier du module 1 devient une exigence, numérotée
 Vérifiable : un test peut trancher, oui ou non. « Vite » ne se teste pas ; « en moins de 200 ms » se teste, et `specify.md` le classe dans le COMMENT. La question `4 h ou 8 h ?` sera posée par `clarify` au TP 4.
 :::
 
-## Le QUOI dans la spécification, le COMMENT dans le plan {kicker="La spécification"}
+## Le QUOI et le COMMENT {kicker="La spécification"}
 
 | QUOI, dans la spécification (illustration) | COMMENT, dans le plan (illustration) |
 |---|---|
@@ -186,7 +186,7 @@ Les quatre lignes de gauche viennent des règles métier et du prompt v2 du TP 1
 Conclut la section : contenu de la spécification, exigence vérifiable, partage QUOI et COMMENT. La section suivante donne les formats dans lesquels ces phrases s'écrivent.
 :::
 
-## Quatre formats se combinent pour écrire l'intention {.facts kicker="Quatre formats"}
+## Les formats de l'intention écrite {.facts kicker="Quatre formats"}
 
 - **Markdown structuré** sections titrées et exigences numérotées qui donnent sa structure à `spec.md`
 - **ADR** architecture decision record : note qui trace une décision d'architecture, son contexte et ses conséquences
@@ -206,7 +206,7 @@ Sigles développés ici une fois ; ensuite ADR et EARS seuls.
 Les TP 3 à 6 emploient les quatre : ADR au TP 3, EARS et Gherkin au TP 4 par les fichiers `ears` et `gherkin` de `.claude/skills/` fournis, `.feature` exécuté au TP 6.
 :::
 
-## L'ADR trace une décision et son pourquoi {kicker="Quatre formats"}
+## L'ADR trace une décision {kicker="Quatre formats"}
 
 ```markdown
 # 1. Un refus est une valeur de retour, jamais une exception
@@ -233,7 +233,7 @@ L'ADR d'illustration est à aligner sur `tp/fichiers/adr/` quand le module 3 cr�
 Pourquoi un ADR et pas une ligne de plan : la décision vaut pour tout le projet, pas pour une spécification ; elle survit aux plans.
 :::
 
-## EARS : une exigence en une phrase à mots-clés {kicker="Quatre formats"}
+## EARS, une phrase à mots-clés {kicker="Quatre formats"}
 
 | Patron | Forme de la phrase | Exemple bookit (illustration) |
 |---|---|---|
@@ -255,7 +255,7 @@ Les quatre exemples sont les règles REG-01, REG-03, REG-05 et REG-02 ; « rése
 Ce que EARS apporte à l'agent : une phrase par exigence, un seul déclencheur, un seul verbe ; moins de place pour une interprétation.
 :::
 
-## Gherkin : un scénario en Given, When, Then {kicker="Quatre formats"}
+## Gherkin : Given, When, Then {kicker="Quatre formats"}
 
 ```gherkin
 Feature: Valider une demande de réservation
@@ -285,7 +285,7 @@ Une exigence, plusieurs scénarios : REG-03 a au moins le cas refusé (1 h de pr
 Le `Then` est observable : un code de refus, pas « le système fonctionne ».
 :::
 
-## Où chaque format vit dans le dépôt {kicker="Quatre formats"}
+## Chaque format dans le dépôt {kicker="Quatre formats"}
 
 ![À gauche l'arbre du dépôt bookit : docs/adr, specs/001-valider-reservation/spec.md avec ses sections Requirements et User Scenarios, le fichier .feature, tests/ ; à droite la règle métier d'un artefact à l'autre : exigence, scénario, test](images/02-formats.svg)
 
@@ -307,7 +307,7 @@ Un seul nom pour la règle d'un bout à l'autre : REG-03 dans le tableau des rè
 Conclut la section : un format par besoin, chacun à sa place dans le dépôt. La section suivante installe l'outil qui déroule le workflow.
 :::
 
-## Spec Kit installe les commandes du SDD dans l'agent {kicker="Spec Kit"}
+## Installer l'outil, initialiser un projet {kicker="Spec Kit"}
 
 ```console
 $ uv tool install specify-cli==1.2.2
@@ -337,7 +337,7 @@ La release propose aussi `uv tool install specify-cli --from git+https://github.
 Si `specify` est introuvable après l'installation : `uv tool update-shell` puis nouveau terminal, ou `export PATH="$HOME/.local/bin:$PATH"` ; repli prévu dans l'énoncé du TP.
 :::
 
-## La constitution : les principes du projet, écrits une fois {kicker="Spec Kit"}
+## La constitution, écrite une fois {kicker="Spec Kit"}
 
 ```markdown
 # [PROJECT_NAME] Constitution
@@ -375,7 +375,7 @@ Le module 3 dit ce qu'est un principe efficace : vérifiable sur un diff. Ici, s
 Le principe d'illustration reprend l'ADR 1 : la constitution porte la règle, l'ADR porte son pourquoi.
 :::
 
-## Des étapes du workflow aux commandes Spec Kit {kicker="Spec Kit"}
+## Une commande par étape {kicker="Spec Kit"}
 
 | Étape | Commande | Artefact écrit |
 |---|---|---|
@@ -402,7 +402,7 @@ Démonstration 3 (à relever sur la VM, non rejouable hors TUI) : les deux TUI c
 Sous Claude Code, sans `--integration-options="--no-model-invocation"`, le modèle peut lancer une commande Spec Kit de lui-même ; décision pour le TP 3 sur l'issue #68.
 :::
 
-## Quatre commandes de vérification : clarify, checklist, analyze, converge {kicker="Spec Kit"}
+## Quatre commandes de vérification {kicker="Spec Kit"}
 
 | Commande | Ce qu'elle lit | Ce qu'elle rend |
 |---|---|---|
@@ -426,7 +426,7 @@ Détail, d'après les prompts des commandes (et `formateur/spec-kit.md` § 4) : 
 Les TP emploient `clarify` (TP 4), `analyze` (TP 5), `converge` (TP 6).
 :::
 
-## Le workflow `speckit` : six étapes installées par `specify init` {kicker="Spec Kit"}
+## Le workflow `speckit`, six étapes {kicker="Spec Kit"}
 
 ```console
 $ specify workflow list
@@ -451,7 +451,7 @@ Démonstration 2 (shell, rejouable) : dans `demo-claude`, `specify workflow list
 Les TP restent sur les commandes invoquées une à une dans l'outil : chaque point de contrôle est alors une décision du stagiaire.
 :::
 
-## Le point de contrôle du workflow : `type: gate`, approuver ou rejeter {kicker="Spec Kit"}
+## Point de contrôle : `type: gate` {kicker="Spec Kit"}
 
 ```yaml
 - id: review-spec
@@ -469,7 +469,7 @@ Un point de contrôle suspend le workflow jusqu'à `approve` ou `reject` ; un re
 
 ::: notes
 Extrait relevé le 20 octobre 2026 dans `.specify/workflows/speckit/workflow.yml` (`grep -c 'type: gate'` donne 2), reproduit à l'identique au rejeu sous les deux outils. Le second point de contrôle est `review-plan`, message « Review the plan before generating tasks. » `workflows.md` : les deux `gate` offrent `approve` et `reject`, `on_reject: abort` dans les deux cas.
-Lien avec la slide « À chaque point de contrôle, le développeur relit l'artefact et décide » : le fichier nomme `gate` ce que le support nomme point de contrôle. Le workflow livré n'en met aucun avant `implement` ; les énoncés des TP en ajoutent un, le stagiaire relit `tasks.md` et le commite avant de lancer `implement`.
+Lien avec la slide « Le développeur relit et décide » : le fichier nomme `gate` ce que le support nomme point de contrôle. Le workflow livré n'en met aucun avant `implement` ; les énoncés des TP en ajoutent un, le stagiaire relit `tasks.md` et le commite avant de lancer `implement`.
 :::
 
 ## Ce que `specify init` dépose {.compare kicker="Spec Kit"}
@@ -506,7 +506,7 @@ Démonstration 1 (shell, rejouable) : dans un dossier jetable hors de tout dép�
 Sur `~/bookit/` déjà extrait, au TP 3 : `specify init --here --force …`, les fichiers existants sont conservés.
 :::
 
-## Le dossier `.specify/` et le dossier `specs/` {kicker="Spec Kit"}
+## Les dossiers `.specify/` et `specs/` {kicker="Spec Kit"}
 
 ![Deux arbres : .specify/ avec memory/constitution.md, scripts/bash/, templates/ et workflows/speckit/workflow.yml, plus le dossier de commandes de l'outil ; specs/001-nom/ avec spec.md, plan.md, tasks.md](images/02-specify.svg)
 
@@ -530,7 +530,7 @@ Démonstration 1, suite : `find .specify -maxdepth 2 -type d` et `ls .specify/te
 Conclut la section : installation, constitution, commandes d'étape et de vérification, workflow et ses points de contrôle, ce qui est déposé. Renvoie à l'idée clé « Chaque étape du workflow produit un artefact relu par un humain » : l'outil automatise la production, pas la relecture. Le TP 1 partie B installe l'outil et visite ce qu'il dépose, sans lancer de commande.
 :::
 
-## TP 1, partie B : installer Spec Kit et visiter un projet initialisé {.tp duration="30 min" kicker="TP 1"}
+## Partie B : installer Spec Kit {.tp duration="30 min" kicker="TP 1"}
 
 Installer Spec Kit à la version épinglée, initialiser un projet jetable `~/hello-spec/` pour son outil, remplir une grille de visite de ce qui a été déposé, puis retrouver les commandes dans l'outil sans en lancer aucune. Aucun commit : `~/hello-spec/` est un dossier jetable sans dépôt git, et `~/bookit/` n'est pas touché.
 
