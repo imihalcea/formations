@@ -37,18 +37,19 @@ Aux sessions précédentes, comprendre le domaine a pris trop de temps aux stagi
 
 Module 1, avant le lancement du TP 1 : une slide « Les règles métier de bookit », le tableau REG-01 à REG-05 avec les codes, parce que l'échauffement du TP 1 fait écrire une validation à partir de ces règles.
 
-Module 3, section « Le fil rouge bookit » placée juste avant la slide de lancement du TP 3, cinq à six slides, chacune avec son support visuel :
+Module 3, section « Le fil rouge bookit » placée juste avant la slide de lancement du TP 3. Elle présente le projet du point de vue fonctionnel et les concepts métier avant toute considération technique ; le code n'arrive qu'en fin de section. Sept slides, chacune avec son support visuel :
 
 | Slide | Idée | Support visuel |
 |---|---|---|
-| Ce que bookit fait | réserver une ressource sur un créneau ; une requête, une réponse | le `curl` et ses deux réponses, 201 et 422 avec le code |
-| Les règles métier | REG-01 à REG-05, un code par règle | tableau repris du module 1 |
-| Le squelette | trois couches, dépendances vers le domaine | SVG `support/images/` des couches avec les fichiers de `fil-rouge/` |
-| Le parcours d'une demande | API, `request_booking`, `validate_booking`, dépôt | SVG de séquence ou extrait de `request_booking.py` |
+| À quoi sert bookit | un demandeur réserve une ressource (salle, équipement, personne) sur un créneau ; bookit accepte, ou refuse en disant pourquoi | schéma demandeur, bookit, décision, avec un exemple concret (salle A, jeudi de 10h à 11h, acceptée ; samedi, refusée `hours`) |
+| Les concepts métier | ressource, demande de réservation, créneau, réservation confirmée, décision, code de refus, instant courant | SVG : la ligne du temps d'une ressource, ses réservations confirmées, une demande, l'instant courant |
+| Les règles métier | REG-01 à REG-05, un code par règle | tableau repris du module 1, chaque règle placée sur la ligne du temps |
+| Une journée de la salle A | trois demandes jugées à la suite, deux acceptées, une refusée avec son code | la même ligne du temps, illustration |
+| Le squelette | trois couches, dépendances vers le domaine, la décision est une valeur de retour | SVG des couches avec les fichiers de `fil-rouge/` |
 | Fourni et à construire | fourni : API, dépôt SQLite, horloge, modèles, ports, test de fumée ; à construire : `validate_booking`, ses tests, les artefacts SDD | slide `compare` |
 | Ce que chaque TP ajoute | constitution, spécification, plan et tâches, code et tests | la table de la trajectoire, sous forme de frise |
 
-La première slide montre le stub : `validate_booking` rend `None`, l'API accepte tout, ce que le TP 3 fait constater par deux `curl` à 201. Le plan du module 3 (#66) reprend cette section ; le plan du module 1 (#59) reprend la slide des règles.
+La slide « Fourni et à construire » montre le stub : `validate_booking` rend `None`, l'API accepte tout, ce que le TP 3 fait constater par deux `curl` à 201. Les concepts métier entrent au lexique (`formateur/lexique.md`, section « Domaine bookit ») et les slides, les énoncés et les artefacts de référence les emploient sous ce seul nom. Le plan du module 3 (#66) reprend cette section ; le plan du module 1 (#59) reprend la slide des règles.
 
 ## Contraintes techniques
 

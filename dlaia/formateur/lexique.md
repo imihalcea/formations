@@ -17,6 +17,19 @@ Les définitions ci-dessous sont provisoires jusqu'au plan du module concerné, 
 | bookit | projet fil rouge : application de réservation de ressources | 00 | Bookit, l'application ou le projet sans son nom |
 | fil rouge | projet bookit repris de TP en TP | 00 | projet d'exemple, cas d'école |
 
+## Domaine bookit (module 3, règles dès le module 1)
+
+| Terme | Définition | Introduit | À ne pas employer |
+|---|---|---|---|
+| ressource | ce qui se réserve : salle, équipement ou personne ; connaît ses réservations confirmées | 03 | salle (pour la notion), asset, objet réservable |
+| demande de réservation | une ressource visée, un début et une fin, soumise à bookit ; « demande » seule une fois définie | 03 | requête, booking, réservation (avant décision) |
+| créneau | intervalle entre un début et une fin, début inclus et fin exclue ; deux créneaux jointifs ne se chevauchent pas | 03 | plage, slot, intervalle, période |
+| réservation confirmée | demande acceptée et enregistrée sur sa ressource ; « réservation » seule une fois définie | 03 | booking, réservation existante, occupation |
+| décision | résultat de la validation d'une demande : acceptée, ou refusée avec un code | 03 | résultat, verdict, réponse (pour la décision) |
+| code de refus | identifiant de la règle enfreinte, un par règle : `duration`, `hours`, `lead_time`, `horizon`, `overlap` | 03 | code d'erreur, erreur, motif |
+| instant courant | moment auquel la demande est jugée, fourni en entrée à la validation | 03 | maintenant, now (hors code), heure système, date du jour |
+| règle métier | contrainte du domaine que toute réservation respecte, numérotée REG-NN ; devient une exigence dans la spécification | 01 | règle de gestion, contrainte métier, business rule |
+
 ## Modèle et agent (module 1)
 
 | Terme | Définition | Introduit | À ne pas employer |
