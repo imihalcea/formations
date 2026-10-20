@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 460" width="1680" height="460">
+  <text x="0" y="24" class="accent mono" font-size="22" font-weight="600" letter-spacing="3">PROTOTYPE JETABLE</text>
+  <rect x="0" y="50" width="780" height="300" rx="12" class="deck"/>
+  <g font-size="26" class="ink">
+    <rect x="30" y="90" width="160" height="70" rx="8" class="accent"/>
+    <text x="110" y="134" class="paper" text-anchor="middle">prompt</text>
+    <rect x="220" y="90" width="160" height="70" rx="8" class="ink" opacity="0.85"/>
+    <text x="300" y="134" class="paper" text-anchor="middle">code</text>
+    <rect x="410" y="90" width="160" height="70" rx="8" class="deck"/>
+    <rect x="410" y="90" width="160" height="70" rx="8" class="stroke-ink" stroke-width="2"/>
+    <text x="490" y="134" text-anchor="middle">essai</text>
+    <rect x="600" y="90" width="160" height="70" rx="8" class="muted"/>
+    <text x="680" y="134" text-anchor="middle">jeté</text>
+  </g>
+  <path d="M194 125 H212 M384 125 H402 M574 125 H592" class="stroke-accent" stroke-width="4"/>
+  <text x="30" y="230" class="ink" font-size="28">Le code vit une soirée. Une erreur coûte une soirée.</text>
+  <text x="30" y="290" class="ink" font-size="26" opacity="0.7">Le vibe coding est à sa place.</text>
+
+  <path d="M840 50 V350" class="stroke-accent" stroke-width="5" stroke-dasharray="14 10"/>
+  <text x="840" y="390" class="accent mono" font-size="22" font-weight="600" letter-spacing="3" text-anchor="middle">LE COÛT D'UNE ERREUR</text>
+
+  <text x="900" y="24" class="accent mono" font-size="22" font-weight="600" letter-spacing="3">PRODUCTION</text>
+  <rect x="900" y="50" width="780" height="300" rx="12" class="deck"/>
+  <g font-size="26" class="ink">
+    <rect x="930" y="90" width="160" height="70" rx="8" class="accent"/>
+    <text x="1010" y="134" class="paper" text-anchor="middle">prompt</text>
+    <rect x="1120" y="90" width="200" height="70" rx="8" class="ink" opacity="0.85"/>
+    <text x="1220" y="134" class="paper" text-anchor="middle">code non lu</text>
+    <rect x="1350" y="90" width="300" height="70" rx="8" class="ink"/>
+    <text x="1500" y="134" class="paper" text-anchor="middle">mise en production</text>
+  </g>
+  <path d="M1094 125 H1112 M1324 125 H1342" class="stroke-accent" stroke-width="4"/>
+  <text x="930" y="220" class="ink" font-size="26">Qui le maintient ? Qui le fait évoluer ?</text>
+  <text x="930" y="262" class="ink" font-size="26">Qui prouve qu'il est correct ?</text>
+  <text x="930" y="316" class="ink" font-size="26" opacity="0.7">Rien n'a été écrit pour répondre.</text>
+  <text x="0" y="446" class="ink" font-size="24" opacity="0.6">Illustration : les deux chaînes sont schématiques.</text>
+</svg>

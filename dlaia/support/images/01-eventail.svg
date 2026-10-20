@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 460" width="1680" height="460">
+  <text x="0" y="24" class="accent mono" font-size="22" font-weight="600" letter-spacing="3">PROMPT VAGUE</text>
+  <rect x="0" y="50" width="420" height="110" rx="12" class="tint"/>
+  <text x="210" y="100" class="ink" font-size="26" text-anchor="middle">« vérifie qu'une</text>
+  <text x="210" y="136" class="ink" font-size="26" text-anchor="middle">réservation est valide »</text>
+  <g class="ink" font-size="24">
+    <path d="M430 105 L520 60 M430 105 L520 90 M430 105 L520 120 M430 105 L520 150 M430 105 L520 180" class="stroke-accent" stroke-width="3"/>
+    <text x="530" y="68">dates dans le passé</text>
+    <text x="530" y="98">champs d'hôtel</text>
+    <text x="530" y="128">nom de client obligatoire</text>
+    <text x="530" y="158">nombre de personnes, chambre</text>
+    <text x="530" y="188">chevauchement ignoré</text>
+  </g>
+  <text x="0" y="230" class="ink" font-size="26" opacity="0.7">cinq suites plausibles, le modèle en prend une</text>
+
+  <text x="900" y="24" class="accent mono" font-size="22" font-weight="600" letter-spacing="3">PROMPT PRÉCIS</text>
+  <rect x="900" y="50" width="540" height="110" rx="12" class="tint"/>
+  <text x="1170" y="92" class="ink" font-size="24" text-anchor="middle">« règles dans docs/regles-metier.md,</text>
+  <text x="1170" y="122" class="ink" font-size="24" text-anchor="middle">validate_booking(booking, resource, now),</text>
+  <text x="1170" y="152" class="ink" font-size="24" text-anchor="middle">un seul fichier »</text>
+  <path d="M1450 105 L1530 105" class="stroke-accent" stroke-width="5"/>
+  <path d="M1524 92 L1542 105 L1524 118 Z" class="accent"/>
+  <text x="1552" y="98" class="ink" font-size="24">les cinq</text>
+  <text x="1552" y="128" class="ink" font-size="24">règles</text>
+  <text x="900" y="230" class="ink" font-size="26" opacity="0.7">l'éventail se resserre</text>
+
+  <rect x="0" y="290" width="1680" height="110" rx="12" class="deck"/>
+  <text x="840" y="335" class="ink" font-size="28" text-anchor="middle">Le modèle complète le texte le plus probable après le prompt.</text>
+  <text x="840" y="375" class="ink" font-size="28" text-anchor="middle">Un prompt vague ouvre l'éventail ; un prompt précis le ferme. C'est le comportement attendu.</text>
+  <text x="0" y="446" class="ink" font-size="24" opacity="0.6">Illustration : les cinq suites de gauche sont celles observées avec claude-sonnet-4-6 le 20 octobre 2026.</text>
+</svg>

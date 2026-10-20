@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 440" width="1680" height="440">
+  <text x="0" y="24" class="accent mono" font-size="22" font-weight="600" letter-spacing="3">TEMPÉRATURE BASSE</text>
+  <g class="ink mono" font-size="28">
+    <text x="0" y="110">validate_booking</text>
+    <rect x="300" y="82" width="440" height="38" rx="4" class="accent"/>
+    <text x="760" y="111" class="ink" font-size="26" font-weight="600">92 %</text>
+    <text x="0" y="180">check_booking</text>
+    <rect x="300" y="152" width="24" height="38" rx="4" class="muted"/>
+    <text x="340" y="181" class="ink" font-size="26">5 %</text>
+    <text x="0" y="250">is_valid_booking</text>
+    <rect x="300" y="222" width="12" height="38" rx="4" class="muted"/>
+    <text x="330" y="251" class="ink" font-size="26">3 %</text>
+  </g>
+  <text x="0" y="330" class="ink" font-size="28">Le candidat le plus probable sort presque toujours.</text>
+
+  <text x="900" y="24" class="accent mono" font-size="22" font-weight="600" letter-spacing="3">TEMPÉRATURE HAUTE</text>
+  <g class="ink mono" font-size="28">
+    <text x="900" y="110">validate_booking</text>
+    <rect x="1200" y="82" width="200" height="38" rx="4" class="accent"/>
+    <text x="1420" y="111" class="ink" font-size="26" font-weight="600">40 %</text>
+    <text x="900" y="180">check_booking</text>
+    <rect x="1200" y="152" width="150" height="38" rx="4" class="muted"/>
+    <text x="1370" y="181" class="ink" font-size="26">30 %</text>
+    <text x="900" y="250">is_valid_booking</text>
+    <rect x="1200" y="222" width="150" height="38" rx="4" class="muted"/>
+    <text x="1370" y="251" class="ink" font-size="26">30 %</text>
+  </g>
+  <text x="900" y="330" class="ink" font-size="28">Les candidats rares sortent plus souvent.</text>
+  <text x="0" y="410" class="ink" font-size="24" opacity="0.6">Illustration : probabilités inventées pour le nom d'une fonction. Même à température 0, deux appels peuvent différer.</text>
+</svg>

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 500" width="1680" height="500">
+  <text x="0" y="24" class="accent mono" font-size="22" font-weight="600" letter-spacing="3">SESSION 1</text>
+  <rect x="0" y="50" width="760" height="230" rx="12" class="deck"/>
+  <g font-size="26" class="ink">
+    <rect x="30" y="80" width="480" height="50" rx="8" class="accent" opacity="0.8"/>
+    <text x="270" y="114" class="paper" text-anchor="middle">« rends None, jamais d'exception »</text>
+    <rect x="30" y="145" width="520" height="50" rx="8" class="ink" opacity="0.6"/>
+    <text x="290" y="179" class="paper" text-anchor="middle">fichiers lus, sorties de commandes</text>
+    <rect x="30" y="210" width="440" height="50" rx="8" class="ink" opacity="0.85"/>
+    <text x="250" y="244" class="paper" text-anchor="middle">essais, corrections, réponses</text>
+  </g>
+  <path d="M800 50 V280" class="stroke-accent" stroke-width="5" stroke-dasharray="14 10"/>
+  <text x="800" y="312" class="accent mono" font-size="22" font-weight="600" text-anchor="middle">/clear ou /new</text>
+
+  <text x="920" y="24" class="accent mono" font-size="22" font-weight="600" letter-spacing="3">SESSION 2</text>
+  <rect x="920" y="50" width="760" height="230" rx="12" class="stroke-muted" stroke-width="3" stroke-dasharray="12 10"/>
+  <text x="1300" y="175" class="ink" font-size="30" text-anchor="middle" opacity="0.6">fenêtre de contexte vide</text>
+
+  <rect x="0" y="330" width="1680" height="110" rx="12" class="ink"/>
+  <text x="40" y="376" class="paper mono" font-size="22" font-weight="600" letter-spacing="3">LE DÉPÔT TRAVERSE</text>
+  <text x="40" y="416" class="paper" font-size="28">code, tests, commits, fichiers du dépôt : tout ce qui est écrit sur disque</text>
+  <path d="M380 282 V330 M1300 330 V282" class="stroke-accent" stroke-width="4"/>
+  <path d="M367 316 L380 334 L393 316 Z M1287 296 L1300 278 L1313 296 Z" class="accent"/>
+  <text x="0" y="482" class="ink" font-size="24" opacity="0.6">La consigne tapée dans la session 1 n'existe plus en session 2. Le fichier écrit sur disque, si.</text>
+</svg>

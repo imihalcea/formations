@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 420" width="1680" height="420">
+  <text x="0" y="24" class="accent mono" font-size="22" font-weight="600" letter-spacing="3">UNE SEULE SESSION, DES PROMPTS À LA SUITE</text>
+  <g font-size="26">
+    <rect x="0" y="70" width="240" height="90" rx="10" class="accent"/>
+    <text x="120" y="110" class="paper" text-anchor="middle">« fais une appli</text>
+    <text x="120" y="142" class="paper" text-anchor="middle">de réservation »</text>
+    <rect x="290" y="70" width="200" height="90" rx="10" class="ink" opacity="0.85"/>
+    <text x="390" y="124" class="paper mono" text-anchor="middle">code</text>
+    <rect x="540" y="70" width="240" height="90" rx="10" class="accent"/>
+    <text x="660" y="110" class="paper" text-anchor="middle">« ça plante</text>
+    <text x="660" y="142" class="paper" text-anchor="middle">le samedi »</text>
+    <rect x="830" y="70" width="200" height="90" rx="10" class="ink" opacity="0.85"/>
+    <text x="930" y="124" class="paper mono" text-anchor="middle">code</text>
+    <rect x="1080" y="70" width="240" height="90" rx="10" class="accent"/>
+    <text x="1200" y="110" class="paper" text-anchor="middle">« non, l'autre</text>
+    <text x="1200" y="142" class="paper" text-anchor="middle">bouton »</text>
+    <rect x="1370" y="70" width="200" height="90" rx="10" class="ink" opacity="0.85"/>
+    <text x="1470" y="124" class="paper mono" text-anchor="middle">code</text>
+    <text x="1620" y="124" class="ink" font-size="40" opacity="0.6">…</text>
+  </g>
+  <path d="M244 115 H282 M494 115 H532 M784 115 H822 M1034 115 H1072 M1324 115 H1362" class="stroke-accent" stroke-width="4"/>
+  <path d="M278 103 L294 115 L278 127 Z M528 103 L544 115 L528 139 Z M818 103 L834 115 L818 127 Z M1068 103 L1084 115 L1068 127 Z M1358 103 L1374 115 L1358 127 Z" class="accent"/>
+
+  <rect x="0" y="220" width="1680" height="130" rx="12" class="stroke-muted" stroke-width="3" stroke-dasharray="12 10"/>
+  <text x="840" y="275" class="ink" font-size="30" text-anchor="middle" opacity="0.6">aucun fichier écrit avant : rien à vérifier après</text>
+  <text x="840" y="318" class="ink" font-size="26" text-anchor="middle" opacity="0.6">pas de règle, pas de test, « Accept All »</text>
+  <text x="0" y="400" class="ink" font-size="24" opacity="0.6">Illustration : chaque prompt corrige le précédent dans la même session.</text>
+</svg>

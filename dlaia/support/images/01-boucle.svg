@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 500" width="1680" height="500">
+  <text x="0" y="24" class="accent mono" font-size="22" font-weight="600" letter-spacing="3">EXEMPLE : UN TEST QUI ÉCHOUE</text>
+
+  <g>
+    <rect x="0" y="80" width="480" height="260" rx="12" class="deck"/>
+    <rect x="0" y="80" width="480" height="6" class="accent"/>
+    <text x="36" y="140" class="accent mono" font-size="24" font-weight="600">01</text>
+    <text x="36" y="196" class="ink display" font-size="44">Rassembler</text>
+    <text x="36" y="250" class="ink" font-size="28">Chercher le test, lire</text>
+    <text x="36" y="288" class="ink" font-size="28">le code qu'il appelle</text>
+  </g>
+  <path d="M492 210 H570" class="stroke-accent" stroke-width="5"/>
+  <path d="M564 197 L582 210 L564 223 Z" class="accent"/>
+  <g>
+    <rect x="600" y="80" width="480" height="260" rx="12" class="deck"/>
+    <rect x="600" y="80" width="480" height="6" class="accent"/>
+    <text x="636" y="140" class="accent mono" font-size="24" font-weight="600">02</text>
+    <text x="636" y="196" class="ink display" font-size="44">Agir</text>
+    <text x="636" y="250" class="ink" font-size="28">Modifier le fichier</text>
+    <text x="636" y="288" class="ink" font-size="28">en cause</text>
+  </g>
+  <path d="M1092 210 H1170" class="stroke-accent" stroke-width="5"/>
+  <path d="M1164 197 L1182 210 L1164 223 Z" class="accent"/>
+  <g>
+    <rect x="1200" y="80" width="480" height="260" rx="12" class="deck"/>
+    <rect x="1200" y="80" width="480" height="6" class="accent"/>
+    <text x="1236" y="140" class="accent mono" font-size="24" font-weight="600">03</text>
+    <text x="1236" y="196" class="ink display" font-size="44">Vérifier</text>
+    <text x="1236" y="250" class="ink mono" font-size="28">uv run pytest</text>
+  </g>
+
+  <path d="M1440 352 V430 H240 V360" class="stroke-accent" stroke-width="5" stroke-dasharray="14 10"/>
+  <path d="M227 366 L240 346 L253 366 Z" class="accent"/>
+  <text x="840" y="474" class="ink" font-size="28" text-anchor="middle">Le test échoue encore : la boucle recommence. Il passe : l'agent rend la main.</text>
+</svg>

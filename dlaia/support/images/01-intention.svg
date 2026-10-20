@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 440" width="1680" height="440">
+  <g font-size="28" class="ink">
+    <rect x="0" y="80" width="360" height="130" rx="12" class="accent"/>
+    <text x="180" y="130" class="paper display" font-size="34" text-anchor="middle">intention écrite</text>
+    <text x="180" y="176" class="paper" font-size="24" text-anchor="middle" opacity="0.85">une page, dans le dépôt</text>
+
+    <rect x="420" y="80" width="300" height="130" rx="12" class="deck"/>
+    <rect x="420" y="80" width="300" height="6" class="accent"/>
+    <text x="570" y="130" class="display" font-size="34" text-anchor="middle">versionnée</text>
+    <text x="570" y="176" font-size="24" text-anchor="middle" opacity="0.7">un commit</text>
+
+    <rect x="780" y="80" width="300" height="130" rx="12" class="ink" opacity="0.85"/>
+    <text x="930" y="130" class="paper display" font-size="34" text-anchor="middle">code</text>
+    <text x="930" y="176" class="paper" font-size="24" text-anchor="middle" opacity="0.85">produit par l'agent</text>
+
+    <rect x="1140" y="80" width="340" height="130" rx="12" class="deck"/>
+    <rect x="1140" y="80" width="340" height="6" class="accent"/>
+    <text x="1310" y="130" class="display" font-size="34" text-anchor="middle">vérifié</text>
+    <text x="1310" y="176" font-size="24" text-anchor="middle" opacity="0.7">tests verts, diff relu</text>
+  </g>
+  <path d="M364 145 H408 M724 145 H768 M1084 145 H1128" class="stroke-accent" stroke-width="5"/>
+  <path d="M404 132 L420 145 L404 158 Z M764 132 L780 145 L764 158 Z M1124 132 L1140 145 L1124 158 Z" class="accent"/>
+
+  <path d="M1310 222 V300 H180 V222" class="stroke-accent" stroke-width="4" stroke-dasharray="14 10"/>
+  <path d="M167 238 L180 218 L193 238 Z" class="accent"/>
+  <text x="745" y="340" class="ink" font-size="28" text-anchor="middle">conforme à ce qui était écrit ?</text>
+  <text x="0" y="420" class="ink" font-size="24" opacity="0.6">L'intention survit à la session : elle est sur disque. La consigne tapée dans la session, non.</text>
+</svg>

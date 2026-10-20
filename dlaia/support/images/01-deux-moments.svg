@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 500" width="1680" height="500">
+  <text x="0" y="24" class="accent mono" font-size="22" font-weight="600" letter-spacing="3">GÉNÉRATION 3 : CHAQUE ÉTAPE PASSE PAR LE DÉVELOPPEUR</text>
+  <g font-size="26" class="ink">
+    <rect x="0" y="50" width="200" height="80" rx="10" class="accent"/>
+    <text x="100" y="99" class="paper" text-anchor="middle">formuler</text>
+    <rect x="230" y="50" width="200" height="80" rx="10" class="deck"/>
+    <text x="330" y="99" text-anchor="middle">coller</text>
+    <rect x="460" y="50" width="200" height="80" rx="10" class="deck"/>
+    <text x="560" y="99" text-anchor="middle">lire</text>
+    <rect x="690" y="50" width="200" height="80" rx="10" class="deck"/>
+    <text x="790" y="99" text-anchor="middle">copier</text>
+    <rect x="920" y="50" width="200" height="80" rx="10" class="deck"/>
+    <text x="1020" y="99" text-anchor="middle">placer</text>
+    <rect x="1150" y="50" width="200" height="80" rx="10" class="deck"/>
+    <text x="1250" y="99" text-anchor="middle">tester</text>
+    <rect x="1380" y="50" width="200" height="80" rx="10" class="deck"/>
+    <text x="1480" y="99" text-anchor="middle">corriger</text>
+  </g>
+  <text x="0" y="176" class="ink" font-size="24" opacity="0.6">sept gestes à la main, à chaque réponse de l'assistant</text>
+
+  <text x="0" y="254" class="accent mono" font-size="22" font-weight="600" letter-spacing="3">GÉNÉRATION 4 : DEUX MOMENTS POUR LE DÉVELOPPEUR</text>
+  <g font-size="26" class="ink">
+    <rect x="0" y="280" width="260" height="110" rx="10" class="accent"/>
+    <text x="130" y="330" class="paper display" font-size="34" text-anchor="middle">formuler</text>
+    <text x="130" y="368" class="paper" font-size="22" text-anchor="middle" opacity="0.85">avant</text>
+
+    <rect x="300" y="280" width="1080" height="110" rx="10" class="ink"/>
+    <text x="840" y="322" class="paper display" font-size="30" text-anchor="middle">l'agent : ouvre, crée, exécute, corrige</text>
+    <text x="840" y="364" class="paper" font-size="24" text-anchor="middle" opacity="0.75">jusqu'au résultat ; il demande l'accord du développeur avant d'écrire ou d'exécuter</text>
+
+    <rect x="1420" y="280" width="260" height="110" rx="10" class="accent"/>
+    <text x="1550" y="330" class="paper display" font-size="34" text-anchor="middle">relire</text>
+    <text x="1550" y="368" class="paper" font-size="22" text-anchor="middle" opacity="0.85">après, sur le diff</text>
+  </g>
+  <path d="M262 335 H292 M1382 335 H1412" class="stroke-accent" stroke-width="5"/>
+  <path d="M288 322 L304 335 L288 348 Z M1408 322 L1424 335 L1408 348 Z" class="accent"/>
+  <text x="0" y="456" class="ink" font-size="24" opacity="0.6">Illustration : les gestes intermédiaires passent à l'agent, les deux moments restent au développeur.</text>
+</svg>
