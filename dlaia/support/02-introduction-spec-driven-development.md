@@ -6,31 +6,34 @@ Une méthode, une spécification, un outil
 Module 2, 50 min d'exposé puis TP 1 partie B (30 min). Point de départ : les deux dernières idées clés du module 1 (l'intention écrite avant le code, la méthode et les artefacts qui restent) et le débrief du TP 1 partie A : la v2 couvre les cinq règles, rien ne dit qu'elle est juste. Le module nomme la méthode (Spec Driven Development) et l'outil (Spec Kit). Aucune démonstration n'appelle le modèle : la première commande Spec Kit lancée est `constitution`, au TP 3.
 :::
 
-## Deux fonctions produites, aucune preuve qu'elles sont justes {kicker="Du prompt au projet"}
+## Deux fonctions produites, aucune preuve {kicker="Du prompt au projet"}
 
 | Critère | v1 | v2 |
 |---|---|---|
 | règles couvertes | aucune des cinq, domaine d'hôtel inventé | les cinq, dans l'ordre du fichier |
 | bornes | aucune borne métier | 30 min, 4 h et 20h00 acceptés |
 | codes de refus | aucun, des messages en français | les cinq, en valeur de retour |
-| conforme ? | | |
+| conforme ? | aucun test pour le dire | aucun test pour le dire |
 
-Les trois premières lignes disent ce que chaque fichier contient. La quatrième reste vide : rien n'a été écrit pour la remplir, aucun test ne la tranche.
+::: sources
+- [Claude Code, Best practices, « Give Claude a way to verify its work »](https://code.claude.com/docs/en/best-practices#give-claude-a-way-to-verify-its-work)
+:::
 
 ::: notes
+Source : « Claude stops when the work looks done. Without a check it can run, "looks done" is the only signal available, and you become the verification loop. » La page recommande de donner au modèle une vérification qu'il peut lancer (tests, build, capture) ; ici, rien de tel n'a été fourni.
 Tableau condensé du corrigé `tp/tp01/echauffement/docs/comparaison.md` (relevé du 20 octobre 2026) ; le corrigé complet est cité par `file=` dans l'énoncé du TP 1 partie A. En salle, partir des tableaux remplis au TP : les lignes diffèrent dans le détail, la quatrième manque partout.
 Pourquoi la ligne reste vide : « bornes incluses » dans le prompt v2 ne tranche ni 20h00 pile, ni le samedi, ni deux réservations qui se touchent ; au rejeu sous Claude Code, REG-02 ne bornait que `start < 8h` et `end > 20h`, une demande de 23h00 à 02h00 passait, et le tableau rempli ne le montre pas. Un test l'aurait montré ; aucun n'existe.
 Le dossier `~/echauffement/` est jetable : ce qui y a été appris sur le domaine n'est écrit nulle part.
 :::
 
-## Ce que le prompt ne porte pas : décisions, emplacement du code, preuve, session suivante {kicker="Du prompt au projet"}
+## Ce qui manque au prompt {kicker="Du prompt au projet"}
 
 ![À gauche le prompt v2 à quatre composants dans une session, qui produit une fonction ; à droite le projet, quatre cases marquées d'un point d'interrogation : décisions non tranchées, emplacement du code, preuve que le code est juste, session suivante](images/02-prompt-projet.svg)
 
 Le prompt v2 tient dans une session et produit une fonction. Le projet a besoin de ce que le prompt ne contient pas : les décisions non tranchées, l'emplacement du code, la preuve qu'il est juste et une session suivante qui retrouve tout cela.
 
 ::: notes
-Reprend la slide « À la fin de la session, seul le dépôt reste » : la session suivante ne connaît que les fichiers. Ici, un seul fichier reste, le code ; ni les règles qui l'ont produit, ni les choix faits en chemin (20h00 pile accepté par `<=`), ni ce qui a été vérifié.
+Reprend la slide « Le dépôt traverse les sessions » : la session suivante ne connaît que les fichiers. Ici, un seul fichier reste, le code ; ni les règles qui l'ont produit, ni les choix faits en chemin (20h00 pile accepté par `<=`), ni ce qui a été vérifié.
 Décisions non tranchées : les règles métier ne disent rien de 20h00 pile, des jours fériés, de deux réservations qui se touchent à 10h00 ; l'agent a tranché chacune en silence, dans le code, et le prompt suivant ne le saura pas.
 Emplacement : la v2 est un fichier isolé ; dans bookit, où va `validate_booking`, à côté de quoi, avec quelles importations ? Rien dans le prompt ne le dit.
 Chacune des quatre cases reçoit un artefact dans la suite du module : décisions (ADR, réponses aux questions de `clarify`), emplacement du code (constitution, plan), preuve (scénarios), session suivante (tout cela versionné).
