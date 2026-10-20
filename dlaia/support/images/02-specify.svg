@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 440" width="1680" height="440">
+  <g class="ink">
+    <text x="0" y="30" class="mono" font-size="22" opacity="0.7">DÉPOSÉ PAR specify init</text>
+    <rect x="0" y="50" width="980" height="390" rx="16" class="tint"/>
+    <g class="mono" font-size="26">
+      <text x="40" y="94">.specify/</text>
+      <text x="80" y="144">memory/constitution.md</text>
+      <text x="80" y="194">scripts/bash/</text>
+      <text x="80" y="244">templates/</text>
+      <text x="80" y="294">workflows/speckit/</text>
+      <text x="120" y="326">workflow.yml</text>
+      <text x="40" y="376">.claude/skills/</text>
+      <text x="40" y="408">ou .opencode/commands/</text>
+    </g>
+    <g font-size="22" opacity="0.7">
+      <text x="560" y="144">la constitution, à trous</text>
+      <text x="560" y="194">six scripts appelés par les commandes</text>
+      <text x="560" y="244">cinq fichiers à trous</text>
+      <text x="560" y="294">le workflow et ses points de contrôle</text>
+      <text x="560" y="376">les dix commandes</text>
+    </g>
+
+    <text x="1060" y="30" class="mono" font-size="22" opacity="0.7">CRÉÉ PAR LA COMMANDE specify</text>
+    <rect x="1060" y="50" width="620" height="390" rx="16" class="deck"/>
+    <rect x="1060" y="50" width="620" height="6" class="accent"/>
+    <g class="mono" font-size="26">
+      <text x="1100" y="94">specs/001-nom/</text>
+      <text x="1140" y="144">spec.md</text>
+      <text x="1140" y="194">plan.md</text>
+      <text x="1140" y="244">tasks.md</text>
+    </g>
+    <g font-size="22" opacity="0.7">
+      <text x="1340" y="144">la spécification</text>
+      <text x="1340" y="194">le plan</text>
+      <text x="1340" y="244">les tâches</text>
+    </g>
+    <text x="1100" y="408" font-size="22" opacity="0.7">un dossier par spécification, numéroté</text>
+  </g>
+</svg>

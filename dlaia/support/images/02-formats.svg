@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 450" width="1680" height="450">
+  <g class="ink">
+    <text x="0" y="30" class="mono" font-size="22" opacity="0.7">DANS LE DÉPÔT bookit/</text>
+    <rect x="0" y="50" width="1000" height="400" rx="16" class="tint"/>
+
+    <g class="mono" font-size="26">
+      <text x="40" y="104">docs/adr/0001-refus-en-valeur.md</text>
+      <text x="40" y="158">specs/001-valider-reservation/</text>
+      <text x="80" y="204">spec.md</text>
+      <text x="120" y="250">## Requirements</text>
+      <text x="120" y="296">## User Scenarios &amp; Testing</text>
+      <text x="80" y="350">valider-reservation.feature</text>
+      <text x="40" y="412">tests/test_valider_reservation.py</text>
+    </g>
+
+    <g font-size="24">
+      <rect x="640" y="78" width="320" height="38" rx="8" class="deck"/>
+      <text x="800" y="105" text-anchor="middle" class="accent display">ADR</text>
+      <rect x="640" y="178" width="320" height="38" rx="8" class="deck"/>
+      <text x="800" y="205" text-anchor="middle" class="accent display">Markdown structuré</text>
+      <rect x="640" y="224" width="320" height="38" rx="8" class="deck"/>
+      <text x="800" y="251" text-anchor="middle" class="accent display">exigences EARS</text>
+      <rect x="640" y="270" width="320" height="38" rx="8" class="deck"/>
+      <text x="800" y="297" text-anchor="middle" class="accent display">scénarios Given, When, Then</text>
+      <rect x="640" y="324" width="320" height="38" rx="8" class="deck"/>
+      <text x="800" y="351" text-anchor="middle" class="accent display">Gherkin exécutable</text>
+      <rect x="640" y="386" width="320" height="38" rx="8" class="deck"/>
+      <text x="800" y="413" text-anchor="middle" class="accent display">pytest-bdd</text>
+    </g>
+
+    <text x="1080" y="30" class="mono" font-size="22" opacity="0.7">UNE RÈGLE MÉTIER, D'UN ARTEFACT À L'AUTRE</text>
+
+    <rect x="1080" y="50" width="600" height="78" rx="12" class="accent"/>
+    <text x="1380" y="84" class="paper display" font-size="30" text-anchor="middle">règle métier</text>
+    <text x="1380" y="116" class="paper mono" font-size="22" text-anchor="middle" opacity="0.85">REG-03 : 2 heures de préavis</text>
+
+    <rect x="1080" y="158" width="600" height="78" rx="12" class="deck"/>
+    <rect x="1080" y="158" width="600" height="6" class="accent"/>
+    <text x="1380" y="194" class="display" font-size="30" text-anchor="middle">exigence</text>
+    <text x="1380" y="226" font-size="22" text-anchor="middle" opacity="0.7">une phrase EARS dans spec.md</text>
+
+    <rect x="1080" y="266" width="600" height="78" rx="12" class="deck"/>
+    <rect x="1080" y="266" width="600" height="6" class="accent"/>
+    <text x="1380" y="302" class="display" font-size="30" text-anchor="middle">scénario</text>
+    <text x="1380" y="334" font-size="22" text-anchor="middle" opacity="0.7">Given, When, Then dans le .feature</text>
+
+    <rect x="1080" y="374" width="600" height="76" rx="12" class="ink" opacity="0.85"/>
+    <text x="1380" y="408" class="paper display" font-size="30" text-anchor="middle">test</text>
+    <text x="1380" y="440" class="paper" font-size="22" text-anchor="middle" opacity="0.85">exécuté par pytest-bdd</text>
+  </g>
+  <path d="M1380 132 V144 M1380 240 V252 M1380 348 V360" class="stroke-accent" stroke-width="5"/>
+  <path d="M1367 144 L1380 158 L1393 144 Z M1367 252 L1380 266 L1393 252 Z M1367 360 L1380 374 L1393 360 Z" class="accent"/>
+</svg>
