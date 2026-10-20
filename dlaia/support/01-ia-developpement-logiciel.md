@@ -10,7 +10,7 @@ Module 1, 1h15 d'exposé puis TP 1 partie A (45 min). Jour 1 : piloter l'agent, 
 
 ![À gauche cinq règles métier sur une page, à droite un terminal où tourne un agent, entre les deux le texte que le développeur écrit](images/01-depart.svg)
 
-Une règle métier est une contrainte du domaine que toute réservation respecte. Un agent est un programme qui, à partir du texte reçu, lit le dépôt, écrit des fichiers et lance des commandes.
+Une règle métier est une contrainte du domaine que toute réservation respecte. Un agent est un programme qui agit dans le dépôt à partir du texte reçu.
 
 ::: notes
 Scène du fil rouge bookit : la fonction `validate_booking` est la seule que les TP font écrire. Les cinq règles reviennent sur la slide des règles métier avant le TP 1, avec leurs codes.
@@ -28,7 +28,7 @@ Thèse du module. Le TP 1 la fait éprouver : même fonction, deux textes, deux 
 
 ![Frise à quatre jalons : complétion de l'IDE, suggestion dans l'éditeur, assistant conversationnel, agent](images/01-generations.svg)
 
-Une génération est une étape de l'assistance au code ; chacune a changé ce que le développeur fait de ses mains.
+Une génération est une étape de l'assistance au code, définie par ce que le développeur fait de ses mains.
 
 ::: sources
 - [GitHub Blog, Introducing GitHub Copilot, 29 juin 2021](https://github.blog/news-insights/product-news/introducing-github-copilot-ai-pair-programmer/)
@@ -44,7 +44,7 @@ La complétion de l'IDE n'a pas de date : elle est déterministe et antérieure 
 Les dates sont celles des annonces publiques, pas des premières recherches.
 :::
 
-## Le développeur formule, puis relit {kicker="Quatre générations"}
+## Le développeur intervient deux fois {kicker="Quatre générations"}
 
 ![Deux chaînes : en génération 3 sept gestes à la main, en génération 4 deux moments autour d'un bloc agent](images/01-deux-moments.svg)
 
@@ -68,7 +68,7 @@ Conclut les deux slides précédentes. « Formuler » et « relire » reviennent
 
 ![Un début de fonction Python et les candidats pour la suite, avec leur probabilité](images/01-prediction.svg)
 
-Un LLM (Large Language Model) est entraîné à prédire la suite d'un texte, morceau par morceau. Chaque morceau est choisi d'après des probabilités apprises à l'entraînement.
+Un LLM (Large Language Model) est entraîné à prédire la suite d'un texte, token par token (unité de texte). Chaque token est choisi d'après des probabilités apprises à l'entraînement.
 
 ::: sources
 - [Claude Platform, Glossary : Pretraining, LLM](https://platform.claude.com/docs/en/about-claude/glossary#pretraining)
@@ -76,7 +76,7 @@ Un LLM (Large Language Model) est entraîné à prédire la suite d'un texte, mo
 
 ::: notes
 Glossaire : « pretrained to predict the next word, given the previous context ». Le modèle brut est ensuite affiné (fine-tuning, RLHF) pour suivre des instructions ; détail hors programme.
-Chaque morceau choisi rejoint le texte de départ, puis le modèle recommence : c'est ainsi qu'une réponse de 200 lignes sort d'un prédicteur de morceau suivant.
+Chaque token choisi rejoint le texte de départ, puis le modèle recommence : c'est ainsi qu'une réponse de 200 lignes sort d'un prédicteur de token suivant.
 Dans la suite, « modèle » désigne le LLM.
 :::
 
@@ -84,7 +84,7 @@ Dans la suite, « modèle » désigne le LLM.
 
 ![Une ligne de code Python découpée en huit tokens](images/01-tokens.svg)
 
-Le token est l'unité que le modèle lit et produit : environ 3,5 caractères anglais par token pour `claude-sonnet-4-6`. Prix, limites et taille de ce que le modèle lit se comptent en tokens.
+Le token est l'unité que le modèle lit et produit. Prix et limites se comptent en tokens.
 
 ::: sources
 - [Claude Platform, Glossary : Tokens](https://platform.claude.com/docs/en/about-claude/glossary#tokens)
@@ -99,7 +99,7 @@ Le découpage exact dépend du tokenizer ; l'API de comptage donne le nombre ré
 
 ![La fenêtre de contexte remplie par les instructions fixes, les messages, les fichiers lus et sorties de commandes, la réponse en cours](images/01-contexte.svg)
 
-La fenêtre de contexte est tout ce que le modèle lit, et sa taille est bornée : 200 000 tokens pour `claude-sonnet-4-6` appelé par Amazon Bedrock, 1 million de tokens sur l'API Claude.
+La fenêtre de contexte est tout ce que le modèle lit, de taille bornée.
 
 ::: sources
 - [Claude Platform, Context windows](https://platform.claude.com/docs/en/build-with-claude/context-windows#how-the-context-window-works)
@@ -108,7 +108,7 @@ La fenêtre de contexte est tout ce que le modèle lit, et sa taille est bornée
 :::
 
 ::: notes
-Doc : « all the text a language model can reference when generating a response, including the response itself » ; tout compte : prompt système, chaque message, résultats d'outils, définitions d'outils, réponse en cours.
+Doc : « all the text a language model can reference when generating a response, including the response itself » ; tout compte : instructions fixes, chaque message, résultats d'outils, définitions d'outils, réponse en cours.
 Claude Sonnet 4.6 : 1 M de tokens sur l'API Claude. Sur l'API Invoke d'Amazon Bedrock, celle de la VM, Claude Sonnet 4.6 n'atteint 1 M qu'avec la variante `[1m]` ; sans elle, 200 000 tokens, valeur relevée le 19 octobre 2026 par `claude -p --output-format json` (`formateur/fil-rouge.md`).
 Le schéma ne montre pas les définitions d'outils ni le fichier de contexte : le premier vient à la section « L'agent », le second au module 4.
 Au-delà de la limite : l'appel échoue (« prompt is too long ») ou le harnais compacte ; module 7.
@@ -118,7 +118,7 @@ Au-delà de la limite : l'appel échoue (« prompt is too long ») ou le harnais
 
 ![Deux distributions de candidats pour un nom de fonction : température basse concentrée, température haute étalée](images/01-temperature.svg)
 
-À chaque token, le modèle choisit parmi des candidats pondérés. La température règle la part de hasard de ce choix ; même à 0, deux appels identiques peuvent différer.
+La température règle la part de hasard dans le choix de chaque token.
 
 ::: sources
 - [Claude Platform, Glossary : Temperature](https://platform.claude.com/docs/en/about-claude/glossary#temperature)
@@ -136,7 +136,7 @@ Si les six réponses sont identiques en salle, relancer : ce qui compte est la p
 ## Quatre limites structurelles du modèle {.facts kicker="Le LLM"}
 
 - **Hallucination** une affirmation produite avec assurance et fausse
-- **Date de coupure** connaissances fiables jusqu'en août 2025 pour `claude-sonnet-4-6`
+- **Date de coupure** fin des connaissances fiables du modèle, fixée par l'entraînement : août 2025 pour `claude-sonnet-4-6`
 - **Non-déterminisme** deux appels identiques, deux réponses possibles
 - **Pas d'exécution** le modèle produit du texte ; il ne lance rien lui-même
 
@@ -164,7 +164,7 @@ Conclut la section : prédiction, tokens, fenêtre, température, limites. Le mo
 
 ![Boucle en trois phases sur l'exemple d'un test qui échoue : rassembler le contexte, agir, vérifier avec uv run pytest](images/01-boucle.svg)
 
-Un agent est un modèle dans une boucle d'outils. Un outil est une action que l'agent peut déclencher ; sa sortie revient dans la fenêtre de contexte, et la boucle tourne jusqu'au résultat.
+Un agent est un modèle dans une boucle d'outils. Un outil est une action que l'agent peut déclencher, dont la sortie revient dans la fenêtre de contexte.
 
 ::: sources
 - [Claude Code, How Claude Code works : The agentic loop](https://code.claude.com/docs/en/how-claude-code-works#the-agentic-loop)
@@ -180,7 +180,7 @@ Reprend la définition de la première slide (lit le dépôt, écrit, lance) en 
 
 ## Les outils de l'agent {kicker="L'agent"}
 
-Outils de base, liste partielle, avec leur nom sous Claude Code et sous Open Code :
+Outils de base, liste partielle.
 
 | Action | Claude Code | Open Code |
 |---|---|---|
@@ -261,7 +261,7 @@ Mode de permission au lancement : Claude Code démarre en Manual avec `claude-so
 
 ![Trois tours successifs qui s'accumulent dans la fenêtre de contexte, puis une session neuve qui repart d'une fenêtre vide](images/01-tours.svg)
 
-Une session va du lancement à `/clear` ou `/new` ; chaque tour (message, appels d'outils, réponse) reste entier dans la fenêtre de contexte.
+Une session va du lancement à `/clear` ou `/new`. Chaque tour reste entier dans la fenêtre de contexte.
 
 ::: sources
 - [Claude Platform, Context windows](https://platform.claude.com/docs/en/build-with-claude/context-windows#how-the-context-window-works)
@@ -311,8 +311,6 @@ Piège relevé : après un `opencode run` lancé sans `--auto` sur une action `a
 
 ![Session 1 avec sa consigne, ses fichiers lus et ses essais ; coupure ; session 2 vide ; en bas, le dépôt qui traverse](images/01-session.svg)
 
-À la fin de la session, seul le dépôt reste.
-
 ::: sources
 - [Claude Code, How Claude Code works : Work with sessions](https://code.claude.com/docs/en/how-claude-code-works#work-with-sessions)
 - [Open Code, TUI : /new](https://opencode.ai/docs/tui/)
@@ -335,7 +333,7 @@ Conclut la section : boucle, outils, harnais, tours, fin de session. Prépare le
 
 ![Un prompt vague ouvre cinq suites plausibles, un prompt précis n'en laisse qu'une](images/01-eventail.svg)
 
-Le prompt est le texte envoyé au modèle, premier contenu de la fenêtre de contexte après les instructions fixes du harnais.
+Le prompt est le texte envoyé au modèle, après les instructions fixes du harnais.
 
 ::: sources
 - [Claude Platform, Prompting best practices : Be clear and direct](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#be-clear-and-direct)
@@ -352,10 +350,10 @@ Devant un prompt vague, le modèle complète le texte le plus probable, et plusi
 écris dans un fichier validate_booking_v1.py une fonction python validate_booking qui vérifie qu'une réservation est valide
 ```
 
-```python file="../tp/tp01/echauffement/validate_booking_v1.py" lines="4-12"
+```python file="../tp/tp01/echauffement/validate_booking_v1.py" lines="9-14"
 ```
 
-Extrait du fichier produit par `claude-sonnet-4-6` sous Claude Code, le 20 octobre 2026.
+Extrait de la docstring du fichier produit par `claude-sonnet-4-6` sous Claude Code, le 20 octobre 2026.
 
 ::: notes
 Fichier produit par `claude-sonnet-4-6` sous Claude Code le 20 octobre 2026, en mode non interactif (`claude -p --permission-mode acceptEdits`), conservé en entier dans `tp/tp01/echauffement/validate_booking_v1.py`. Un `dict` avec un nom de client, un nombre de personnes et une chambre : des règles d'hôtel, inventées. Aucune durée, aucun préavis, aucun chevauchement : rien de ce que bookit exige.
@@ -391,9 +389,9 @@ La slide suivante donne, composant par composant, une version faible et une vers
 | Composant | Version faible | Version utile |
 |---|---|---|
 | rôle | « Tu es un expert. » | « développeur Python attentif aux cas limites ; erreurs en valeur de retour » |
-| contexte | rien : le modèle invente des règles plausibles | « règles dans `docs/regles-metier.md`, à lire d'abord ; bornes incluses » |
+| contexte | rien | « règles dans `docs/regles-metier.md`, à lire d'abord ; bornes incluses » |
 | instruction | « gère la validation des réservations » | « écrire `validate_booking(booking, resource, now)` : `None` ou `InvalidBooking(code)` » |
-| format | rien : un fichier, ou trois, ou du texte | « un seul fichier `validate_booking_v2.py`, sans exemple ni test » |
+| format | rien | « un seul fichier `validate_booking_v2.py`, sans exemple ni test » |
 
 Le prompt complet est dans l'énoncé du TP.
 
@@ -420,7 +418,7 @@ Le prompt complet à quatre lignes est dans l'énoncé du TP, étape 3.
 | code juste, style ou rigueur inadaptés | rôle | fixer le niveau d'exigence |
 | réponse noyée dans du texte, mauvais fichier | format | dire la forme et l'emplacement |
 
-Corriger un seul composant, puis régénérer dans une session neuve : la réponse ratée pèserait sur la suivante.
+Régénérer dans une session neuve : la réponse ratée pèserait sur la suivante.
 
 ::: sources
 - [Claude Platform, Prompt engineering overview](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview)
@@ -457,7 +455,7 @@ Karpathy décrit une pratique et la limite lui-même aux projets jetables du wee
 
 ![Une chaîne prompt, code, prompt, code dans une seule session, sans aucun fichier écrit à côté](images/01-vibe.svg)
 
-Le vibe coding est un pilotage par prompts successifs, sans rien écrire avant ni vérifier après. Chaque prompt corrige le précédent dans la même session.
+Le vibe coding est un pilotage par prompts successifs, sans rien écrire avant ni vérifier après.
 
 ::: sources
 - [Wikipédia, Vibe coding](https://en.wikipedia.org/wiki/Vibe_coding)
@@ -474,7 +472,7 @@ Le terme est devenu courant ; la pratique est plus ancienne que le mot.
 
 ![Deux zones séparées par le coût d'une erreur : prototype (prompt, code, essai, jeté) et production (prompt, code non lu, mise en production, trois questions sans réponse)](images/01-zones.svg)
 
-Quand le code est jeté, une erreur coûte une soirée. En production, le code non lu doit être maintenu, modifié et prouvé correct.
+Le même agent sert dans les deux zones.
 
 ::: sources
 - [Wikipédia, Vibe coding (« throwaway weekend projects »)](https://en.wikipedia.org/wiki/Vibe_coding)
@@ -490,7 +488,7 @@ La frontière est le coût d'une erreur ; le même agent sert dans les deux zone
 
 ![Chaîne intention écrite, versionnée, code, vérifié, avec une flèche de retour : conforme à ce qui était écrit ?](images/01-intention.svg)
 
-L'intention est ce que le logiciel doit faire : écrite sur une page, versionnée par un commit, puis le code est vérifié contre elle.
+L'intention est ce que le logiciel doit faire.
 
 ::: notes
 Ce que la session perd (slide « Le dépôt traverse les sessions »), l'intention écrite le garde : elle est sur disque, dans le dépôt, lisible par la session suivante et par l'équipe.
@@ -513,7 +511,7 @@ Conclut la section : citation, définition, coût d'une erreur, chaîne de l'int
 | comment l'équipe organise le travail ? | la méthode | revue de code, intention écrite avant le code | l'équipe |
 | qu'est-ce qui reste dans le dépôt ? | l'artefact | code, tests, règles, intention écrite | l'équipe |
 
-La méthode est la manière dont l'équipe organise le travail avec l'agent ; un artefact est un fichier versionné dans le dépôt qui porte le travail au-delà d'une session.
+La méthode est la manière dont l'équipe organise le travail avec l'agent. Un artefact est un fichier versionné qui porte le travail au-delà d'une session.
 
 ::: sources
 - [Claude Platform, Models overview](https://platform.claude.com/docs/en/about-claude/models/overview)
@@ -537,7 +535,7 @@ Conclut la grille et le module. Les deux jours de formation travaillent les deux
 
 ## Les règles métier de bookit {kicker="TP 1"}
 
-bookit enregistre des réservations de ressources : salle, équipement ou personne. Une demande vise une ressource, avec un début et une fin ; elle est acceptée quand elle respecte les cinq règles, sinon refusée avec le code de la règle enfreinte.
+bookit enregistre des réservations de ressources : salle, équipement ou personne. Une demande vise une ressource, avec un début et une fin. Elle est acceptée, ou refusée avec le code de la règle enfreinte.
 
 | Règle | Contenu | Code de refus |
 |---|---|---|
@@ -657,7 +655,7 @@ $ opencode
 Dans une session encore ouverte, `/new` ouvre une session neuve.
 :::
 
-Avant d'envoyer, relire le prompt ci-dessous composant par composant : le rôle cadre l'exigence ; le contexte donne ce que le modèle ignore, et rien de plus ; l'instruction tient en un verbe et un périmètre ; le format dit la forme et l'emplacement. Puis l'envoyer tel quel.
+Avant d'envoyer, relire le prompt ci-dessous composant par composant, puis l'envoyer tel quel.
 
 ```prompt
 Rôle : développeur Python attentif aux cas limites ; les erreurs métier se rendent en valeur de retour, jamais en exception.
@@ -710,7 +708,7 @@ Pour une borne, chercher la comparaison qui la porte : `timedelta(minutes=30) <=
 
 ### Corrigé {.corrige}
 
-Fichier v2 produit par `claude-sonnet-4-6` sous Claude Code le 20 octobre 2026, lors de la préparation du module, à titre d'illustration : le vôtre diffère dans le détail (le rejeu du même jour a donné une autre variante). Seule retouche : la ponctuation d'un commentaire.
+Fichier v2 produit par `claude-sonnet-4-6` sous Claude Code le 20 octobre 2026, à titre d'illustration. Le vôtre diffère dans le détail : le rejeu du même jour a donné une autre variante. Seule retouche : la ponctuation d'un commentaire.
 
 ```python file="../tp/tp01/echauffement/validate_booking_v2.py"
 ```
@@ -731,6 +729,7 @@ Tableau de comparaison rempli pour ce couple v1 et v2 :
 - **Température** : réglage de la part de hasard dans le choix de chaque token
 - **Hallucination** : affirmation produite avec assurance et fausse
 - **Date de coupure** : date jusqu'à laquelle les connaissances du modèle sont fiables
+- **Non-déterminisme** : deux appels identiques au modèle peuvent produire deux réponses différentes, même à température 0
 
 ::: sources
 - [Claude Platform, Glossary](https://platform.claude.com/docs/en/about-claude/glossary)

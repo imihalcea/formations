@@ -97,7 +97,7 @@ Définitions du lexique à dire à l'oral : le workflow est la suite ordonnée d
 ::: notes
 Définition du lexique : un point de contrôle est le moment du workflow où le développeur lit l'artefact produit, le corrige ou le refuse, puis le commite avant l'étape suivante.
 Blog : « The process builds in explicit checkpoints for you to critique what's been generated » ; « Crucially, your role isn't just to steer. It's to verify. » `spec-driven.md` : « team-reviewed specifications », et, pour les tests, « Tests are validated and approved by the user » avant tout code.
-L'agent produit, le développeur vérifie : même partage que la slide « Le développeur formule, puis relit » du module 1, répété à chaque étape.
+L'agent produit, le développeur vérifie : même partage que la slide « Le développeur intervient deux fois » du module 1, répété à chaque étape.
 « Puis le commite » : c'est la règle des TP, le stagiaire commite lui-même après chaque étape ; l'agent ne commite pas. Le commit est la trace de la décision.
 Dans Spec Kit, le fichier de workflow nomme ces moments `gate` ; la slide « Le workflow speckit, six étapes » le montre.
 :::

@@ -9,7 +9,7 @@
   <path d="M800 200 H880" class="stroke-accent" stroke-width="5"/>
   <path d="M870 186 L890 200 L870 214 Z" class="accent"/>
 
-  <text x="920" y="24" class="accent mono" font-size="22" font-weight="600" letter-spacing="3">MORCEAU SUIVANT, PROBABILITÉS</text>
+  <text x="920" y="24" class="accent mono" font-size="22" font-weight="600" letter-spacing="3">TOKEN SUIVANT, PROBABILITÉS</text>
   <text x="920" y="110" class="ink mono" font-size="32">quantite</text>
   <rect x="1130" y="82" width="420" height="38" rx="4" class="accent"/>
   <text x="1570" y="111" class="ink" font-size="30" font-weight="600">88 %</text>
@@ -26,5 +26,5 @@
   <rect x="1130" y="307" width="10" height="38" rx="4" class="muted"/>
   <text x="1156" y="336" class="ink" font-size="30">2 %</text>
 
-  <text x="0" y="440" class="ink" font-size="26" opacity="0.6">Illustration : probabilités inventées. Le modèle ajoute le morceau choisi au texte, puis recommence.</text>
+  <text x="0" y="440" class="ink" font-size="26" opacity="0.6">Illustration : probabilités inventées. Le modèle ajoute le token choisi au texte, puis recommence.</text>
 </svg>

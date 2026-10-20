@@ -23,5 +23,5 @@
   <text x="1220" y="100" class="accent display" font-size="56">3,5 caractères</text>
   <text x="1220" y="136" class="ink" font-size="26" opacity="0.7">par token en moyenne</text>
   <text x="0" y="210" class="ink" font-size="30">Un token peut être un mot, une partie de mot, un caractère ou un octet.</text>
-  <text x="0" y="270" class="ink" font-size="26" opacity="0.6">Illustration : le découpage réel dépend du tokenizer du modèle. ␣ marque une espace.</text>
+  <text x="0" y="270" class="ink" font-size="26" opacity="0.6">Illustration : le découpage réel dépend du modèle. ␣ marque une espace.</text>
 </svg>

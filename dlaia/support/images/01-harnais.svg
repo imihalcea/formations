@@ -25,5 +25,4 @@
   <path d="M526 250 H594 M1086 250 H1154" class="stroke-accent" stroke-width="4"/>
   <path d="M586 238 L602 250 L586 262 Z M1146 238 L1162 250 L1146 262 Z" class="accent"/>
   <path d="M534 238 L518 250 L534 262 Z M1094 238 L1078 250 L1094 262 Z" class="accent"/>
-  <text x="840" y="450" class="ink" font-size="28" text-anchor="middle">Le modèle ne lance rien lui-même : le harnais exécute et renvoie le résultat</text>
 </svg>
