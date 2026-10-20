@@ -151,8 +151,11 @@ function ImpactBody({ slide }: { slide: Slide }) {
   }
 }
 
+// Une slide dont le corps est un schéma seul (une image, aucun autre paragraphe) le centre verticalement.
+const figureOnly = (html: string) => /^\s*<p>\s*<(svg|img)\b/.test(html) && (html.match(/<p\b/g) ?? []).length === 1;
+
 function Columns({ columns, after }: { columns: string[]; after: string | undefined }) {
-  if (columns.length === 1) return <Html html={columns[0]!} className="slide-md" />;
+  if (columns.length === 1) return <Html html={columns[0]!} className={figureOnly(columns[0]!) ? "slide-md my-auto" : "slide-md"} />;
   return (
     <>
       <div className="grid grid-cols-2 gap-20">
