@@ -42,7 +42,7 @@ Chaque titre `##` ouvre une slide. Une classe entre accolades fixe son type, et 
 | `facts` | 2 à 4 éléments `- …`, ou `- **Terme** explication` pour mettre le terme en vedette | `kicker` |
 | `figure` | aucun ; le titre décrit le chiffre | `value` (obligatoire), `kicker` |
 | `figures` | 3 à 5 éléments `- **valeur** légende`, puis un paragraphe facultatif affiché en remarque | `kicker` |
-| `quote` | lignes `> …` | `author` |
+| `quote` | lignes `> …` | `author`, `kicker` |
 | `compare` | conteneurs `claude-code` et `opencode` | `kicker` |
 | `tp` | voir « Travaux pratiques » | `duration`, `kicker` |
 | `end` | sous-titre | `kicker` |

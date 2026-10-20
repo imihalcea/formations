@@ -121,7 +121,7 @@ function ImpactBody({ slide }: { slide: Slide }) {
         </>
       );
     case "statement":
-      return <h2 className="slide-title-lg font-display max-w-[1400px]">{slide.title}</h2>;
+      return <h2 className="slide-title font-display max-w-[1600px]">{slide.title}</h2>;
     case "figure":
       return (
         <>
