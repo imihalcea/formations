@@ -87,6 +87,7 @@ La formation dure deux journées, cadre nominal. Les durées ci-dessous sont ind
 La qualité pédagogique prime sur la durée annoncée d'un module : le formateur accepte de dépasser le temps prévu quand le contenu l'exige.
 
 - **Une idée par slide**, deux phrases courtes ou quatre éléments brefs au plus. Au-delà, scinder la slide plutôt que condenser le texte.
+- **Un titre de cinq mots au plus**, compréhensible seul ; le détail va dans le corps de la slide. Les idées clés (`statement`) suivent leur propre règle ci-dessous.
 - **Montrer avant d'expliquer** : chaque notion abstraite a un support visuel (schéma SVG dans `support/images/`, commande réelle, extrait de code, sortie de terminal). Un exemple inventé porte la mention « illustration ».
 - **Des exemples présentés comme tels** : le titre ou une phrase indique qu'une liste est partielle, pour qu'elle ne passe pas pour exhaustive.
 - **Des chiffres lisibles d'un coup d'œil** : légende de trois à cinq mots. Intervalles de confiance, effectifs et méthode vont dans les notes. Aucune abréviation non définie à l'écran.

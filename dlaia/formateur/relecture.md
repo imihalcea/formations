@@ -16,7 +16,7 @@ Référence : `formateur/lexique.md`.
 
 ## C. Clarté
 
-- C1. Le titre d'une slide se comprend sans lire la slide : un développeur qui découvre la notion devine le contenu à partir du titre. Une formule elliptique, une métaphore, une question rhétorique ou un jeu de mots est un constat.
+- C1. Le titre d'une slide se comprend sans lire la slide : un développeur qui découvre la notion devine le contenu à partir du titre. Une formule elliptique, une métaphore, une question rhétorique ou un jeu de mots est un constat. Le titre tient en cinq mots au plus (hors `statement`, voir C2) : un sixième mot est un constat.
 - C2. Une idée clé (`statement`) est une phrase affirmative complète d'une dizaine de mots, deux lignes au plus, sans métaphore ni ellipse.
 - C3. Un kicker nomme la section par son sujet, en un à trois mots, identique sur toutes les slides de la section.
 - C4. Chaque phrase d'une slide se lit seule, sans le discours du formateur. Ce qui a besoin du discours va dans les notes.
