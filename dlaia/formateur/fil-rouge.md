@@ -31,6 +31,25 @@ Les scénarios Gherkin fournis (`tp/fichiers/valider-reservation.feature`, 24 ex
 
 Dates du `curl`. `test_fumee.py` réserve le lundi suivant de 10h à 11h, ce qui respecte les cinq règles quel que soit le jour de la formation : le test reste vert une fois les règles écrites. Le `curl` des énoncés calcule sa date de même, `$(date -d 'next monday' +%F)T10:00:00`, pour tenir dans le préavis et l'horizon. Au TP 3, deux envois identiques répondent 201 (aucune règle). Au TP 6, l'énoncé envoie deux fois la même demande : le second envoi répond 422 `overlap` dans tous les cas ; le premier aussi quand `bookit.db` porte encore la réservation du TP 3 et que le lundi suivant n'a pas changé entre les deux journées.
 
+## Présentation de bookit dans le support
+
+Aux sessions précédentes, comprendre le domaine a pris trop de temps aux stagiaires et a retardé les TP. Le support présente donc le projet avant qu'ils y touchent, en deux temps.
+
+Module 1, avant le lancement du TP 1 : une slide « Les règles métier de bookit », le tableau REG-01 à REG-05 avec les codes, parce que l'échauffement du TP 1 fait écrire une validation à partir de ces règles.
+
+Module 3, section « Le fil rouge bookit » placée juste avant la slide de lancement du TP 3, cinq à six slides, chacune avec son support visuel :
+
+| Slide | Idée | Support visuel |
+|---|---|---|
+| Ce que bookit fait | réserver une ressource sur un créneau ; une requête, une réponse | le `curl` et ses deux réponses, 201 et 422 avec le code |
+| Les règles métier | REG-01 à REG-05, un code par règle | tableau repris du module 1 |
+| Le squelette | trois couches, dépendances vers le domaine | SVG `support/images/` des couches avec les fichiers de `fil-rouge/` |
+| Le parcours d'une demande | API, `request_booking`, `validate_booking`, dépôt | SVG de séquence ou extrait de `request_booking.py` |
+| Fourni et à construire | fourni : API, dépôt SQLite, horloge, modèles, ports, test de fumée ; à construire : `validate_booking`, ses tests, les artefacts SDD | slide `compare` |
+| Ce que chaque TP ajoute | constitution, spécification, plan et tâches, code et tests | la table de la trajectoire, sous forme de frise |
+
+La première slide montre le stub : `validate_booking` rend `None`, l'API accepte tout, ce que le TP 3 fait constater par deux `curl` à 201. Le plan du module 3 (#66) reprend cette section ; le plan du module 1 (#59) reprend la slide des règles.
+
 ## Contraintes techniques
 
 - Python 3.14 géré par uv : `requires-python = ">=3.14"`, `.python-version`, `uv.lock` versionné ; dépendances `fastapi` et `uvicorn` ; groupe `dev` : `httpx2`, `pytest`, `pytest-bdd`, `ruff`. cosmic-ray entre au TP 6 par `uv add --dev cosmic-ray==8.7.0`. `pythonpath = ["."]` dans la configuration pytest est indispensable : sans lui, le `uv run pytest` lancé par cosmic-ray échoue à la collecte (voir Environnement).
