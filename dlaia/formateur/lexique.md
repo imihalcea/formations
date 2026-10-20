@@ -17,37 +17,42 @@ Les définitions ci-dessous sont provisoires jusqu'au plan du module concerné, 
 | bookit | projet fil rouge : application de réservation de ressources | 00 | Bookit, l'application ou le projet sans son nom |
 | fil rouge | projet bookit repris de TP en TP | 00 | projet d'exemple, cas d'école |
 
-## Domaine bookit (module 3, règles dès le module 1)
+## Domaine bookit (module 3, règles et codes de refus dès le module 1)
 
 | Terme | Définition | Introduit | À ne pas employer |
 |---|---|---|---|
-| ressource | ce qui se réserve : salle, équipement ou personne ; connaît ses réservations confirmées | 03 | salle (pour la notion), asset, objet réservable |
+| ressource | ce qui se réserve : salle, équipement ou personne ; connaît ses réservations confirmées | 03 (sens courant dès le 01) | salle (pour la notion), asset, objet réservable |
 | demande de réservation | une ressource visée, un début et une fin, soumise à bookit ; « demande » seule une fois définie | 03 | requête, booking, réservation (avant décision) |
 | créneau | intervalle entre un début et une fin, début inclus et fin exclue ; deux créneaux jointifs ne se chevauchent pas | 03 | plage, slot, intervalle, période |
 | réservation confirmée | demande acceptée et enregistrée sur sa ressource ; « réservation » seule une fois définie | 03 | booking, réservation existante, occupation |
 | décision | résultat de la validation d'une demande : acceptée, ou refusée avec un code | 03 | résultat, verdict, réponse (pour la décision) |
-| code de refus | identifiant de la règle enfreinte, un par règle : `duration`, `hours`, `lead_time`, `horizon`, `overlap` | 03 | code d'erreur, erreur, motif |
-| instant courant | moment auquel la demande est jugée, fourni en entrée à la validation | 03 | maintenant, now (hors code), heure système, date du jour |
+| code de refus | identifiant de la règle enfreinte, un par règle : `duration`, `hours`, `lead_time`, `horizon`, `overlap` | 01 | code d'erreur, erreur, motif |
+| instant courant | moment auquel la demande est jugée, fourni en entrée à la validation | 03 (sens courant dès le 01) | maintenant, now (hors code), heure système, date du jour |
 | règle métier | contrainte du domaine que toute réservation respecte, numérotée REG-NN ; devient une exigence dans la spécification | 01 | règle de gestion, contrainte métier, business rule |
 
 ## Modèle et agent (module 1)
 
 | Terme | Définition | Introduit | À ne pas employer |
 |---|---|---|---|
+| génération (d'assistance) | une des quatre étapes de l'assistance au code : complétion de l'IDE, suggestion dans l'éditeur, assistant conversationnel, agent | 01 | vague, ère, phase |
 | LLM | modèle de langage qui produit du texte token par token à partir d'un contexte ; « modèle » seul une fois le sigle défini | 01 | grand modèle de langage, IA (pour le modèle), réseau de neurones |
 | token | unité de texte que le modèle lit et produit, comptée dans la fenêtre et facturée | 01 | jeton, mot, caractère |
 | fenêtre de contexte | tout ce que le modèle lit pour produire une réponse, de taille bornée | 01 | contexte seul (pour la fenêtre), context window, mémoire |
 | température | réglage de la part de hasard dans le choix de chaque token | 01 | créativité, aléa, randomness |
 | hallucination | affirmation produite avec assurance et fausse | 01 | invention, erreur du modèle, confabulation |
-| agent | modèle dans une boucle d'outils : il lit, exécute, relit, jusqu'à la tâche faite | 01 | assistant, IA (pour l'agent), copilote, bot |
-| harnais | logiciel qui entoure le modèle : boucle, outils, permissions, fichier de contexte | 01 | runtime, wrapper, outil agentique, agent CLI |
-| outil (de l'agent) | action que l'agent peut déclencher : lire un fichier, écrire, exécuter une commande | 01 | fonction, tool, capacité |
+| date de coupure | date jusqu'à laquelle les connaissances du modèle sont fiables, fixée par son entraînement | 01 | cutoff, date limite, fraîcheur |
+| non-déterminisme | deux appels identiques au modèle peuvent produire deux réponses différentes, même à température 0 | 01 | aléa (pour la propriété), instabilité, variabilité |
+| agent | modèle dans une boucle d'outils : il lit, exécute, relit, jusqu'au résultat | 01 | assistant, IA (pour l'agent), copilote, bot |
+| outil (de l'agent) | action que l'agent peut déclencher : lire un fichier, écrire, exécuter une commande, chercher | 01 | fonction, tool, capacité |
+| harnais | logiciel qui entoure le modèle : boucle, outils, permissions, affichage | 01 | runtime, wrapper, outil agentique, agent CLI |
 | permission | accord demandé à l'utilisateur avant une action de l'agent | 01 | autorisation, droit, approbation |
-| session | une conversation avec l'agent, du lancement à `/clear` ou `/new` | 01 | conversation, chat, contexte (pour la session) |
+| session | une suite d'échanges avec l'agent, du lancement à `/clear` ou `/new` | 01 | conversation, chat, contexte (pour la session) |
+| tour | un échange de la session : message, appels d'outils, réponse ; chaque tour reste entier dans la fenêtre de contexte | 01 | turn, itération, aller-retour |
 | prompt | texte envoyé au modèle ; ses quatre composants : rôle, contexte, instruction, format | 01 | invite, requête, demande, instruction (pour l'ensemble) |
 | vibe coding | pilotage par prompts successifs, sans intention écrite ni vérification | 01 | codage à l'instinct, prompt-and-pray |
 | intention | ce que le logiciel doit faire, écrit, versionné, vérifié | 01 | besoin, idée, vision, objectif (pour l'intention) |
-| génération (d'assistance) | une des quatre étapes de l'assistance au code : complétion, chat, agent, méthode | 01 | vague, ère, phase |
+| méthode | manière dont l'équipe organise le travail avec l'agent : ce qui s'écrit avant le code et ce qui se relit après | 01 | process, pratique, approche (pour la méthode) |
+| artefact | fichier versionné dans le dépôt qui porte le travail au-delà d'une session : code, tests, règles, intention écrite | 01 | livrable, document, sortie |
 
 ## Spec Driven Development (module 2)
 
@@ -55,7 +60,6 @@ Les définitions ci-dessous sont provisoires jusqu'au plan du module concerné, 
 |---|---|---|---|
 | Spec Driven Development | méthode où une spécification écrite précède et pilote le plan, les tâches et le code ; « SDD » une fois le sigle défini | 02 | développement piloté par la spécification, spec-first, approche spec |
 | workflow | suite ordonnée des étapes du SDD, chacune produisant un artefact relu par un humain | 02 | pipeline, processus, cycle, chaîne |
-| artefact | fichier produit par une étape du workflow : constitution, spécification, plan, tâches, code | 02 | livrable, document, sortie |
 | spécification | ce que le logiciel doit faire et pourquoi, sans dire comment ; fichier `spec.md` | 02 | spec hors nom de fichier, cahier des charges, exigences (pour l'ensemble) |
 | exigence | une phrase vérifiable de la spécification, numérotée REG-NN dans bookit | 02 | requirement, règle (pour une exigence), critère |
 | QUOI et COMMENT | partage entre la spécification (QUOI) et le plan (COMMENT) | 02 | what et how, fond et forme, besoin et solution |

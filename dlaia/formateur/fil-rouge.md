@@ -83,6 +83,8 @@ Arrivée : `~/bookit/` intact, sans `.git` ni `.venv` ; `specify version` répon
 
 Corrigé `tp/tp01/` : v2 d'illustration, grilles remplies ; rien dans le fil rouge.
 
+Relevé du 20 octobre 2026 (partie A, rejeu non interactif, `claude-sonnet-4-6` dans les deux outils) : le prompt d'une phrase nomme le fichier à écrire (`écris dans un fichier validate_booking_v1.py …`), parce que sans nom de fichier Claude Code en mode `-p` a répondu dans le fil sans rien écrire ; la v1 produite invente un domaine d'hôtel (`guests`, `room_id`, dates d'arrivée et de départ) et aucune des cinq règles ; la v2 couvre les cinq règles avec les cinq codes dans les deux outils, bornes 30 min, 4 h et 20h00 acceptées, `Optional[InvalidBooking]` au lieu de `| None`. Durées agent : 18 s et 21 s sous Claude Code, 9 s et 11 s sous Open Code. Piège d'outillage : après un `opencode run` lancé sans `--auto` sur une action `ask`, le service de fond d'Open Code (`opencode service status`) n'a plus rien rendu aux appels suivants, même avec `--auto` ; `opencode service restart` a suffi.
+
 ### TP 3 (module 3, 50 min)
 
 Départ : `~/bookit/` extrait, Spec Kit installé.
