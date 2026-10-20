@@ -60,9 +60,16 @@ Les définitions ci-dessous sont provisoires jusqu'au plan du module concerné, 
 |---|---|---|---|
 | Spec Driven Development | méthode où une spécification écrite précède et pilote le plan, les tâches et le code ; « SDD » une fois le sigle défini | 02 | développement piloté par la spécification, spec-first, approche spec |
 | workflow | suite ordonnée des étapes du SDD, chacune produisant un artefact relu par un humain | 02 | pipeline, processus, cycle, chaîne |
+| point de contrôle | moment du workflow où le développeur relit l'artefact produit et l'approuve ou le refuse ; `gate` dans le fichier de workflow de Spec Kit | 02 | gate hors identifiant, checkpoint, transition, porte |
 | spécification | ce que le logiciel doit faire et pourquoi, sans dire comment ; fichier `spec.md` | 02 | spec hors nom de fichier, cahier des charges, exigences (pour l'ensemble) |
 | exigence | une phrase vérifiable de la spécification, numérotée REG-NN dans bookit | 02 | requirement, règle (pour une exigence), critère |
 | QUOI et COMMENT | partage entre la spécification (QUOI) et le plan (COMMENT) | 02 | what et how, fond et forme, besoin et solution |
+| plan | artefact `plan.md` : le COMMENT, les choix techniques qui réalisent la spécification | 02 | design, conception, architecture (pour le plan) |
+| tâche | ligne de `tasks.md` : une part du plan, réalisable et vérifiable seule | 02 | ticket, étape, story, item |
+| constitution | fichier `.specify/memory/constitution.md` : les principes du projet, que chaque plan et chaque diff respectent | 02 | charte, règles du projet, guidelines, convention |
+| principe | une règle de la constitution | 02 | règle (pour un principe), invariant seul, contrainte |
+| fichier à trous | fichier Markdown de `.specify/templates/` dont les sections entre crochets sont remplies par une commande Spec Kit ; nommé « template » à partir du module 5 | 02 | template (avant le module 5), gabarit, modèle, squelette |
+| Markdown structuré | sections titrées et exigences numérotées qui donnent sa structure à `spec.md` | 02 | squelette, structure Markdown, Markdown seul (pour le format) |
 | ADR | note qui trace une décision d'architecture, son contexte et ses conséquences ; « architecture decision record » développé une fois | 02 | décision seule, RFC, note de conception |
 | EARS | syntaxe d'exigence en une phrase à mots-clés (WHEN, IF, SHALL) ; développé une fois | 02 | syntaxe structurée, exigence formelle |
 | Gherkin | syntaxe de scénario Given, When, Then, exécutable avec pytest-bdd | 02 | cucumber, BDD (pour le format), feature (pour la syntaxe) |
@@ -73,8 +80,6 @@ Les définitions ci-dessous sont provisoires jusqu'au plan du module concerné, 
 
 | Terme | Définition | Introduit | À ne pas employer |
 |---|---|---|---|
-| constitution | fichier `.specify/memory/constitution.md` : principes que chaque plan et chaque diff respectent | 03 | charte, règles du projet, guidelines, convention |
-| principe | une règle de la constitution, vérifiable sur un diff | 03 | règle (pour un principe), invariant seul, contrainte |
 | architecture implicite | structure que l'équipe connaît sans l'avoir écrite, invisible pour l'agent | 03 | architecture tacite, non-dit |
 | architecture hexagonale | domaine au centre, ports, adaptateurs à l'extérieur ; les dépendances pointent vers le domaine | 03 | ports et adaptateurs, onion, clean architecture (différente) |
 | couche | ensemble de modules de même rôle : domaine, application, infrastructure | 03 | niveau, tier, strate |
@@ -93,10 +98,8 @@ Les définitions ci-dessous sont provisoires jusqu'au plan du module concerné, 
 
 | Terme | Définition | Introduit | À ne pas employer |
 |---|---|---|---|
-| template | gabarit Markdown d'un artefact Spec Kit (`spec`, `plan`, `tasks`, `constitution`) | 05 | modèle (pour template), gabarit, squelette |
+| template | gabarit Markdown d'un artefact Spec Kit (`spec`, `plan`, `tasks`, `constitution`) ; nommé « fichier à trous » au module 2, avant que le mot soit défini | 05 | modèle (pour template), gabarit, squelette, fichier à trous (à partir du module 5) |
 | surcharge | fichier de `.specify/templates/overrides/` qui remplace un template du cœur | 05 | override, personnalisation, patch |
-| plan | artefact `plan.md` : le COMMENT, sous contrôle de la constitution | 05 | design, conception, architecture (pour le plan) |
-| tâche | ligne de `tasks.md` : incrément vérifiable seul, une tâche par session | 05 | ticket, étape, story, item |
 | analyse | passe `/speckit-analyze` de cohérence entre spécification, plan et tâches | 05 | audit, revue, vérification (pour analyze) |
 
 ## Implémenter et vérifier (module 6)
