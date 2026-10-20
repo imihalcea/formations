@@ -6,7 +6,7 @@ Modèle, agent et prompt
 Module 1, 1h15 d'exposé puis TP 1 partie A (45 min). Jour 1 : piloter l'agent, cadrer, spécifier. L'ouverture a présenté le programme ; ce module part d'une scène concrète que toute la formation reprend.
 :::
 
-## Une fonction à écrire, un agent dans le terminal {kicker="Point de départ"}
+## Une fonction confiée à l'agent {kicker="Point de départ"}
 
 ![À gauche cinq règles métier sur une page, à droite un terminal où tourne un agent, entre les deux le texte que le développeur écrit](images/01-depart.svg)
 
@@ -44,7 +44,7 @@ La complétion de l'IDE n'a pas de date : elle est déterministe et antérieure 
 Les dates sont celles des annonces publiques, pas des premières recherches.
 :::
 
-## Avec l'agent, le développeur formule, puis relit {kicker="Quatre générations"}
+## Le développeur formule, puis relit {kicker="Quatre générations"}
 
 ![Deux chaînes : en génération 3 sept gestes à la main, en génération 4 deux moments autour d'un bloc agent](images/01-deux-moments.svg)
 
@@ -64,7 +64,7 @@ Ce qui change pour le développeur : il ne colle plus, il ne place plus. Il écr
 Conclut les deux slides précédentes. « Formuler » et « relire » reviennent à chaque TP.
 :::
 
-## Un LLM prédit la suite du texte {kicker="Le LLM"}
+## Prédire la suite du texte {kicker="Le LLM"}
 
 ![Un début de fonction Python et les candidats pour la suite, avec leur probabilité](images/01-prediction.svg)
 
@@ -80,7 +80,7 @@ Chaque morceau choisi rejoint le texte de départ, puis le modèle recommence : 
 Dans la suite, « modèle » désigne le LLM.
 :::
 
-## Le texte est découpé en tokens {kicker="Le LLM"}
+## Le texte découpé en tokens {kicker="Le LLM"}
 
 ![Une ligne de code Python découpée en huit tokens](images/01-tokens.svg)
 
@@ -95,11 +95,11 @@ Glossaire : pour les modèles antérieurs à Claude 4.7, « a token represents a
 Le découpage exact dépend du tokenizer ; l'API de comptage donne le nombre réel.
 :::
 
-## La fenêtre de contexte : tout ce que le modèle lit {kicker="Le LLM"}
+## Ce que le modèle lit {kicker="Le LLM"}
 
 ![La fenêtre de contexte remplie par les instructions fixes, les messages, les fichiers lus et sorties de commandes, la réponse en cours](images/01-contexte.svg)
 
-Sa taille est bornée : 200 000 tokens pour `claude-sonnet-4-6` appelé par Amazon Bedrock, 1 million de tokens sur l'API Claude.
+La fenêtre de contexte est tout ce que le modèle lit, et sa taille est bornée : 200 000 tokens pour `claude-sonnet-4-6` appelé par Amazon Bedrock, 1 million de tokens sur l'API Claude.
 
 ::: sources
 - [Claude Platform, Context windows](https://platform.claude.com/docs/en/build-with-claude/context-windows#how-the-context-window-works)
@@ -114,7 +114,7 @@ Le schéma ne montre pas les définitions d'outils ni le fichier de contexte : l
 Au-delà de la limite : l'appel échoue (« prompt is too long ») ou le harnais compacte ; module 7.
 :::
 
-## La température règle la part de hasard {kicker="Le LLM"}
+## La température règle le hasard {kicker="Le LLM"}
 
 ![Deux distributions de candidats pour un nom de fonction : température basse concentrée, température haute étalée](images/01-temperature.svg)
 
@@ -160,11 +160,11 @@ Pas d'exécution : « returns a structured call that your application executes �
 Conclut la section : prédiction, tokens, fenêtre, température, limites. Le modèle n'a ni base de faits ni moyen d'exécuter : la vérification revient au développeur et aux outils.
 :::
 
-## Un agent est un modèle dans une boucle d'outils {kicker="L'agent"}
+## Un modèle, une boucle d'outils {kicker="L'agent"}
 
 ![Boucle en trois phases sur l'exemple d'un test qui échoue : rassembler le contexte, agir, vérifier avec uv run pytest](images/01-boucle.svg)
 
-Un outil est une action que l'agent peut déclencher ; sa sortie revient dans la fenêtre de contexte, et la boucle tourne jusqu'au résultat.
+Un agent est un modèle dans une boucle d'outils. Un outil est une action que l'agent peut déclencher ; sa sortie revient dans la fenêtre de contexte, et la boucle tourne jusqu'au résultat.
 
 ::: sources
 - [Claude Code, How Claude Code works : The agentic loop](https://code.claude.com/docs/en/how-claude-code-works#the-agentic-loop)
@@ -178,7 +178,7 @@ Exemple du schéma : un test qui échoue. L'agent cherche le test, lit le code a
 Reprend la définition de la première slide (lit le dépôt, écrit, lance) en montrant le mécanisme.
 :::
 
-## Les outils de l'agent : lire, écrire, exécuter, chercher {kicker="L'agent"}
+## Les outils de l'agent {kicker="L'agent"}
 
 Outils de base, liste partielle, avec leur nom sous Claude Code et sous Open Code :
 
@@ -219,7 +219,7 @@ Les permissions sont appliquées par le harnais, jamais par le modèle. Claude C
 Le même modèle tourne dans les deux harnais de la formation : slide suivante.
 :::
 
-## Lancer le même modèle dans deux harnais {.compare kicker="L'agent"}
+## Choisir le modèle au lancement {.compare kicker="L'agent"}
 
 ::: claude-code
 Modèle choisi au lancement, affiché dans la ligne d'état :
@@ -257,7 +257,7 @@ Démonstration 2, première partie : les deux TUI côte à côte dans `~/bookit`
 Mode de permission au lancement : Claude Code démarre en Manual avec `claude-sonnet-4-6` sur Bedrock (le mode `auto` y exige Sonnet 5 ou plus récent, Opus 4.7 ou plus récent, Haiku 5.5 ou un modèle Fable) ; Open Code démarre sur l'agent Build avec les règles du fil rouge, `edit` et `bash` en `ask` sauf `uv run pytest` et les scripts Spec Kit.
 :::
 
-## La fenêtre de contexte grandit à chaque tour {kicker="L'agent"}
+## Chaque tour remplit la fenêtre {kicker="L'agent"}
 
 ![Trois tours successifs qui s'accumulent dans la fenêtre de contexte, puis une session neuve qui repart d'une fenêtre vide](images/01-tours.svg)
 
@@ -276,7 +276,7 @@ Une session neuve repart d'une fenêtre vide : `/clear` sous Claude Code, `/new`
 Proche de la limite, le harnais efface les vieux résultats d'outils puis résume la session (compaction) : module 7.
 :::
 
-## Permission et session neuve dans deux harnais {.compare kicker="L'agent"}
+## Permission et session neuve {.compare kicker="L'agent"}
 
 ::: claude-code
 - appel d'outil affiché dans le fil de la session
@@ -307,9 +307,11 @@ Relevé le 20 octobre 2026 en mode non interactif : premier prompt, Claude Code 
 Piège relevé : après un `opencode run` lancé sans `--auto` sur une action `ask`, le service de fond d'Open Code est resté bloqué et les appels suivants n'ont rien rendu ; `opencode service restart` a suffi (sous-commande `service` absente de la doc, déclarée dans `commands.ts` du dépôt au tag v2.0.32 : https://github.com/anomalyco/opencode/blob/v2.0.32/packages/cli/src/commands/commands.ts). Sans rapport avec la TUI.
 :::
 
-## À la fin de la session, seul le dépôt reste {kicker="L'agent"}
+## Le dépôt traverse les sessions {kicker="L'agent"}
 
 ![Session 1 avec sa consigne, ses fichiers lus et ses essais ; coupure ; session 2 vide ; en bas, le dépôt qui traverse](images/01-session.svg)
+
+À la fin de la session, seul le dépôt reste.
 
 ::: sources
 - [Claude Code, How Claude Code works : Work with sessions](https://code.claude.com/docs/en/how-claude-code-works#work-with-sessions)
@@ -329,7 +331,7 @@ Question du module 2 : comment faire traverser l'intention, et pas seulement le 
 Conclut la section : boucle, outils, harnais, tours, fin de session. Prépare le module 2 : l'intention tapée se perd entre deux sessions ; écrite dans le dépôt, elle reste.
 :::
 
-## Le prompt : le texte envoyé au modèle {kicker="Le prompt"}
+## Le texte envoyé au modèle {kicker="Le prompt"}
 
 ![Un prompt vague ouvre cinq suites plausibles, un prompt précis n'en laisse qu'une](images/01-eventail.svg)
 
@@ -344,7 +346,7 @@ Doc : « Claude responds well to clear, explicit instructions. Being specific ab
 Devant un prompt vague, le modèle complète le texte le plus probable, et plusieurs suites sont probables. Les cinq suites de gauche sont celles produites le 20 octobre 2026 par `claude-sonnet-4-6` sur le prompt d'une phrase (slide suivante).
 :::
 
-## Un prompt d'une phrase : le modèle invente les règles {kicker="Le prompt"}
+## Le modèle invente les règles {kicker="Le prompt"}
 
 ```prompt
 écris dans un fichier validate_booking_v1.py une fonction python validate_booking qui vérifie qu'une réservation est valide
@@ -362,7 +364,7 @@ Démonstration 3, à jouer avant le TP, dans un dossier jetable `~/demo-prompt` 
 Prompt sans nom de fichier (« écris une fonction python validate_booking… ») : en mode non interactif, Claude Code a répondu dans le fil sans écrire de fichier ; d'où le nom de fichier dans le prompt du TP.
 :::
 
-## Quatre composants : rôle, contexte, instruction, format {kicker="Le prompt"}
+## Rôle, contexte, instruction, format {kicker="Le prompt"}
 
 | Composant | Question qu'il règle | Sans lui |
 |---|---|---|
@@ -384,7 +386,7 @@ Sur un prompt court, le rôle peut manquer ; le contexte, rarement.
 La slide suivante donne, composant par composant, une version faible et une version utile sur bookit.
 :::
 
-## Quatre composants : version faible, version utile {kicker="Le prompt"}
+## Version faible, version utile {kicker="Le prompt"}
 
 | Composant | Version faible | Version utile |
 |---|---|---|
@@ -409,7 +411,7 @@ Doc : « Be specific about the desired output format and constraints » ; « Pro
 Le prompt complet à quatre lignes est dans l'énoncé du TP, étape 3.
 :::
 
-## Corriger un prompt : chaque symptôme désigne un composant {kicker="Le prompt"}
+## Chaque symptôme désigne un composant {kicker="Le prompt"}
 
 | Symptôme dans la réponse | Composant en cause | Correction |
 |---|---|---|
@@ -436,7 +438,7 @@ Corriger un composant à la fois permet de savoir ce qui a fait la différence ;
 Conclut la section. Les quatre composants sont repris dans l'énoncé du TP, étape 3. La slide suivante montre l'inverse de cette discipline.
 :::
 
-## Le vibe coding, nommé le 2 février 2025 {.quote kicker="Vibe coding" author="Andrej Karpathy, publication du 2 février 2025"}
+## Vibe coding, nommé en 2025 {.quote kicker="Vibe coding" author="Andrej Karpathy, publication du 2 février 2025"}
 
 > There's a new kind of coding I call "vibe coding" […] I "Accept All" always, I don't read the diffs anymore. It's not too bad for throwaway weekend projects.
 
@@ -451,7 +453,7 @@ Extraits de la publication d'origine, dont la première phrase continue : « whe
 Karpathy décrit une pratique et la limite lui-même aux projets jetables du week-end.
 :::
 
-## Le vibe coding : des prompts successifs, sans écrit ni vérification {kicker="Vibe coding"}
+## Des prompts successifs, sans vérification {kicker="Vibe coding"}
 
 ![Une chaîne prompt, code, prompt, code dans une seule session, sans aucun fichier écrit à côté](images/01-vibe.svg)
 
@@ -468,7 +470,7 @@ Collins Dictionary a retenu « vibe coding » comme mot de l'année 2025 (annonc
 Le terme est devenu courant ; la pratique est plus ancienne que le mot.
 :::
 
-## Prototype jetable ou production : le coût d'une erreur {kicker="Vibe coding"}
+## Prototype jetable ou production {kicker="Vibe coding"}
 
 ![Deux zones séparées par le coût d'une erreur : prototype (prompt, code, essai, jeté) et production (prompt, code non lu, mise en production, trois questions sans réponse)](images/01-zones.svg)
 
@@ -484,14 +486,14 @@ Rien n'a été écrit avant : aucune règle à laquelle comparer. Rien n'a été
 La frontière est le coût d'une erreur ; le même agent sert dans les deux zones.
 :::
 
-## L'intention écrite, versionnée, vérifiée, à la place du vibe coding {kicker="L'intention écrite"}
+## L'intention écrite, versionnée, vérifiée {kicker="L'intention écrite"}
 
 ![Chaîne intention écrite, versionnée, code, vérifié, avec une flèche de retour : conforme à ce qui était écrit ?](images/01-intention.svg)
 
 L'intention est ce que le logiciel doit faire : écrite sur une page, versionnée par un commit, puis le code est vérifié contre elle.
 
 ::: notes
-Ce que la session perd (slide « À la fin de la session, seul le dépôt reste »), l'intention écrite le garde : elle est sur disque, dans le dépôt, lisible par la session suivante et par l'équipe.
+Ce que la session perd (slide « Le dépôt traverse les sessions »), l'intention écrite le garde : elle est sur disque, dans le dépôt, lisible par la session suivante et par l'équipe.
 « Vérifié contre elle » : tests verts, diff relu avec la page à côté. Sans page, relire un diff revient à deviner ce qui était voulu.
 Le module 2 nomme la méthode (Spec Driven Development) et l'outil (Spec Kit). Ici, seule la chaîne compte.
 :::
@@ -502,7 +504,7 @@ Le module 2 nomme la méthode (Spec Driven Development) et l'outil (Spec Kit). I
 Conclut la section : citation, définition, coût d'une erreur, chaîne de l'intention. Le module 2 part d'ici.
 :::
 
-## Quatre questions pour situer une nouveauté {kicker="Grille de lecture"}
+## Situer une nouveauté : quatre questions {kicker="Grille de lecture"}
 
 | Question | Réponse | Exemples, octobre 2026 (liste partielle) | Qui le change |
 |---|---|---|---|
@@ -552,7 +554,7 @@ Ce que les règles ne tranchent pas (20h00 pile, jours fériés, créneaux joint
 Aux sessions précédentes, comprendre ce domaine a pris du temps : laisser une minute de lecture avant de lancer le TP.
 :::
 
-## TP 1, partie A : deux prompts pour une fonction {.tp duration="45 min" kicker="TP 1"}
+## Partie A : deux prompts {.tp duration="45 min" kicker="TP 1"}
 
 Obtenir deux fois la fonction `validate_booking` d'un agent : d'abord sur un prompt d'une phrase, puis sur un prompt à quatre composants avec les règles métier dans le dossier. Comparer les deux fichiers à la lecture. Aucun commit : `~/echauffement/` est un dossier jetable.
 
@@ -759,7 +761,7 @@ Slide de référence, à ne pas lire en salle. Définitions du lexique de la for
 Slide de référence, à ne pas lire en salle.
 :::
 
-## Glossaire : le prompt et la méthode {kicker="Glossaire"}
+## Glossaire : prompt et méthode {kicker="Glossaire"}
 
 - **Prompt** : texte envoyé au modèle ; ses quatre composants : rôle, contexte, instruction, format
 - **Vibe coding** : pilotage par prompts successifs, sans intention écrite ni vérification
