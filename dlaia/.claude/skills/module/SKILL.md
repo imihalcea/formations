@@ -54,17 +54,17 @@ Pour chaque démonstration : slide qui la porte, prompt, déroulé, résultat at
 
 ## `/module NN`
 
-Préalable : le plan validé est le dernier commentaire de l'issue « plan des slides » (`gh issue view N --comments`). S'il manque, s'arrêter et le dire.
+Préalable : le plan validé est le dernier commentaire de l'issue « plan des slides ». Le récupérer sans l'afficher : `gh issue view N --json comments --jq '.comments[-1].body' > tmp/plans/module-NN.md`, puis vérifier par `wc -l` qu'il n'est pas vide. S'il manque, s'arrêter et le dire.
 
-1. Lexique : ajouter les « Notions introduites » du plan à `formateur/lexique.md`, dans la section du module, en confirmant ou corrigeant les définitions provisoires.
-2. Slides : rédiger `dlaia/support/NN-titre.md` selon le plan : une slide par ligne du gabarit, notes d'animation sur chaque slide, schémas SVG dans `support/images/NN-nom.svg` avec les classes de la charte, glossaire du module en fin de fichier tiré du lexique, sources dans `::: sources`. Consulter chaque source avant de la citer.
-3. TP : rédiger le bloc `{.tp}` en fin de fichier et le corrigé dans `tp/tpNN/` (état cumulé) ; déposer les fichiers fournis dans `tp/fichiers/` ; superposer le corrigé au fil rouge dans un répertoire temporaire et exécuter `uv run pytest -q` sous Python 3.14 ; citer le corrigé par `file=`. Les `attendu` sont écrits comme des commandes à sortie connue, la sortie restant « à relever » jusqu'au rejeu.
-4. Rejeu : appliquer le skill `rejeu` au TP du module, dans les deux outils (sous-agent `rejoueur-tp`, un par outil, en parallèle, enchaîné sur l'état laissé par le TP précédent ou « depuis le corrigé » si cet état manque). Reporter les sorties observées dans les `attendu` et les notes de la slide de lancement (durées, permissions, nombre de tours), durcir les prompts qui ont dérivé, puis rejouer les étapes modifiées jusqu'à deux rejeux conformes de suite par outil. Les points « non rejouable » vont dans les notes, à vérifier sur la VM.
-5. Démonstrations : les écrire dans les notes des slides qui les portent (prompt, déroulé, résultat attendu). Les jouer en mode non interactif avec la même méthode que le rejeu (`claude -p`, `opencode run`) et consigner le résultat observé ; ce qui n'a pas pu être joué est marqué « à relever à l'essai ».
-6. Build et captures : `npm run build`, puis `npm run captures -- --module NN`. Corriger toute slide signalée en débordement, puis relancer.
-7. Relecture : lancer en parallèle `relecteur` (mode `slides` sur le fichier, dossier `tmp/captures/`, puis mode `tp` sur le même fichier) et `verificateur-sources` sur le fichier. Corriger chaque constat ou le refuser avec une raison d'une phrase. Pour une source `partiel` ou `contredit`, corriger la slide ou remplacer la source ; pour `inaccessible`, chercher une autre source ou retirer le fait. Rebuild, recaptures, puis relancer `relecteur` sur le fichier une seconde fois. Deux passes au plus : les constats restants vont dans le rapport.
-8. Commits, un par issue, dans cet ordre : slides (`Module NN : … (closes #N)`), TP et corrigé (`TP NN : … (closes #N)`), démonstrations (`Module NN : démonstrations … (closes #N)`), lexique et fil rouge si modifiés (`Formateur : …`). `npm run build` passe avant le premier commit ; `git status --short` est vide après le dernier.
-9. Rapport à l'utilisateur, dans ce format :
+Orchestration : cette session lance les sous-agents, les commandes npm et git, et compile le rapport. Elle n'ouvre aucune URL, aucune capture, aucun fichier de `support/`, `formateur/`, `tp/` ni du template : ces lectures appartiennent aux sous-agents, qui travaillent chacun dans un contexte propre et rendent un rapport court. Toute écriture dans `support/`, `tp/` et `formateur/` passe par le sous-agent `redacteur`. Le prompt d'un sous-agent se limite au mode, au module, aux chemins des entrées et aux constats à appliquer ; il ne recopie ni le plan ni les règles, que l'agent lit lui-même.
+
+1. Rédaction : `redacteur` en mode `slides` (lexique, slides, SVG, sources consultées, notes avec les démonstrations à relever), puis `redacteur` en mode `tp` (bloc `{.tp}`, corrigé, fichiers fournis, pytest). L'un après l'autre : les deux écrivent le fichier du module.
+2. Rejeu et démonstrations : quatre `rejoueur-tp` en parallèle, le TP NN sous chaque outil (enchaîné sur l'état laissé par le TP précédent, ou « depuis le corrigé » si cet état manque) et les démonstrations du module sous chaque outil. Lire les quatre synthèses, sans les sorties brutes. Un écart isolé se confirme par un second rejeu de l'étape seule (« à partir de l'étape K ») avant d'être traité ; deux échecs font un défaut de l'énoncé.
+3. Corrections du rejeu : `redacteur` en mode `corrections` avec les chemins des quatre rapports. Rejouer les étapes modifiées (`rejoueur-tp`, « à partir de l'étape K »), puis corriger de nouveau, jusqu'à deux rejeux conformes de suite par outil. Les points « non rejouable » restent dans les notes, à vérifier sur la VM.
+4. Build et captures : `npm run build`, puis `npm run captures -- --module NN`. Ne pas ouvrir les PNG : le `relecteur` les lit. S'il y a des débordements, passer la liste à `redacteur` en mode `corrections`, puis relancer.
+5. Relecture : en parallèle `relecteur` (mode `slides` sur le fichier avec le dossier `tmp/captures/`, puis mode `tp` sur le même fichier) et `verificateur-sources` sur le fichier. Transmettre les trois sorties en entier à `redacteur` en mode `corrections`. Rebuild, recaptures, puis seconde passe de `relecteur` et de `redacteur`. Deux passes au plus : les constats restants vont dans le rapport.
+6. Commits, un par issue, dans cet ordre : slides (`Module NN : … (closes #N)`), TP et corrigé (`TP NN : … (closes #N)`), démonstrations (`Module NN : démonstrations … (closes #N)`), lexique et fil rouge si modifiés (`Formateur : …`). `npm run build` passe avant le premier commit ; `git status --short` est vide après le dernier.
+7. Rapport à l'utilisateur, compilé à partir des rapports des sous-agents, dans ce format :
 
 ```
 ## Module NN livré
@@ -81,3 +81,5 @@ Commits : liste des hash et messages.
 ```
 
 Ne pas demander de validation intermédiaire : la seule interruption admise est un préalable manquant (plan absent, fil rouge absent, `uv` ou Python 3.14 indisponible, source impossible à remplacer).
+
+En mode `plan`, les lectures de l'étape 1 restent dans cette session : le plan se discute avec l'utilisateur et le contexte se termine à la validation.
