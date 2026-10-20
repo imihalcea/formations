@@ -30,7 +30,7 @@ Le dossier `~/echauffement/` est jetable : ce qui y a été appris sur le domain
 
 ![À gauche le prompt v2 à quatre composants dans une session, qui produit une fonction ; à droite le projet, quatre cases marquées d'un point d'interrogation : décisions non tranchées, emplacement du code, preuve que le code est juste, session suivante](images/02-prompt-projet.svg)
 
-Le prompt v2 tient dans une session et produit une fonction. Le projet a besoin de ce que le prompt ne contient pas : les décisions non tranchées, l'emplacement du code, la preuve qu'il est juste et une session suivante qui retrouve tout cela.
+Le prompt laisse hors du projet les décisions prises, l'emplacement du code et la preuve que le code est juste.
 
 ::: notes
 Reprend la slide « Le dépôt traverse les sessions » : la session suivante ne connaît que les fichiers. Ici, un seul fichier reste, le code ; ni les règles qui l'ont produit, ni les choix faits en chemin (20h00 pile accepté par `<=`), ni ce qui a été vérifié.
@@ -39,17 +39,17 @@ Emplacement : la v2 est un fichier isolé ; dans bookit, où va `validate_bookin
 Chacune des quatre cases reçoit un artefact dans la suite du module : décisions (ADR, réponses aux questions de `clarify`), emplacement du code (constitution, plan), preuve (scénarios), session suivante (tout cela versionné).
 :::
 
-## Un prompt produit une fonction ; un projet demande une intention écrite. {.statement kicker="Du prompt au projet"}
+## Un projet demande une spécification, une architecture et une vérification. {.statement kicker="Du prompt au projet"}
 
 ::: notes
-Conclut les deux slides précédentes et reprend la dernière idée clé du module 1 : la méthode et les artefacts restent quand le modèle et le harnais changent. Le prompt est l'unité de la session ; l'intention écrite est l'unité du projet. La section suivante donne son nom à la méthode.
+Conclut les deux slides précédentes : les quatre cases du schéma reçoivent chacune un artefact dans la suite du module, la spécification pour les décisions, la constitution et le plan pour l'emplacement du code, les scénarios pour la preuve, le dépôt versionné pour la session suivante. La section suivante donne son nom à la méthode.
 :::
 
 ## La spécification précède le code {kicker="Le SDD"}
 
 ![Suite spécification, versionnée, code, vérifié, avec une flèche de retour : le code est vérifié contre la spécification](images/02-sdd.svg)
 
-Le Spec Driven Development (SDD) met l'intention écrite dans un fichier, la spécification, qui précède et pilote le code. Spec Kit, l'outil de GitHub pour cette méthode, la résume ainsi : « define what and why before deciding how to build it ».
+Le Spec Driven Development (SDD) est la méthode qui place la spécification au centre. Spec Kit, l'outil de GitHub, la résume : « define what and why before deciding how to build it ».
 
 ::: sources
 - [Spec Kit, README v1.2.2](https://github.com/github/spec-kit/blob/v1.2.2/README.md)
@@ -60,15 +60,13 @@ Le Spec Driven Development (SDD) met l'intention écrite dans un fichier, la sp�
 ::: notes
 Même suite que la slide « L'intention écrite, versionnée, vérifiée » : l'intention a reçu un nom (spécification) et un fichier (`spec.md`).
 README : « Define what and why before deciding how to build it. » `spec-driven.md` : « The specification becomes the primary artifact. Code becomes its expression ». Blog de GitHub, Den Delimarsky, 2 septembre 2025 : la spécification est « a contract for how your code should behave ».
-« Précède et pilote » : précède, parce qu'elle est écrite et commitée avant le code ; pilote, parce que l'agent la lit pour produire le plan, les tâches et le code, et que le code est relu contre elle.
+« Précède » (titre) : la spécification est écrite et commitée avant le code. « Au centre » : l'agent la lit pour produire le plan, les tâches et le code, et le code est relu contre elle.
 Spec Kit est nommé ici ; son installation et ses commandes viennent dans la section « Spec Kit ».
 :::
 
 ## Une constitution, quatre artefacts {kicker="Le SDD"}
 
 ![Un bloc constitution en amont, puis une frise à quatre étapes : spécification, plan, tâches, code et tests, un fichier sous chaque étape, un repère point de contrôle après chaque étape](images/02-workflow.svg)
-
-Le workflow est la suite ordonnée des étapes du SDD, chacune produisant un artefact versionné. La constitution (les principes du projet) est écrite une fois par projet ; chaque spécification est suivie du plan (les choix techniques qui la réalisent), des tâches (les parts du plan, vérifiables une par une), puis du code et de ses tests.
 
 ::: sources
 - [GitHub Blog, Spec-driven development with AI, 2 septembre 2025](https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/)
@@ -79,7 +77,7 @@ Le workflow est la suite ordonnée des étapes du SDD, chacune produisant un art
 README : « Constitution once per project; specify → plan → tasks → implement → converge per feature. » Blog : quatre phases, specify (ce que l'on construit et pourquoi), plan (pile, architecture, contraintes), tasks (petits lots testables séparément), implement (l'agent traite les tâches, le développeur relit des changements ciblés).
 Constitution : les principes du projet ; la slide de définition est dans la section « Spec Kit », avec le fichier. Ici, retenir qu'elle est en amont, vaut pour toutes les spécifications et est respectée par chaque plan et chaque diff.
 Les quatre losanges, un après chaque étape, sont les points de contrôle, définis sur la slide suivante ; le dernier, après le code, est la relecture du diff et des tests.
-Plan et tâches sont définis ici en une ligne ; le module 5 en fait le contenu (plan sous contrôle de la constitution, une tâche par session).
+Définitions du lexique à dire à l'oral : le workflow est la suite ordonnée des étapes du SDD, chacune produisant un artefact versionné ; le plan, les choix techniques qui réalisent la spécification ; les tâches, les parts du plan, vérifiables une par une. Le module 5 en fait le contenu (plan sous contrôle de la constitution, une tâche par session).
 :::
 
 ## Le développeur relit et décide {kicker="Le SDD"}
@@ -91,24 +89,23 @@ Plan et tâches sont définis ici en une ligne ; le module 5 en fait le contenu 
 | après les tâches | `tasks.md` | assez petites pour être vérifiées une par une |
 | après le code | le diff et les tests | tests verts, diff conforme à la spécification |
 
-Un point de contrôle est le moment du workflow où le développeur lit l'artefact produit, le corrige ou le refuse, puis le commite avant l'étape suivante.
-
 ::: sources
 - [GitHub Blog, Spec-driven development with AI, 2 septembre 2025](https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/)
 - [Spec Kit, `spec-driven.md` v1.2.2](https://github.com/github/spec-kit/blob/v1.2.2/spec-driven.md)
 :::
 
 ::: notes
+Définition du lexique : un point de contrôle est le moment du workflow où le développeur lit l'artefact produit, le corrige ou le refuse, puis le commite avant l'étape suivante.
 Blog : « The process builds in explicit checkpoints for you to critique what's been generated » ; « Crucially, your role isn't just to steer. It's to verify. » `spec-driven.md` : « team-reviewed specifications », et, pour les tests, « Tests are validated and approved by the user » avant tout code.
 L'agent produit, le développeur vérifie : même partage que la slide « Le développeur formule, puis relit » du module 1, répété à chaque étape.
 « Puis le commite » : c'est la règle des TP, le stagiaire commite lui-même après chaque étape ; l'agent ne commite pas. Le commit est la trace de la décision.
 Dans Spec Kit, le fichier de workflow nomme ces moments `gate` ; la slide « Le workflow speckit, six étapes » le montre.
 :::
 
-## Chaque étape du workflow produit un artefact relu par un humain. {.statement kicker="Le SDD"}
+## Le développeur exprime l'intention, conçoit et vérifie ; l'agent produit. {.statement kicker="Le SDD"}
 
 ::: notes
-Conclut les trois slides de la section : la méthode, ses étapes et ses artefacts, le point de contrôle. La section suivante ouvre le premier artefact, la spécification.
+Conclut la section par le partage des rôles : le développeur écrit l'intention dans la spécification, arrête les choix du plan et relit chaque artefact au point de contrôle ; l'agent produit le brouillon de spécification, le plan, les tâches et le code. La section suivante ouvre le premier artefact, la spécification.
 :::
 
 ## Quatre sections imposées {kicker="La spécification"}
@@ -122,7 +119,16 @@ Conclut les trois slides de la section : la méthode, ses étapes et ses artefac
 ## Assumptions
 ```
 
-La spécification dit ce que le logiciel doit faire et pourquoi, sans dire comment. Le fichier à trous `spec-template.md` de Spec Kit lui impose quatre sections : les parcours utilisateur par priorité et les cas limites, les exigences numérotées, les critères de succès mesurables, les hypothèses.
+|||
+
+- parcours utilisateur et cas limites
+- exigences numérotées
+- critères de succès mesurables
+- hypothèses
+
+|||
+
+La spécification dit ce que le logiciel doit faire et pourquoi ; le fichier à trous `spec-template.md` de Spec Kit lui impose ces quatre sections.
 
 ::: sources
 - [Spec Kit, `templates/spec-template.md` v1.2.2](https://github.com/github/spec-kit/blob/v1.2.2/templates/spec-template.md)
@@ -143,7 +149,7 @@ Chaque story a ses scénarios d'acceptation déjà en `**Given** / **When** / **
 | le système répond vite | non, aucun chiffre |
 | la durée maximale est [NEEDS CLARIFICATION: 4 h ou 8 h ?] | la question est posée, rien n'est deviné |
 
-Une exigence est une phrase vérifiable de la spécification, numérotée. Le fichier à trous exige des critères mesurables et marque `[NEEDS CLARIFICATION]` ce que la description ne tranche pas, trois marqueurs au plus.
+Une exigence se vérifie par un test, oui ou non. Ce que le prompt ne tranche pas reçoit la marque `[NEEDS CLARIFICATION]` au lieu d'une supposition.
 
 ::: sources
 - [Spec Kit, `templates/spec-template.md` v1.2.2](https://github.com/github/spec-kit/blob/v1.2.2/templates/spec-template.md)
@@ -153,7 +159,7 @@ Une exigence est une phrase vérifiable de la spécification, numérotée. Le fi
 ::: notes
 Dans bookit, chaque règle métier du module 1 devient une exigence, numérotée REG-NN ; la spécification du TP 4 en ajoute deux (REG-06, REG-07) issues des réponses à `clarify`. Le fichier à trous numérote `FR-001` en `System MUST …` ; le fichier `overrides/spec-template.md` du TP 4 impose REG-NN.
 `spec-template.md` : commentaire « ACTION REQUIRED: Define measurable success criteria. These must be technology-agnostic and measurable. » ; exemple `FR-006: System MUST authenticate users via [NEEDS CLARIFICATION: auth method not specified - email/password, SSO, OAuth?]`.
-`specify.md` : « LIMIT: Maximum 3 [NEEDS CLARIFICATION] markers total », réservés aux décisions critiques ; les autres inconnues deviennent des hypothèses dans `Assumptions` (« Record reasonable defaults in the Assumptions section »). `spec-driven.md` : « Don't guess: If the prompt doesn't specify something, mark it. »
+Une exigence est une phrase vérifiable de la spécification, numérotée (lexique). `specify.md` : « LIMIT: Maximum 3 [NEEDS CLARIFICATION] markers total », trois marqueurs au plus, réservés aux décisions critiques ; les autres inconnues deviennent des hypothèses dans `Assumptions` (« Record reasonable defaults in the Assumptions section »). `spec-driven.md` : « Don't guess: If the prompt doesn't specify something, mark it. »
 Vérifiable : un test peut trancher, oui ou non. « Vite » ne se teste pas ; « en moins de 200 ms » se teste, et `specify.md` le classe dans le COMMENT. La question `4 h ou 8 h ?` sera posée par `clarify` au TP 4.
 :::
 
@@ -163,10 +169,10 @@ Vérifiable : un test peut trancher, oui ou non. « Vite » ne se teste pas ; «
 |---|---|
 | une demande refusée rend le code de la première règle enfreinte | `InvalidBooking(code)` en valeur de retour, dans `bookit/domain/` |
 | aucun chevauchement sur une même ressource | lecture des réservations de la ressource dans SQLite |
-| la décision dépend du seul instant courant fourni | `now` reçu en paramètre de `validate_booking` |
+| accepter ou refuser dépend du seul instant courant fourni | `now` reçu en paramètre de `validate_booking` |
 | une demande de plus de 4 heures est refusée avec `duration` | comparaison de `end - start` à `timedelta(hours=4)` dans `validate_booking` |
 
-Le prompt `specify` de Spec Kit impose ce partage : « Focus on WHAT users need and WHY. Avoid HOW to implement (no tech stack, APIs, code structure) ».
+Spec Kit impose ce partage : « Focus on WHAT users need and WHY. Avoid HOW to implement (no tech stack, APIs, code structure) ».
 
 ::: sources
 - [Spec Kit, `templates/commands/specify.md` v1.2.2](https://github.com/github/spec-kit/blob/v1.2.2/templates/commands/specify.md)
@@ -176,7 +182,7 @@ Le prompt `specify` de Spec Kit impose ce partage : « Focus on WHAT users need 
 ::: notes
 `specify.md`, « Quick Guidelines » : « Focus on WHAT users need and WHY. » puis « Avoid HOW to implement (no tech stack, APIs, code structure). » ; critères de succès « Technology-agnostic: No mention of frameworks, languages, databases, or tools ».
 `spec-driven.md` : « From the PRD, AI generates implementation plans that map requirements to technical decisions » ; « Every technology choice has documented rationale ».
-Test rapide pour classer une phrase : si elle change quand on change de langage ou de base, c'est du COMMENT. « Valeur de retour » contre « exception » est un choix technique : il va dans le plan, et dans un ADR (section suivante) parce qu'il engage tout le projet.
+Test rapide pour classer une phrase : si elle change quand on change de langage ou de base, c'est du COMMENT. « Valeur de retour » contre « exception » est un choix technique : il va dans le plan, et dans un ADR, l'ADR 1 de bookit au TP 3, parce qu'il engage tout le projet.
 Les quatre lignes de gauche viennent des règles métier et du prompt v2 du TP 1 ; celles de droite anticipent le squelette hexagonal présenté au module 3.
 :::
 
@@ -191,7 +197,7 @@ Conclut la section : contenu de la spécification, exigence vérifiable, partage
 - **Markdown structuré** sections titrées et exigences numérotées qui donnent sa structure à `spec.md`
 - **ADR** architecture decision record : note qui trace une décision d'architecture, son contexte et ses conséquences
 - **EARS** Easy Approach to Requirements Syntax : syntaxe d'exigence en une phrase à mots-clés
-- **Gherkin** syntaxe Given, When, Then d'un cas d'exigence, exécutable
+- **Gherkin** syntaxe de scénario Soit, Quand, Alors, exécutable
 
 ::: sources
 - [Spec Kit, `templates/spec-template.md` v1.2.2](https://github.com/github/spec-kit/blob/v1.2.2/templates/spec-template.md)
@@ -209,18 +215,19 @@ Les TP 3 à 6 emploient les quatre : ADR au TP 3, EARS et Gherkin au TP 4 par le
 ## L'ADR trace une décision {kicker="Quatre formats"}
 
 ```markdown
-# 1. Un refus est une valeur de retour, jamais une exception
+# 3. Architecture hexagonale
 
+Contexte : les règles métier doivent se tester sans serveur ni base ;
+l'API et le stockage sont amenés à changer.
+Décision : trois couches, domaine, application, infrastructure ;
+le domaine ne connaît ni FastAPI ni SQLite, les deux autres l'importent.
 Statut : acceptée
-Contexte : une demande enfreint souvent une règle ; ce cas est attendu
-et l'appelant doit le lire sans interrompre son traitement.
-Décision : validate_booking rend None si la demande est acceptée,
-sinon InvalidBooking(code).
-Conséquences : aucun try autour de l'appel ; chaque code de refus
-est une valeur testable ; une exception signale un bogue, jamais un refus.
+Conséquences : validate_booking se teste sans base ; l'API ou le
+stockage se remplace sans toucher au domaine ; une importation du
+domaine vers l'infrastructure est un bogue.
 ```
 
-Un ADR tient en cinq parties : titre, contexte (les forces en présence), décision, statut, conséquences. Illustration : le premier ADR de bookit.
+Un ADR tient en cinq parties : titre, contexte (les forces en présence), décision, statut, conséquences. Illustration : le troisième ADR de bookit.
 
 ::: sources
 - [Michael Nygard, Documenting Architecture Decisions, 15 novembre 2011](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions)
@@ -237,12 +244,12 @@ Pourquoi un ADR et pas une ligne de plan : la décision vaut pour tout le projet
 
 | Patron | Forme de la phrase | Exemple bookit (illustration) |
 |---|---|---|
-| toujours | The system shall … | bookit SHALL refuser une demande de plus de 4 heures avec le code `duration` |
-| sur un événement | When …, the system shall … | WHEN une demande commence moins de 2 heures après l'instant courant, bookit SHALL la refuser avec le code `lead_time` |
-| dans un état | While …, the system shall … | WHILE la ressource est déjà réservée aux mêmes heures, bookit SHALL refuser la demande avec le code `overlap` |
-| cas indésirable | If …, then the system shall … | IF la demande vise un samedi ou un dimanche, THEN bookit SHALL la refuser avec le code `hours` |
+| toujours | Le système doit … | bookit doit refuser une demande de plus de 4 heures avec le code `duration` |
+| sur un événement | Quand …, le système doit … | Quand une demande commence moins de 2 heures après l'instant courant, bookit doit la refuser avec le code `lead_time` |
+| dans un état | Tant que …, le système doit … | Tant que la ressource est déjà réservée aux mêmes heures, bookit doit refuser la demande avec le code `overlap` |
+| cas indésirable | Si …, alors le système doit … | Si la demande vise un samedi ou un dimanche, alors bookit doit la refuser avec le code `hours` |
 
-Le mot-clé dit quand l'exigence s'applique ; la phrase se lit seule et se teste.
+Le mot-clé dit quand l'exigence s'applique ; la phrase se lit seule et se teste. Mots-clés traduits : EARS les définit en anglais.
 
 ::: sources
 - [Alistair Mavin, EARS](https://alistairmavin.com/ears/)
@@ -250,46 +257,46 @@ Le mot-clé dit quand l'exigence s'applique ; la phrase se lit seule et se teste
 
 ::: notes
 EARS, Easy Approach to Requirements Syntax : Mavin et collègues, Rolls-Royce, en analysant la réglementation de navigabilité d'un calculateur de moteur ; première publication en 2009. Six patrons sur le site : ubiquitous (`The <system name> shall <system response>`), event-driven (`When <trigger>, the <system name> shall <system response>`), state-driven (`While <precondition(s)>, …`), unwanted behaviour (`If <trigger>, then …`), optional feature (`Where <feature is included>, …`) et complex (`While <precondition(s)>, When <trigger>, the <system name> shall <system response>`), qui combine les précédents ; les deux derniers, absents du tableau, servent aux variantes de produit et aux conditions combinées.
-Convention du tableau (mots-clés en capitales, phrase en français) : celle du fichier `ears` de `.claude/skills/` fourni au TP 4, à fixer avec le module 4 ; si ce fichier retient une autre forme, aligner cette slide.
+Convention retenue pour toute la formation : mots-clés traduits et phrase en français, forme reprise par le fichier `ears` de `.claude/skills/` fourni au TP 4 et par la surcharge `spec-template.md`. Mots-clés d'origine de Mavin, sans traduction officielle : `shall` (doit), `When` (Quand), `While` (Tant que), `If … then` (Si … alors) ; `Where`, hors tableau, n'a pas reçu de traduction.
 Les quatre exemples sont les règles REG-01, REG-03, REG-05 et REG-02 ; « réservée aux mêmes heures » est pris au sens courant, le module 3 définit créneau et réservation confirmée.
 Ce que EARS apporte à l'agent : une phrase par exigence, un seul déclencheur, un seul verbe ; moins de place pour une interprétation.
 :::
 
-## Gherkin : Given, When, Then {kicker="Quatre formats"}
+## Gherkin : Soit, Quand, Alors {kicker="Quatre formats"}
 
 ```gherkin
-Feature: Valider une demande de réservation
+# language: fr
+Fonctionnalité: Valider une demande de réservation
 
-  Scenario: REG-03, préavis inférieur à 2 heures
-    Given l'instant courant est le mardi 2 juin 2026 à 9h00
-    When une demande vise la salle A de 10h00 à 11h00
-    Then la demande est refusée avec le code lead_time
+  Scénario: REG-03, préavis inférieur à 2 heures (illustration)
+    Soit l'instant courant fixé au mardi 2 juin 2026 à 9h00
+    Quand une demande vise la salle A de 10h00 à 11h00
+    Alors la demande est refusée avec le code lead_time
 
-  Scenario: REG-03, préavis de 3 heures
-    Given l'instant courant est le mardi 2 juin 2026 à 9h00
-    When une demande vise la salle A de 12h00 à 13h00
-    Then la demande est acceptée
+  Scénario: REG-03, préavis de 3 heures
+    Soit l'instant courant fixé au mardi 2 juin 2026 à 9h00
+    Quand une demande vise la salle A de 12h00 à 13h00
+    Alors la demande est acceptée
 ```
 
-Chaque scénario est un cas d'une exigence (illustration) : Given pose le contexte, When décrit l'action, Then le résultat observable.
+Un scénario, cas d'une exigence ; Soit le contexte, Quand l'action, Alors le résultat.
 
 ::: sources
 - [Cucumber, Gherkin Reference](https://cucumber.io/docs/gherkin/reference/)
+- [Cucumber, Gherkin Languages](https://cucumber.io/docs/gherkin/languages/)
 - [pytest-bdd, documentation](https://pytest-bdd.readthedocs.io/en/stable/)
 :::
 
 ::: notes
-Gherkin Reference : « Given steps are used to describe the initial context of the system », « When steps are used to describe an event, or an action », « Then steps are used to describe an expected outcome, or result » ; chaque pas commence par Given, When, Then, And ou But ; `Scenario` est synonyme de `Example` ; un fichier `.feature` porte une Feature et ses scénarios. Un en-tête `# language: fr` autorise Soit, Quand, Alors ([Cucumber, Gherkin Languages](https://cucumber.io/docs/gherkin/languages/)) ; la convention (mots-clés anglais, phrases en français) est celle du fichier `gherkin` de `.claude/skills/` du TP 4, à confirmer avec le module 4.
+Gherkin Reference : « Given steps are used to describe the initial context of the system », « When steps are used to describe an event, or an action », « Then steps are used to describe an expected outcome, or result » ; `Scenario` est synonyme de `Example` ; un fichier `.feature` porte une Feature et ses scénarios. Section « Spoken Languages » : « A `# language:` header on the first line of a feature file tells Cucumber what spoken language to use », anglais par défaut. Page Gherkin Languages, ligne `fr` : `Fonctionnalité`, `Scénario` (ou `Exemple`), `Soit` (ou `Étant donné que`, `Sachant que`), `Quand` (ou `Lorsque`), `Alors` (ou `Donc`), `Et`, `Mais`. Convention retenue pour toute la formation : ces mots-clés français dans le fichier `gherkin` de `.claude/skills/` du TP 4, le `.feature` du TP 5 et les tests pytest-bdd du TP 6 ; la prise en charge de `# language: fr` par pytest-bdd est à vérifier au module 6.
 pytest-bdd : « implements a subset of the Gherkin language », « does not require a separate runner » ; `@scenario('fichier.feature', 'Titre')` ou `scenarios('dossier')` lient les scénarios à des fonctions pytest. Module 6.
-Une exigence, plusieurs scénarios : REG-03 a au moins le cas refusé (1 h de préavis) et le cas accepté (2 h pile, borne tranchée au TP 4).
-Le `Then` est observable : un code de refus, pas « le système fonctionne ».
+Une exigence, plusieurs scénarios : REG-03 a au moins le cas refusé (1 h de préavis) et le cas accepté (3 h sur la slide ; la borne de 2 h pile est tranchée au TP 4).
+Le `Alors` est observable : un code de refus, pas « le système fonctionne ».
 :::
 
 ## Chaque format dans le dépôt {kicker="Quatre formats"}
 
 ![À gauche l'arbre du dépôt bookit : docs/adr, specs/001-valider-reservation/spec.md avec ses sections Requirements et User Scenarios, le fichier .feature, tests/ ; à droite la règle métier d'un artefact à l'autre : exigence, scénario, test](images/02-formats.svg)
-
-Les ADR vont dans `docs/adr/`, le Markdown structuré dans `spec.md`, les exigences EARS dans sa section `Requirements`, les scénarios dans `User Scenarios & Testing` puis dans un `.feature` exécutable. Une règle métier traverse les trois artefacts : exigence, scénario, test.
 
 ::: sources
 - [Spec Kit, `templates/spec-template.md` v1.2.2](https://github.com/github/spec-kit/blob/v1.2.2/templates/spec-template.md)
@@ -301,7 +308,7 @@ Trajectoire du fil rouge (`formateur/fil-rouge.md`) : `docs/adr/` au TP 3 ; `spe
 Un seul nom pour la règle d'un bout à l'autre : REG-03 dans le tableau des règles, dans `Requirements`, dans le titre du scénario, dans le test. C'est ce qui permet de relire un diff contre la spécification.
 :::
 
-## Un format par besoin : structure, décision, exigence, scénario. {.statement kicker="Quatre formats"}
+## Chaque format répond à un besoin : structure, décision, exigence ou scénario. {.statement kicker="Quatre formats"}
 
 ::: notes
 Conclut la section : un format par besoin, chacun à sa place dans le dépôt. La section suivante installe l'outil qui déroule le workflow.
@@ -730,10 +737,10 @@ Slide de référence, à ne pas lire en salle.
 
 ## Glossaire : les formats et l'outil {kicker="Glossaire"}
 
-- **Markdown structuré** : sections titrées et exigences numérotées qui donnent sa structure à `spec.md`
+- **Markdown structuré** : sections titrées et exigences numérotées de `spec.md`
 - **ADR** : note qui trace une décision d'architecture, son contexte et ses conséquences
-- **EARS** : syntaxe d'exigence en une phrase à mots-clés (WHEN, IF, SHALL)
-- **Gherkin** : syntaxe de scénario Given, When, Then, exécutable avec pytest-bdd
+- **EARS** : syntaxe d'exigence en une phrase à mots-clés traduits (Quand, Tant que, Si, doit)
+- **Gherkin** : syntaxe de scénario Soit, Quand, Alors, exécutable
 
 |||
 
