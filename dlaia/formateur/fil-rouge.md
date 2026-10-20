@@ -1,6 +1,6 @@
 # Fil rouge bookit
 
-Projet fil rouge de la formation : domaine, contraintes techniques, trajectoire des TP (issue #52), composition de l'archive, procédure de superposition des corrigés, puis environnement technique relevé (issue #48). Les nombres de tests et de mutants sont confirmés par les artefacts de référence (#53 à #56) et par les essais réels (#57) ; d'ici là, les valeurs marquées « à confirmer » viennent de l'ancien support.
+Projet fil rouge de la formation : domaine, contraintes techniques, trajectoire des TP (issue #52), composition de l'archive, procédure de superposition des corrigés, puis environnement technique relevé (issue #48). Les nombres de tests et de mutants sont confirmés par les corrigés des TP, construits module par module, et par leur rejeu (`/rejeu NN`, puis `/rejeu tous`, #57) ; d'ici là, les valeurs marquées « à confirmer » viennent de l'ancien support.
 
 ## Domaine
 
@@ -27,9 +27,9 @@ Règles métier fournies (`tp/fichiers/regles-metier.md`), un code d'erreur par 
 
 Deux exigences s'ajoutent au TP 4, sans code propre : REG-06, un seul code rendu, celui de la première règle enfreinte dans l'ordre REG-01 à REG-05 (réponse du produit à `clarify`) ; REG-07, la décision dépend du seul instant courant fourni en entrée (exigence de reproductibilité du brief). Les autres réponses du produit (`tp/fichiers/clarifications.md`) : les jours fériés restent ouvrés, un seul fuseau horaire local implicite, quota, annulation, pools de ressources et approbation hors périmètre, API et stockage inchangés.
 
-Les scénarios Gherkin fournis (`tp/fichiers/valider-reservation.feature`, 24 exemples, à confirmer) fixent l'instant courant au mardi 2 juin 2026 à 9h00 et testent chaque borne des deux côtés. L'exemple du dimanche (REG-02) en est absent à dessein : la passe de mutation du TP 6 laisse survivre `weekday() >= 5` muté en `== 5`, le stagiaire ajoute l'exemple dans la spécification et le `.feature`, puis rejoue la passe.
+Les scénarios Gherkin fournis (`tp/fichiers/valider-reservation.feature`, 24 exemples, à confirmer) fixent l'instant courant au mardi 2 juin 2026 à 9h00 et testent chaque borne des deux côtés. L'exemple du dimanche (REG-02) en est absent à dessein : la passe de mutation du TP 6 (partie B) laisse survivre `weekday() >= 5` muté en `== 5`, le stagiaire ajoute l'exemple dans la spécification et le `.feature`, puis rejoue la passe.
 
-Dates du `curl`. `test_fumee.py` réserve le lundi suivant de 10h à 11h, ce qui respecte les cinq règles quel que soit le jour de la formation : le test reste vert une fois les règles écrites. Le `curl` des énoncés calcule sa date de même, `$(date -d 'next monday' +%F)T10:00:00`, pour tenir dans le préavis et l'horizon. Au TP 3, deux envois identiques répondent 201 (aucune règle). Au TP 6, l'énoncé envoie deux fois la même demande : le second envoi répond 422 `overlap` dans tous les cas ; le premier aussi quand `bookit.db` porte encore la réservation du TP 3 et que le lundi suivant n'a pas changé entre les deux journées.
+Dates du `curl`. `test_fumee.py` réserve le lundi suivant de 10h à 11h, ce qui respecte les cinq règles quel que soit le jour de la formation : le test reste vert une fois les règles écrites. Le `curl` des énoncés calcule sa date de même, `$(date -d 'next monday' +%F)T10:00:00`, pour tenir dans le préavis et l'horizon. Au TP 3, deux envois identiques répondent 201 (aucune règle). Au TP 6 (partie A), l'énoncé envoie deux fois la même demande : le second envoi répond 422 `overlap` dans tous les cas ; le premier aussi quand `bookit.db` porte encore la réservation du TP 3 et que le lundi suivant n'a pas changé entre les deux journées.
 
 ## Présentation de bookit dans le support
 
@@ -53,7 +53,7 @@ La slide « Fourni et à construire » montre le stub : `validate_booking` rend 
 
 ## Contraintes techniques
 
-- Python 3.14 géré par uv : `requires-python = ">=3.14"`, `.python-version`, `uv.lock` versionné ; dépendances `fastapi` et `uvicorn` ; groupe `dev` : `httpx2`, `pytest`, `pytest-bdd`, `ruff`. cosmic-ray entre au TP 6 par `uv add --dev cosmic-ray==8.7.0`. `pythonpath = ["."]` dans la configuration pytest est indispensable : sans lui, le `uv run pytest` lancé par cosmic-ray échoue à la collecte (voir Environnement).
+- Python 3.14 géré par uv : `requires-python = ">=3.14"`, `.python-version`, `uv.lock` versionné ; dépendances `fastapi` et `uvicorn` ; groupe `dev` : `httpx2`, `pytest`, `pytest-bdd`, `ruff`. cosmic-ray entre au TP 6 (partie B) par `uv add --dev cosmic-ray==8.7.0`. `pythonpath = ["."]` dans la configuration pytest est indispensable : sans lui, le `uv run pytest` lancé par cosmic-ray échoue à la collecte (voir Environnement).
 - Un seul fichier de contexte, `AGENTS.md`, écrit au TP 4 et lu par les deux outils ; aucun `CLAUDE.md`. Un seul dossier de skills, `.claude/skills/`, lu par les deux outils ; aucun `.opencode/skills/`.
 - Spec Kit 1.2.2, initialisé au TP 3 par `specify init --here --force --integration claude|opencode --script sh`. Seule divergence entre les projets des deux outils : les commandes Spec Kit (`.claude/skills/speckit-<commande>/SKILL.md` sous Claude Code, `.opencode/commands/speckit.<commande>.md` sous Open Code) et `.specify/integration.json`, qui porte l'intégration choisie. Tout le reste (`.specify/`, scripts, templates, artefacts) est identique. Pas d'extension git : tout se passe sur `main`, les artefacts vont dans `specs/001-valider-reservation/`. `.specify/feature.json` (feature courante) est écrit par `specify` au TP 4 et ignoré par git. L'option `--integration-options="--no-model-invocation"` (Claude Code seulement) reste à trancher par l'énoncé du TP 3. Détail dans `formateur/spec-kit.md`.
 - Modèle `claude-sonnet-4-6` par Bedrock, épinglé dans `.claude/settings.json` et `opencode.json` du fil rouge, qui autorisent sans question `uv run pytest` et les scripts `.specify/scripts/bash/`. Toute autre commande et toute écriture demandent une permission, que le stagiaire lit avant d'accorder.
@@ -70,7 +70,8 @@ Une seule copie de `~/bookit/` du TP 1 au TP 6, aucun état intermédiaire fourn
 | TP 3 | `.git`, `.venv` (ignoré), `.specify/`, commandes de l'outil, `docs/adr/`, `docs/constitution-base.md`, `.specify/memory/constitution.md` 1.0.1 | 4 | 1 |
 | TP 4 | `AGENTS.md`, `.claude/skills/{ears,gherkin}/`, `docs/{brief,regles-metier,clarifications}.md`, `.specify/templates/overrides/spec-template.md`, `specs/001-valider-reservation/spec.md` (REG-01 à REG-07) et `checklists/requirements.md` | 9 | 1 |
 | TP 5 | `specs/001-valider-reservation/valider-reservation.feature`, `spec.md` réaligné, `plan.md`, `research.md`, `data-model.md`, `quickstart.md`, `.specify/templates/overrides/tasks-template.md`, `tasks.md` | 14 | 1 |
-| TP 6 | `tests/test_valider_reservation.py`, `bookit/domain/validate_booking.py`, `tasks.md` coché, `cosmic-ray.toml`, `pyproject.toml` et `uv.lock` (cosmic-ray), `specs/001-valider-reservation/mutation.md`, exemple du dimanche dans `spec.md` et le `.feature` | 20 | 26 (à confirmer) |
+| TP 6, partie A | `tests/test_valider_reservation.py`, `bookit/domain/validate_booking.py`, `tasks.md` coché | 19 | 25 (à confirmer) |
+| TP 6, partie B | `cosmic-ray.toml`, `pyproject.toml` et `uv.lock` (cosmic-ray), `specs/001-valider-reservation/mutation.md`, exemple du dimanche dans `spec.md`, le `.feature` et les tests | 21 | 26 (à confirmer) |
 
 ### TP 1, partie A (module 1) et partie B (module 2)
 
@@ -118,7 +119,7 @@ Arrivée : 9 commits, `spec.md` à sept exigences, `.specify/feature.json` prés
 
 Corrigé `tp/tp04/` : le contenu de `tp/tp03/` plus `AGENTS.md`, `.claude/skills/{ears,gherkin}/`, `docs/{brief,regles-metier,clarifications}.md`, la surcharge, `specs/001-valider-reservation/spec.md` et `checklists/requirements.md`.
 
-Point ouvert pour #57 : `specify` charge-t-il les skills `ears` et `gherkin` de lui-même ? Sinon le prompt de l'étape 3 les nomme.
+Point ouvert pour le rejeu du TP 4 (#72) : `specify` charge-t-il les skills `ears` et `gherkin` de lui-même ? Sinon le prompt de l'étape 3 les nomme.
 
 ### TP 5 (module 5, 60 min)
 
@@ -138,9 +139,9 @@ Arrivée : 14 commits, `tasks.md` sans case cochée, `validate_booking` rend tou
 
 Corrigé `tp/tp05/` : le contenu de `tp/tp04/` plus le `.feature`, `spec.md` réaligné, `plan.md` et ses annexes, la surcharge, `tasks.md`.
 
-### TP 6 (module 6, 90 min)
+### TP 6, partie A (module 6, 65 min)
 
-Départ : arrivée du TP 5.
+Lancée par une slide après la section « Du scénario au test ». Départ : arrivée du TP 5.
 
 Travail :
 
@@ -149,11 +150,23 @@ Travail :
 3. Session neuve (`/clear` ou `/new`), tâche Code REG-01 : diff relu en deux temps, vert ; commit.
 4. REG-02 à REG-05, même geste par paire, en un lot ; commit.
 5. Tâches restantes (Test REG-06, Test REG-07, finition), `tasks.md` entièrement coché ; commit. API relancée, le `curl` du TP 3 envoyé deux fois répond 422 `overlap`.
-6. `uv add --dev cosmic-ray==8.7.0`, `~/fichiers/cosmic-ray.toml` copié à la racine et `~/fichiers/mutation.md` dans `specs/001-valider-reservation/`, passe 1 (`baseline`, `init`, `exec`, `cr-report`), survivants classés dans `mutation.md`, exemple du dimanche ajouté dans `spec.md` et le `.feature` dans tous les cas, passe 2 ; commit. Le fichier de session de cosmic-ray n'est pas commité.
 
-Commits : `TP 6 : harnais pytest-bdd`, `TP 6 : REG-01 rouge`, `TP 6 : REG-01 vert`, `TP 6 : REG-02 à REG-05`, `TP 6 : tâches restantes`, `TP 6 : mutation`.
+Commits : `TP 6 : harnais pytest-bdd`, `TP 6 : REG-01 rouge`, `TP 6 : REG-01 vert`, `TP 6 : REG-02 à REG-05`, `TP 6 : tâches restantes`.
 
-Arrivée : 20 commits, suite verte (1 test de fumée et 25 scénarios, à confirmer), `git log --oneline -- bookit/application bookit/infrastructure` ne montre que le commit du squelette, `tasks.md` tout coché, `mutation.md` à deux passes.
+Arrivée : 19 commits, suite verte (1 test de fumée et 24 scénarios, à confirmer), `git log --oneline -- bookit/application bookit/infrastructure` ne montre que le commit du squelette, `tasks.md` tout coché.
+
+### TP 6, partie B (module 6, 40 min)
+
+Lancée en fin de module, après « Couverture et mutation » et « Converger ». Départ : arrivée de la partie A, code et tests de `validate_booking` écrits par `implement`.
+
+Travail :
+
+1. `uv add --dev cosmic-ray==8.7.0`, `~/fichiers/cosmic-ray.toml` copié à la racine et `~/fichiers/mutation.md` dans `specs/001-valider-reservation/`, passe 1 (`baseline`, `init`, `exec`, `cr-report --surviving-only`), survivants relevés dans `mutation.md` ; commit. Le fichier de session de cosmic-ray n'est pas commité.
+2. Analyse des survivants par l'agent : prompt qui lui donne la sortie de `cr-report --show-diff` et demande, pour chaque survivant, mutant équivalent ou trou dans les tests, et le cas manquant ; le stagiaire juge le classement. Cas ajoutés dans `spec.md`, le `.feature` et les tests (l'exemple du dimanche dans tous les cas), suite verte, passe 2, `mutation.md` à deux passes ; commit.
+
+Commits : `TP 6 : mutation, passe 1`, `TP 6 : trous comblés, passe 2`.
+
+Arrivée : 21 commits, suite verte (1 test de fumée et 25 scénarios, à confirmer), `mutation.md` à deux passes.
 
 Corrigé `tp/tp06/` : le contenu de `tp/tp05/` plus `bookit/domain/validate_booking.py`, `tests/test_valider_reservation.py`, `tasks.md` coché, `cosmic-ray.toml`, `pyproject.toml`, `uv.lock`, `mutation.md`, `spec.md` et `.feature` complétés.
 
@@ -212,7 +225,7 @@ uv run cr-report mutation.sqlite --surviving-only
 
 Syntaxe relevée le 19 octobre 2026 dans `cosmic-ray --help` 8.7.0 : `init CONFIG_FILE SESSION_FILE`, `baseline CONFIG_FILE`, `exec CONFIG_FILE SESSION_FILE`, `cr-report SESSION_FILE` avec `--surviving-only` et `--show-diff`.
 
-Cette procédure vérifie le code et les tests. Les commandes Spec Kit ne sont pas rejouées par elle : c'est l'objet du rejeu non interactif (`/rejeu NN`) et des essais réels (#57).
+Cette procédure vérifie le code et les tests. Les commandes Spec Kit ne sont pas rejouées par elle : c'est l'objet du rejeu non interactif (`/rejeu NN`, puis `/rejeu tous` en fin de parcours, #57).
 
 ## Environnement (issue #48)
 
