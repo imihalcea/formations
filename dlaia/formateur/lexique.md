@@ -71,8 +71,9 @@ Les définitions ci-dessous sont provisoires jusqu'au plan du module concerné, 
 | fichier à trous | fichier Markdown de `.specify/templates/` dont les sections entre crochets sont remplies par une commande Spec Kit ; nommé « template » à partir du module 5 | 02 | template (avant le module 5), gabarit, modèle, squelette |
 | Markdown structuré | sections titrées et exigences numérotées qui donnent sa structure à `spec.md` | 02 | squelette, structure Markdown, Markdown seul (pour le format) |
 | ADR | note qui trace une décision d'architecture, son contexte et ses conséquences ; « architecture decision record » développé une fois | 02 | décision seule, RFC, note de conception |
-| EARS | syntaxe d'exigence en une phrase à mots-clés (WHEN, IF, SHALL) ; développé une fois | 02 | syntaxe structurée, exigence formelle |
-| Gherkin | syntaxe de scénario Given, When, Then, exécutable avec pytest-bdd | 02 | cucumber, BDD (pour le format), feature (pour la syntaxe) |
+| EARS | syntaxe d'exigence en une phrase à mots-clés (Quand, Tant que, Si, doit), traduits de l'anglais ; développé une fois | 02 | syntaxe structurée, exigence formelle, mots-clés anglais (SHALL, WHEN, WHILE, IF) hors citation de Mavin |
+| patron (EARS) | forme de phrase EARS propre à une situation : toujours, sur un événement, dans un état, cas indésirable ; slide « EARS, une phrase à mots-clés » | 02 | pattern, template EARS, type d'exigence, modèle de phrase |
+| Gherkin | syntaxe de scénario Soit, Quand, Alors (`# language: fr`), exécutable avec pytest-bdd | 02 | cucumber, BDD (pour le format), feature (pour la syntaxe), Given, When, Then hors citation de Cucumber ou de Spec Kit |
 | scénario | un cas d'une exigence écrit en Gherkin : contexte, action, résultat | 02 | exemple, cas de test, test (pour le scénario) |
 | commande Spec Kit | prompt versionné, invoqué `/speckit-x` sous Claude Code et `/speckit.x` sous Open Code | 02 | slash command, skill speckit, étape (pour la commande) |
 
