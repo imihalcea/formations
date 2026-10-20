@@ -79,7 +79,7 @@ function SlideContent({ slide, index, total, section }: Props) {
           <header className="flex items-end justify-between gap-16 border-b-2 border-slide-ink/10 pb-8">
             <div>
               {slide.kicker && <p className="slide-kicker mb-4 text-slide-accent">{slide.kicker}</p>}
-              <h2 className="slide-heading font-display">{slide.title}</h2>
+              <h2 className="slide-heading font-display" dangerouslySetInnerHTML={{ __html: slide.titleHtml }} />
             </div>
             {slide.kind === "tp" && slide.duration && (
               <div className="slide-body shrink-0 rounded-full bg-slide-accent px-10 py-4 text-slide-paper">{slide.duration}</div>
@@ -115,13 +115,14 @@ function ImpactBody({ slide }: { slide: Slide }) {
     case "module-title":
       return (
         <>
-          <h1 className="slide-title-lg font-display max-w-[1400px]">{slide.title}</h1>
+          <h1 className="slide-title-lg font-display max-w-[1400px]" dangerouslySetInnerHTML={{ __html: slide.titleHtml }} />
           {slide.subtitleHtml && <InlineHtml html={slide.subtitleHtml} className="slide-subtitle mt-10 block opacity-60" />}
           <div className="mt-16 h-2 w-40 bg-slide-accent" />
         </>
       );
     case "statement":
-      return <h2 className="slide-title font-display max-w-[1600px]">{slide.title}</h2>;
+      // Une idée clé d'une dizaine de mots tient sur deux lignes : corps plus petit que slide-title, lignes équilibrées.
+      return <h2 className="slide-statement font-display max-w-[1600px]" dangerouslySetInnerHTML={{ __html: slide.titleHtml }} />;
     case "figure":
       return (
         <>
@@ -141,7 +142,7 @@ function ImpactBody({ slide }: { slide: Slide }) {
     case "end":
       return (
         <>
-          <h2 className="slide-title-lg font-display" style={{ fontSize: 180 }}>{slide.title}</h2>
+          <h2 className="slide-title-lg font-display" style={{ fontSize: 180 }} dangerouslySetInnerHTML={{ __html: slide.titleHtml }} />
           {slide.subtitleHtml && <InlineHtml html={slide.subtitleHtml} className="slide-body-lg mt-10 block opacity-60" />}
         </>
       );
@@ -150,19 +151,22 @@ function ImpactBody({ slide }: { slide: Slide }) {
   }
 }
 
-function Columns({ columns }: { columns: string[] }) {
+function Columns({ columns, after }: { columns: string[]; after: string | undefined }) {
   if (columns.length === 1) return <Html html={columns[0]!} className="slide-md" />;
   return (
-    <div className="grid grid-cols-2 gap-20">
-      {columns.map((c, i) => <Html key={i} html={c} className="slide-md min-w-0" />)}
-    </div>
+    <>
+      <div className="grid grid-cols-2 gap-20">
+        {columns.map((c, i) => <Html key={i} html={c} className="slide-md min-w-0" />)}
+      </div>
+      {after && <Html html={after} className="slide-md mt-12" />}
+    </>
   );
 }
 
 function ContentBody({ slide }: { slide: Slide }) {
   switch (slide.kind) {
     case "content":
-      return <Columns columns={slide.columns} />;
+      return <Columns columns={slide.columns} after={slide.afterHtml} />;
     case "tp":
       return (
         <div className="grid grid-cols-2 gap-20">
@@ -180,7 +184,7 @@ function ContentBody({ slide }: { slide: Slide }) {
               // Au-delà de sept étapes, des lignes plus serrées gardent la liste dans la slide.
               <li key={i} className={`slide-body flex items-baseline gap-8 ${slide.stepTitles.length > 7 ? "py-1.5" : "py-4"}`}>
                 <span className="slide-caption font-mono font-semibold text-slide-accent tabular-nums">{pad(slide.optionalFirst ? i : i + 1)}</span>
-                {t}
+                <InlineHtml html={t} />
                 {slide.optionalFirst && i === 0 && <span className="slide-caption text-slide-accent">(optionnel)</span>}
               </li>
             ))}

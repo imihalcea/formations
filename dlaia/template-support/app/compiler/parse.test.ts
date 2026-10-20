@@ -51,6 +51,32 @@ describe("compileDeck", () => {
     const dir = supportWith({ "01-m.md": "# M\n\n## X\n\nA\n\n|||\n\nB\n" });
     const slide = (await compileDeck(dir)).slides[1]!;
     expect(slide.kind === "content" && slide.columns).toEqual(["<p>A</p>\n", "<p>B</p>\n"]);
+    expect(slide.kind === "content" && slide.afterHtml).toBeUndefined();
+  });
+
+  it("affiche en pleine largeur ce qui suit un second « ||| »", async () => {
+    const dir = supportWith({ "01-m.md": "# M\n\n## X\n\nA\n\n|||\n\nB\n\n|||\n\nC\n" });
+    const slide = (await compileDeck(dir)).slides[1]!;
+    expect(slide.kind === "content" && slide.columns).toEqual(["<p>A</p>\n", "<p>B</p>\n"]);
+    expect(slide.kind === "content" && slide.afterHtml).toBe("<p>C</p>\n");
+    const trop = supportWith({ "01-m.md": "# M\n\n## X\n\nA\n\n|||\n\nB\n\n|||\n\nC\n\n|||\n\nD\n" });
+    await expect(compileDeck(trop)).rejects.toThrow("deux colonnes au plus");
+  });
+
+  it("rend le code en ligne des titres de slide et d'étape", async () => {
+    const dir = supportWith({ "01-m.md": "# M\n\n## Le dossier `x/`\n\nA\n\n## TP {.tp}\n\n### Lancer `specify`\n\n::: attendu\nB\n:::\n" });
+    const deck = await compileDeck(dir);
+    expect(deck.slides[1]!.title).toBe("Le dossier `x/`");
+    expect(deck.slides[1]!.titleHtml).toBe("Le dossier <code>x/</code>");
+    expect(deck.tps[0]!.steps[0]!.titleHtml).toBe("Lancer <code>specify</code>");
+  });
+
+  it("place une espace insécable avant les ponctuations doubles des titres", async () => {
+    const dir = supportWith({ "01-m.md": "# M\n\n## Le QUOI ; le COMMENT : deux ? {.statement}\n\n## TP {.tp}\n\n### Lancer : `a b`\n\n::: attendu\nB\n:::\n" });
+    const deck = await compileDeck(dir);
+    expect(deck.slides[1]!.titleHtml).toBe("Le QUOI\u00a0; le COMMENT\u00a0: deux\u00a0?");
+    expect(deck.tps[0]!.steps[0]!.titleHtml).toBe("Lancer\u00a0: <code>a b</code>");
+    expect(deck.tps[0]!.introHtml).not.toContain("\u00a0");
   });
 
   it("compile un TP en slide de lancement et page d'énoncé", async () => {

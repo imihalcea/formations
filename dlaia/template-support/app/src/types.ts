@@ -3,7 +3,9 @@
 
 type Base = {
   section: number;
+  // Titre brut (navigation, captures, carte) et son rendu Markdown en ligne (code, emphase).
   title: string;
+  titleHtml: string;
   kicker?: string;
   sourcesHtml: string[];
   notesHtml: string;
@@ -14,13 +16,15 @@ export type Slide =
   | (Base & { kind: "title"; subtitleHtml?: string })
   | (Base & { kind: "agenda"; modules: { number: string; title: string }[] })
   | (Base & { kind: "module-title"; subtitleHtml?: string })
-  | (Base & { kind: "content"; columns: string[] })
+  // afterHtml : bloc pleine largeur affiché sous les deux colonnes (après un second « ||| »).
+  | (Base & { kind: "content"; columns: string[]; afterHtml?: string })
   | (Base & { kind: "statement" })
   | (Base & { kind: "facts"; facts: { termHtml?: string; textHtml: string }[] })
   | (Base & { kind: "figure"; value: string })
   | (Base & { kind: "figures"; stats: { value: string; labelHtml: string }[]; remarkHtml?: string })
   | (Base & { kind: "quote"; quoteHtml: string; author?: string })
   | (Base & { kind: "compare"; claudeHtml: string; opencodeHtml: string })
+  // stepTitles : titres des étapes rendus en HTML (Markdown en ligne).
   | (Base & { kind: "tp"; tpId: string; introHtml: string; stepTitles: string[]; optionalFirst?: boolean; duration?: string })
   | (Base & { kind: "end"; subtitleHtml?: string })
   | (Base & { kind: "carte"; carte: Carte });
@@ -33,7 +37,7 @@ export type Section = { number?: string; title: string };
 // claude-code ou opencode ne s'affiche que pour l'outil choisi par le stagiaire.
 export type TpSegment = { kind: "common" | "claude-code" | "opencode" | "attendu" | "indice"; html: string };
 
-export type TpStep = { title: string; segments: TpSegment[] };
+export type TpStep = { title: string; titleHtml: string; segments: TpSegment[] };
 
 export type Tp = {
   id: string;

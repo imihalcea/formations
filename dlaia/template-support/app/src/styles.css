@@ -32,12 +32,14 @@ body { background-color: var(--deck); color: var(--deck-foreground); }
 .slide-content {
   width: 1920px; height: 1080px; overflow: hidden; position: relative;
   font-family: var(--font-sans);
-  --slide-title-lg: 128px; --slide-title: 96px; --slide-subtitle: 52px;
+  --slide-title-lg: 128px; --slide-title: 96px; --slide-statement: 84px; --slide-subtitle: 52px;
   --slide-heading: 64px; --slide-body-lg: 44px; --slide-body: 36px; --slide-caption: 26px;
   --slide-kicker: 24px; --slide-chrome: 20px;
 }
 .slide-title-lg { font-size: var(--slide-title-lg); line-height: 1; letter-spacing: -0.03em; font-weight: 400; }
 .slide-title { font-size: var(--slide-title); line-height: 1.05; letter-spacing: -0.025em; font-weight: 400; }
+/* Idée clé : une phrase d'une dizaine de mots sur deux lignes au plus, équilibrées. */
+.slide-statement { font-size: var(--slide-statement); line-height: 1.08; letter-spacing: -0.025em; font-weight: 400; text-wrap: balance; }
 .slide-heading { font-size: var(--slide-heading); line-height: 1.1; letter-spacing: -0.02em; font-weight: 400; }
 .slide-subtitle { font-size: var(--slide-subtitle); line-height: 1.15; }
 .slide-body-lg { font-size: var(--slide-body-lg); line-height: 1.22; }
@@ -47,6 +49,15 @@ body { background-color: var(--deck); color: var(--deck-foreground); }
 .slide-footer, .slide-page { font-family: var(--font-mono); font-size: var(--slide-chrome); }
 
 .slide-content a { text-decoration: underline; text-underline-offset: 0.15em; }
+
+/* Code en ligne dans un titre de slide, d'idée clé ou d'étape de TP : même motif que dans le corps. */
+.slide-heading code, .slide-statement code, .slide-title-lg code, .slide-body code, .tp-step-title code {
+  font-family: var(--font-mono); font-size: 0.85em; padding: 0.05em 0.3em; border-radius: 6px;
+  background: oklch(0.54 0.21 262 / 9%);
+}
+.slide-statement code { background: oklch(0.985 0.004 250 / 14%); }
+/* Un code en ligne de titre ne se coupe pas entre deux lignes. */
+.slide-heading code, .slide-statement code, .slide-title-lg code, .tp-step-title code { white-space: nowrap; }
 
 /* Corps Markdown des slides : mêmes tailles, couleurs et motifs que les types dédiés. */
 .slide-md { font-size: var(--slide-body); line-height: 1.3; }

@@ -87,7 +87,7 @@ export function TpPage({ tp, section, onBack }: { tp: Tp; section: Section; onBa
             <li key={k} className={`border-t-4 pt-6 ${done.includes(k) ? "border-deck-muted" : "border-slide-accent"}`}>
               <div className="flex items-baseline gap-4">
                 <span className="font-mono text-sm font-semibold text-slide-accent tabular-nums">{String(tp.optionalFirst ? k : k + 1).padStart(2, "0")}</span>
-                <h2 className="font-display text-2xl leading-snug">{step.title}</h2>
+                <h2 className="tp-step-title font-display text-2xl leading-snug" dangerouslySetInnerHTML={{ __html: step.titleHtml }} />
                 {tp.optionalFirst && k === 0 && <span className="shrink-0 rounded-full border border-slide-accent px-3 py-0.5 text-sm text-slide-accent">Optionnel</span>}
               </div>
               <div className="mt-4 space-y-5">

@@ -85,7 +85,7 @@ export async function compileDeck(dir: string): Promise<Deck> {
   const cartePath = join(dir, CARTE_FILE);
   if (existsSync(cartePath)) {
     const carte = compileCarte(cartePath, sections, slides, md);
-    slides.push({ section: sections.length, title: carte.title, kicker: "Carte mentale", sourcesHtml: [], notesHtml: "", origin: `${CARTE_FILE}:1`, kind: "carte", carte });
+    slides.push({ section: sections.length, title: carte.title, titleHtml: md.utils.escapeHtml(carte.title), kicker: "Carte mentale", sourcesHtml: [], notesHtml: "", origin: `${CARTE_FILE}:1`, kind: "carte", carte });
     sections.push({ title: "Carte mentale" });
   }
   return { sections, slides, tps };
@@ -111,6 +111,17 @@ function createMarkdown(hl: Highlighter): MarkdownIt {
     tokens[idx]!.attrSet("rel", "noopener");
     return link(tokens, idx, options, env, self);
   };
+
+  // Typographie française dans les titres : une espace insécable précède « ; », « : », « ? » et « ! »,
+  // pour qu'une ponctuation double n'ouvre jamais une ligne. Actif quand env.nbsp est vrai (renderTitle).
+  md.core.ruler.push("nbsp", (state) => {
+    if (!state.env?.["nbsp"]) return;
+    for (const token of state.tokens) {
+      for (const child of token.children ?? []) {
+        if (child.type === "text") child.content = child.content.replace(/ ([;:?!])/g, "\u00a0$1");
+      }
+    }
+  });
 
   // ```python file="../tp/…/x.py" lines="10-25" : le bloc reprend le contenu d'un fichier,
   // par exemple un corrigé testé de tp/, au lieu d'en recopier le code.
@@ -238,6 +249,11 @@ type Ctx = { md: MarkdownIt; env: { dir: string }; section: number };
 const join_ = (lines: Line[]) => lines.map((l) => l.text).join("\n").trim();
 const contentOf = (lines: Line[]) => lines.filter((l) => l.text.trim());
 
+// Titre de slide, idée clé ou titre d'étape : Markdown en ligne avec les espaces insécables de la règle nbsp.
+function renderTitle(title: string, ctx: Ctx): string {
+  return ctx.md.renderInline(title, { ...ctx.env, nbsp: true });
+}
+
 function common(b: Block, ctx: Ctx) {
   const { containers, rest } = extractContainers(b.body, b.origin);
   const sourcesHtml = contentOf(containers.get("sources") ?? []).map((l) => {
@@ -248,6 +264,7 @@ function common(b: Block, ctx: Ctx) {
   const base = {
     section: ctx.section,
     title: b.title,
+    titleHtml: renderTitle(b.title, ctx),
     sourcesHtml,
     notesHtml: ctx.md.render(join_(containers.get("notes") ?? []), ctx.env),
     origin: b.origin,
@@ -256,21 +273,23 @@ function common(b: Block, ctx: Ctx) {
   return { base, containers, rest };
 }
 
-// Une ligne « ||| » hors bloc de code coupe le corps en deux colonnes.
-function columns(lines: Line[], origin: string): string[] {
-  const cols: Line[][] = [[]];
+// Une ligne « ||| » hors bloc de code coupe le corps en deux colonnes ; une seconde
+// ligne « ||| » ferme les colonnes, et ce qui la suit s'affiche en pleine largeur dessous.
+function columns(lines: Line[], origin: string): { columns: string[]; after: string } {
+  const parts: Line[][] = [[]];
   let fence: string | undefined;
   for (const line of lines) {
     const f = /^(`{3,}|~{3,})/.exec(line.text)?.[1];
     if (f && (!fence || f.startsWith(fence))) fence = fence ? undefined : f;
     if (!fence && !f && line.text.trim() === "|||") {
-      if (cols.length === 2) throw new SupportError(`${origin} (ligne ${line.no}) : deux colonnes au plus`);
-      cols.push([]);
+      if (parts.length === 3) throw new SupportError(`${origin} (ligne ${line.no}) : deux colonnes au plus, puis un seul bloc pleine largeur`);
+      parts.push([]);
     } else {
-      cols.at(-1)!.push(line);
+      parts.at(-1)!.push(line);
     }
   }
-  return cols.map(join_);
+  const [left, right, rest] = parts.map(join_);
+  return { columns: right === undefined ? [left!] : [left!, right], after: rest ?? "" };
 }
 
 function moduleTitle(b: Block, number: string, ctx: Ctx): Slide {
@@ -313,8 +332,15 @@ function buildSlide(b: Block, ctx: Ctx): Slide {
     case "agenda":
       empty();
       return { ...base, kind, modules: [] };
-    case "content":
-      return { ...base, kind, columns: columns(rest, b.origin).map((c) => ctx.md.render(c, ctx.env)) };
+    case "content": {
+      const { columns: cols, after } = columns(rest, b.origin);
+      return {
+        ...base,
+        kind,
+        columns: cols.map((c) => ctx.md.render(c, ctx.env)),
+        ...(after ? { afterHtml: ctx.md.render(after, ctx.env) } : {}),
+      };
+    }
     case "statement":
       empty();
       return { ...base, kind };
@@ -403,7 +429,11 @@ function buildTp(b: Block, ctx: Ctx, id: string, slideIndex: number): { slide: S
 
   // Une première étape optionnelle porte le numéro 00 : les étapes communes gardent 01, 02…
   const optionalFirst = parts[0]!.kind === "optionnel";
-  const steps: TpStep[] = parts.map((p) => ({ title: p.title, segments: tpSegments(p.body, p.origin, ctx) }));
+  const steps: TpStep[] = parts.map((p) => ({
+    title: p.title,
+    titleHtml: renderTitle(p.title, ctx),
+    segments: tpSegments(p.body, p.origin, ctx),
+  }));
   const introHtml = ctx.md.render(join_(rest), ctx.env);
   const duration = b.attrs["duration"];
   const slide: Slide = {
@@ -412,7 +442,7 @@ function buildTp(b: Block, ctx: Ctx, id: string, slideIndex: number): { slide: S
     kind: "tp",
     tpId: id,
     introHtml,
-    stepTitles: steps.map((s) => s.title),
+    stepTitles: steps.map((s) => s.titleHtml),
     ...(optionalFirst ? { optionalFirst } : {}),
     ...(duration ? { duration } : {}),
   };
