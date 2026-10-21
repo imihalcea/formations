@@ -214,20 +214,10 @@ Les TP 3 à 6 emploient les quatre : ADR au TP 3, EARS et Gherkin au TP 4 par le
 
 ## L'ADR trace une décision {kicker="Quatre formats"}
 
-```markdown
-# 3. Architecture hexagonale
-
-Contexte : les règles métier doivent se tester sans serveur ni base ;
-l'API et le stockage sont amenés à changer.
-Décision : trois couches, domaine, application, infrastructure ;
-le domaine ne connaît ni FastAPI ni SQLite, les deux autres l'importent.
-Statut : acceptée
-Conséquences : validate_booking se teste sans base ; l'API ou le
-stockage se remplace sans toucher au domaine ; une importation du
-domaine vers l'infrastructure est un bogue.
+```markdown file="../tp/fichiers/adr/0003-architecture-hexagonale.md"
 ```
 
-Un ADR tient en cinq parties : titre, contexte (les forces en présence), décision, statut, conséquences. Illustration : le troisième ADR de bookit.
+Un ADR tient en cinq parties : titre, contexte (les forces en présence), décision, statut, conséquences. Le troisième ADR de bookit.
 
 ::: sources
 - [Michael Nygard, Documenting Architecture Decisions, 15 novembre 2011](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions)
@@ -236,7 +226,7 @@ Un ADR tient en cinq parties : titre, contexte (les forces en présence), décis
 ::: notes
 Nygard, 15 novembre 2011 : Title (« short noun phrases »), Context (« the forces at play, including technological, political, social, and project local »), Decision (« our response to these forces », « stated in full sentences, with active voice »), Status (« proposed », « accepted »), Consequences (« the resulting context, after applying the decision »).
 Règles de tenue : une décision annulée reste dans le dépôt, marquée « superseded » (« we will keep the old one around, but mark it as superseded ») ; « Numbers will not be reused ». Nygard range les ADR dans `doc/arch/adr-NNN.md`, un fichier par décision, numéroté ; bookit retient `docs/adr/` (convention du fil rouge, `formateur/fil-rouge.md`).
-L'ADR d'illustration est à aligner sur `tp/fichiers/adr/` quand le module 3 crée les ADR fournis du TP 3 (relevé : le dossier n'existe pas encore).
+ADR cité par `file=` depuis `tp/fichiers/adr/0003-architecture-hexagonale.md`, fichier fourni au TP 3 avec les ADR 1 et 2 (module 3).
 Pourquoi un ADR et pas une ligne de plan : la décision vaut pour tout le projet, pas pour une spécification ; elle survit aux plans.
 :::
 
