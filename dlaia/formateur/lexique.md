@@ -95,6 +95,9 @@ Les définitions ci-dessous sont provisoires jusqu'au plan du module concerné, 
 | clean architecture | cercles concentriques, les dépendances pointent vers l'intérieur (Martin, 2012) | 03 | architecture propre, onion |
 | microservices | services en processus séparés, chacun propriétaire de sa base, échanges par le réseau (Lewis et Fowler, 2014) | 03 | micro-services, services seuls |
 | squelette | le `fil-rouge/` fourni dans l'archive : bookit avec son API, son stockage et son test de fumée, sans `validate_booking` ni artefact SDD | 03 | stub, base, projet de départ ; squelette pour un fichier à trous ou le Markdown structuré |
+| test de fumée | unique test fourni avec le squelette (`tests/test_fumee.py`) : une réservation valide via l'API répond 201 ; reste vert une fois les règles écrites | 03 | smoke test, test d'intégration, test de l'API |
+| style d'architecture | manière d'organiser les modules et leurs dépendances, dont la constitution retient la règle de frontière : hexagonale, clean, microservices | 03 | pattern d'architecture, modèle d'architecture, architecture seule (pour le style) |
+| base de la constitution | fichier `docs/constitution-base.md` fourni au TP 3 : sept principes avec leur pourquoi et leur mention `(ADR n)`, deux sections et la gouvernance, dont trois phrases pièges ; la commande `constitution` le reprend pour écrire `.specify/memory/constitution.md` ; « base » seule une fois définie | 03 | brouillon, draft, template de constitution, constitution de base |
 
 ## Spécifier (module 4)
 
