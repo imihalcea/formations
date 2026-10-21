@@ -68,7 +68,7 @@ Les définitions ci-dessous sont provisoires jusqu'au plan du module concerné, 
 | plan | artefact `plan.md` : le COMMENT, les choix techniques qui réalisent la spécification | 02 | design, conception, architecture (pour le plan) |
 | tâche | ligne de `tasks.md` : une part du plan, réalisable et vérifiable seule | 02 | ticket, étape, story, item |
 | constitution | fichier `.specify/memory/constitution.md` : les principes du projet, que chaque plan et chaque diff respectent | 02 | charte, règles du projet, guidelines, convention |
-| principe | une règle de la constitution | 02 | règle (pour un principe), invariant seul, contrainte |
+| principe | une règle de la constitution ; trois sortes définies au module 3 : invariant, patron imposé, anti-patron interdit | 02 | règle (pour un principe), contrainte |
 | fichier à trous | fichier Markdown de `.specify/templates/` dont les sections entre crochets sont remplies par une commande Spec Kit ; nommé « template » à partir du module 5 | 02 | template (avant le module 5), gabarit, modèle, squelette |
 | Markdown structuré | sections titrées et exigences numérotées qui donnent sa structure à `spec.md` | 02 | squelette, structure Markdown, Markdown seul (pour le format) |
 | ADR | note qui trace une décision d'architecture, son contexte et ses conséquences ; « architecture decision record » développé une fois | 02 | décision seule, RFC, note de conception |
@@ -83,9 +83,18 @@ Les définitions ci-dessous sont provisoires jusqu'au plan du module concerné, 
 | Terme | Définition | Introduit | À ne pas employer |
 |---|---|---|---|
 | architecture implicite | structure que l'équipe connaît sans l'avoir écrite, invisible pour l'agent | 03 | architecture tacite, non-dit |
-| architecture hexagonale | domaine au centre, ports, adaptateurs à l'extérieur ; les dépendances pointent vers le domaine | 03 | ports et adaptateurs, onion, clean architecture (différente) |
+| invariant | sorte de principe : ce qui est toujours vrai dans le code | 03 | contrainte, règle d'or |
+| patron imposé | sorte de principe : la manière de faire que tout diff suit | 03 | pattern, bonne pratique, convention |
+| anti-patron interdit | sorte de principe : ce qu'aucun diff ne fait | 03 | anti-pattern, interdit seul, mauvaise pratique |
 | couche | ensemble de modules de même rôle : domaine, application, infrastructure | 03 | niveau, tier, strate |
-| frontière | règle qui dit quelle couche peut dépendre de quelle autre | 03 | limite, séparation, barrière |
+| dépendance | import d'un module vers un autre ; son sens est ce que la frontière contraint | 03 | couplage, référence, lien |
+| frontière | règle qui dit quelle couche, ou quel service, peut dépendre de quelle autre | 03 | limite, séparation, barrière |
+| port | interface que le domaine déclare pour ce qu'il attend de l'extérieur : `BookingRepository`, `Clock` (`ports.py`) | 03 | interface seule, protocole, contrat |
+| adaptateur | module d'infrastructure qui réalise un port ou pilote le domaine : `sqlite_repository.py`, `system_clock.py`, `api.py` | 03 | adapter, implémentation, driver |
+| architecture hexagonale | domaine au centre, ports, adaptateurs à l'extérieur ; les dépendances pointent vers le domaine | 03 | ports et adaptateurs, onion, clean architecture (notion distincte) |
+| clean architecture | cercles concentriques, les dépendances pointent vers l'intérieur (Martin, 2012) | 03 | architecture propre, onion |
+| microservices | services en processus séparés, chacun propriétaire de sa base, échanges par le réseau (Lewis et Fowler, 2014) | 03 | micro-services, services seuls |
+| squelette | le `fil-rouge/` fourni dans l'archive : bookit avec son API, son stockage et son test de fumée, sans `validate_booking` ni artefact SDD | 03 | stub, base, projet de départ ; squelette pour un fichier à trous ou le Markdown structuré |
 
 ## Spécifier (module 4)
 
