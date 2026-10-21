@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 420" width="1680" height="420">
+  <g class="ink" font-size="22">
+    <path d="M120 150 H1580" class="stroke-ink" stroke-width="3"/>
+    <path d="M1566 138 L1584 150 L1566 162 Z" class="ink"/>
+    <g text-anchor="middle" opacity="0.7">
+      <path d="M120 140 V160 M360 140 V160 M600 140 V160 M840 140 V160 M1080 140 V160 M1320 140 V160 M1560 140 V160" class="stroke-ink" stroke-width="2"/>
+      <text x="120" y="192">8h00</text><text x="360" y="192">10h00</text><text x="600" y="192">12h00</text>
+      <text x="840" y="192">14h00</text><text x="1080" y="192">16h00</text><text x="1320" y="192">18h00</text><text x="1560" y="192">20h00</text>
+    </g>
+
+    <path d="M240 60 V150" class="stroke-accent" stroke-width="5"/>
+    <circle cx="240" cy="150" r="10" class="accent"/>
+    <text x="256" y="52" class="accent display" font-size="26">instant courant : 9h00</text>
+    <text x="590" y="52" class="accent" font-size="22">le moment où la demande est jugée, fourni en entrée</text>
+
+    <rect x="602" y="80" width="118" height="60" rx="6" class="stroke-accent" stroke-width="4" stroke-dasharray="12 8"/>
+    <text x="661" y="118" font-size="20" text-anchor="middle">12h à 13h</text>
+    <text x="740" y="118" font-size="22" opacity="0.8">jugée à 9h00 : trois heures de préavis</text>
+  </g>
+
+  <g class="ink" font-size="22" opacity="0.6">
+    <path d="M120 350 H1580" class="stroke-ink" stroke-width="3"/>
+    <path d="M1566 338 L1584 350 L1566 362 Z" class="ink"/>
+    <g text-anchor="middle" opacity="0.7">
+      <path d="M120 340 V360 M360 340 V360 M600 340 V360 M840 340 V360 M1080 340 V360 M1320 340 V360 M1560 340 V360" class="stroke-ink" stroke-width="2"/>
+      <text x="120" y="392">8h00</text><text x="360" y="392">10h00</text><text x="600" y="392">12h00</text>
+      <text x="840" y="392">14h00</text><text x="1080" y="392">16h00</text><text x="1320" y="392">18h00</text><text x="1560" y="392">20h00</text>
+    </g>
+
+    <path d="M480 260 V350" class="stroke-ink" stroke-width="5"/>
+    <circle cx="480" cy="350" r="10" class="ink"/>
+    <text x="496" y="252" class="display" font-size="26">instant courant : 11h00</text>
+
+    <rect x="602" y="280" width="118" height="60" rx="6" class="stroke-ink" stroke-width="4" stroke-dasharray="12 8"/>
+    <text x="661" y="318" font-size="20" text-anchor="middle">12h à 13h</text>
+    <text x="740" y="318" font-size="22">la même demande, jugée à 11h00 : une heure de préavis</text>
+  </g>
+</svg>

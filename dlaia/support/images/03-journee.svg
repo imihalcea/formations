@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 460" width="1680" height="460">
+  <g class="ink" font-size="22">
+    <text x="60" y="44" class="display" font-size="30">salle A, mardi 2 juin 2026 (illustration)</text>
+
+    <path d="M120 300 H1580" class="stroke-ink" stroke-width="3"/>
+    <path d="M1566 288 L1584 300 L1566 312 Z" class="ink"/>
+    <g text-anchor="middle" opacity="0.7">
+      <path d="M120 290 V310 M360 290 V310 M600 290 V310 M840 290 V310 M1080 290 V310 M1320 290 V310 M1560 290 V310" class="stroke-ink" stroke-width="2"/>
+      <text x="120" y="342">8h00</text><text x="360" y="342">10h00</text><text x="600" y="342">12h00</text>
+      <text x="840" y="342">14h00</text><text x="1080" y="342">16h00</text><text x="1320" y="342">18h00</text><text x="1560" y="342">20h00</text>
+    </g>
+
+    <path d="M240 200 V300" class="stroke-accent" stroke-width="5"/>
+    <circle cx="240" cy="300" r="10" class="accent"/>
+    <text x="240" y="186" class="accent" font-size="22" text-anchor="middle">instant courant : 9h00</text>
+
+    <rect x="600" y="220" width="120" height="70" rx="6" class="accent"/>
+    <circle cx="600" cy="220" r="18" class="ink"/>
+    <text x="600" y="228" class="paper display" font-size="22" text-anchor="middle">1</text>
+    <text x="660" y="264" class="paper" font-size="20" text-anchor="middle">12h à 13h</text>
+
+    <rect x="722" y="220" width="118" height="70" rx="6" class="accent"/>
+    <circle cx="840" cy="220" r="18" class="ink"/>
+    <text x="840" y="228" class="paper display" font-size="22" text-anchor="middle">3</text>
+    <text x="781" y="264" class="paper" font-size="20" text-anchor="middle">13h à 14h</text>
+
+    <rect x="660" y="120" width="120" height="60" rx="6" class="stroke-ink" stroke-width="4" stroke-dasharray="12 8"/>
+    <circle cx="632" cy="150" r="18" class="ink"/>
+    <text x="632" y="158" class="paper display" font-size="22" text-anchor="middle">2</text>
+    <text x="720" y="106" font-size="20" text-anchor="middle">12h30 à 13h30</text>
+
+    <text x="1000" y="140" font-size="24">demande 1 : 12h00 à 13h00, acceptée</text>
+    <text x="1000" y="190" font-size="24">demande 2 : 12h30 à 13h30, refusée <tspan class="mono">overlap</tspan></text>
+    <text x="1000" y="240" font-size="24">demande 3 : 13h00 à 14h00, acceptée, jointive</text>
+
+    <text x="840" y="430" font-size="22" text-anchor="middle" opacity="0.8">la demande 2 chevauche la réservation 1 ; la demande 3 commence quand la 1 finit</text>
+  </g>
+</svg>

@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 540" width="1680" height="540">
+  <g class="ink" font-size="22">
+    <rect x="40" y="40" width="380" height="310" rx="12" class="deck"/>
+    <rect x="40" y="40" width="380" height="6" class="accent"/>
+    <text x="230" y="90" class="display" font-size="32" text-anchor="middle">infrastructure</text>
+    <text x="230" y="122" class="mono" font-size="20" text-anchor="middle" opacity="0.7">bookit/infrastructure/</text>
+    <text x="230" y="172" class="mono" font-size="22" text-anchor="middle">api.py</text>
+    <text x="230" y="200" font-size="18" text-anchor="middle" opacity="0.7">FastAPI, POST …/bookings, 201 ou 422</text>
+    <text x="230" y="246" class="mono" font-size="22" text-anchor="middle">sqlite_repository.py</text>
+    <text x="230" y="274" font-size="18" text-anchor="middle" opacity="0.7">stockage SQLite, fichier bookit.db</text>
+    <text x="230" y="318" class="mono" font-size="22" text-anchor="middle">system_clock.py</text>
+
+    <rect x="500" y="40" width="380" height="310" rx="12" class="deck"/>
+    <rect x="500" y="40" width="380" height="6" class="accent"/>
+    <text x="690" y="90" class="display" font-size="32" text-anchor="middle">application</text>
+    <text x="690" y="122" class="mono" font-size="20" text-anchor="middle" opacity="0.7">bookit/application/</text>
+    <text x="690" y="172" class="mono" font-size="22" text-anchor="middle">request_booking.py</text>
+    <text x="690" y="200" font-size="18" text-anchor="middle" opacity="0.7">charge la ressource,</text>
+    <text x="690" y="224" font-size="18" text-anchor="middle" opacity="0.7">appelle validate_booking,</text>
+    <text x="690" y="248" font-size="18" text-anchor="middle" opacity="0.7">enregistre si le résultat est None</text>
+
+    <rect x="960" y="40" width="380" height="310" rx="12" class="accent"/>
+    <text x="1150" y="90" class="paper display" font-size="32" text-anchor="middle">domaine</text>
+    <text x="1150" y="122" class="paper mono" font-size="20" text-anchor="middle" opacity="0.85">bookit/domain/</text>
+    <text x="1150" y="172" class="paper mono" font-size="22" text-anchor="middle">models.py</text>
+    <text x="1150" y="200" class="paper" font-size="18" text-anchor="middle" opacity="0.85">Booking, Resource, InvalidBooking</text>
+    <text x="1150" y="246" class="paper mono" font-size="22" text-anchor="middle">ports.py</text>
+    <text x="1150" y="274" class="paper" font-size="18" text-anchor="middle" opacity="0.85">BookingRepository, Clock</text>
+    <text x="1150" y="318" class="paper mono" font-size="22" text-anchor="middle">validate_booking.py</text>
+
+    <rect x="1420" y="40" width="230" height="310" rx="12" class="deck"/>
+    <rect x="1420" y="40" width="230" height="6" class="accent"/>
+    <text x="1535" y="90" class="display" font-size="32" text-anchor="middle">tests</text>
+    <text x="1535" y="122" class="mono" font-size="20" text-anchor="middle" opacity="0.7">tests/</text>
+    <text x="1535" y="172" class="mono" font-size="22" text-anchor="middle">test_fumee.py</text>
+    <text x="1535" y="200" font-size="18" text-anchor="middle" opacity="0.7">un test : l'API répond 201</text>
+    <text x="1535" y="246" class="mono" font-size="22" text-anchor="middle">conftest.py</text>
+  </g>
+
+  <path d="M424 195 H486" class="stroke-accent" stroke-width="5"/>
+  <path d="M484 182 L500 195 L484 208 Z" class="accent"/>
+  <path d="M884 195 H946" class="stroke-accent" stroke-width="5"/>
+  <path d="M944 182 L960 195 L944 208 Z" class="accent"/>
+  <text x="840" y="392" class="accent" font-size="24" text-anchor="middle">les dépendances pointent vers le domaine</text>
+
+  <rect x="200" y="420" width="1280" height="96" rx="12" class="ink"/>
+  <text x="840" y="460" class="paper mono" font-size="26" text-anchor="middle">validate_booking(booking, resource, now) -&gt; InvalidBooking | None</text>
+  <text x="840" y="497" class="paper" font-size="22" text-anchor="middle" opacity="0.85">la décision est la valeur de retour : None, ou le code de refus</text>
+</svg>

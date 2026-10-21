@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 440" width="1680" height="440">
+  <g class="ink" font-size="26">
+    <circle cx="110" cy="190" r="40" class="deck"/>
+    <circle cx="110" cy="176" r="14" class="ink"/>
+    <path d="M82 214 Q110 186 138 214 Z" class="ink"/>
+    <text x="110" y="268" class="display" font-size="28" text-anchor="middle">demandeur</text>
+
+    <rect x="300" y="60" width="520" height="110" rx="12" class="deck"/>
+    <rect x="300" y="60" width="520" height="6" class="accent"/>
+    <text x="560" y="105" font-size="26" text-anchor="middle">salle A, jeudi de 10h00 à 11h00</text>
+    <text x="560" y="145" font-size="22" text-anchor="middle" opacity="0.7">demande de réservation</text>
+
+    <rect x="300" y="270" width="520" height="110" rx="12" class="deck"/>
+    <rect x="300" y="270" width="520" height="6" class="accent"/>
+    <text x="560" y="315" font-size="26" text-anchor="middle">salle A, samedi de 10h00 à 11h00</text>
+    <text x="560" y="355" font-size="22" text-anchor="middle" opacity="0.7">demande de réservation</text>
+
+    <rect x="920" y="130" width="300" height="180" rx="16" class="accent"/>
+    <text x="1070" y="212" class="paper display" font-size="44" text-anchor="middle">bookit</text>
+    <text x="1070" y="256" class="paper" font-size="22" text-anchor="middle" opacity="0.85">juge la demande</text>
+
+    <rect x="1320" y="60" width="330" height="110" rx="12" class="deck"/>
+    <text x="1485" y="128" class="display" font-size="32" text-anchor="middle">acceptée</text>
+
+    <rect x="1320" y="270" width="330" height="110" rx="12" class="ink"/>
+    <text x="1485" y="318" class="paper display" font-size="32" text-anchor="middle">refusée</text>
+    <text x="1485" y="356" class="paper mono" font-size="24" text-anchor="middle">hours</text>
+  </g>
+
+  <path d="M166 170 Q230 115 296 115 M166 210 Q230 325 296 325" class="stroke-accent" stroke-width="4"/>
+  <path d="M824 115 Q870 115 916 190 M824 325 Q870 325 916 250" class="stroke-accent" stroke-width="4"/>
+  <path d="M1224 190 Q1270 115 1316 115 M1224 250 Q1270 325 1316 325" class="stroke-accent" stroke-width="4"/>
+  <path d="M1300 102 L1320 115 L1300 128 Z M1300 312 L1320 325 L1300 338 Z" class="accent"/>
+
+  <text x="840" y="424" class="ink" font-size="24" text-anchor="middle">un refus porte le code de la règle enfreinte</text>
+</svg>

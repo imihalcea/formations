@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 640" width="1680" height="640">
+  <g class="ink" font-size="22">
+    <text x="60" y="44" class="display" font-size="30">la journée, du lundi au vendredi</text>
+    <rect x="120" y="120" width="1440" height="100" class="tint"/>
+    <path d="M60 220 H1620" class="stroke-ink" stroke-width="3"/>
+    <g text-anchor="middle" opacity="0.7">
+      <path d="M120 210 V230 M1560 210 V230" class="stroke-ink" stroke-width="2"/>
+      <text x="120" y="262">8h00</text><text x="1560" y="262">20h00</text>
+    </g>
+    <text x="90" y="104" class="accent display" font-size="24">REG-02</text>
+    <text x="200" y="104" class="accent mono" font-size="22">hours</text>
+    <text x="290" y="104" font-size="22">: en semaine, de 8h à 20h ; en dehors du fond coloré, refus</text>
+
+    <rect x="360" y="140" width="60" height="70" rx="6" class="accent"/>
+    <path d="M360 300 V318 H420 V300" class="stroke-ink" stroke-width="3"/>
+    <text x="390" y="350" font-size="20" text-anchor="middle">30 min</text>
+    <rect x="480" y="140" width="480" height="70" rx="6" class="accent"/>
+    <path d="M480 300 V318 H960 V300" class="stroke-ink" stroke-width="3"/>
+    <text x="720" y="350" font-size="20" text-anchor="middle">4 h</text>
+    <text x="480" y="390" class="accent display" font-size="24">REG-01</text>
+    <text x="590" y="390" class="accent mono" font-size="22">duration</text>
+    <text x="710" y="390" font-size="22">: durée entre 30 minutes et 4 heures</text>
+
+    <rect x="1140" y="140" width="200" height="70" rx="6" class="accent"/>
+    <rect x="1280" y="150" width="200" height="70" rx="6" class="stroke-ink" stroke-width="4" stroke-dasharray="12 8"/>
+    <text x="1180" y="300" class="accent display" font-size="24">REG-05</text>
+    <text x="1290" y="300" class="accent mono" font-size="22">overlap</text>
+    <text x="1180" y="340" font-size="22">: deux créneaux ne se chevauchent pas</text>
+  </g>
+
+  <g class="ink" font-size="22">
+    <text x="60" y="452" class="display" font-size="30">le calendrier, depuis l'instant courant</text>
+    <rect x="420" y="500" width="1000" height="60" class="tint"/>
+    <path d="M60 560 H1620" class="stroke-ink" stroke-width="3"/>
+    <path d="M1606 548 L1624 560 L1606 572 Z" class="ink"/>
+    <path d="M180 480 V560" class="stroke-accent" stroke-width="5"/>
+    <circle cx="180" cy="560" r="10" class="accent"/>
+    <text x="180" y="600" font-size="22" text-anchor="middle">instant courant</text>
+    <path d="M420 550 V570 M1420 550 V570" class="stroke-ink" stroke-width="2"/>
+    <text x="420" y="600" font-size="22" text-anchor="middle">+ 2 heures</text>
+    <text x="1420" y="600" font-size="22" text-anchor="middle">+ 60 jours</text>
+    <text x="250" y="490" class="accent display" font-size="24">REG-03</text>
+    <text x="360" y="490" class="accent mono" font-size="22">lead_time</text>
+    <text x="500" y="490" font-size="22">: au moins 2 heures de préavis</text>
+    <text x="1060" y="490" class="accent display" font-size="24">REG-04</text>
+    <text x="1170" y="490" class="accent mono" font-size="22">horizon</text>
+    <text x="1280" y="490" font-size="22">: au plus 60 jours à l'avance</text>
+  </g>
+</svg>
