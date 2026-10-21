@@ -1,0 +1,20 @@
+diff --git a/bookit/infrastructure/api.py b/bookit/infrastructure/api.py
+index 00dd751..cf4a639 100644
+--- a/bookit/infrastructure/api.py
++++ b/bookit/infrastructure/api.py
+@@ -1,5 +1,5 @@
+ import os
+-from datetime import datetime
++from datetime import datetime, timedelta
+ 
+ from fastapi import FastAPI, HTTPException
+ from pydantic import BaseModel
+@@ -27,6 +27,8 @@ class BookingOut(BaseModel):
+ @app.post("/resources/{name}/bookings", status_code=201)
+ def create_booking(name: str, body: BookingIn) -> BookingOut:
+     booking = Booking(start=body.start, end=body.end)
++    if booking.end - booking.start > timedelta(hours=4):
++        raise HTTPException(status_code=422, detail={"code": "duration"})
+     error = request_booking(name, booking, repository, clock)
+     if error is not None:
+         raise HTTPException(status_code=422, detail={"code": error.code})
