@@ -91,6 +91,10 @@ body { background-color: var(--deck); color: var(--deck-foreground); }
 .slide-md table { width: 100%; border-collapse: collapse; font-size: var(--slide-caption); }
 .slide-md th { text-align: left; font-weight: 600; padding: 16px 24px 16px 0; border-bottom: 4px solid var(--slide-accent); }
 .slide-md td { padding: 16px 24px 16px 0; border-bottom: 2px solid var(--deck-muted); vertical-align: top; }
+/* Un tableau court occupe la hauteur du canevas : corps plus grand et lignes plus hautes, par paliers selon le nombre de lignes. */
+.slide-md table:not(:has(tbody tr:nth-child(5))) :is(th, td) { padding: 18px 26px 18px 0; }
+.slide-md table:not(:has(tbody tr:nth-child(4))):not(:has(~ pre, ~ * svg, ~ * img)) { font-size: 32px; }
+.slide-md table:not(:has(tbody tr:nth-child(4))):not(:has(~ pre, ~ * svg, ~ * img)) :is(th, td) { padding: 24px 28px 24px 0; }
 .slide-md img { max-height: 720px; max-width: 100%; margin-inline: auto; }
 .slide-md blockquote {
   font-family: var(--font-display); font-size: var(--slide-subtitle); line-height: 1.15;
