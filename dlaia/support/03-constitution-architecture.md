@@ -147,8 +147,8 @@ Les trois phrases diffèrent des trois pièges de `constitution-base.md` du TP 3
 ## Trois sortes de principe {.facts kicker="ADR et constitution"}
 
 - **Invariant** ce qui est toujours vrai dans le code : le domaine n'importe rien hors de `bookit.domain` (ADR 3)
-- **Patron imposé** la manière de faire que tout diff suit : un refus est une valeur `InvalidBooking` rendue par la fonction (ADR 1)
-- **Anti-patron interdit** ce qu'aucun diff ne fait : aucune lecture de l'horloge système dans le domaine (ADR 2)
+- **Pattern imposé** la manière de faire que tout diff suit : un refus est une valeur `InvalidBooking` rendue par la fonction (ADR 1)
+- **Anti-pattern interdit** ce qu'aucun diff ne fait : aucune lecture de l'horloge système dans le domaine (ADR 2)
 
 ::: sources
 - [Mohsenimofidi, Galster, Treude, Baltes, Context Engineering for AI Agents in Open-Source Software, MSR 2026, 13 avril 2026](https://2026.msrconf.org/details/msr-2026-technical-papers/17/Context-Engineering-for-AI-Agents-in-Open-Source-Software)
@@ -156,12 +156,12 @@ Les trois phrases diffèrent des trois pièges de `constitution-base.md` du TP 3
 :::
 
 ::: notes
-Grille de lecture propre au support, à présenter comme telle. L'étude MSR 2026 (466 projets open source dotés d'un fichier d'instructions lu par l'agent) relève cinq modes d'écriture des instructions, « descriptive, prescriptive, prohibitive, explanatory, conditional », et conclut « there is no established content structure yet ». Le support retient les trois modes qui donnent une règle vérifiable : descriptif (invariant), prescriptif (patron imposé), prohibitif (anti-patron interdit) ; l'explicatif est le pourquoi, qui va dans l'ADR ; le conditionnel se ramène à l'un des trois.
-Les exemples sont les principes I, II et III de la constitution de bookit (`tp/tp03/.specify/memory/constitution.md`), un ADR chacun. Le fichier à trous de Spec Kit propose en commentaire « Test-First (NON-NEGOTIABLE) » et « Library-First » : des patrons imposés.
-Définitions du lexique : invariant, patron imposé, anti-patron interdit sont trois sortes de principe. Mots à ne pas employer : pattern, bonne pratique, convention, anti-pattern, interdit seul.
+Grille de lecture propre au support, à présenter comme telle. L'étude MSR 2026 (466 projets open source dotés d'un fichier d'instructions lu par l'agent) relève cinq modes d'écriture des instructions, « descriptive, prescriptive, prohibitive, explanatory, conditional », et conclut « there is no established content structure yet ». Le support retient les trois modes qui donnent une règle vérifiable : descriptif (invariant), prescriptif (pattern imposé), prohibitif (anti-pattern interdit) ; l'explicatif est le pourquoi, qui va dans l'ADR ; le conditionnel se ramène à l'un des trois.
+Les exemples sont les principes I, II et III de la constitution de bookit (`tp/tp03/.specify/memory/constitution.md`), un ADR chacun. Le fichier à trous de Spec Kit propose en commentaire « Test-First (NON-NEGOTIABLE) » et « Library-First » : des patterns imposés.
+Définitions du lexique : invariant, pattern imposé, anti-pattern interdit sont trois sortes de principe. Mots à ne pas employer : patron, bonne pratique, convention, anti-patron, interdit seul.
 :::
 
-## Invariant, patron imposé, anti-patron interdit : chacun se juge sur un diff. {.statement kicker="ADR et constitution"}
+## Invariant, pattern imposé, anti-pattern interdit : chacun se juge sur un diff. {.statement kicker="ADR et constitution"}
 
 ::: notes
 Conclut la section : trois ADR et leur pourquoi, deux rôles, le principe vérifiable sur un diff, trois sortes de principe. La section suivante dit ce qui entre dans la constitution et ce qui va ailleurs.
@@ -815,8 +815,8 @@ Les lignes de `validate_booking.py` ne font qu'un bloc dans `git diff` : le juge
 
 |||
 
-- **Patron imposé** : sorte de principe : la manière de faire que tout diff suit
-- **Anti-patron interdit** : sorte de principe : ce qu'aucun diff ne fait
+- **Pattern imposé** : sorte de principe : la manière de faire que tout diff suit
+- **Anti-pattern interdit** : sorte de principe : ce qu'aucun diff ne fait
 
 ::: sources
 - [Claude Code, Best practices, « Write an effective CLAUDE.md »](https://code.claude.com/docs/en/best-practices#write-an-effective-claude-md)
