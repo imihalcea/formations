@@ -28,17 +28,16 @@ Les deux autres règles à borne, REG-01 (30 minutes, 4 heures) et REG-04 (60 jo
 
 ## Une règle, trois lectures possibles {kicker="Exigence vérifiable"}
 
+> REG-03 : une réservation commence au moins 2 heures après l'instant courant.
+
 | Lecture de REG-03 | Ligne produite (illustration) |
 |---|---|
 | 2 heures pile acceptée | `booking.start >= now + timedelta(hours=2)` |
 | 2 heures pile refusée | `booking.start > now + timedelta(hours=2)` |
 | préavis compté depuis la création de la demande | `booking.start >= booking.created_at + timedelta(hours=2)` |
 
-Au TP 1, le prompt v2 ne tranchait pas 20h00 pile : l'agent a accepté seul.
-
 ::: sources
 - [Spec Kit, `spec-driven.md` v1.2.2, « Don't guess »](https://github.com/github/spec-kit/blob/v1.2.2/spec-driven.md)
-- Rejeu du TP 1 du 20 octobre 2026 (`tmp/rejeu/rapport-tp01-claude-code.md`, `rapport-tp01-opencode.md`) ; module 2, slide « Deux fonctions produites, aucune preuve »
 :::
 
 ::: notes
