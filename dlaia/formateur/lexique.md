@@ -119,19 +119,23 @@ Les définitions ci-dessous sont provisoires jusqu'au plan du module concerné, 
 |---|---|---|---|
 | template | gabarit Markdown d'un artefact Spec Kit (`spec`, `plan`, `tasks`, `constitution`), fichier versionné de `.specify/templates/` modifié en place par les TP 4 et 5 ; nommé « fichier à trous » au module 2, avant que le mot soit défini | 05 | modèle (pour template), gabarit, squelette, fichier à trous (à partir du module 5), surcharge, override (le fil rouge ne se sert pas de `overrides/`) |
 | argument (de commande) | texte qui suit la commande Spec Kit à l'invocation, substitué à `$ARGUMENTS` dans son prompt ; fixe ce qu'un appel impose, là où le template fixe le format de l'artefact ; « sans argument » dès l'énoncé du TP 4 | 05 | consigne, prompt fourni, instruction de la commande, prompt (pour l'argument seul) |
-| socle de test | tâche T001 de `tasks.md` : le fichier `tests/test_valider_reservation.py` et ses définitions d'étapes pytest-bdd, sans scénario lié, suite verte ; ce sur quoi chaque tâche Test REG-NN s'appuie | 05 | harnais (pour les tests), squelette de test, fixture, setup |
+| socle de test | tâche T001 de `tasks.md` : le fichier `tests/test_valider_reservation.py` et ses définitions d'étape pytest-bdd, sans scénario lié, suite verte ; ce sur quoi chaque tâche Test REG-NN s'appuie, en liant par `@scenario` les scénarios de sa règle | 05 | harnais (pour les tests), squelette de test, fixture, setup |
 | analyse | passe `/speckit-analyze` de cohérence entre spécification, plan et tâches, la constitution en référence | 05 | audit, revue, vérification (pour analyze) |
 
 ## Implémenter et vérifier (module 6)
 
 | Terme | Définition | Introduit | À ne pas employer |
 |---|---|---|---|
-| TDD | test écrit avant le code : rouge, vert, remaniement ; développé une fois | 06 | test-first, tests d'abord |
-| BDD | scénarios Gherkin exécutés comme tests ; développé une fois | 06 | tests comportementaux, spécification exécutable |
-| couverture | part du code exécutée par les tests | 06 | coverage, taux de test |
-| mutation testing | modification automatique du code pour vérifier qu'un test échoue ; outil cosmic-ray | 06 | test de mutation, mutation seule |
-| mutant | une version modifiée du code ; tué si un test échoue, survivant sinon | 06 | mutation (pour un mutant), variante |
-| converger | répéter implémenter, tester, corriger jusqu'à toutes les tâches faites et les tests verts (définition à confirmer par le relevé Spec Kit) | 06 | boucler, itérer, finaliser |
+| TDD | test écrit avant le code : rouge, vert, remaniement ; « test-driven development » développé une fois ; slide « TDD : rouge, vert, remaniement » | 06 | test-first, tests d'abord |
+| suite rouge, suite verte | état de la suite de tests : rouge, au moins un test échoue ; verte, tous passent ; un test seul « échoue » ou « passe » ; slide « TDD : rouge, vert, remaniement » (étiquettes du cycle) | 06 | rouge ou vert seuls pour un test, tests cassés, build vert |
+| BDD | scénarios Gherkin exécutés comme tests ; « behaviour-driven development » développé une fois ; slide « BDD : le scénario comme test » | 06 | tests comportementaux, spécification exécutable |
+| définition d'étape | fonction Python liée par `parsers.parse` à une phrase Soit, Quand ou Alors du `.feature` ; `target_fixture` fait d'une étape Soit une fixture ; pluriel « définitions d'étape » ; slide « Une définition d'étape par phrase » | 06 | step definition, step, implémentation d'étape, fixture (pour la définition), définitions d'étapes |
+| couverture | part du code exécutée par les tests ; slide « Couverture : les lignes exécutées » | 06 | coverage, taux de test |
+| mutation testing | modification automatique du code pour vérifier qu'un test échoue ; outil cosmic-ray ; slide « Mutation testing : le code modifié » | 06 | test de mutation, mutation seule |
+| mutant | une version modifiée du code ; tué si un test échoue, survivant si la suite passe, incompétent si le code plante (mots de cosmic-ray) ; slide « Mutation testing : le code modifié » | 06 | mutation (pour un mutant), variante |
+| trou dans les tests | sorte de survivant : un comportement observable change et aucun scénario ne le voit ; se comble par un scénario dans `spec.md` et le `.feature`, jamais dans `tests/` seul ; slide « Classer un survivant » | 06 | manque de test, test manquant, faille, lacune |
+| mutant équivalent | sorte de survivant : aucune entrée ne distingue le mutant du code d'origine, aucun test ne peut le tuer ; noté dans `mutation.md` avec sa raison ; slide « Classer un survivant » | 06 | faux positif, mutant inutile, survivant légitime |
+| converger | ramener le code et les artefacts à l'accord : `converge` mesure l'écart entre le code et `spec.md`, `plan.md`, `tasks.md`, ajoute les tâches manquantes en fin de `tasks.md`, `implement` les exécute, jusqu'à « Converged » ; slide « Entrées et sorties de `converge` » | 06 | boucler, itérer, finaliser |
 
 ## Contexte, sécurité et choix des outils (module 7)
 
