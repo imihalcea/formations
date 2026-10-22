@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 300" width="1680" height="300">
+  <g class="ink" font-size="22">
+    <rect x="0" y="60" width="200" height="110" rx="12" class="deck"/>
+    <rect x="0" y="60" width="200" height="6" class="accent"/>
+    <text x="100" y="124" class="display" font-size="28" text-anchor="middle">specify</text>
+
+    <rect x="240" y="60" width="200" height="110" rx="12" class="accent"/>
+    <text x="340" y="124" class="paper display" font-size="28" text-anchor="middle">clarify</text>
+
+    <g class="ink" opacity="0.85">
+      <path d="M580 60 L680 115 L580 170 L480 115 Z"/>
+    </g>
+    <text x="580" y="122" class="paper mono" font-size="20" text-anchor="middle">review-spec</text>
+
+    <rect x="720" y="60" width="200" height="110" rx="12" class="deck"/>
+    <rect x="720" y="60" width="200" height="6" class="accent"/>
+    <text x="820" y="124" class="display" font-size="28" text-anchor="middle">plan</text>
+
+    <g class="ink" opacity="0.85">
+      <path d="M1060 60 L1160 115 L1060 170 L960 115 Z"/>
+    </g>
+    <text x="1060" y="122" class="paper mono" font-size="20" text-anchor="middle">review-plan</text>
+
+    <rect x="1200" y="60" width="200" height="110" rx="12" class="deck"/>
+    <rect x="1200" y="60" width="200" height="6" class="accent"/>
+    <text x="1300" y="124" class="display" font-size="28" text-anchor="middle">tasks</text>
+
+    <rect x="1440" y="60" width="200" height="110" rx="12" class="deck"/>
+    <rect x="1440" y="60" width="200" height="6" class="accent"/>
+    <text x="1540" y="124" class="display" font-size="28" text-anchor="middle">implement</text>
+
+    <path d="M204 115 H236 M444 115 H476 M684 115 H716 M924 115 H956 M1164 115 H1196 M1404 115 H1436" class="stroke-accent" stroke-width="4"/>
+
+    <text x="340" y="214" class="accent" text-anchor="middle">commande optionnelle,</text>
+    <text x="340" y="244" class="accent" text-anchor="middle">hors du fichier de workflow</text>
+    <text x="580" y="214" text-anchor="middle" opacity="0.7">point de contrôle</text>
+    <text x="1060" y="214" text-anchor="middle" opacity="0.7">point de contrôle</text>
+    <text x="1540" y="214" text-anchor="middle" opacity="0.7">sans point de contrôle</text>
+  </g>
+</svg>

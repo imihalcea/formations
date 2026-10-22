@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 600" width="1680" height="600">
+  <g class="ink" font-size="24">
+    <rect x="0" y="230" width="300" height="140" rx="12" class="ink"/>
+    <text x="150" y="286" class="paper display" font-size="26" text-anchor="middle">Développement logiciel</text>
+    <text x="150" y="322" class="paper display" font-size="26" text-anchor="middle">assisté par l'IA</text>
+
+    <path d="M300 300 C 360 300, 360 60, 420 60 M300 300 C 360 300, 360 220, 420 220 M300 300 C 360 300, 360 380, 420 380 M300 300 C 360 300, 360 540, 420 540" class="stroke-muted" stroke-width="3"/>
+
+    <g>
+      <text x="440" y="68" class="accent mono" font-size="22" font-weight="600">01</text>
+      <text x="490" y="68" class="display" font-size="26">L'IA appliquée au développement</text>
+      <text x="980" y="68" font-size="22" opacity="0.8">LLM · fenêtre de contexte · agent · prompt · intention</text>
+    </g>
+    <g>
+      <text x="440" y="228" class="accent mono" font-size="22" font-weight="600">02</text>
+      <text x="490" y="228" class="display" font-size="28">Introduction au SDD</text>
+      <text x="980" y="228" font-size="22" opacity="0.8">workflow · spécification · exigence · EARS · Gherkin</text>
+    </g>
+    <g>
+      <text x="440" y="388" class="accent mono" font-size="22" font-weight="600">03</text>
+      <text x="490" y="388" class="display" font-size="28">Constitution et architecture</text>
+      <text x="980" y="388" font-size="22" opacity="0.8">ADR · principe · frontière · architecture hexagonale</text>
+    </g>
+    <g>
+      <text x="440" y="548" class="accent mono" font-size="22" font-weight="600">04</text>
+      <text x="490" y="548" class="display accent" font-size="28">Spécifier</text>
+      <text x="980" y="548" font-size="22" class="accent">borne · fichier de contexte · skill · brouillon · clarification</text>
+    </g>
+    <path d="M440 84 H1660 M440 244 H1660 M440 404 H1660" class="stroke-muted" stroke-width="2"/>
+    <path d="M440 564 H1660" class="stroke-accent" stroke-width="2"/>
+  </g>
+</svg>

@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 520" width="1680" height="520">
+  <g class="ink" font-size="22">
+    <text x="0" y="24" class="accent mono" font-weight="600" letter-spacing="3">DIX CATÉGORIES, UN ÉTAT CHACUNE</text>
+    <g class="mono" font-size="21">
+      <text x="0" y="64">Functional Scope</text><text x="470" y="64" text-anchor="end" opacity="0.5">Clear</text>
+      <text x="0" y="108">Domain &amp; Data Model</text><text x="470" y="108" text-anchor="end" opacity="0.5">Clear</text>
+      <text x="0" y="152">Interaction &amp; UX Flow</text><text x="470" y="152" text-anchor="end" opacity="0.5">Clear</text>
+      <text x="0" y="196">Non-Functional</text><text x="470" y="196" text-anchor="end" opacity="0.5">Clear</text>
+      <text x="0" y="240">Integration</text><text x="470" y="240" text-anchor="end" opacity="0.5">Clear</text>
+      <rect x="-12" y="258" width="494" height="38" rx="8" class="tint"/>
+      <text x="0" y="284" class="accent" font-weight="600">Edge Cases</text><text x="470" y="284" text-anchor="end" class="accent" font-weight="600">Partial</text>
+      <text x="0" y="328">Constraints</text><text x="470" y="328" text-anchor="end" class="accent">Missing</text>
+      <text x="0" y="372">Terminology</text><text x="470" y="372" text-anchor="end" opacity="0.5">Clear</text>
+      <text x="0" y="416">Completion Signals</text><text x="470" y="416" text-anchor="end" opacity="0.5">Clear</text>
+      <text x="0" y="460">Placeholders</text><text x="470" y="460" text-anchor="end" opacity="0.5">Clear</text>
+    </g>
+
+    <path d="M486 276 H560" class="stroke-accent" stroke-width="4"/>
+    <path d="M556 263 L574 276 L556 289 Z" class="accent"/>
+
+    <text x="580" y="24" class="accent mono" font-weight="600" letter-spacing="3">UNE QUESTION À LA FOIS</text>
+    <rect x="580" y="40" width="500" height="470" rx="12" class="deck"/>
+    <rect x="580" y="40" width="500" height="6" class="accent"/>
+    <text x="608" y="96" font-weight="600">Question :</text>
+    <text x="608" y="132">2 heures de préavis pile,</text>
+    <text x="608" y="166">acceptée ou refusée ? (REG-03)</text>
+    <text x="608" y="226" class="accent" font-weight="600">Recommended: Option A</text>
+    <g class="mono" font-size="20">
+      <text x="608" y="276">A   acceptée, borne incluse</text>
+      <text x="608" y="312">B   refusée, borne exclue</text>
+      <text x="608" y="348">Short   autre réponse, 5 mots</text>
+    </g>
+    <path d="M608 380 H1052" class="stroke-muted" stroke-width="2"/>
+    <text x="608" y="430" font-weight="600">Réponse retenue :</text>
+    <text x="608" y="466">A, acceptée, borne incluse</text>
+    <text x="608" y="490" opacity="0.6">(illustration)</text>
+
+    <path d="M1086 276 H1160" class="stroke-accent" stroke-width="4"/>
+    <path d="M1156 263 L1174 276 L1156 289 Z" class="accent"/>
+
+    <text x="1180" y="24" class="accent mono" font-weight="600" letter-spacing="3">SPEC.MD, DEUX ENDROITS</text>
+    <rect x="1180" y="40" width="500" height="215" rx="12" class="paper"/>
+    <rect x="1180" y="40" width="500" height="215" rx="12" class="stroke-accent" stroke-width="3"/>
+    <g class="mono" font-size="20">
+      <text x="1206" y="86">## Clarifications</text>
+      <text x="1206" y="108">### Session 2026-06-02</text>
+      <text x="1206" y="170">- Q: 2 heures pile ?</text>
+      <text x="1206" y="206">  → A: acceptée, borne incluse</text>
+    </g>
+    <text x="1206" y="236" opacity="0.6">la réponse consignée, sauvegardée aussitôt</text>
+
+    <rect x="1180" y="285" width="500" height="225" rx="12" class="paper"/>
+    <rect x="1180" y="285" width="500" height="225" rx="12" class="stroke-accent" stroke-width="3"/>
+    <g class="mono" font-size="20">
+      <text x="1206" y="330">## Requirements</text>
+      <text x="1206" y="374">**REG-03** : Quand … moins de</text>
+      <text x="1206" y="408">2 heures …, code `lead_time` ;</text>
+      <text x="1206" y="442" class="accent">2 heures pile est acceptée.</text>
+    </g>
+    <text x="1206" y="488" opacity="0.6">la section concernée, répercutée</text>
+  </g>
+</svg>

@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 520" width="1680" height="520">
+  <text x="0" y="24" class="accent mono" font-size="22" font-weight="600" letter-spacing="3">AU LANCEMENT</text>
+  <rect x="0" y="50" width="1300" height="110" rx="12" class="deck"/>
+  <rect x="0" y="50" width="1300" height="110" rx="12" class="stroke-muted" stroke-width="3" stroke-dasharray="12 10"/>
+  <rect x="0" y="50" width="220" height="110" rx="12" class="accent"/>
+  <rect x="210" y="50" width="10" height="110" class="accent"/>
+  <rect x="226" y="50" width="200" height="110" class="ink" opacity="0.85"/>
+  <text x="326" y="114" class="paper mono" font-size="22" text-anchor="middle">AGENTS.md</text>
+  <rect x="432" y="50" width="200" height="110" class="ink" opacity="0.45"/>
+  <text x="532" y="100" class="paper" font-size="20" text-anchor="middle">descriptions</text>
+  <text x="532" y="128" class="paper mono" font-size="20" text-anchor="middle">ears, gherkin</text>
+  <rect x="638" y="50" width="220" height="110" class="ink" opacity="0.55"/>
+  <text x="1080" y="114" class="ink" font-size="26" opacity="0.6" text-anchor="middle">espace libre</text>
+  <g font-size="22" class="ink">
+    <text x="0" y="198">Instructions fixes</text>
+    <text x="226" y="198">Fichier de contexte</text>
+    <text x="432" y="198">Skills : descriptions</text>
+    <text x="700" y="198">Prompt</text>
+  </g>
+
+  <text x="0" y="244" class="accent mono" font-size="22" font-weight="600" letter-spacing="3">AU MOMENT D'ÉCRIRE UNE EXIGENCE</text>
+  <rect x="0" y="270" width="1300" height="110" rx="12" class="deck"/>
+  <rect x="0" y="270" width="1300" height="110" rx="12" class="stroke-muted" stroke-width="3" stroke-dasharray="12 10"/>
+  <rect x="0" y="270" width="220" height="110" rx="12" class="accent"/>
+  <rect x="210" y="270" width="10" height="110" class="accent"/>
+  <rect x="226" y="270" width="200" height="110" class="ink" opacity="0.85"/>
+  <text x="326" y="334" class="paper mono" font-size="22" text-anchor="middle">AGENTS.md</text>
+  <rect x="432" y="270" width="200" height="110" class="ink" opacity="0.45"/>
+  <text x="532" y="320" class="paper" font-size="20" text-anchor="middle">descriptions</text>
+  <text x="532" y="348" class="paper mono" font-size="20" text-anchor="middle">ears, gherkin</text>
+  <rect x="638" y="270" width="220" height="110" class="ink" opacity="0.55"/>
+  <rect x="864" y="270" width="300" height="110" class="accent" opacity="0.75"/>
+  <text x="1014" y="320" class="paper" font-size="20" text-anchor="middle">corps de</text>
+  <text x="1014" y="348" class="paper mono" font-size="20" text-anchor="middle">ears/SKILL.md</text>
+  <text x="1232" y="334" class="ink" font-size="22" opacity="0.6" text-anchor="middle">libre</text>
+  <g font-size="22" class="ink">
+    <text x="0" y="418">Instructions fixes</text>
+    <text x="226" y="418">Fichier de contexte</text>
+    <text x="432" y="418">Skills : descriptions</text>
+    <text x="700" y="418">Prompt</text>
+    <text x="864" y="418" class="accent">Skill appelé, corps chargé</text>
+  </g>
+
+  <rect x="1380" y="180" width="300" height="90" rx="12" class="paper"/>
+  <rect x="1380" y="180" width="300" height="90" rx="12" class="stroke-accent" stroke-width="3"/>
+  <text x="1530" y="216" class="accent mono" font-size="20" text-anchor="middle">.claude/skills/ears/</text>
+  <text x="1530" y="246" class="accent mono" font-size="20" text-anchor="middle">SKILL.md</text>
+  <path d="M1380 240 L1170 318" class="stroke-accent" stroke-width="3"/>
+  <path d="M1164 320 L1192 304 L1186 328 Z" class="accent"/>
+
+  <rect x="1380" y="400" width="300" height="110" rx="12" class="paper"/>
+  <rect x="1380" y="400" width="300" height="110" rx="12" class="stroke-muted" stroke-width="3"/>
+  <text x="1530" y="432" class="ink mono" font-size="20" text-anchor="middle" opacity="0.5">.claude/skills/gherkin/</text>
+  <text x="1530" y="460" class="ink mono" font-size="20" text-anchor="middle" opacity="0.5">SKILL.md</text>
+  <text x="1530" y="492" class="ink" font-size="20" text-anchor="middle" opacity="0.6">hors de la fenêtre</text>
+</svg>

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 400" width="1680" height="400">
+  <g class="ink" font-size="22">
+    <text x="60" y="40" class="display" font-size="28">salle A, mardi 2 juin 2026, instant courant 9h00 (illustration)</text>
+
+    <path d="M120 300 H1580" class="stroke-ink" stroke-width="3"/>
+    <path d="M1566 288 L1584 300 L1566 312 Z" class="ink"/>
+    <g text-anchor="middle" opacity="0.7">
+      <path d="M120 290 V310 M360 290 V310 M600 290 V310 M840 290 V310 M1080 290 V310 M1320 290 V310 M1560 290 V310" class="stroke-ink" stroke-width="2"/>
+      <text x="120" y="342">8h00</text><text x="360" y="342">10h00</text><text x="600" y="342">12h00</text>
+      <text x="840" y="342">14h00</text><text x="1080" y="342">16h00</text><text x="1320" y="342">18h00</text><text x="1560" y="342">20h00</text>
+    </g>
+
+    <path d="M240 200 V300" class="stroke-accent" stroke-width="5"/>
+    <circle cx="240" cy="300" r="10" class="accent"/>
+    <text x="240" y="186" class="accent" text-anchor="middle">instant courant : 9h00</text>
+
+    <rect x="840" y="220" width="120" height="70" rx="6" class="accent"/>
+    <text x="900" y="264" class="paper" font-size="20" text-anchor="middle">14h à 15h</text>
+    <text x="826" y="262" text-anchor="end">réservation confirmée</text>
+
+    <rect x="962" y="220" width="118" height="70" rx="6" class="stroke-ink" stroke-width="4" stroke-dasharray="12 8"/>
+    <text x="1021" y="264" font-size="20" text-anchor="middle">15h à 16h</text>
+    <text x="1096" y="262">demande jointive : acceptée</text>
+
+    <rect x="900" y="110" width="120" height="70" rx="6" class="stroke-accent" stroke-width="4" stroke-dasharray="12 8"/>
+    <text x="960" y="98" font-size="20" text-anchor="middle">14h30 à 15h30</text>
+    <text x="1036" y="152" class="accent">demande chevauchante : refusée, code <tspan class="mono">overlap</tspan></text>
+    <path d="M960 180 V220" class="stroke-accent" stroke-width="2" stroke-dasharray="6 6"/>
+  </g>
+</svg>
