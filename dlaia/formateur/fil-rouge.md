@@ -13,7 +13,7 @@ bookit réserve des ressources (salle, équipement, personne). L'API reçoit une
 | infrastructure, `bookit/infrastructure/` | `api.py` (FastAPI, `POST /resources/{name}/bookings`, 201 ou 422 avec `{"detail": {"code": …}}`), `sqlite_repository.py`, `system_clock.py` | adaptateurs |
 | tests, `tests/` | `conftest.py` (base SQLite temporaire par `BOOKIT_DB`), `test_fumee.py` | un test : l'API enregistre une réservation le lundi suivant de 10h à 11h |
 
-`validate_booking(booking, resource, now) -> InvalidBooking | None` est la seule fonction que les TP font écrire. Dans le squelette elle rend `None` : l'API accepte tout, deux `POST` identiques répondent 201. Un refus est une valeur de retour `InvalidBooking(code)`, jamais une exception (ADR 1) ; le domaine ne lit pas l'horloge système (ADR 2) ; les dépendances pointent vers le domaine (ADR 3, « Architecture hexagonale », illustré au module 2). Les trois ADR sont dans `tp/fichiers/adr/`.
+`validate_booking(booking, resource, now) -> InvalidBooking | None` est la seule fonction que les TP font écrire. Dans le squelette elle rend `None` : l'API accepte tout, deux `POST` identiques répondent 201. Cinq ADR structurants, dans `tp/fichiers/adr/` : l'architecture hexagonale (ADR 1 ; ses conséquences : les dépendances pointent vers le domaine, l'horloge est un paramètre, un refus est une valeur de retour `InvalidBooking(code)`, jamais une exception) ; l'API HTTP avec FastAPI, qui traduit un refus en 422 avec le code de la règle (ADR 2, illustré au module 2) ; le stockage SQLite derrière le port `BookingRepository` (ADR 3) ; le déploiement en conteneur (ADR 4) et l'authentification déléguée à un fournisseur d'identité par OpenID Connect (ADR 5), tous deux décidés et à construire après `validate_booking`. Les principes I à IV de la constitution citent les ADR 1 et 2 ; les ADR 3 à 5 entrent dans ses contraintes techniques.
 
 Règles métier fournies (`tp/fichiers/regles-metier.md`), un code d'erreur par règle :
 
@@ -93,8 +93,8 @@ Travail :
 
 1. `uv sync`, `uv run pytest -q` (1 test), `git init`, commit du squelette. API lancée par `uv run uvicorn bookit.infrastructure.api:app`, deux `curl` identiques répondent 201 puis 201 : aucune règle.
 2. `specify init --here --force --integration claude|opencode --script sh`, `~/fichiers/adr/` copié dans `docs/adr/`, `~/fichiers/constitution-base.md` copié dans `docs/constitution-base.md`, commit.
-3. `/speckit-constitution` (ou `/speckit.constitution`) avec un prompt qui part de `docs/constitution-base.md`, cite un ADR par principe et interdit d'ajouter des principes ; Sync Impact Report retiré ; commit de la version 1.0.0.
-4. Relecture à trois questions par principe (vérifiable sur un diff ? ADR cité ? aucune règle métier ?) ; les trois phrases pièges de la base sont corrigées à la main ; commit de la version 1.0.1.
+3. `/speckit-constitution` (ou `/speckit.constitution`) avec un prompt qui part de `docs/constitution-base.md`, garde la mention `(ADR n)` des principes de structure et interdit d'ajouter des principes ; Sync Impact Report retiré ; commit de la version 1.0.0.
+4. Relecture à trois questions par principe (vérifiable sur un diff ? un principe de structure cite-t-il son ADR ? aucune règle métier ?) ; les trois phrases pièges de la base sont corrigées à la main ; commit de la version 1.0.1.
 5. `git apply ~/fichiers/violation.diff`, jugement ligne par ligne contre la constitution, `git checkout -- .` ; aucun commit.
 
 Commits : `TP 3 : squelette bookit`, `TP 3 : Spec Kit et ADR`, `TP 3 : constitution 1.0.0`, `TP 3 : constitution 1.0.1`.
@@ -191,7 +191,7 @@ Fichiers fournis, par TP :
 | Fichier de `tp/fichiers/` | TP | Destination |
 |---|---|---|
 | `regles-metier.md` | 1, 4 | `~/echauffement/docs/`, puis `docs/` |
-| `adr/` (3 ADR) | 3 | `docs/adr/` |
+| `adr/` (5 ADR) | 3 | `docs/adr/` |
 | `constitution-base.md` | 3 | `docs/constitution-base.md` |
 | `violation.diff` | 3 | appliqué puis annulé |
 | `skills/ears/`, `skills/gherkin/` | 4 | `.claude/skills/` |
