@@ -103,17 +103,21 @@ Les définitions ci-dessous sont provisoires jusqu'au plan du module concerné, 
 
 | Terme | Définition | Introduit | À ne pas employer |
 |---|---|---|---|
+| borne | valeur limite d'une règle (30 minutes, 4 heures, 2 heures, 60 jours, 20h00), incluse ou exclue ; une exigence la tranche, un scénario Gherkin la teste de chaque côté | 04 | limite, seuil, valeur extrême |
 | fichier de contexte | `AGENTS.md`, lu par l'agent au lancement de chaque session | 04 | fichier de règles, mémoire, fichier d'instructions, CLAUDE.md (absent du fil rouge) |
-| skill | dossier `.claude/skills/<nom>/SKILL.md` : savoir-faire chargé à la demande, lu par les deux outils | 04 | compétence, extension, plugin, command |
+| skill | dossier `.claude/skills/<nom>/SKILL.md` : savoir-faire chargé sur demande, lu par les deux outils | 04 | compétence, extension, plugin, command |
+| brief | besoin écrit en langage courant, entrée de `specify` ; fichier `docs/brief.md` dans bookit | 04 | description de la fonctionnalité, demande, prompt de spécification, user story (pour le brief) |
 | brouillon | spécification produite par `/speckit-specify`, avant `clarify` | 04 | première version, draft, ébauche |
+| liste de contrôle | fichier `checklists/requirements.md` écrit par `specify` : questions de qualité sur les exigences (« checklist » dans Spec Kit) | 04 | checklist hors identifiant, check-list, liste de vérification |
 | clarification | question posée par `/speckit-clarify` et réponse consignée dans la spécification | 04 | ambiguïté levée, question ouverte, précision |
+| responsable produit | personne qui répond pour le métier aux questions de `clarify` ; ses réponses sont versionnées dans `docs/clarifications.md` | 04 | le produit (pour la personne), product owner, PO, client, métier seul |
+| réconciliation | relecture à la main qui aligne le brouillon clarifié sur `docs/regles-metier.md` et `docs/clarifications.md`, jusqu'à sept exigences sans marqueur | 04 | alignement, finalisation, nettoyage |
 
 ## Personnaliser, planifier, découper (module 5)
 
 | Terme | Définition | Introduit | À ne pas employer |
 |---|---|---|---|
-| template | gabarit Markdown d'un artefact Spec Kit (`spec`, `plan`, `tasks`, `constitution`) ; nommé « fichier à trous » au module 2, avant que le mot soit défini | 05 | modèle (pour template), gabarit, squelette, fichier à trous (à partir du module 5) |
-| surcharge | fichier de `.specify/templates/overrides/` qui remplace un template du cœur | 05 | override, personnalisation, patch |
+| template | gabarit Markdown d'un artefact Spec Kit (`spec`, `plan`, `tasks`, `constitution`), fichier versionné de `.specify/templates/` modifié en place par les TP 4 et 5 ; nommé « fichier à trous » au module 2, avant que le mot soit défini | 05 | modèle (pour template), gabarit, squelette, fichier à trous (à partir du module 5), surcharge, override (le fil rouge ne se sert pas de `overrides/`) |
 | analyse | passe `/speckit-analyze` de cohérence entre spécification, plan et tâches | 05 | audit, revue, vérification (pour analyze) |
 
 ## Implémenter et vérifier (module 6)
