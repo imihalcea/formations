@@ -305,13 +305,15 @@ Dans le squelette, les ports sont dans le domaine et les adaptateurs dans l'infr
 Mots à ne pas employer : adapter, implémentation, driver ; interface seule, protocole, contrat.
 :::
 
-## Trois styles parmi d'autres {kicker="Structure et frontières"}
+## Hexagonale, le style de bookit {kicker="Structure et frontières"}
 
-| Style | Forme | Règle de frontière | Ce qu'un diff ne doit pas montrer |
-|---|---|---|---|
-| architecture hexagonale (Cockburn, 2005) | intérieur et extérieur | l'intérieur ignore l'extérieur | un import d'adaptateur dans le domaine |
-| clean architecture (Martin, 2012) | cercles concentriques | les dépendances pointent vers l'intérieur | un import d'un cercle extérieur dans un cercle intérieur |
-| microservices (Lewis et Fowler, 2014) | services en processus séparés | chaque service possède sa base | une requête sur la base d'un autre service |
+| Architecture hexagonale (Cockburn, 2005) | |
+|---|---|
+| forme | intérieur et extérieur |
+| règle de frontière | l'intérieur ignore l'extérieur |
+| ce qu'un diff ne doit pas montrer | un import d'adaptateur dans le domaine |
+
+Autres styles : clean architecture (Martin, 2012), microservices (Lewis et Fowler, 2014).
 
 ::: sources
 - [Alistair Cockburn, The Hexagonal (Ports & Adapters) Architecture, 4 septembre 2005](https://alistair.cockburn.us/hexagonal-architecture/)
@@ -320,9 +322,11 @@ Mots à ne pas employer : adapter, implémentation, driver ; interface seule, pr
 :::
 
 ::: notes
-Trois styles parmi d'autres ; le tableau n'est pas une liste exhaustive. Définitions du lexique : clean architecture, cercles concentriques, les dépendances pointent vers l'intérieur ; microservices, services en processus séparés, chacun propriétaire de sa base, échanges par le réseau. Mots à ne pas employer : architecture propre, onion ; micro-services.
-Martin nomme quatre cercles : Entities, Use Cases, Interface Adapters, Frameworks and Drivers ; « Nothing in an inner circle can know anything at all about something in an outer circle ». Lewis et Fowler : « suite of small services, each running in its own process and communicating with lightweight mechanisms » ; section Decentralized Data Management, « Microservices prefer letting each service manage its own database ». Pour les microservices, la frontière porte sur un service, pas sur une couche : d'où l'élargissement de la définition de frontière (« quelle couche, ou quel service »).
-La quatrième colonne est ce qu'une constitution écrit : une phrase par style, vérifiable sur un diff. bookit est hexagonal ; les deux autres lignes servent à transposer la méthode à un autre projet.
+bookit est hexagonal (ADR 1) : la slide donne sa règle de frontière et la ligne qu'un diff ne doit pas montrer. Les deux autres styles sont cités pour situer le choix ; il en existe d'autres.
+Clean architecture (Martin, 2012) : cercles concentriques, les dépendances pointent vers l'intérieur ; ce qu'un diff ne doit pas montrer : un import d'un cercle extérieur dans un cercle intérieur. Martin nomme quatre cercles : Entities, Use Cases, Interface Adapters, Frameworks and Drivers ; « Nothing in an inner circle can know anything at all about something in an outer circle ».
+Microservices (Lewis et Fowler, 2014) : services en processus séparés, chaque service possède sa base ; ce qu'un diff ne doit pas montrer : une requête sur la base d'un autre service. Lewis et Fowler : « suite of small services, each running in its own process and communicating with lightweight mechanisms » ; section Decentralized Data Management, « Microservices prefer letting each service manage its own database ». La frontière porte sur un service, pas sur une couche : d'où l'élargissement de la définition de frontière (« quelle couche, ou quel service »).
+Définitions du lexique : clean architecture, cercles concentriques, les dépendances pointent vers l'intérieur ; microservices, services en processus séparés, chacun propriétaire de sa base, échanges par le réseau. Mots à ne pas employer : architecture propre, onion ; micro-services.
+Une constitution écrit la ligne de la troisième rangée, une phrase par style, vérifiable sur un diff. Pour un autre projet, la méthode se transpose avec la règle de frontière du style retenu.
 :::
 
 ## Quel que soit le style, la frontière s'écrit comme un import interdit. {.statement kicker="Structure et frontières"}
