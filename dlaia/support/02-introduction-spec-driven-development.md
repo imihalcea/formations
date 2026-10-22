@@ -182,7 +182,7 @@ Spec Kit impose ce partage : « Focus on WHAT users need and WHY. Avoid HOW to i
 ::: notes
 `specify.md`, « Quick Guidelines » : « Focus on WHAT users need and WHY. » puis « Avoid HOW to implement (no tech stack, APIs, code structure). » ; critères de succès « Technology-agnostic: No mention of frameworks, languages, databases, or tools ».
 `spec-driven.md` : « From the PRD, AI generates implementation plans that map requirements to technical decisions » ; « Every technology choice has documented rationale ».
-Test rapide pour classer une phrase : si elle change quand on change de langage ou de base, c'est du COMMENT. « Valeur de retour » contre « exception » est un choix technique : il va dans le plan, et dans un ADR, l'ADR 1 de bookit au TP 3, parce qu'il engage tout le projet.
+Test rapide pour classer une phrase : si elle change quand on change de langage ou de base, c'est du COMMENT. « Valeur de retour » contre « exception » est un choix technique, du COMMENT ; dans bookit, il est une conséquence des ADR 1 et 2 (architecture hexagonale, API HTTP), fournis au TP 3, parce que la décision d'architecture dont il découle engage tout le projet.
 Les quatre lignes de gauche viennent des règles métier et du prompt v2 du TP 1 ; celles de droite anticipent le squelette hexagonal présenté au module 3.
 :::
 
@@ -214,19 +214,19 @@ Les TP 3 à 6 emploient les quatre : ADR au TP 3, EARS et Gherkin au TP 4 par le
 
 ## L'ADR trace une décision {kicker="Quatre formats"}
 
-```markdown file="../tp/fichiers/adr/0003-architecture-hexagonale.md"
+```markdown file="../tp/fichiers/adr/0002-api-http-fastapi.md"
 ```
 
-Un ADR tient en cinq parties : titre, contexte (les forces en présence), décision, statut, conséquences. Le troisième ADR de bookit.
+Nygard, 2011 : un fichier par décision, un numéro jamais réutilisé. Le deuxième ADR de bookit.
 
 ::: sources
 - [Michael Nygard, Documenting Architecture Decisions, 15 novembre 2011](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions)
 :::
 
 ::: notes
-Nygard, 15 novembre 2011 : Title (« short noun phrases »), Context (« the forces at play, including technological, political, social, and project local »), Decision (« our response to these forces », « stated in full sentences, with active voice »), Status (« proposed », « accepted »), Consequences (« the resulting context, after applying the decision »).
+Nygard, 15 novembre 2011 : Title (« short noun phrases »), Context (« the forces at play, including technological, political, social, and project local »), Decision (« our response to these forces », « stated in full sentences, with active voice »), Status, quatre valeurs : « proposed », « accepted », puis « deprecated » ou « superseded » quand un ADR ultérieur change ou annule la décision ; Consequences (« the resulting context, after applying the decision »).
 Règles de tenue : une décision annulée reste dans le dépôt, marquée « superseded » (« we will keep the old one around, but mark it as superseded ») ; « Numbers will not be reused ». Nygard range les ADR dans `doc/arch/adr-NNN.md`, un fichier par décision, numéroté ; bookit retient `docs/adr/` (convention du fil rouge, `formateur/fil-rouge.md`).
-ADR cité par `file=` depuis `tp/fichiers/adr/0003-architecture-hexagonale.md`, fichier fourni au TP 3 avec les ADR 1 et 2 (module 3).
+ADR cité par `file=` depuis `tp/fichiers/adr/0002-api-http-fastapi.md`, fichier fourni au TP 3 avec les ADR 1 et 3 à 5 (module 3, slide « Cinq décisions structurantes »). L'ADR 2 plutôt que le 1 : son vocabulaire (API, 422, code, `InvalidBooking`, exception contre valeur de retour) est celui de la slide « Le QUOI et le COMMENT » ; l'ADR 1 emploie couche, port et adaptateur, définis au module 3.
 Pourquoi un ADR et pas une ligne de plan : la décision vaut pour tout le projet, pas pour une spécification ; elle survit aux plans.
 :::
 
@@ -369,7 +369,7 @@ La constitution est le fichier `.specify/memory/constitution.md` : les principes
 `head -8 .specify/memory/constitution.md` relevé le 20 octobre 2026 : copie exacte de `templates/constitution-template.md` (vérifié par `diff`, `formateur/spec-kit.md` § 5), commentaires HTML retirés à l'écran. Suite du fichier : cinq `### [PRINCIPLE_N_NAME]`, deux sections libres, `## Governance`, ligne `**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]`.
 Le chemin `.specify/memory/constitution.md` est fixé par le prompt de la commande (`templates/commands/constitution.md` : « You are updating the project constitution at `.specify/memory/constitution.md` »). La commande `constitution` remplit les trous, numérote en semver et écrit un « Sync Impact Report » en commentaire HTML à retirer avant commit ; TP 3.
 Le module 3 dit ce qu'est un principe efficace : vérifiable sur un diff. Ici, seule la place du fichier et son état à trous comptent.
-Le principe d'illustration reprend l'ADR 1 : la constitution porte la règle, l'ADR porte son pourquoi.
+Le principe d'illustration reprend le principe I de bookit, motivé par les ADR 1 (architecture hexagonale) et 2 (API HTTP, montré sur la slide « L'ADR trace une décision ») : la constitution porte la règle, l'ADR porte son pourquoi.
 :::
 
 ## Une commande par étape {kicker="Spec Kit"}

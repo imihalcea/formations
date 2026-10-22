@@ -4,7 +4,7 @@
     <rect x="0" y="50" width="1000" height="400" rx="16" class="tint"/>
 
     <g class="mono" font-size="26">
-      <text x="40" y="104">docs/adr/0001-refus-en-valeur.md</text>
+      <text x="40" y="104">docs/adr/0002-api-http-fastapi.md</text>
       <text x="40" y="158">specs/001-valider-reservation/</text>
       <text x="80" y="204">spec.md</text>
       <text x="120" y="250">## Requirements</text>
