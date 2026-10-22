@@ -211,7 +211,7 @@ specify artifact info template:plan-template --json   # pile de composition d'un
 .specify/scripts/bash/resolve-template.sh plan-template   # contenu résolu
 ```
 
-Pour le TP 5 (surcharge de template), le chemin à faire créer est `.specify/templates/overrides/plan-template.md` ou `tasks-template.md` : pris en compte par `setup-plan.sh` et `setup-tasks.sh` sans réinstallation. `setup-plan.sh` ne copie le template que si `plan.md` n'existe pas encore : pour voir l'effet d'une surcharge sur un plan déjà créé, supprimer `plan.md` d'abord.
+Les TP 4 et 5 modifient le cœur en place (`.specify/templates/spec-template.md`, `.specify/templates/tasks-template.md`), lu tel quel par `specify` et par `setup-tasks.sh` quand aucune surcharge, preset ni extension n'est installé ; `overrides/` et les presets restent hors du périmètre de la formation (décision du 22 octobre 2026). `setup-plan.sh` ne copie le template que si `plan.md` n'existe pas encore : pour voir l'effet d'une surcharge sur un plan déjà créé, supprimer `plan.md` d'abord.
 
 Le dossier `overrides/` n'existe pas à l'initialisation. La commande `specify preset resolve` lit la même pile.
 
@@ -233,7 +233,7 @@ Chaque gate est de la forme :
   on_reject: abort
 ```
 
-Deux entrées : `spec` (obligatoire, la description de la feature) et `integration` (`auto` par défaut, l'intégration du projet). Lancement par `specify workflow run speckit`, reprise par `specify workflow resume <run_id>`. Le moteur lance l'outil en ligne de commande hors session interactive : pour Open Code, l'intégration construit `opencode run --command speckit.specify --format json "<spec>"` (`build_exec_args` de `integrations/opencode/__init__.py`). Cette option appartient à Open Code v1 ; Open Code v2.0.32 répond « Unrecognized flag: --command » et `opencode run "/speckit.specify …"` envoie le texte brut au modèle (relevé du 20 octobre 2026). `specify workflow run` est donc inutilisable avec Open Code v2. Il n'y a pas de gate entre `tasks` et `implement`, ni d'appel à `clarify` ou `analyze`, décrites par `specify init` comme optionnelles.
+Deux entrées : `spec` (obligatoire, la description de la feature) et `integration` (`auto` par défaut, l'intégration du projet). Lancement par `specify workflow run speckit`, reprise par `specify workflow resume <run_id>`. Le moteur lance l'outil en ligne de commande hors session interactive : pour Open Code, l'intégration construit `opencode run --command speckit.specify --format json "<spec>"` (`build_exec_args` de `integrations/opencode/__init__.py`). Cette option appartient à Open Code v1 ; Open Code v2.0.32 répond « Unrecognized flag: --command » et `opencode run "/speckit.specify …"` envoie le texte brut au modèle (relevé du 20 octobre 2026, confirmé le 22 octobre pour `/speckit.specify` et `/speckit.clarify` : l'agent retrouve et lit le fichier de commande lui-même, et `clarify` hors TUI pose par l'outil `question`, annulé en non interactif). `specify workflow run` est donc inutilisable avec Open Code v2. Il n'y a pas de gate entre `tasks` et `implement`, ni d'appel à `clarify` ou `analyze`, décrites par `specify init` comme optionnelles.
 
 Pour la formation, le workflow illustre la notion de gate (module 2, rôle humain à chaque transition) ; les TP restent sur les commandes invoquées une à une dans l'outil, où chaque transition est une décision du stagiaire.
 

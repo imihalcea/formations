@@ -27,7 +27,7 @@ Règles métier fournies (`tp/fichiers/regles-metier.md`), un code d'erreur par 
 
 Deux exigences s'ajoutent au TP 4, sans code propre : REG-06, un seul code rendu, celui de la première règle enfreinte dans l'ordre REG-01 à REG-05 (réponse du produit à `clarify`) ; REG-07, la décision dépend du seul instant courant fourni en entrée (exigence de reproductibilité du brief). Les autres réponses du produit (`tp/fichiers/clarifications.md`) : les jours fériés restent ouvrés, un seul fuseau horaire local implicite, quota, annulation, pools de ressources et approbation hors périmètre, API et stockage inchangés.
 
-Les scénarios Gherkin fournis (`tp/fichiers/valider-reservation.feature`, 24 exemples, à confirmer) fixent l'instant courant au mardi 2 juin 2026 à 9h00 et testent chaque borne des deux côtés. L'exemple du dimanche (REG-02) en est absent à dessein : la passe de mutation du TP 6 (partie B) laisse survivre `weekday() >= 5` muté en `== 5`, le stagiaire ajoute l'exemple dans la spécification et le `.feature`, puis rejoue la passe. Convention fixée au module 2 : mots-clés français dans les skills `ears` et `gherkin`, la surcharge `spec-template.md`, le `.feature` (`# language: fr`, `Fonctionnalité`, `Scénario`, `Soit`, `Quand`, `Alors`) et les tests pytest-bdd ; la prise en charge de `# language: fr` par pytest-bdd est à vérifier par `verificateur-sources` au module 6.
+Les scénarios Gherkin fournis (`tp/fichiers/valider-reservation.feature`, 24 exemples, à confirmer) fixent l'instant courant au mardi 2 juin 2026 à 9h00 et testent chaque borne des deux côtés. L'exemple du dimanche (REG-02) en est absent à dessein : la passe de mutation du TP 6 (partie B) laisse survivre `weekday() >= 5` muté en `== 5`, le stagiaire ajoute l'exemple dans la spécification et le `.feature`, puis rejoue la passe. Convention fixée au module 2 : mots-clés français dans les skills `ears` et `gherkin`, le fichier `spec-template.md` modifié en place, le `.feature` (`# language: fr`, `Fonctionnalité`, `Scénario`, `Soit`, `Quand`, `Alors`) et les tests pytest-bdd ; la prise en charge de `# language: fr` par pytest-bdd est à vérifier par `verificateur-sources` au module 6.
 
 Dates du `curl`. `test_fumee.py` réserve le lundi suivant de 10h à 11h, ce qui respecte les cinq règles quel que soit le jour de la formation : le test reste vert une fois les règles écrites. Le `curl` des énoncés calcule sa date de même, `$(date -d 'next monday' +%F)T10:00:00`, pour tenir dans le préavis et l'horizon. Au TP 3, deux envois identiques répondent 201 (aucune règle). Au TP 6 (partie A), l'énoncé envoie deux fois la même demande : le second envoi répond 422 `overlap` dans tous les cas ; le premier aussi quand `bookit.db` porte encore la réservation du TP 3 et que le lundi suivant n'a pas changé entre les deux journées.
 
@@ -68,8 +68,8 @@ Une seule copie de `~/bookit/` du TP 1 au TP 6, aucun état intermédiaire fourn
 |---|---|---|---|
 | TP 1 | rien ; `~/echauffement/` et `~/hello-spec/` jetables | 0 (pas de dépôt) | |
 | TP 3 | `.git`, `.venv` (ignoré), `.specify/`, commandes de l'outil, `docs/adr/`, `docs/constitution-base.md`, `.specify/memory/constitution.md` 1.0.1 | 4 | 1 |
-| TP 4 | `AGENTS.md`, `.claude/skills/{ears,gherkin}/`, `docs/{brief,regles-metier,clarifications}.md`, `.specify/templates/overrides/spec-template.md`, `specs/001-valider-reservation/spec.md` (REG-01 à REG-07) et `checklists/requirements.md` | 9 | 1 |
-| TP 5 | `specs/001-valider-reservation/valider-reservation.feature`, `spec.md` réaligné, `plan.md`, `research.md`, `data-model.md`, `quickstart.md`, `.specify/templates/overrides/tasks-template.md`, `tasks.md` | 14 | 1 |
+| TP 4 | `AGENTS.md`, `.claude/skills/{ears,gherkin}/`, `docs/{brief,regles-metier,clarifications}.md`, `.specify/templates/spec-template.md` (modifié en place), `specs/001-valider-reservation/spec.md` (REG-01 à REG-07) et `checklists/requirements.md` | 9 | 1 |
+| TP 5 | `specs/001-valider-reservation/valider-reservation.feature`, `spec.md` réaligné, `plan.md`, `research.md`, `data-model.md`, `quickstart.md`, `.specify/templates/tasks-template.md` (modifié en place), `tasks.md` | 14 | 1 |
 | TP 6, partie A | `tests/test_valider_reservation.py`, `bookit/domain/validate_booking.py`, `tasks.md` coché | 19 | 25 (à confirmer) |
 | TP 6, partie B | `cosmic-ray.toml`, `pyproject.toml` et `uv.lock` (cosmic-ray), `specs/001-valider-reservation/mutation.md`, exemple du dimanche dans `spec.md`, le `.feature` et les tests | 21 | 26 (à confirmer) |
 
@@ -110,18 +110,20 @@ Départ : arrivée du TP 3.
 Travail :
 
 1. `~/fichiers/skills/ears/` et `~/fichiers/skills/gherkin/` copiés dans `.claude/skills/`, `~/fichiers/AGENTS.md` copié à la racine, ses deux `<TODO>` remplis ; commit.
-2. `~/fichiers/brief.md` et `~/fichiers/regles-metier.md` copiés dans `docs/`, `~/fichiers/spec-template.md` copié dans `.specify/templates/overrides/spec-template.md` (exigences REG-NN en EARS, bloc Gherkin par parcours) ; commit.
-3. `/speckit-specify` sur le brief, jusqu'à trois questions en bloc ; commit du brouillon.
+2. `~/fichiers/brief.md` et `~/fichiers/regles-metier.md` copiés dans `docs/`, `~/fichiers/spec-template.md` copié sur `.specify/templates/spec-template.md`, en place (exigences REG-NN en EARS, bloc Gherkin par parcours), le diff relu ; commit.
+3. `/speckit-specify` avec un prompt qui lit `docs/brief.md` et `docs/regles-metier.md`, nomme les skills et demande de marquer plutôt que de poser des questions ; commit du brouillon.
 4. `~/fichiers/clarifications.md` copié dans `docs/`, `/speckit-clarify`, jusqu'à cinq questions une à la fois, réponses prises dans `docs/clarifications.md` ; commit.
-5. Prompt de réconciliation : sept exigences REG-01 à REG-07, un scénario Gherkin par exigence ; relecture à la main ; commit.
+5. Prompt de réconciliation : sept exigences REG-01 à REG-07, une demande conforme, un scénario de chaque côté de chaque borne, un scénario pour REG-06 et un pour REG-07 (19 dans le corrigé) ; relecture à la main ; commit. La borne de REG-04 (60 jours pile) tombe un samedi depuis l'instant courant fixé : le corrigé l'encadre à 59 et 62 jours.
 
-Commits : `TP 4 : skills et AGENTS.md`, `TP 4 : brief et template de spécification`, `TP 4 : brouillon de spécification`, `TP 4 : spécification clarifiée`, `TP 4 : spécification relue`.
+Commits : `TP 4 : skills et AGENTS.md`, `TP 4 : brief et fichier à trous`, `TP 4 : brouillon de spécification`, `TP 4 : spécification clarifiée`, `TP 4 : spécification relue`.
 
 Arrivée : 9 commits, `spec.md` à sept exigences, `.specify/feature.json` présent et non versionné, 1 test vert.
 
-Corrigé `tp/tp04/` : le contenu de `tp/tp03/` plus `AGENTS.md`, `.claude/skills/{ears,gherkin}/`, `docs/{brief,regles-metier,clarifications}.md`, la surcharge, `specs/001-valider-reservation/spec.md` et `checklists/requirements.md`.
+Corrigé `tp/tp04/` : le contenu de `tp/tp03/` plus `AGENTS.md`, `.claude/skills/{ears,gherkin}/`, `docs/{brief,regles-metier,clarifications}.md`, `.specify/templates/spec-template.md` modifié, `specs/001-valider-reservation/spec.md` et `checklists/requirements.md`.
 
-Point ouvert pour le rejeu du TP 4 (#72) : `specify` charge-t-il les skills `ears` et `gherkin` de lui-même ? Sinon le prompt de l'étape 3 les nomme.
+Chargement des skills, tranché le 22 octobre 2026 (#72, rejeu du TP 4 et démonstration 1 du module 4, `claude-sonnet-4-6`) : sous Claude Code, `ears` et `gherkin` sont chargés par l'outil `Skill` quand le prompt les nomme (`/ears`, ou « avec le skill ears » en prose) et pas sur le seul renvoi d'`AGENTS.md` ; sous Open Code, le modèle les charge d'après leur description dès le premier tour, nommés ou non. Le prompt de l'étape 3 les nomme, la démonstration 1 préfixe `/ears` sous Claude Code.
+
+Rejeu du 22 octobre 2026 : sous Claude Code, l'agent n'a pas trouvé `.specify/templates/spec-template.md` (chemins faux, `find` refusé hors TUI) et a tranché les bornes dans Assumptions sans marqueur, d'où deux questions de `clarify` au lieu de cinq ; le prompt de l'étape 3 nomme depuis le chemin et impose les marqueurs. Sous Open Code 2.0.32, `opencode run` n'expanse ni `/speckit.specify` ni `/speckit.clarify` ; `clarify` hors TUI pose par l'outil `question`, annulé en non interactif, et n'écrit pas `## Clarifications` : le rejeu envoie le texte de `.opencode/commands/speckit.clarify.md` avec un argument qui nomme `docs/clarifications.md`. À l'étape 5, le prompt fixe dix-neuf scénarios, un seul pour REG-07, et interdit de toucher à Clarifications (un agent avait ajouté trois `- Q:` fictives, un autre un second scénario REG-07 contradictoire).
 
 ### TP 5 (module 5, 60 min)
 
@@ -132,14 +134,14 @@ Travail :
 1. `~/fichiers/valider-reservation.feature` copié dans `specs/001-valider-reservation/`, scénarios de `spec.md` alignés sur lui ; commit.
 2. `/speckit-plan` avec un prompt qui ferme les dérives : domaine seul, pytest-bdd, aucun contrat d'API, API et stockage inchangés ; commit.
 3. Relecture à trois points, corrections à la main ; commit.
-4. `~/fichiers/tasks-template.md` copié dans `.specify/templates/overrides/tasks-template.md` : tests obligatoires, une paire Test REG-NN et Code REG-NN par exigence, à la place de « Tests are OPTIONAL » ; commit.
+4. `~/fichiers/tasks-template.md` copié sur `.specify/templates/tasks-template.md`, en place : tests obligatoires, une paire Test REG-NN et Code REG-NN par exigence, à la place de « Tests are OPTIONAL » ; commit.
 5. `/speckit-tasks`, relecture (T001 harnais, paires Test et Code pour REG-01 à REG-05, Test seul pour REG-06 et REG-07), `/speckit-analyze` en lecture seule, remédiations appliquées à la main ; commit.
 
 Commits : `TP 5 : scénarios Gherkin`, `TP 5 : plan`, `TP 5 : plan relu`, `TP 5 : template de tâches`, `TP 5 : tâches relues`.
 
 Arrivée : 14 commits, `tasks.md` sans case cochée, `validate_booking` rend toujours `None`, 1 test vert.
 
-Corrigé `tp/tp05/` : le contenu de `tp/tp04/` plus le `.feature`, `spec.md` réaligné, `plan.md` et ses annexes, la surcharge, `tasks.md`.
+Corrigé `tp/tp05/` : le contenu de `tp/tp04/` plus le `.feature`, `spec.md` réaligné, `plan.md` et ses annexes, `.specify/templates/tasks-template.md` modifié, `tasks.md`.
 
 ### TP 6, partie A (module 6, 65 min)
 
@@ -195,15 +197,15 @@ Fichiers fournis, par TP :
 | `skills/ears/`, `skills/gherkin/` | 4 | `.claude/skills/` |
 | `AGENTS.md` (deux `<TODO>`) | 4 | racine |
 | `brief.md`, `clarifications.md` | 4 | `docs/` |
-| `spec-template.md` | 4 | `.specify/templates/overrides/` |
+| `spec-template.md` | 4 | `.specify/templates/`, en place |
 | `valider-reservation.feature` | 5 | `specs/001-valider-reservation/` |
-| `tasks-template.md` | 5 | `.specify/templates/overrides/` |
+| `tasks-template.md` | 5 | `.specify/templates/`, en place |
 | `cosmic-ray.toml` | 6 | racine |
 | `mutation.md` | 6 | `specs/001-valider-reservation/` |
 
 ## Superposer un corrigé au fil rouge et le tester
 
-`tp/tpNN/` contient les fichiers ajoutés ou modifiés par le TP, en état cumulé depuis le TP 3 : `tp/tp06/` superposé au squelette donne l'état d'arrivée du TP 6. Les fichiers déposés par `specify init` (`.specify/`, commandes de l'outil) n'y figurent pas : ils se régénèrent depuis la version épinglée et leur contenu dépend de l'outil. Seuls `.specify/memory/constitution.md`, qui écrase la copie vierge du template, et `.specify/templates/overrides/` sont dans les corrigés.
+`tp/tpNN/` contient les fichiers ajoutés ou modifiés par le TP, en état cumulé depuis le TP 3 : `tp/tp06/` superposé au squelette donne l'état d'arrivée du TP 6. Les fichiers déposés par `specify init` (`.specify/`, commandes de l'outil) n'y figurent pas : ils se régénèrent depuis la version épinglée et leur contenu dépend de l'outil. Seuls `.specify/memory/constitution.md`, qui écrase la copie vierge du template, et les templates modifiés en place de `.specify/templates/` (`spec-template.md` au TP 4, `tasks-template.md` au TP 5) sont dans les corrigés.
 
 ```sh
 cd ~/formations/dlaia
@@ -284,7 +286,7 @@ Sonnet 4.6 est servi par Bedrock sous forme de profil d'inférence (`inferenceTy
 
 `fil-rouge/opencode.json` : modèle `amazon-bedrock/eu.anthropic.claude-sonnet-4-6`, région `eu-west-1`, `edit` en `ask`, `bash` en `ask` sauf `uv run pytest*` et `.specify/scripts/bash/*` (dernière règle correspondante gagnante, https://opencode.ai/docs/permissions/).
 
-En mode non interactif (`opencode run`), une commande `ask` est refusée d'office (« This non-interactive run cannot ask the user for permission ») et l'agent continue sans elle ; `--auto` approuve tout ce qui n'est pas `deny`. Vérifié le 19 octobre 2026 avec `echo *` en `allow` et `printf` en `ask`. Le rejeu utilise donc `--auto`. Avec `--standalone`, trois appels dont la sortie partait dans un tube sans `--print-logs` n'ont jamais rendu la main ; le mode service par défaut, sortie JSON comprise, n'a pas ce défaut.
+En mode non interactif (`opencode run`), une commande `ask` est refusée d'office (« This non-interactive run cannot ask the user for permission ») et l'agent continue sans elle ; `--auto` approuve tout ce qui n'est pas `deny`. Vérifié le 19 octobre 2026 avec `echo *` en `allow` et `printf` en `ask`. Le rejeu utilise donc `--auto`. Avec `--standalone`, trois appels dont la sortie partait dans un tube sans `--print-logs` n'ont jamais rendu la main ; le mode service par défaut, sortie JSON comprise, n'a pas ce défaut. Constaté le 22 octobre 2026 : deux `opencode run` sur le service de fond sont restés sans aucune sortie pendant 10 min (`opencode service restart` a suffi), et un `opencode run --continue "yes"` est resté bloqué 8 min pendant qu'un autre `opencode run` tournait sur le même service ; `opencode run --standalone --session <id> "yes"` a abouti en 9 s. Ne pas lancer deux rejeux Open Code en parallèle sur le même service.
 
 `fil-rouge/.claude/settings.json` : `model` épinglé à `claude-sonnet-4-6`, règles `allow` pour `Bash(uv run pytest *)` et `Bash(.specify/scripts/bash/*)` (https://code.claude.com/docs/en/permissions, « Wildcard patterns »). L'activation de Bedrock (`CLAUDE_CODE_USE_BEDROCK`, région) reste dans la configuration globale de la VM : le fil rouge ne porte aucune variable d'environnement.
 
