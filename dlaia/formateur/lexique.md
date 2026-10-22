@@ -118,7 +118,9 @@ Les définitions ci-dessous sont provisoires jusqu'au plan du module concerné, 
 | Terme | Définition | Introduit | À ne pas employer |
 |---|---|---|---|
 | template | gabarit Markdown d'un artefact Spec Kit (`spec`, `plan`, `tasks`, `constitution`), fichier versionné de `.specify/templates/` modifié en place par les TP 4 et 5 ; nommé « fichier à trous » au module 2, avant que le mot soit défini | 05 | modèle (pour template), gabarit, squelette, fichier à trous (à partir du module 5), surcharge, override (le fil rouge ne se sert pas de `overrides/`) |
-| analyse | passe `/speckit-analyze` de cohérence entre spécification, plan et tâches | 05 | audit, revue, vérification (pour analyze) |
+| argument (de commande) | texte qui suit la commande Spec Kit à l'invocation, substitué à `$ARGUMENTS` dans son prompt ; fixe ce qu'un appel impose, là où le template fixe le format de l'artefact ; « sans argument » dès l'énoncé du TP 4 | 05 | consigne, prompt fourni, instruction de la commande, prompt (pour l'argument seul) |
+| socle de test | tâche T001 de `tasks.md` : le fichier `tests/test_valider_reservation.py` et ses définitions d'étapes pytest-bdd, sans scénario lié, suite verte ; ce sur quoi chaque tâche Test REG-NN s'appuie | 05 | harnais (pour les tests), squelette de test, fixture, setup |
+| analyse | passe `/speckit-analyze` de cohérence entre spécification, plan et tâches, la constitution en référence | 05 | audit, revue, vérification (pour analyze) |
 
 ## Implémenter et vérifier (module 6)
 
