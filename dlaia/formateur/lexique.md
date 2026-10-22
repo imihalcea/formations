@@ -111,7 +111,7 @@ Les définitions ci-dessous sont provisoires jusqu'au plan du module concerné, 
 | liste de contrôle | fichier `checklists/requirements.md` écrit par `specify` : questions de qualité sur les exigences (« checklist » dans Spec Kit) | 04 | checklist hors identifiant, check-list, liste de vérification |
 | clarification | question posée par `/speckit-clarify` et réponse consignée dans la spécification | 04 | ambiguïté levée, question ouverte, précision |
 | responsable produit | personne qui répond pour le métier aux questions de `clarify` ; ses réponses sont versionnées dans `docs/clarifications.md` | 04 | le produit (pour la personne), product owner, PO, client, métier seul |
-| réconciliation | relecture à la main qui aligne le brouillon clarifié sur `docs/regles-metier.md` et `docs/clarifications.md`, jusqu'à sept exigences sans marqueur | 04 | alignement, finalisation, nettoyage |
+| réconciliation | réécriture du brouillon clarifié par l'agent d'après `docs/regles-metier.md` et `docs/clarifications.md`, puis relecture à la main, jusqu'à sept exigences sans marqueur | 04 | alignement, finalisation, nettoyage |
 
 ## Personnaliser, planifier, découper (module 5)
 
