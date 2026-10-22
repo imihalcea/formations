@@ -235,7 +235,7 @@ Pourquoi un ADR et pas une ligne de plan : la décision vaut pour tout le projet
 | Patron | Forme de la phrase | Exemple bookit (illustration) |
 |---|---|---|
 | toujours | Le système doit … | bookit doit refuser une demande de plus de 4 heures avec le code `duration` |
-| sur un événement | Quand …, le système doit … | Quand une demande commence moins de 2 heures après l'instant courant, bookit doit la refuser avec le code `lead_time` |
+| sur un événement | Quand …, le système doit … | Quand une demande commence avant l'instant courant plus 2 heures, bookit doit la refuser avec le code `lead_time` |
 | dans un état | Tant que …, le système doit … | Tant que la ressource est déjà réservée aux mêmes heures, bookit doit refuser la demande avec le code `overlap` |
 | cas indésirable | Si …, alors le système doit … | Si la demande vise un samedi ou un dimanche, alors bookit doit la refuser avec le code `hours` |
 
