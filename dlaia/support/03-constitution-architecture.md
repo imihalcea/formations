@@ -3,7 +3,7 @@
 Écrire l'architecture pour que l'agent la respecte
 
 ::: notes
-Module 3, 45 min d'exposé puis TP 3 (50 min). Point de départ : l'idée clé « Chaque étape devient une commande et la relecture reste au développeur » et le débrief du TP 1 partie B : `hello-spec` initialisé, dix commandes en place, constitution à trous. Question laissée ouverte : que mettre dans la constitution, et pourquoi l'agent en a besoin. Trente-cinq slides pour 45 min : la section « Fil rouge bookit » (dix slides) est tenue pour essentielle, dépasser si le contenu l'exige.
+Module 3, 45 min d'exposé puis TP 3 (50 min). Point de départ : l'idée clé « Chaque étape devient une commande et la relecture reste au développeur » et le débrief du TP 1 partie B : `hello-spec` initialisé, dix commandes en place, constitution à trous. Question laissée ouverte : que mettre dans la constitution, et pourquoi l'agent en a besoin. Trente-six slides pour 45 min : la section « Fil rouge bookit » (dix slides) est tenue pour essentielle, dépasser si le contenu l'exige.
 Trois démonstrations : la première et la deuxième appellent le modèle (`claude-sonnet-4-6` dans les deux outils), la troisième est un `grep`. Aucune ne touche `~/bookit/` : la commande `constitution` ne se montre que sur `hello-spec`, pour ne pas jouer le TP à la place des stagiaires.
 :::
 
@@ -74,28 +74,32 @@ Longueur de contexte, pour répondre aux questions : Dhara et Sheth, arXiv 2603.
 ## L'ADR porte le pourquoi, la constitution porte le principe. {.statement kicker="Architecture implicite"}
 
 ::: notes
-Conclut les trois slides : ce que l'agent ne voit pas, un diff vert et mal placé, le fichier court lu à chaque commande. Nomme les deux artefacts de la section suivante : l'ADR, qui trace une décision et son pourquoi, et la constitution, qui porte le principe qui en découle.
+Conclut les trois slides : ce que l'agent ne voit pas, un diff vert et mal placé, l'`AGENTS.md` lu au début de chaque session. Nomme les deux artefacts de la section suivante : l'ADR, qui trace une décision et son pourquoi, et la constitution, qui porte le principe qui en découle.
 :::
 
-## Trois ADR, trois pourquoi {kicker="ADR et constitution"}
+## Cinq décisions structurantes {kicker="ADR et constitution"}
 
-| ADR | Décision | Pourquoi (contexte) | Conséquence vérifiable |
+| ADR | Décision | Pourquoi (contexte) | Dans le squelette |
 |---|---|---|---|
-| 1 | un refus est une valeur de retour | l'API répond 422 avec le code de la règle enfreinte | une exception levée par le domaine est un bogue |
-| 2 | l'horloge est un paramètre | un test qui lit l'horloge système change de résultat chaque jour | aucun `datetime.now()` dans `bookit/domain/` |
-| 3 | le domaine au centre, les dépendances pointent vers lui | les règles métier se testent sans serveur ni base | aucun import du domaine vers l'infrastructure |
+| 1 | trois couches, le domaine au centre, aucun import vers l'extérieur | les règles se testent sans serveur ni base | oui |
+| 2 | API HTTP avec FastAPI, refus en 422 avec un code | le client doit savoir quelle règle a refusé | oui |
+| 3 | stockage SQLite dans la couche infrastructure | une instance, aucun serveur de base à administrer | oui |
+| 4 | une image de conteneur, la base sur un volume | la même image du poste à la production | décidé, à construire |
+| 5 | authentification déléguée à un fournisseur d'identité | bookit ne gère ni comptes ni mots de passe | décidé, à construire |
 
-Les trois ADR de bookit, `docs/adr/0001` à `0003`.
+Décision structurante : elle engage tout le projet et survit à chaque spécification.
 
 ::: sources
 - [Michael Nygard, Documenting Architecture Decisions, 15 novembre 2011](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions)
+- [FastAPI, Tutorial, First Steps](https://fastapi.tiangolo.com/tutorial/first-steps/)
 :::
 
 ::: notes
-Fichiers `tp/fichiers/adr/0001-refus-valeur-de-retour.md`, `0002-horloge-en-parametre.md`, `0003-architecture-hexagonale.md`, créés par ce module au format de la slide « L'ADR trace une décision » (titre numéroté, contexte, décision, statut, conséquences) ; le TP 3 les fait copier dans `docs/adr/`. La slide du module 2 cite désormais l'ADR 3 par `file=`.
+Fichiers `tp/fichiers/adr/0001-architecture-hexagonale.md`, `0002-api-http-fastapi.md`, `0003-stockage-sqlite.md`, `0004-deploiement-conteneur.md`, `0005-authentification-idp.md`, au format de la slide « L'ADR trace une décision » (titre numéroté, contexte, décision, statut, conséquences) ; le TP 3 les fait copier dans `docs/adr/`. La slide du module 2 cite l'ADR 2 par `file=`. Les cinq décisions ont pour source ces fichiers et le squelette (`fil-rouge/`) ; FastAPI, First Steps, pour le `/docs` de l'ADR 2 : « automatic interactive API documentation » servie à `/docs`. Statut « acceptée » pour les cinq (Nygard ne connaît que proposed, accepted, deprecated, superseded) ; pour 4 et 5, la ligne Conséquences dit « à construire » : le `Dockerfile` et l'adaptateur OpenID Connect s'écrivent après `validate_booking`, hors formation.
+Règle du support, à dire à l'oral : un ADR se rédige au moment du choix ; deux des cinq précèdent leur code.
 Nygard : Context « describes the forces at play » ; Decision « our response to these forces » ; Consequences « the resulting context, after applying the decision » ; « One ADR describes one significant decision for a specific project » ; une décision annulée reste, marquée « superseded » ; « Numbers will not be reused ».
-Les trois décisions sont de structure (valeur de retour, paramètre, couches), pas de métier : aucune ne dit combien dure une réservation. C'est le partage de la section « La constitution ».
-La colonne « conséquence vérifiable » annonce la slide « Principe vérifiable sur un diff » : chaque conséquence se lit sur un diff.
+Décision structurante : elle engage tout le projet et survit aux spécifications ; style d'architecture, exposition, stockage, déploiement, identité. Une convention de code (un refus en valeur de retour, l'horloge en paramètre) en est une conséquence : ces deux conventions découlent de l'ADR 1 et figurent dans sa ligne « Conséquences ». Aucune des cinq ne dit combien dure une réservation : c'est le partage de la section « La constitution ».
+Les trois premières se lisent dans le squelette (`bookit/domain/ports.py`, `api.py`, `sqlite_repository.py`) ; les deux dernières, dans aucun fichier : l'ADR précède le code, c'est le point à retenir. La slide « L'ADR 1 motive quatre principes » dit ce que la constitution en tire.
 :::
 
 ## ADR et constitution, deux rôles {kicker="ADR et constitution"}
@@ -115,10 +119,32 @@ La colonne « conséquence vérifiable » annonce la slide « Principe vérifiab
 :::
 
 ::: notes
-L'ADR est lu par des humains ; Spec Kit ne le connaît pas. La constitution est lue par les commandes : `plan-template.md` porte une section « Constitution Check », et les prompts de `tasks`, `implement` et `analyze` chargent `.specify/memory/constitution.md` (slide « Qui relit la constitution ensuite »).
-Un principe renvoie à l'ADR qui le motive : dans bookit, chaque principe se termine par « (ADR n) ». L'ADR garde le contexte, qui ne tient pas dans un principe d'une phrase ; la constitution garde le principe, court, que l'agent applique.
+L'ADR est lu par des humains ; Spec Kit ne le connaît pas. La constitution est lue par les commandes : `plan-template.md` porte une section « Constitution Check », et les prompts de `plan`, `tasks`, `implement` et `analyze` chargent `/memory/constitution.md`, chemin tel qu'écrit dans le dépôt ; seul le prompt de `constitution` écrit `.specify/memory/constitution.md` (slide « Qui relit la constitution ensuite »).
+Un principe renvoie à l'ADR qui le motive : dans bookit, chaque principe de structure se termine par « (ADR n) ». L'ADR garde le contexte, qui ne tient pas dans un principe d'une phrase ; la constitution garde le principe, court, que l'agent applique.
 « Une fois, puis amendée » : `constitution.md` numérote en semver et date chaque amendement ; détail sur la slide « Principes, sections libres, gouvernance ».
 Nygard range un fichier par décision sous `doc/arch/adr-NNN.md` ; bookit retient `docs/adr/NNNN-nom.md`.
+:::
+
+## L'ADR 1 motive quatre principes {kicker="ADR et constitution"}
+
+| Principe | Règle | ADR |
+|---|---|---|
+| I. Un refus est une valeur de retour | aucun `raise` pour refuser dans `bookit/domain/` | 1 et 2 |
+| II. L'horloge est un paramètre | aucun `datetime.now()` dans `bookit/domain/` | 1 |
+| III. Les dépendances pointent vers le domaine | aucun import de `bookit.infrastructure` dans `bookit/domain/` | 1 |
+| IV. Chaque fichier a sa couche | une règle dans `domain/validate_booking.py`, un test dans `tests/` | 1 |
+
+Principes de structure I à IV ; les principes de workflow V à VII portent leur pourquoi sans ADR.
+
+::: sources
+- [Michael Nygard, Documenting Architecture Decisions, 15 novembre 2011](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions)
+:::
+
+::: notes
+Les quatre principes de structure de la constitution de bookit (`tp/tp03/.specify/memory/constitution.md`, I à IV) ; la colonne « Règle » résume la phrase de chaque principe ; « vérifiable sur un diff » est posé à la slide suivante. Définitions du lexique : principe de structure, principe qui porte sur les couches, les dépendances ou l'emplacement des fichiers (I à IV) ; principe de workflow, principe qui porte sur la manière de travailler, test avant le code, lint, commit (V à VII). Les quatre tirent leur pourquoi de l'ADR 1 ; le I cite aussi l'ADR 2, parce que c'est l'adaptateur HTTP qui traduit le code en 422.
+Les principes V à VII (test avant le code, ruff, un commit par étape) sont des principes de workflow : ils portent une ligne « Pourquoi » sans ADR, aucune décision d'architecture ne les motive.
+Les ADR 3 à 5 ne donnent aucun principe tant que `validate_booking` est le périmètre : ils entrent dans la section « Contraintes techniques » de la constitution (FastAPI et SQLite restent en place, le conteneur et l'authentification attendent).
+Un ADR motive plusieurs principes et un principe peut citer deux ADR : le contexte reste dans l'ADR, écrit une fois, la règle dans la constitution.
 :::
 
 ## Principe vérifiable sur un diff {kicker="ADR et constitution"}
@@ -146,9 +172,9 @@ Les trois phrases diffèrent des trois pièges de `constitution-base.md` du TP 3
 
 ## Trois sortes de principe {.facts kicker="ADR et constitution"}
 
-- **Invariant** ce qui est toujours vrai dans le code : le domaine n'importe rien hors de `bookit.domain` (ADR 3)
-- **Pattern imposé** la manière de faire que tout diff suit : un refus est une valeur `InvalidBooking` rendue par la fonction (ADR 1)
-- **Anti-pattern interdit** ce qu'aucun diff ne fait : aucune lecture de l'horloge système dans le domaine (ADR 2)
+- **Invariant** ce qui est toujours vrai dans le code : aucun import de `bookit.infrastructure` dans `bookit/domain/` (ADR 1)
+- **Pattern imposé** la manière de faire que tout diff suit : un refus est une valeur `InvalidBooking` rendue par la fonction (ADR 1 et 2)
+- **Anti-pattern interdit** ce qu'aucun diff ne fait : aucune lecture de l'horloge système dans le domaine (ADR 1)
 
 ::: sources
 - [Mohsenimofidi, Galster, Treude, Baltes, Context Engineering for AI Agents in Open-Source Software, MSR 2026, 13 avril 2026](https://2026.msrconf.org/details/msr-2026-technical-papers/17/Context-Engineering-for-AI-Agents-in-Open-Source-Software)
@@ -157,14 +183,14 @@ Les trois phrases diffèrent des trois pièges de `constitution-base.md` du TP 3
 
 ::: notes
 Grille de lecture propre au support, à présenter comme telle. L'étude MSR 2026 (466 projets open source dotés d'un fichier d'instructions lu par l'agent) relève cinq modes d'écriture des instructions, « descriptive, prescriptive, prohibitive, explanatory, conditional », et conclut « there is no established content structure yet ». Le support retient les trois modes qui donnent une règle vérifiable : descriptif (invariant), prescriptif (pattern imposé), prohibitif (anti-pattern interdit) ; l'explicatif est le pourquoi, qui va dans l'ADR ; le conditionnel se ramène à l'un des trois.
-Les exemples sont les principes I, II et III de la constitution de bookit (`tp/tp03/.specify/memory/constitution.md`), un ADR chacun. Le fichier à trous de Spec Kit propose en commentaire « Test-First (NON-NEGOTIABLE) » et « Library-First » : des patterns imposés.
+Les exemples sont les principes I, II et III de la constitution de bookit (`tp/tp03/.specify/memory/constitution.md`). Le fichier à trous de Spec Kit propose en commentaire « Test-First (NON-NEGOTIABLE) » et « Library-First » : des patterns imposés.
 Définitions du lexique : invariant, pattern imposé, anti-pattern interdit sont trois sortes de principe. Mots à ne pas employer : patron, bonne pratique, convention, anti-patron, interdit seul.
 :::
 
 ## Invariant, pattern imposé, anti-pattern interdit : chacun se juge sur un diff. {.statement kicker="ADR et constitution"}
 
 ::: notes
-Conclut la section : trois ADR et leur pourquoi, deux rôles, le principe vérifiable sur un diff, trois sortes de principe. La section suivante dit ce qui entre dans la constitution et ce qui va ailleurs.
+Conclut la section : cinq ADR et leur pourquoi, deux rôles, l'ADR 1 qui motive quatre principes, le principe vérifiable sur un diff, trois sortes de principe. La section suivante dit ce qui entre dans la constitution et ce qui va ailleurs.
 :::
 
 ## Constitution, spécification ou plan {kicker="La constitution"}
@@ -220,7 +246,7 @@ Version `1.0.1` : numérotation sémantique, une reformulation incrémente le tr
 ::: notes
 Titres relevés le 21 octobre 2026 dans le fichier déposé par `specify init` 1.2.2 (`[PRINCIPLE_2_NAME]` à `[PRINCIPLE_4_NAME]` omis à l'écran), copie exacte de `templates/constitution-template.md` (`formateur/spec-kit.md` § 5). Fin du fichier : `**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]`. Les cinq `###` sont un exemple : la commande en écrit autant que l'entrée en demande (slide « `constitution` n'écrit qu'un fichier »).
 Règles de version du prompt `constitution.md` : « MAJOR: Backward incompatible governance/principle removals or redefinitions » ; « MINOR: New principle/section added or materially expanded guidance » ; « PATCH: Clarifications, wording, typo fixes, non-semantic refinements ». Au TP 3, la version 1.0.0 est écrite par la commande, la 1.0.1 par la relecture à la main : trois reformulations, un PATCH. Un principe ajouté ferait 1.1.0.
-Corrigé cité par `file=` : `tp/tp03/.specify/memory/constitution.md`, sept principes, chacun avec son ADR, deux sections libres (« Contraintes techniques », « Workflow »), `## Governance`. Les sections libres reçoivent ce qui n'est pas un principe mais vaut pour tout le projet : la pile (Python 3.14, uv, FastAPI et SQLite inchangés) et l'ordre des artefacts.
+Corrigé cité par `file=` : `tp/tp03/.specify/memory/constitution.md`, sept principes, les quatre de structure avec leur ADR, deux sections libres (« Contraintes techniques », « Workflow »), `## Governance`. Les sections libres reçoivent ce qui n'est pas un principe mais vaut pour tout le projet : la pile (Python 3.14, uv, FastAPI et SQLite inchangés, conteneur et authentification en attente : ADR 2 à 5) et l'ordre des artefacts.
 :::
 
 ## Structure du code dans la constitution, comportement du produit dans la spécification. {.statement kicker="La constitution"}
@@ -246,7 +272,7 @@ Martin : « The overriding rule that makes this architecture work is The Depende
 La flèche barrée est ce qu'un `grep -rn 'bookit.infrastructure' bookit/domain/` attrape ; c'est le principe III de la constitution.
 :::
 
-## Trois principes de structure {kicker="Structure et frontières"}
+## Trois aspects de la structure {kicker="Structure et frontières"}
 
 | Aspect de la structure | Principe de bookit | Vérification sur un diff |
 |---|---|---|
@@ -273,9 +299,9 @@ Cockburn, 2005 : « code pertaining to the inside part should not leak into the 
 :::
 
 ::: notes
-Définitions du lexique, portées par la légende : un port est l'interface que le domaine déclare pour ce qu'il attend de l'extérieur (`BookingRepository`, `Clock`, dans `ports.py`, des `Protocol`) ; un adaptateur est le module d'infrastructure qui réalise un port (`sqlite_repository.py`, `system_clock.py`) ou pilote le domaine (`api.py`). Architecture hexagonale : domaine au centre, ports, adaptateurs à l'extérieur ; les dépendances pointent vers le domaine (ADR 3).
+Définitions du lexique, portées par la légende : un port est l'interface que le domaine déclare pour ce qu'il attend de l'extérieur (`BookingRepository`, `Clock`, dans `ports.py`, des `Protocol`) ; un adaptateur est le module d'infrastructure qui réalise un port (`sqlite_repository.py`, `system_clock.py`) ou pilote le domaine (`api.py`). Architecture hexagonale : domaine au centre, ports, adaptateurs à l'extérieur ; les dépendances pointent vers le domaine (ADR 1).
 Cockburn, rapport technique 2005.02 : l'intention est « Allow an application to equally be driven by users, programs, automated test or batch scripts, and to be developed and tested in isolation from its eventual run-time devices and databases » ; « A port identifies a purposeful conversation » ; l'adaptateur « converts the API definition to the signals needed by that device ». Le test de fumée est un pilote comme l'API ; au TP 6, les tests de `validate_booking` pilotent le domaine sans aucun adaptateur.
-Dans le squelette, les ports sont dans le domaine et les adaptateurs dans l'infrastructure ; l'application (`request_booking`) reçoit les adaptateurs en paramètres (`repo`, `clock`) et appelle `validate_booking(booking, resource, clock.now())`. C'est là que l'horloge devient un paramètre (ADR 2).
+Dans le squelette, les ports sont dans le domaine et les adaptateurs dans l'infrastructure ; l'application (`request_booking`) reçoit les adaptateurs en paramètres (`repo`, `clock`) et appelle `validate_booking(booking, resource, clock.now())`. C'est là que l'horloge devient un paramètre (conséquence de l'ADR 1).
 Mots à ne pas employer : adapter, implémentation, driver ; interface seule, protocole, contrat.
 :::
 
@@ -405,7 +431,7 @@ La commande d'initialisation sous Claude Code dépasse la largeur d'une ligne de
 ## De `plan` à `converge`, Spec Kit relit `constitution.md` avant d'écrire. {.statement kicker="Spec Kit"}
 
 ::: notes
-Conclut la section : la commande qui écrit le fichier, les commandes qui le relisent, l'initialisation dans chaque outil. Renvoie à l'idée clé du module 2 « la relecture reste au développeur » : la constitution produite par la commande se relit avant commit, à trois questions par principe (vérifiable sur un diff ? ADR cité ? aucune règle métier, aucun nom d'outil ?) ; c'est l'étape 4 du TP 3. La section suivante présente le projet sur lequel le TP travaille.
+Conclut la section : la commande qui écrit le fichier, les commandes qui le relisent, l'initialisation dans chaque outil. Renvoie à l'idée clé du module 2 « la relecture reste au développeur » : la constitution produite par la commande se relit avant commit, à trois questions par principe (vérifiable sur un diff ? un principe de structure cite-t-il son ADR ? aucune règle métier, aucun nom d'outil ?) ; c'est l'étape 4 du TP 3. La section suivante présente le projet sur lequel le TP travaille.
 :::
 
 ## À quoi sert bookit {kicker="Fil rouge bookit"}
@@ -440,7 +466,7 @@ La fin exclue tranche la question laissée ouverte au module 2 (« deux réserva
 ![La même ligne du temps avec l'instant courant à 9h00 : le moment où la demande est jugée, fourni en entrée ; une demande de 12h à 13h a trois heures de préavis](images/03-instant-courant.svg)
 
 ::: notes
-Définitions du lexique : la décision est le résultat de la validation d'une demande, acceptée, ou refusée avec un code ; l'instant courant est le moment auquel la demande est jugée, fourni en entrée à la validation (le paramètre `now` de `validate_booking`, ADR 2). Mots à ne pas employer : résultat, verdict, réponse ; maintenant, heure système, date du jour.
+Définitions du lexique : la décision est le résultat de la validation d'une demande, acceptée, ou refusée avec un code ; l'instant courant est le moment auquel la demande est jugée, fourni en entrée à la validation (le paramètre `now` de `validate_booking`, conséquence de l'ADR 1). Mots à ne pas employer : résultat, verdict, réponse ; maintenant, heure système, date du jour.
 Deux règles dépendent de l'instant courant : REG-03 (préavis de 2 heures) et REG-04 (horizon de 60 jours), slide suivante. Le schéma montre pourquoi il est fourni et non lu : la même demande, jugée à 11h00, n'aurait plus qu'une heure de préavis ; un test fixe l'instant courant pour rester reproductible.
 Un seul code rendu quand plusieurs règles sont enfreintes : question tranchée au TP 4 (REG-06, première règle enfreinte dans l'ordre). Ne pas répondre ici, noter la question.
 :::
@@ -474,7 +500,7 @@ Les trois respectent REG-01 à REG-04 : une heure, en semaine entre 8h et 20h, p
 ::: notes
 Définition du lexique (squelette), à dire à l'oral : le `fil-rouge/` fourni dans l'archive, extrait en `~/bookit/`, bookit avec son API, son stockage et son test de fumée, sans `validate_booking` ni artefact SDD. « Sans `validate_booking` » : le fichier existe et la fonction rend `None`, slide suivante. Test de fumée (lexique) : l'unique test fourni, `tests/test_fumee.py`, une réservation valide via l'API répond 201 ; il reste vert une fois les règles écrites. Mots à ne pas employer : stub, base, projet de départ ; squelette pour un fichier à trous.
 Détail par couche (`formateur/fil-rouge.md`) : `models.py` porte `Booking` (créneau `[start, end[`), `Resource` (nom et réservations confirmées), `InvalidBooking` (code et message) ; `ports.py` porte `BookingRepository` et `Clock`, des `Protocol` ; `request_booking.py` charge la ressource, appelle `validate_booking(booking, resource, clock.now())` et enregistre si le résultat est `None` ; `api.py` expose `POST /resources/{name}/bookings`, répond 201 ou 422 avec `{"detail": {"code": …}}` ; `sqlite_repository.py` écrit dans `bookit.db` (ou `BOOKIT_DB`) ; `conftest.py` donne au test une base temporaire.
-Les trois ADR se lisent sur le schéma : la décision est la valeur de retour (ADR 1), `now` est un paramètre (ADR 2), les flèches pointent vers le domaine (ADR 3).
+Trois ADR se lisent sur le schéma : les flèches pointent vers le domaine, `now` est un paramètre et la décision est la valeur de retour (ADR 1) ; `api.py` traduit la décision en 201 ou 422 (ADR 2) ; `sqlite_repository.py` réalise le port `BookingRepository` (ADR 3). Les ADR 4 et 5 (conteneur, fournisseur d'identité) n'ont encore aucun fichier.
 Pile : Python 3.14 géré par uv, `uv sync` puis `uv run pytest -q` ; FastAPI, uvicorn ; groupe `dev` avec pytest, pytest-bdd, ruff, httpx2.
 :::
 
@@ -493,7 +519,7 @@ $ curl -s -o /dev/null -w '%{http_code}\n' -H 'Content-Type: application/json' -
 Au TP 6, le même second envoi répond 422 `overlap`.
 
 ::: notes
-Code cité par `file=` depuis `fil-rouge/bookit/domain/validate_booking.py` ; les lignes 1 à 4 sont les imports (`datetime`, `Booking`, `InvalidBooking`, `Resource`). La signature est celle du schéma précédent : la décision est la valeur de retour (ADR 1), `now` un paramètre (ADR 2).
+Code cité par `file=` depuis `fil-rouge/bookit/domain/validate_booking.py` ; les lignes 1 à 4 sont les imports (`datetime`, `Booking`, `InvalidBooking`, `Resource`). La signature est celle du schéma précédent : la décision est la valeur de retour (ADR 1 et 2), `now` un paramètre (ADR 1).
 Bloc console : les deux envois de l'étape 1 du TP 3 (même demande, le lundi suivant de 10h00 à 11h00 sur la salle A), codes relevés au rejeu du 21 octobre 2026 : `201` puis `201` ; aucune règle, pas même le chevauchement. Au TP 6, le même second envoi répond 422 `overlap`.
 :::
 
@@ -538,15 +564,15 @@ Conclut la section : à quoi sert bookit, ses concepts, ses règles, une journé
 
 ## TP 3 : cadrer bookit par sa constitution {.tp duration="50 min" kicker="TP 3"}
 
-Arrivée : quatre commits faits à la main, `.specify/memory/constitution.md` en 1.0.1, sept principes citant chacun un ADR. L'agent ne commite pas.
+Arrivée : quatre commits faits à la main, `.specify/memory/constitution.md` en 1.0.1, quatre principes de structure citant leur ADR. L'agent ne commite pas.
 
 ::: notes
-Point de départ : arrivée du TP 1 (`~/bookit/` extrait sans `.git` ni `.venv`, `~/fichiers/` présent, Spec Kit 1.2.2 installé). Arrivée : 4 commits, `git status --short` vide, 1 test vert, `.specify/memory/constitution.md` en 1.0.1 à sept principes citant chacun un ADR, `bookit.db` (ignoré) avec deux réservations. Ligne « TP 3 » de la trajectoire (`formateur/fil-rouge.md`).
-Durées prévues : 8 min pour versionner, 7 min pour Spec Kit et les ADR, 12 min pour la constitution 1.0.0, 10 min de relecture, 8 min pour le diff, 5 min de débrief. Rejeux non interactifs du 21 octobre 2026 (`claude-sonnet-4-6`, prompt « mot pour mot ») : commande `constitution` sous Claude Code 52 s, 10 tours, 0,26 USD (troisième rejeu ; au second, 64 tours et 1,51 USD parce que l'agent n'avait pas pu lister `docs/adr/`, cause levée depuis que le prompt garde la mention `(ADR n)` telle quelle : aucune lecture de `docs/adr/`) ; sous Open Code 34 s, 9 tours, 12 appels d'outils, 0,14 USD, aucune commande shell (l'agent lit le fichier à trous au lieu de lancer `resolve-template.sh`). Jugement en lecture seule, étape 5 : Claude Code 25 s, 3 tours, 0,13 USD ; Open Code 17 s, 3 tours ; les deux agents ont lu `git diff` puis `.specify/memory/constitution.md` et rendu le tableau du corrigé sans rien écrire. Étape 1 : `1 passed in 0.11s` à `0.42s`, les deux `curl` répondent `201`, `select count(*) from bookings` rend 2. Étape 4 : `git diff --stat` donne `1 file changed, 4 insertions(+), 4 deletions(-)` (trois phrases et la ligne de version). Étape 5, diff appliqué : `3 files changed, 19 insertions(+), 1 deletion(-)`. Durée totale du TP en non interactif : 3 min, le reste du temps prévu va à la lecture et au jugement à la main.
-Permissions attendues à l'étape 3 : le script `.specify/scripts/bash/resolve-template.sh constitution-template --json` passe sans question (règles `allow` de `.claude/settings.json` et d'`opencode.json`) tant que l'agent l'appelle par son chemin relatif et sans préfixe ; au troisième rejeu Claude Code, l'agent l'a lancé par `bash` et par son chemin absolu, hors de la règle : en TUI, une question (refusé en non interactif, il a lu le script par `Read` et écrit le fichier d'après le template) ; l'écriture de `constitution.md` est demandée une fois ; un `ls .specify/` peut s'ajouter ; la lecture de `docs/` et du README ne demande rien sous Claude Code. Sous Open Code, chaque commande shell hors règle est en `ask` (clé `bash` d'`opencode.json`, forme héritée de `shell`) : au premier rejeu l'agent a lancé un `ls .specify/memory/` qui en ajoute une, au second aucune commande shell, l'écriture seule. Étape 5 : sous Claude Code, le mode `plan` lit et explore sans éditer (vérifié : aucune écriture) ; sous Open Code, l'agent Plan refuse les éditions et le shell suit `opencode.json` (`git diff` demandé une fois). À vérifier sur la VM : la lecture des permissions en TUI, le passage à l'agent Plan par `Shift+Tab` (documentation v1 : `Tab`) en v2.0.32, et l'acceptation de la confiance du répertoire au premier `claude` dans `~/bookit/`, sans laquelle les règles `allow` de `.claude/settings.json` sont ignorées.
-Le prompt de l'étape 3 demande de reprendre le texte de la base tel quel et ne dit rien des règles métier : les trois pièges passent dans la constitution, ce qui donne matière à l'étape 4. Si la commande en retire un d'elle-même, le noter : la relecture reste à faire pour les deux autres. Au premier rejeu (prompt sans « mot pour mot »), les agents passaient les principes au style normatif (`DOIT`) et Claude Code retirait le piège VI ; au second rejeu, avec le prompt actuel, les deux outils ont repris les sept principes et les lignes « Pourquoi » au mot près (`diff` identique au corps de la base) et reproduit les trois pièges. Seule la mention `(ADR n)` avait été remplacée par le nom de fichier, que le prompt demandait alors ; il demande désormais de la garder telle quelle, ce que le troisième rejeu Claude Code confirme (corps identique à la base, trois pièges, mentions `(ADR n)` intactes, Sync Impact Report de 16 lignes, aucun `TODO`). Ligne de version : `**Version**: 1.0.0` au format du fichier à trous, ou `**Version** : 1.0.0` avec libellés traduits et une espace avant les deux-points ; l'attendu `grep -oE '[0-9]+\.[0-9]+\.[0-9]+'` tolère les deux (vérifié sur les deux constitutions du rejeu : une seule occurrence, les dates ISO ne correspondent pas au motif). Un `TODO(…)` peut rester à la place d'un nom de fichier si la commande n'a pas pu lire `docs/adr/` (observé une fois au rejeu) : le cas est dans l'indice.
+Point de départ : arrivée du TP 1 (`~/bookit/` extrait sans `.git` ni `.venv`, `~/fichiers/` présent, Spec Kit 1.2.2 installé). Arrivée : 4 commits, `git status --short` vide, 1 test vert, `.specify/memory/constitution.md` en 1.0.1 à sept principes dont les quatre de structure citent leur ADR, `bookit.db` (ignoré) avec deux réservations. Ligne « TP 3 » de la trajectoire (`formateur/fil-rouge.md`).
+Durées prévues : 8 min pour versionner, 7 min pour Spec Kit et les ADR, 12 min pour la constitution 1.0.0, 10 min de relecture, 8 min pour le diff, 5 min de débrief. Rejeux non interactifs (`claude-sonnet-4-6`, prompt « mot pour mot »), Claude Code le 22 octobre 2026 sur la base à cinq ADR, Open Code le 21 octobre sur la base à trois ADR (relevé à refaire) : cinq étapes conformes sous Claude Code ; commande `constitution` sous Claude Code 121 s, 14 tours, 0,53 USD (corps de la constitution identique à la base, `diff` vide ; mentions `(ADR 1 et 2)` et `(ADR 1)` intactes ; lignes Pourquoi de V à VII reprises sans ADR ; trois pièges reproduits ; Sync Impact Report de 7 lignes ; aucun `TODO(` ; aucune lecture de `docs/adr/` ; six appels Bash refusés, d'où le coût au-dessus du 21 octobre, 0,26 USD) ; sous Open Code 34 s, 9 tours, 12 appels d'outils, 0,14 USD, aucune commande shell (l'agent lit le fichier à trous au lieu de lancer `resolve-template.sh`). Jugement en lecture seule, étape 5 : Claude Code 21 s, 3 tours, 0,13 USD, jugement concordant avec le corrigé à trois nuances (IV imputé aussi à l'appel `SqliteBookingRepository(...)`, blocs `if … raise` jugés d'un tenant, II non cité pour l'instant courant du test) ; Open Code 17 s, 3 tours ; les deux agents ont lu `git diff` puis `.specify/memory/constitution.md` et rendu le tableau du corrigé sans rien écrire. Étape 1 : `1 passed in 0.11s` à `0.42s`, les deux `curl` répondent `201`, `select count(*) from bookings` rend 2. Étape 4 : `git diff --stat` donne `1 file changed, 4 insertions(+), 4 deletions(-)` (trois phrases et la ligne de version). Étape 5, diff appliqué : `3 files changed, 19 insertions(+), 1 deletion(-)`. Durée totale du TP en non interactif : 5 min et 0,66 USD sous Claude Code, le reste du temps prévu va à la lecture et au jugement à la main.
+Permissions attendues à l'étape 3 : le script `.specify/scripts/bash/resolve-template.sh constitution-template --json` passe sans question (règles `allow` de `.claude/settings.json` et d'`opencode.json`) tant que l'agent l'appelle par son chemin relatif et sans préfixe ; aux rejeux Claude Code des 21 et 22 octobre, l'agent l'a lancé par `bash` et par son chemin absolu, hors de la règle : en TUI, une question (refusé en non interactif, il a lu le script par `Read` et écrit le fichier d'après le template) ; le 22 octobre, six appels Bash refusés en tout (`find` hors liste, `resolve-template.sh` par `bash` et en chemin absolu), et un sous-agent Explore a listé `.specify/` et lu les templates ; l'écriture de `constitution.md` est demandée une fois ; un `ls .specify/` peut s'ajouter ; la lecture de `docs/` et du README ne demande rien sous Claude Code. Sous Open Code, chaque commande shell hors règle est en `ask` (clé `bash` d'`opencode.json`, forme héritée de `shell`) : au premier rejeu l'agent a lancé un `ls .specify/memory/` qui en ajoute une, au second aucune commande shell, l'écriture seule. Étape 5 : sous Claude Code, le mode `plan` lit et explore sans éditer (vérifié : aucune écriture) ; sous Open Code, l'agent Plan refuse les éditions et le shell suit `opencode.json` (`git diff` demandé une fois). À vérifier sur la VM : la lecture des permissions en TUI, le passage à l'agent Plan par `Shift+Tab` (documentation v1 : `Tab`) en v2.0.32, et l'acceptation de la confiance du répertoire au premier `claude` dans `~/bookit/`, sans laquelle les règles `allow` de `.claude/settings.json` sont ignorées.
+Le prompt de l'étape 3 demande de reprendre le texte de la base tel quel et ne dit rien des règles métier : les trois pièges passent dans la constitution, ce qui donne matière à l'étape 4. Si la commande en retire un d'elle-même, le noter : la relecture reste à faire pour les deux autres. Au premier rejeu (prompt sans « mot pour mot »), les agents passaient les principes au style normatif (`DOIT`) et Claude Code retirait le piège VI ; au second rejeu, avec le prompt actuel, les deux outils ont repris les sept principes et les lignes « Pourquoi » au mot près (`diff` identique au corps de la base) et reproduit les trois pièges. Seule la mention `(ADR n)` avait été remplacée par le nom de fichier, que le prompt demandait alors ; il demande désormais de la garder telle quelle, ce que les rejeux Claude Code des 21 et 22 octobre confirment (corps identique à la base, trois pièges, mentions `(ADR 1 et 2)` et `(ADR 1)` intactes, Sync Impact Report de 16 puis 7 lignes, aucun `TODO`). Ligne de version : `**Version**: 1.0.0` au format du fichier à trous, ou `**Version** : 1.0.0` avec libellés traduits et une espace avant les deux-points ; l'attendu `grep -oE '[0-9]+\.[0-9]+\.[0-9]+'` tolère les deux (vérifié sur les deux constitutions du rejeu : une seule occurrence, les dates ISO ne correspondent pas au motif). Un `TODO(…)` peut rester à la place d'un nom de fichier si la commande n'a pas pu lire `docs/adr/` (observé une fois au rejeu) : le cas est dans l'indice.
 Débrief, deux questions : quel principe la commande a reproduit tel quel alors qu'il était piégé (IV porte une règle métier, V nomme Claude Code, VI une phrase vague : la commande respecte l'entrée, la relecture reste au développeur) ; quelles lignes de `violation.diff` un `grep` aurait suffi à attraper (`grep -rn 'bookit.infrastructure' bookit/domain/` pour l'import, `grep -rn 'datetime.now' bookit/domain/` pour l'horloge, `grep -rn 'raise' bookit/domain/` pour l'exception ; la règle écrite dans `api.py` demande de lire le diff).
-Ce que le diff montre en plus : `uv run ruff check` et `uv run ruff format --check` passent sur le diff appliqué (relevé du 21 octobre 2026) ; `uv run pytest -q` donne `1 failed, 1 passed`, le test ajouté échouant sur `ValueError` au lieu d'`InvalidBooking("duration")` : la conséquence de l'ADR 1 (« une exception levée par le domaine est un bogue ») en direct.
+Ce que le diff montre en plus : `uv run ruff check` et `uv run ruff format --check` passent sur le diff appliqué (relevé du 21 octobre 2026) ; `uv run pytest -q` donne `1 failed, 1 passed`, le test ajouté échouant sur `ValueError` au lieu d'`InvalidBooking("duration")` : la conséquence de l'ADR 2 (« une exception levée par le domaine est un bogue ») en direct.
 Pièges : lancer `constitution` sans prompt (cinq principes inventés d'après les exemples du fichier à trous, comme à la démonstration) ; laisser le rapport HTML dans le commit ; corriger les pièges par un nouvel appel à la commande, qui peut renuméroter en MINOR ; commiter la violation ; accepter la proposition de commit de l'agent.
 Décision `--no-model-invocation` sous Claude Code : les dix skills portent `disable-model-invocation: true` et `user-invocable: true` (vérifié le 21 octobre 2026 sur une initialisation locale) ; le rejeu du même jour confirme que `claude -p "/speckit-constitution …"` développe la commande, l'option reste. `specify init --force` conserve le `.claude/settings.json` du squelette.
 :::
@@ -620,7 +646,7 @@ $ ls .opencode/commands | wc -l
 ```
 :::
 
-Copier les trois ADR et la base de la constitution (`constitution-base.md`), puis les lire : chaque ADR porte un contexte, une décision et ses conséquences ; la base porte sept principes, chacun avec son pourquoi et sa mention `(ADR n)`.
+Copier les cinq ADR et la base de la constitution (`constitution-base.md`), puis les lire : chaque ADR porte un contexte, une décision et ses conséquences ; la base porte sept principes avec leur pourquoi, les quatre de structure avec leur mention `(ADR n)`.
 
 ```console
 $ mkdir -p docs/adr
@@ -634,7 +660,7 @@ $ git commit -m "TP 3 : Spec Kit et ADR"
 ::: attendu
 ```console
 $ ls docs/adr | wc -l
-3
+5
 $ head -1 .specify/memory/constitution.md
 # [PROJECT_NAME] Constitution
 $ git log --oneline | wc -l
@@ -701,10 +727,10 @@ La commande pose une question (nom du projet, date) : répondre « bookit » et 
 Relire chaque principe de `.specify/memory/constitution.md` avec trois questions.
 
 - Se vérifie-t-il sur un diff, par oui ou non ?
-- Cite-t-il son ADR ?
+- Un principe de structure cite-t-il son ADR ?
 - Est-il sans règle métier et sans nom d'outil ?
 
-La base fournie porte trois phrases pièges, une par question. Dans l'éditeur :
+La base fournie porte trois phrases pièges. Dans l'éditeur :
 
 - retirer les trois phrases ;
 - passer la version à 1.0.1 (PATCH : reformulation) ;
@@ -787,7 +813,7 @@ $ git log --oneline | wc -l
 
 ### Corrigé {.corrige}
 
-Constitution 1.0.1, après relecture : sept principes, chacun avec sa mention `(ADR n)`, sans les trois phrases pièges de la base. Vérification : `grep -ciE 'heures|Claude Code|Open Code|maintenable' .specify/memory/constitution.md` rend `0`.
+Constitution 1.0.1, après relecture : sept principes avec leur pourquoi, les quatre de structure avec leur mention `(ADR n)`, sans les trois phrases pièges de la base. Vérification : `grep -ciE 'heures|Claude Code|Open Code|maintenable' .specify/memory/constitution.md` rend `0`.
 
 ```markdown file="../tp/tp03/.specify/memory/constitution.md"
 ```
