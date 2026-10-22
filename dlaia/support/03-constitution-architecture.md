@@ -51,12 +51,12 @@ L'écart à montrer est celui de la certitude et de la référence : le verdict 
 
 | | Faire tout relire | Écrire les principes, court |
 |---|---|---|
-| coût par session | tout le dépôt lu à chaque fois | un fichier de quelques lignes, lu à chaque commande |
+| coût par session | tout le dépôt lu à chaque fois | un `AGENTS.md` de quelques lignes, lu au début de chaque session |
 | tenue dans la fenêtre | la précision baisse à mesure qu'elle se remplit | la fenêtre reste disponible pour la tâche |
 | ce que l'agent en retient | ce qu'il infère du code, sans le pourquoi | les principes écrits, bien suivis |
 | ce qui reste après la session | rien : tout est relu la fois suivante | le fichier, versionné dans le dépôt |
 
-Avec un fichier court lu à chaque commande : temps médian −28,6 % sur 124 demandes de fusion (Lulla et al.).
+Avec un `AGENTS.md` court, lu au début de chaque session : temps médian −28,6 % sur 124 pull requests (Lulla et al.).
 
 ::: sources
 - [Claude Code, Best practices](https://code.claude.com/docs/en/best-practices)
@@ -66,7 +66,7 @@ Avec un fichier court lu à chaque commande : temps médian −28,6 % sur 124 de
 
 ::: notes
 Claude Code, Best practices : « performance degrades as it fills », « The context window is the most important resource to manage » ; sur le fichier lu à chaque session : « keep it short and human-readable », « Bloated CLAUDE.md files cause Claude to ignore your actual instructions! ». Un fichier trop long fait ignorer ses propres règles : la constitution de bookit tient en sept principes.
-Lulla, Mohsenimofidi, Galster, Zhang, Baltes, Treude, v1 du 28 janvier 2026 : 10 dépôts, 124 demandes de fusion (PR), deux conditions (avec et sans `AGENTS.md`, le fichier de contexte présenté au module 4) ; temps médian −28,64 %, tokens de sortie médians −16,58 %, « comparable task completion behavior ». Le résumé ne nomme pas le modèle employé ; la qualité du code produit n'est pas mesurée.
+Lulla, Mohsenimofidi, Galster, Zhang, Baltes, Treude, v1 du 28 janvier 2026 : 10 dépôts, 124 pull requests, deux conditions (avec et sans `AGENTS.md`, le fichier de contexte présenté au module 4) ; temps médian −28,64 %, tokens de sortie médians −16,58 %, « comparable task completion behavior ». Le résumé ne nomme pas le modèle employé ; la qualité du code produit n'est pas mesurée.
 Gloaguen et al. : les fichiers de contexte « does not generally improve task success rates » et augmentent le coût « over 20% on average », « for both LLM-generated and developer-committed context files » ; parmi leurs contenus, « repository overviews … are not helpful », les pratiques non standard si. Les deux études se complètent : un fichier court de pratiques non standard, oui ; une vue d'ensemble du dépôt, non.
 Longueur de contexte, pour répondre aux questions : Dhara et Sheth, arXiv 2603.15723, 16 mars 2026, « a consistent degradation in performance as context length increases » à contenu utile constant, HotpotQA (multi-sauts) « nearly twice the accuracy degradation of SQuAD ». Obéissance : McMillan, arXiv 2605.10039, 11 mai 2026, 1 650 sessions Claude Code avec Sonnet 4.6 : aucune des quatre variables de structure du fichier (taille, position, architecture, contradictions) ne change l'obéissance ; elle baisse d'environ 5,6 % de chances (odds ratio 0,944) par fonction générée dans la session : une tâche par session, module 5. Persistance : Anthropic, How we contain Claude across products, 25 mai 2026, « The share of agent context that persists across sessions keeps growing », `CLAUDE.md` parmi cet état, « reloaded each time the agent starts » ; la sécurité de ces fichiers est au module 7. « Lost in the middle » et les mesures de longueur restent au module 7.
 :::
