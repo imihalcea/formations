@@ -14,16 +14,16 @@ description: Exigence EARS de bookit, REG-NN et code de refus ; pour toute exige
 
 ## Règles d'écriture
 
-- Une exigence est une phrase : un déclencheur, un verbe, « bookit doit » ; mots-clés traduits de l'anglais, convention du projet.
-- Une phrase par exigence, sur une ligne `**REG-NN** : …`, dans l'ordre de `docs/regles-metier.md`.
-- La borne est tranchée dans la phrase : la valeur pile est acceptée ou refusée, en toutes lettres.
+- Une phrase a un déclencheur, un verbe, « bookit doit » ; mots-clés traduits de l'anglais, convention du projet.
+- Une exigence tient sur une ligne `**REG-NN** : …`, dans l'ordre de `docs/regles-metier.md`.
+- Une règle à borne s'écrit en deux phrases sur la même ligne : la première refuse, la seconde dit en toutes lettres le sort de la valeur pile (« exactement », « pile »).
 - Un refus nomme son code entre accents graves : `duration`, `hours`, `lead_time`, `horizon`, `overlap`.
 - L'instant courant est nommé quand la règle en dépend.
 - Aucun mot-clé anglais (SHALL, WHEN, WHILE, IF) dans la phrase.
 
 ## Exemple
 
-**REG-03** : Quand une demande commence moins de 2 heures après l'instant courant, bookit doit la refuser avec le code `lead_time` ; 2 heures pile est acceptée.
+**REG-03** : Quand une demande commence avant l'instant courant plus 2 heures, bookit doit la refuser avec le code `lead_time`. Quand une demande commence exactement 2 heures après l'instant courant, bookit doit l'accepter.
 
 ## Contre-exemple
 

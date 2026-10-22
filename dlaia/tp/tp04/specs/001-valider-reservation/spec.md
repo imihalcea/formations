@@ -183,19 +183,19 @@ Fonctionnalité: Rendre une seule décision
 Une exigence par règle métier de `docs/regles-metier.md`, sur sa propre ligne, dans l'ordre
 des règles ; une phrase EARS en français (skill `ears`), le code de refus entre accents graves.
 
-**REG-01** : Quand une demande dure moins de 30 minutes ou plus de 4 heures, bookit doit la refuser avec le code `duration` ; 30 minutes pile et 4 heures pile sont acceptées.
+**REG-01** : Quand une demande dure moins de 30 minutes ou plus de 4 heures, bookit doit la refuser avec le code `duration`. Quand une demande dure exactement 30 minutes ou exactement 4 heures, bookit doit l'accepter.
 
-**REG-02** : Quand une demande sort de la plage du lundi au vendredi de 8h00 à 20h00, bookit doit la refuser avec le code `hours` ; 8h00 pile au début et 20h00 pile à la fin sont acceptées.
+**REG-02** : Quand une demande sort de la plage du lundi au vendredi de 8h00 à 20h00, bookit doit la refuser avec le code `hours`. Quand une demande commence à 8h00 pile ou finit à 20h00 pile un jour de semaine, bookit doit l'accepter.
 
-**REG-03** : Quand une demande commence moins de 2 heures après l'instant courant, bookit doit la refuser avec le code `lead_time` ; 2 heures pile est acceptée.
+**REG-03** : Quand une demande commence avant l'instant courant plus 2 heures, bookit doit la refuser avec le code `lead_time`. Quand une demande commence exactement 2 heures après l'instant courant, bookit doit l'accepter.
 
-**REG-04** : Quand une demande commence plus de 60 jours après l'instant courant, bookit doit la refuser avec le code `horizon` ; 60 jours pile est accepté.
+**REG-04** : Quand une demande commence plus de 60 jours après l'instant courant, bookit doit la refuser avec le code `horizon`. Quand une demande commence exactement 60 jours après l'instant courant, bookit doit l'accepter.
 
-**REG-05** : Quand une demande vise une ressource dont une réservation confirmée chevauche le créneau demandé, bookit doit la refuser avec le code `overlap` ; deux créneaux jointifs ne se chevauchent pas.
+**REG-05** : Quand une demande vise une ressource dont une réservation confirmée chevauche le créneau demandé, bookit doit la refuser avec le code `overlap`. Quand une demande commence à l'instant où finit une réservation confirmée de la même ressource, bookit doit l'accepter.
 
 **REG-06** : Quand une demande enfreint plusieurs règles, bookit doit la refuser avec un seul code, celui de la première règle enfreinte dans l'ordre REG-01 à REG-05.
 
-**REG-07** : Quand une même demande est jugée plusieurs fois au même instant courant, bookit doit rendre la même décision ; l'instant courant est fourni en entrée de la validation.
+**REG-07** : Quand une même demande est jugée plusieurs fois au même instant courant, bookit doit rendre la même décision. Quand bookit valide une demande, il doit recevoir l'instant courant en entrée de la validation.
 
 ### Key Entities *(include if feature involves data)*
 
