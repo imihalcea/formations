@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 420" width="1680" height="420">
+  <g class="ink" font-size="22">
+    <text x="0" y="24" class="accent mono" font-weight="600" letter-spacing="3">COMMANDE IMPLEMENT</text>
+
+    <rect x="0" y="40" width="290" height="270" rx="12" class="deck"/>
+    <rect x="0" y="40" width="290" height="6" class="accent"/>
+    <text x="20" y="86" class="display" font-size="26">script</text>
+    <text x="20" y="130" class="mono" font-size="18">check-prerequisites.sh</text>
+    <text x="20" y="168" opacity="0.7">trouve la fonctionnalité</text>
+    <text x="20" y="200" opacity="0.7">et les fichiers présents</text>
+
+    <path d="M294 175 H335" class="stroke-accent" stroke-width="4"/>
+    <path d="M333 162 L349 175 L333 188 Z" class="accent"/>
+
+    <rect x="353" y="40" width="290" height="270" rx="12" class="deck"/>
+    <rect x="353" y="40" width="290" height="6" class="accent"/>
+    <text x="373" y="86" class="display" font-size="26">listes de contrôle</text>
+    <text x="373" y="130" class="mono" font-size="18">checklists/</text>
+    <rect x="373" y="156" width="250" height="124" rx="8" class="accent"/>
+    <text x="498" y="184" class="paper display" font-size="21" text-anchor="middle">arrêt sur liste</text>
+    <text x="498" y="208" class="paper display" font-size="21" text-anchor="middle">de contrôle</text>
+    <text x="498" y="244" class="paper" font-size="18" text-anchor="middle">case non cochée :</text>
+    <text x="498" y="266" class="paper" font-size="18" text-anchor="middle">question avant la suite</text>
+
+    <path d="M647 175 H688" class="stroke-accent" stroke-width="4"/>
+    <path d="M686 162 L702 175 L686 188 Z" class="accent"/>
+
+    <rect x="706" y="40" width="290" height="270" rx="12" class="deck"/>
+    <rect x="706" y="40" width="290" height="6" class="accent"/>
+    <text x="726" y="86" class="display" font-size="26">lecture</text>
+    <g class="mono" font-size="19">
+      <text x="726" y="124">tasks.md</text>
+      <text x="726" y="154">plan.md</text>
+      <text x="726" y="184">data-model.md</text>
+      <text x="726" y="214">research.md</text>
+      <text x="726" y="244">quickstart.md</text>
+      <text x="726" y="274">constitution.md</text>
+    </g>
+
+    <path d="M1000 175 H1041" class="stroke-accent" stroke-width="4"/>
+    <path d="M1039 162 L1055 175 L1039 188 Z" class="accent"/>
+
+    <rect x="1059" y="40" width="290" height="270" rx="12" class="deck"/>
+    <rect x="1059" y="40" width="290" height="6" class="accent"/>
+    <text x="1079" y="86" class="display" font-size="26">.gitignore</text>
+    <text x="1079" y="130" opacity="0.7">vérifié d'après le projet</text>
+    <text x="1079" y="162" opacity="0.7">motifs ajoutés s'ils</text>
+    <text x="1079" y="194" opacity="0.7">manquent</text>
+
+    <path d="M1353 175 H1394" class="stroke-accent" stroke-width="4"/>
+    <path d="M1392 162 L1408 175 L1392 188 Z" class="accent"/>
+
+    <rect x="1412" y="40" width="268" height="270" rx="12" class="deck"/>
+    <rect x="1412" y="40" width="268" height="6" class="accent"/>
+    <text x="1432" y="86" class="display" font-size="26">exécution</text>
+    <text x="1432" y="128">phase par phase</text>
+    <text x="1432" y="160">test avant code</text>
+    <text x="1432" y="192" class="mono" font-size="19">[X] dans tasks.md</text>
+    <text x="1432" y="224">rapport</text>
+
+    <rect x="0" y="352" width="340" height="44" rx="8" class="tint"/>
+    <text x="170" y="382" class="mono" font-size="24" text-anchor="middle">/speckit-implement</text>
+    <rect x="370" y="352" width="340" height="44" rx="8" class="tint"/>
+    <text x="540" y="382" class="mono" font-size="24" text-anchor="middle">/speckit.implement</text>
+  </g>
+</svg>

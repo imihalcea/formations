@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 380" width="1680" height="380">
+  <g class="ink" font-size="22">
+    <text x="0" y="24" class="accent mono" font-weight="600" letter-spacing="3">BDD : BEHAVIOUR-DRIVEN DEVELOPMENT, LE SCÉNARIO EXÉCUTÉ COMME TEST</text>
+
+    <rect x="0" y="52" width="528" height="34" class="tint"/>
+    <text x="264" y="76" text-anchor="middle" class="accent" font-weight="600">écrits avant le code</text>
+    <rect x="1008" y="52" width="432" height="34" class="tint"/>
+    <text x="1224" y="76" text-anchor="middle" class="accent" font-weight="600">écrits au TP 6</text>
+
+    <rect x="0" y="108" width="240" height="190" rx="12" class="deck"/>
+    <rect x="0" y="108" width="240" height="6" class="accent"/>
+    <text x="20" y="156" class="mono" font-size="22">spec.md</text>
+    <text x="20" y="196" opacity="0.7">scénario REG-01</text>
+    <text x="20" y="228" opacity="0.7">sous l'exigence</text>
+
+    <path d="M244 203 H280" class="stroke-accent" stroke-width="4"/>
+    <path d="M278 190 L292 203 L278 216 Z" class="accent"/>
+
+    <rect x="288" y="108" width="240" height="190" rx="12" class="deck"/>
+    <rect x="288" y="108" width="240" height="6" class="accent"/>
+    <text x="308" y="150" class="mono" font-size="18">valider-reservation</text>
+    <text x="308" y="174" class="mono" font-size="18">.feature</text>
+    <text x="308" y="214" opacity="0.7">même scénario</text>
+    <text x="308" y="246" class="mono" opacity="0.7" font-size="20"># language: fr</text>
+
+    <path d="M532 203 H568" class="stroke-accent" stroke-width="4"/>
+    <path d="M566 190 L580 203 L566 216 Z" class="accent"/>
+
+    <rect x="576" y="108" width="240" height="190" rx="12" class="accent"/>
+    <text x="696" y="190" class="paper display" font-size="34" text-anchor="middle">pytest-bdd</text>
+    <text x="696" y="228" class="paper" font-size="20" text-anchor="middle">lit le .feature</text>
+
+    <path d="M820 203 H856" class="stroke-accent" stroke-width="4"/>
+    <path d="M854 190 L868 203 L854 216 Z" class="accent"/>
+
+    <rect x="864" y="108" width="240" height="190" rx="12" class="deck"/>
+    <rect x="864" y="108" width="240" height="6" class="accent"/>
+    <text x="884" y="150" class="mono" font-size="17">tests/test_valider</text>
+    <text x="884" y="174" class="mono" font-size="17">_reservation.py</text>
+    <text x="884" y="214" opacity="0.7">définitions d'étape</text>
+    <text x="884" y="246" opacity="0.7">liaisons @scenario</text>
+
+    <path d="M1108 203 H1144" class="stroke-accent" stroke-width="4"/>
+    <path d="M1142 190 L1156 203 L1142 216 Z" class="accent"/>
+
+    <rect x="1152" y="108" width="288" height="190" rx="12" class="deck"/>
+    <rect x="1152" y="108" width="288" height="6" class="accent"/>
+    <text x="1172" y="156" class="mono" font-size="22">validate_booking</text>
+    <text x="1172" y="196" opacity="0.7">le code appelé par</text>
+    <text x="1172" y="228" opacity="0.7">chaque scénario</text>
+
+    <path d="M1444 203 H1480" class="stroke-accent" stroke-width="4"/>
+    <path d="M1478 190 L1492 203 L1478 216 Z" class="accent"/>
+
+    <rect x="1500" y="108" width="180" height="190" rx="12" class="ink"/>
+    <text x="1590" y="190" class="paper display" font-size="34" text-anchor="middle">suite</text>
+    <text x="1590" y="228" class="paper" font-size="20" text-anchor="middle">rouge ou verte</text>
+  </g>
+</svg>

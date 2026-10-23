@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 440" width="1680" height="440">
+  <g class="ink" font-size="22">
+    <text x="0" y="24" class="accent mono" font-weight="600" letter-spacing="3">TDD : TEST-DRIVEN DEVELOPMENT, LE TEST AVANT LE CODE</text>
+
+    <rect x="0" y="48" width="480" height="270" rx="12" class="deck"/>
+    <rect x="0" y="48" width="480" height="6" class="accent"/>
+    <text x="28" y="108" class="accent display" font-size="40">01</text>
+    <text x="100" y="108" class="display" font-size="36">test</text>
+    <text x="28" y="160">suite rouge :</text>
+    <text x="28" y="192">au moins un test échoue</text>
+    <rect x="28" y="228" width="424" height="56" rx="8" class="ink" opacity="0.9"/>
+    <text x="240" y="264" class="paper mono" font-size="22" text-anchor="middle">uv run pytest -q → N failed</text>
+
+    <path d="M484 183 H600" class="stroke-accent" stroke-width="4"/>
+    <path d="M598 170 L616 183 L598 196 Z" class="accent"/>
+
+    <rect x="600" y="48" width="480" height="270" rx="12" class="deck"/>
+    <rect x="600" y="48" width="480" height="6" class="accent"/>
+    <text x="628" y="108" class="accent display" font-size="40">02</text>
+    <text x="700" y="108" class="display" font-size="36">code</text>
+    <text x="628" y="160">suite verte :</text>
+    <text x="628" y="192">tous les tests passent</text>
+    <rect x="628" y="228" width="424" height="56" rx="8" class="ink" opacity="0.9"/>
+    <text x="840" y="264" class="paper mono" font-size="22" text-anchor="middle">uv run pytest -q → N passed</text>
+
+    <path d="M1084 183 H1200" class="stroke-accent" stroke-width="4"/>
+    <path d="M1198 170 L1216 183 L1198 196 Z" class="accent"/>
+
+    <rect x="1200" y="48" width="480" height="270" rx="12" class="deck"/>
+    <rect x="1200" y="48" width="480" height="6" class="accent"/>
+    <text x="1228" y="108" class="accent display" font-size="40">03</text>
+    <text x="1300" y="108" class="display" font-size="36">remaniement</text>
+    <text x="1228" y="160">suite verte</text>
+    <text x="1228" y="192">avant et après</text>
+    <rect x="1228" y="228" width="424" height="56" rx="8" class="ink" opacity="0.9"/>
+    <text x="1440" y="264" class="paper mono" font-size="22" text-anchor="middle">uv run pytest -q → N passed</text>
+
+    <path d="M1440 322 V392 H240 V328" fill="none" class="stroke-accent" stroke-width="4" stroke-dasharray="10 8"/>
+    <path d="M227 330 L240 312 L253 330 Z" class="accent"/>
+    <text x="840" y="424" class="accent" text-anchor="middle">comportement suivant</text>
+  </g>
+</svg>

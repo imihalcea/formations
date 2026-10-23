@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 440" width="1680" height="440">
+  <g class="ink" font-size="22">
+    <text x="0" y="24" class="accent mono" font-weight="600" letter-spacing="3">MUTATION TESTING : MODIFIER LE CODE, RELANCER LA SUITE</text>
+
+    <rect x="0" y="52" width="270" height="250" rx="12" class="deck"/>
+    <rect x="0" y="52" width="270" height="6" class="accent"/>
+    <text x="20" y="98" class="display" font-size="26">code d'origine</text>
+    <text x="20" y="136" class="mono" font-size="17">validate_booking.py</text>
+    <rect x="16" y="168" width="238" height="96" rx="8" class="tint"/>
+    <text x="28" y="204" class="mono" font-size="18">if start.weekday()</text>
+    <text x="28" y="236" class="mono" font-size="18">    &gt;= 5:</text>
+
+    <path d="M274 177 H310" class="stroke-accent" stroke-width="4"/>
+    <path d="M308 164 L322 177 L308 190 Z" class="accent"/>
+
+    <rect x="326" y="52" width="270" height="250" rx="12" class="deck"/>
+    <rect x="326" y="52" width="270" height="6" class="accent"/>
+    <text x="346" y="98" class="display" font-size="26">opérateur</text>
+    <text x="346" y="132" opacity="0.7" font-size="20">un type de mutation</text>
+    <text x="346" y="176" class="mono" font-size="16">ReplaceComparison</text>
+    <text x="346" y="200" class="mono" font-size="16">Operator_GtE_Eq</text>
+    <text x="346" y="248" class="mono" font-size="20">&gt;= devient ==</text>
+
+    <path d="M600 177 H636" class="stroke-accent" stroke-width="4"/>
+    <path d="M634 164 L648 177 L634 190 Z" class="accent"/>
+
+    <rect x="652" y="52" width="270" height="250" rx="12" class="deck"/>
+    <rect x="652" y="52" width="270" height="6" class="accent"/>
+    <text x="672" y="98" class="display" font-size="26">mutant</text>
+    <text x="672" y="132" opacity="0.7" font-size="20">une version modifiée</text>
+    <rect x="668" y="168" width="238" height="96" rx="8" class="accent"/>
+    <text x="680" y="204" class="paper mono" font-size="18">if start.weekday()</text>
+    <text x="680" y="236" class="paper mono" font-size="18">    == 5:</text>
+
+    <path d="M926 177 H962" class="stroke-accent" stroke-width="4"/>
+    <path d="M960 164 L974 177 L960 190 Z" class="accent"/>
+
+    <rect x="978" y="52" width="270" height="250" rx="12" class="deck"/>
+    <rect x="978" y="52" width="270" height="6" class="accent"/>
+    <text x="998" y="98" class="display" font-size="26">suite de tests</text>
+    <text x="998" y="150" class="mono" font-size="18">uv run pytest</text>
+    <text x="998" y="178" class="mono" font-size="18">    -q tests</text>
+    <text x="998" y="228" opacity="0.7" font-size="20">relancée sur le mutant</text>
+
+    <path d="M1252 177 H1290" class="stroke-accent" stroke-width="4"/>
+    <path d="M1288 164 L1302 177 L1288 190 Z" class="accent"/>
+
+    <rect x="1310" y="52" width="370" height="70" rx="10" class="deck"/>
+    <rect x="1310" y="52" width="6" height="70" class="accent"/>
+    <text x="1334" y="96" font-size="22">tué : un test échoue</text>
+    <rect x="1310" y="142" width="370" height="70" rx="10" class="accent"/>
+    <text x="1334" y="186" class="paper" font-size="22" font-weight="600">survivant : la suite passe</text>
+    <rect x="1310" y="232" width="370" height="70" rx="10" class="deck"/>
+    <rect x="1310" y="232" width="6" height="70" class="accent"/>
+    <text x="1334" y="276" font-size="22">incompétent : le code plante</text>
+
+  </g>
+</svg>
