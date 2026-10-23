@@ -361,19 +361,38 @@ La relecture du diff reste manuelle. Conclut l'unité de travail, ses repères, 
 
 ## Du code vulnérable, mesuré {.figures kicker="Sécurité"}
 
-- **45 %** tâches avec faille
-- **86 %** échec sur injection de script
-- **70 %** et plus : échec en Java
+- **44 %** tâches avec faille
+- **85 %** échec sur injection de script
+- **88 %** échec sur injection dans les journaux
 
-Veracode, juillet 2025
+Veracode, juillet 2026
 
 ::: sources
-- [Veracode, communiqué du 30 juillet 2025](https://www.veracode.com/press-release/ai-generated-code-poses-major-security-risks-in-nearly-half-of-all-development-tasks-veracode-research-reveals/)
-- [Veracode, billet « GenAI Code Security Report »](https://www.veracode.com/blog/genai-code-security-report/)
+- [Veracode, « 2026 GenAI Code Security Report », 28 juillet 2026](https://www.veracode.com/blog/2026-genai-code-security-report-ai-risk/)
 :::
 
 ::: notes
-Communiqué du 30 juillet 2025 : 80 tâches de test, plus de 100 modèles de langage ; 45 % des cas introduisent une faille de l'OWASP Top 10 ; injection de script (CWE-80) en échec dans 86 % des cas, injection dans les journaux (CWE-117) dans 88 % ; Java au-dessus de 70 %, Python, C# et JavaScript entre 38 % et 45 %. Le communiqué indique que la sécurité n'a pas progressé d'une génération de modèles à l'autre (« unchanged over time », formulation du communiqué). Périmètre : tâches de test construites par Veracode, pas du code de production ; chiffres d'un éditeur d'outils de sécurité. Sources effectives : le communiqué et le billet Veracode (/blog/genai-code-security-report/ : injection de script 86 %, Java 72 %, Python 38 %, JavaScript 43 %, C# 45 %) ; la page du rapport complet n'est qu'une présentation où seul le 45 % figure.
+Billet du 28 juillet 2026 (consulté le 24 octobre 2026) : « The average security pass rate across models is 56% – barely changed from 55% in the first report » ; « roughly 44% of AI code generation tasks introduced a risky security vulnerability in tests ». Les 85 % et 88 % sont les compléments des taux de réussite publiés : injection de script (cross-site scripting) 15 %, injection dans les journaux 12 %. Pour mémoire, injection SQL 83 % de réussite et algorithmes de cryptographie 87 % : les modèles réussissent les failles anciennes et bien documentées, pas celles qui demandent de nettoyer une entrée avant de l'afficher ou de l'écrire. GPT-5.5 en tête à 68 %, plus de la moitié des modèles entre 50 % et 53 %. « Security performance has stayed flat while the amount of AI-generated code entering pipelines has surged » ; la syntaxe, elle, est maîtrisée : « nearly 100% » de code syntaxiquement correct.
+Édition précédente (communiqué du 30 juillet 2025, 80 tâches, plus de 100 modèles) : 45 % de tâches avec faille, injection de script en échec à 86 %, injection dans les journaux à 88 %, Java au-dessus de 70 %. Le billet de 2026 ne donne ni le nombre de tâches ni le nombre de modèles ni la répartition par langage : le rapport complet est derrière un formulaire, ces chiffres ne sont pas repris. Périmètre : tâches de test construites par Veracode, pas du code de production ; chiffres d'un éditeur d'outils de sécurité.
+:::
+
+## Un an plus tard, presque rien {kicker="Sécurité"}
+
+| Mesure Veracode | Juillet 2025 | Juillet 2026 |
+|---|---|---|
+| tâches avec faille | 45 % | 44 % |
+| échec sur injection de script | 86 % | 85 % |
+| échec sur injection dans les journaux | 88 % | 88 % |
+
+Les modèles testés ont changé d'une édition à l'autre ; la part de code vulnérable reste stable.
+
+::: sources
+- [Veracode, communiqué du 30 juillet 2025](https://www.veracode.com/press-release/ai-generated-code-poses-major-security-risks-in-nearly-half-of-all-development-tasks-veracode-research-reveals/)
+- [Veracode, « 2026 GenAI Code Security Report », 28 juillet 2026](https://www.veracode.com/blog/2026-genai-code-security-report-ai-risk/)
+:::
+
+::: notes
+Comparaison de deux éditions, pas d'une série suivie : jeux de modèles différents, 80 tâches et plus de 100 modèles en 2025, nombre de tâches et de modèles non publié en 2026. Les valeurs 2025 sont celles du communiqué (45 %, 86 %, 88 %). Les valeurs 2026 viennent du billet : 44 % de tâches avec faille (taux de réussite 56 %, contre 55 % dans la première édition), et pour les deux injections les compléments des taux de réussite publiés, 15 % et 12 %. Lire « environ » devant chaque valeur. Veracode conclut à la stagnation : « security performance has stayed flat while the amount of AI-generated code entering pipelines has surged ». Les relire, pas les croire : un éditeur d'outils de sécurité, tâches de test construites par lui.
 :::
 
 ## Paquets inventés, mesurés {.figures kicker="Sécurité"}
