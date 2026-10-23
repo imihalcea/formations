@@ -267,9 +267,9 @@ Démonstration 1 (appelle le modèle, `claude-sonnet-4-6`, jouée le 22 octobre 
 
 ## Ce qu'un skill apporte, mesuré {.figures kicker="Skills"}
 
-- **+16,6 points** skills rédigés, 87 tâches
-- **3** parties au plus par skill
-- **+1,2 %** skills publics de développement
+- **+16,6 points** de réussite, skills rédigés pour la tâche
+- **+1,2 %** de réussite, skills publics génériques
+- **39 sur 49** skills publics sans aucun effet
 
 Un skill aide quand il porte un savoir que le modèle n'a pas.
 
