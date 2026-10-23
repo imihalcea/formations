@@ -601,7 +601,13 @@ Claude Sonnet 4.6 est le modèle de la VM, désigné par l'identifiant complet `
 Ligne « partagé » : ce que l'équipe garde si elle change d'outil, c'est le fichier de contexte, le dossier de skills et les artefacts de Spec Kit. Autres différences à citer à la demande : mémoire entre sessions (auto memory sous Claude Code, voir [Claude Code, Memory : Auto memory](https://code.claude.com/docs/en/memory#auto-memory) ; l'absence d'équivalent sous Open Code vient de `formateur/equivalences.md`, sans page officielle qui l'affirme) ; extensions (Claude Code : skills, hooks, plugins, serveurs MCP ; Open Code : skills, plugins en JavaScript ou TypeScript, serveurs MCP) ; MCP signifie Model Context Protocol, protocole qui connecte un agent à des outils externes. Relevé dans `formateur/equivalences.md` . Licences : `LICENSE` et `package.json` d'Open Code au tag v2.0.32 (MIT) ; `LICENSE.md` de `anthropics/claude-code` (« All rights reserved »).
 :::
 
-## Coût moyen par développeur, jour actif {.figure value="13 $" kicker="Choisir"}
+## Coût de Claude Code, mesuré {.figures kicker="Choisir"}
+
+- **13 $** par jour actif, en moyenne
+- **150 à 250 $** par mois et par développeur
+- **< 30 $** par jour, 90 % des développeurs
+
+Coût en tokens au tarif public, Anthropic, Claude Code seul
 
 ::: sources
 - [Anthropic, déploiements en entreprise : Claude Code, Costs](https://code.claude.com/docs/en/costs)
@@ -609,7 +615,7 @@ Ligne « partagé » : ce que l'équipe garde si elle change d'outil, c'est le f
 :::
 
 ::: notes
-Légende : par développeur et par jour actif, chiffre d'Anthropic issu de déploiements en entreprise. Documentation : « the average cost is around $13 per developer per active day and $150-250 per developer per month, with costs remaining below $30 per active day for 90% of users » ; chiffre issu des déploiements en entreprise, sans date de relevé ni méthode publiée. À comparer avec ses propres sessions : `/usage` sous Claude Code, `opencode stats --cost --days 30` sous Open Code (la commande accepte aussi `--project .`, ces options sont lues dans `stats.ts` v2.0.32).
+Un jour actif est un jour où le développeur utilise Claude Code. Les trois chiffres viennent de la même phrase de la page Costs, consultée le 23 octobre 2026 ; la page précise qu'elle couvre Claude Code seul et que le coût dépend du modèle, de la taille du dépôt et des usages (instances multiples, automatisation). Les 30 $ sont un seuil : 90 % des utilisateurs restent dessous, les 10 % restants le dépassent. Nature du chiffre : un coût en tokens, pas un prix d'abonnement. Claude Code est facturé à la consommation de tokens ; `/usage` calcule le montant localement à partir des tokens, au tarif public, et la page précise que ce montant est une estimation sans valeur de facturation pour un abonné. Sur Team et Enterprise, l'usage dans le forfait du siège n'est pas compté en dollars. Ce chiffre correspond à une facturation au token, comme Bedrock sur la VM. La page ne dit pas comment les déploiements sont facturés ni comment Anthropic agrège les chiffres. Documentation : « the average cost is around $13 per developer per active day and $150-250 per developer per month, with costs remaining below $30 per active day for 90% of users » ; chiffre issu des déploiements en entreprise, sans date de relevé ni méthode publiée. À comparer avec ses propres sessions : `/usage` sous Claude Code, `opencode stats --cost --days 30` sous Open Code (la commande accepte aussi `--project .`, ces options sont lues dans `stats.ts` v2.0.32).
 :::
 
 ## Le coût total {kicker="Choisir"}
