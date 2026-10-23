@@ -27,7 +27,7 @@ Règles métier fournies (`tp/fichiers/regles-metier.md`), un code d'erreur par 
 
 Deux exigences s'ajoutent au TP 4, sans code propre : REG-06, un seul code rendu, celui de la première règle enfreinte dans l'ordre REG-01 à REG-05 (réponse du produit à `clarify`) ; REG-07, la décision dépend du seul instant courant fourni en entrée (exigence de reproductibilité du brief). Les autres réponses du produit (`tp/fichiers/clarifications.md`) : les jours fériés restent ouvrés, un seul fuseau horaire local implicite, quota, annulation, pools de ressources et approbation hors périmètre, API et stockage inchangés.
 
-Les scénarios Gherkin fournis (`tp/fichiers/valider-reservation.feature`, 24 exemples, à confirmer) fixent l'instant courant au mardi 2 juin 2026 à 9h00 et testent chaque borne des deux côtés. L'exemple du dimanche (REG-02) en est absent à dessein : la passe de mutation du TP 6 (partie B) laisse survivre `weekday() >= 5` muté en `== 5`, le stagiaire ajoute l'exemple dans la spécification et le `.feature`, puis rejoue la passe. Convention fixée au module 2 : mots-clés français dans les skills `ears` et `gherkin`, le fichier `spec-template.md` modifié en place, le `.feature` (`# language: fr`, `Fonctionnalité`, `Scénario`, `Soit`, `Quand`, `Alors`) et les tests pytest-bdd ; la prise en charge de `# language: fr` par pytest-bdd est à vérifier par `verificateur-sources` au module 6.
+Les scénarios Gherkin fournis (`tp/fichiers/valider-reservation.feature`, 19 scénarios) fixent l'instant courant au mardi 2 juin 2026 à 9h00 et testent chaque borne des deux côtés (REG-04 encadrée à 59 et 62 jours : le 60e jour tombe un samedi). L'exemple du dimanche (REG-02) en est absent à dessein : la passe de mutation du TP 6 (partie B) laisse survivre `weekday() >= 5` muté en `== 5`, le stagiaire ajoute l'exemple dans la spécification et le `.feature`, puis rejoue la passe. Convention fixée au module 2 : mots-clés français dans les skills `ears` et `gherkin`, le fichier `spec-template.md` modifié en place, le `.feature` (`# language: fr`, `Fonctionnalité`, `Scénario`, `Soit`, `Quand`, `Alors`) et les tests pytest-bdd ; la prise en charge de `# language: fr` par pytest-bdd est à vérifier par `verificateur-sources` au module 6.
 
 Dates du `curl`. `test_fumee.py` réserve le lundi suivant de 10h à 11h, ce qui respecte les cinq règles quel que soit le jour de la formation : le test reste vert une fois les règles écrites. Le `curl` des énoncés calcule sa date de même, `$(date -d 'next monday' +%F)T10:00:00`, pour tenir dans le préavis et l'horizon. Au TP 3, deux envois identiques répondent 201 (aucune règle). Au TP 6 (partie A), l'énoncé envoie deux fois la même demande : le second envoi répond 422 `overlap` dans tous les cas ; le premier aussi quand `bookit.db` porte encore la réservation du TP 3 et que le lundi suivant n'a pas changé entre les deux journées.
 
@@ -70,8 +70,8 @@ Une seule copie de `~/bookit/` du TP 1 au TP 6, aucun état intermédiaire fourn
 | TP 3 | `.git`, `.venv` (ignoré), `.specify/`, commandes de l'outil, `docs/adr/`, `docs/constitution-base.md`, `.specify/memory/constitution.md` 1.0.1 | 4 | 1 |
 | TP 4 | `AGENTS.md`, `.claude/skills/{ears,gherkin}/`, `docs/{brief,regles-metier,clarifications}.md`, `.specify/templates/spec-template.md` (modifié en place), `specs/001-valider-reservation/spec.md` (REG-01 à REG-07) et `checklists/requirements.md` | 9 | 1 |
 | TP 5 | `specs/001-valider-reservation/valider-reservation.feature`, `spec.md` réaligné, `plan.md`, `research.md`, `data-model.md`, `quickstart.md`, `.specify/templates/tasks-template.md` (modifié en place), `tasks.md` | 14 | 1 |
-| TP 6, partie A | `tests/test_valider_reservation.py`, `bookit/domain/validate_booking.py`, `tasks.md` coché | 19 | 25 (à confirmer) |
-| TP 6, partie B | `cosmic-ray.toml`, `pyproject.toml` et `uv.lock` (cosmic-ray), `specs/001-valider-reservation/mutation.md`, exemple du dimanche dans `spec.md`, le `.feature` et les tests | 21 | 26 (à confirmer) |
+| TP 6, partie A | `tests/test_valider_reservation.py`, `bookit/domain/validate_booking.py`, `tasks.md` coché | 19 | 20 (1 test de fumée et 19 scénarios) |
+| TP 6, partie B | `cosmic-ray.toml`, `pyproject.toml` et `uv.lock` (cosmic-ray), `specs/001-valider-reservation/mutation.md`, exemple du dimanche dans `spec.md`, le `.feature` et les tests | 21 | 21 (1 test de fumée et 20 scénarios) |
 
 ### TP 1, partie A (module 1) et partie B (module 2)
 
@@ -135,7 +135,7 @@ Travail :
 2. `/speckit-plan` avec un prompt qui ferme les dérives : domaine seul, pytest-bdd, aucun contrat d'API, API et stockage inchangés ; commit.
 3. Relecture à trois points, corrections à la main ; commit.
 4. `~/fichiers/tasks-template.md` copié sur `.specify/templates/tasks-template.md`, en place : tests obligatoires, une paire Test REG-NN et Code REG-NN par exigence, à la place de « Tests are OPTIONAL » ; commit.
-5. `/speckit-tasks`, relecture (T001 harnais, paires Test et Code pour REG-01 à REG-05, Test seul pour REG-06 et REG-07), `/speckit-analyze` en lecture seule, remédiations appliquées à la main ; commit.
+5. `/speckit-tasks`, relecture (T001 socle de test, paires Test et Code pour REG-01 à REG-05, Test seul pour REG-06 et REG-07), `/speckit-analyze` en lecture seule, remédiations appliquées à la main ; commit.
 
 Commits : `TP 5 : scénarios Gherkin`, `TP 5 : plan`, `TP 5 : plan relu`, `TP 5 : template de tâches`, `TP 5 : tâches relues`.
 
@@ -149,15 +149,15 @@ Lancée par une slide après la section « Du scénario au test ». Départ : ar
 
 Travail :
 
-1. `/speckit-implement` borné à T001 : harnais pytest-bdd (fichier de test, définitions des étapes, aucun scénario lié) ; diff relu, suite verte ; commit.
+1. `/speckit-implement` borné à T001 : socle de test pytest-bdd (fichier de test, définitions des étapes, aucun scénario lié) ; diff relu, suite verte ; commit.
 2. Tâche Test REG-01 : scénarios de la durée liés, échec constaté sur 10h29 et 14h01 ; commit du rouge.
 3. Session neuve (`/clear` ou `/new`), tâche Code REG-01 : diff relu en deux temps, vert ; commit.
 4. REG-02 à REG-05, même geste par paire, en un lot ; commit.
 5. Tâches restantes (Test REG-06, Test REG-07, finition), `tasks.md` entièrement coché ; commit. API relancée, le `curl` du TP 3 envoyé deux fois répond 422 `overlap`.
 
-Commits : `TP 6 : harnais pytest-bdd`, `TP 6 : REG-01 rouge`, `TP 6 : REG-01 vert`, `TP 6 : REG-02 à REG-05`, `TP 6 : tâches restantes`.
+Commits : `TP 6 : socle de test`, `TP 6 : REG-01 rouge`, `TP 6 : REG-01 vert`, `TP 6 : REG-02 à REG-05`, `TP 6 : tâches restantes`.
 
-Arrivée : 19 commits, suite verte (1 test de fumée et 24 scénarios, à confirmer), `git log --oneline -- bookit/application bookit/infrastructure` ne montre que le commit du squelette, `tasks.md` tout coché.
+Arrivée : 19 commits, suite verte (1 test de fumée et 19 scénarios), `git log --oneline -- bookit/application bookit/infrastructure` ne montre que le commit du squelette, `tasks.md` tout coché.
 
 ### TP 6, partie B (module 6, 40 min)
 
@@ -170,7 +170,7 @@ Travail :
 
 Commits : `TP 6 : mutation, passe 1`, `TP 6 : trous comblés, passe 2`.
 
-Arrivée : 21 commits, suite verte (1 test de fumée et 25 scénarios, à confirmer), `mutation.md` à deux passes.
+Arrivée : 21 commits, suite verte (1 test de fumée et 20 scénarios), `mutation.md` à deux passes.
 
 Corrigé `tp/tp06/` : le contenu de `tp/tp05/` plus `bookit/domain/validate_booking.py`, `tests/test_valider_reservation.py`, `tasks.md` coché, `cosmic-ray.toml`, `pyproject.toml`, `uv.lock`, `mutation.md`, `spec.md` et `.feature` complétés.
 
