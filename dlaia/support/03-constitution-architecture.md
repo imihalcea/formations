@@ -199,17 +199,18 @@ Conclut la section : cinq ADR et leur pourquoi, deux rôles, l'ADR 1 qui motive 
 |---|---|---|
 | aucun import hors `bookit.domain` dans le domaine | constitution | structure du code, valable pour tout le projet |
 | une réservation dure au plus 4 heures | spécification | règle métier REG-01 : le QUOI |
-| les scénarios s'exécutent avec pytest-bdd | plan | choix technique d'une fonctionnalité : le COMMENT |
+| un créneau se stocke en deux colonnes, début et fin | plan | décision sur le modèle de données d'une fonctionnalité : le COMMENT |
 | Claude Code lance pytest avant de répondre | aucun des trois | réglage d'un outil ; la constitution vaut pour les deux outils et pour un humain |
 
 ::: sources
 - [Spec Kit, `templates/commands/specify.md` v1.2.2](https://github.com/github/spec-kit/blob/v1.2.2/templates/commands/specify.md)
 - [Spec Kit, `templates/commands/constitution.md` v1.2.2](https://github.com/github/spec-kit/blob/v1.2.2/templates/commands/constitution.md)
 - [Spec Kit, `templates/plan-template.md` v1.2.2](https://github.com/github/spec-kit/blob/v1.2.2/templates/plan-template.md)
+- [Spec Kit, `templates/commands/plan.md` v1.2.2](https://github.com/github/spec-kit/blob/v1.2.2/templates/commands/plan.md)
 :::
 
 ::: notes
-`specify.md` : « Focus on WHAT users need and WHY. Avoid HOW to implement (no tech stack, APIs, code structure). » : la règle métier va dans `spec.md`. `plan-template.md`, section Technical Context (langage, dépendances, stockage, tests) : le choix de pytest-bdd va dans le plan, au TP 5. `constitution.md` : la commande n'écrit que la constitution et range toute demande d'implémentation en « deferred intents ».
+`specify.md` : « Focus on WHAT users need and WHY. Avoid HOW to implement (no tech stack, APIs, code structure). » : la règle métier va dans `spec.md`. `commands/plan.md`, phase 1 : « Generate data-model.md, contracts/, quickstart.md » ; les entités extraites de la spécification donnent `data-model.md`, donc le modèle de données d'une fonctionnalité va dans le plan, au TP 5. `plan-template.md`, section Technical Context (langage, dépendances, stockage, tests), reçoit les choix de pile comme pytest-bdd. `constitution.md` : la commande n'écrit que la constitution et range toute demande d'implémentation en « deferred intents ».
 Quatrième ligne : un réglage de l'agent (commande autorisée, outil lancé automatiquement) appartient à la configuration de l'outil ; dans bookit, `.claude/settings.json` et `opencode.json` autorisent déjà `uv run pytest`. Le fichier lu par les deux outils au lancement de chaque session est présenté au module 4. La constitution ne nomme ni Claude Code ni Open Code : relue par un humain, elle doit rester vraie.
 Test rapide pour classer une phrase : change-t-elle si on change de langage ou de base ? COMMENT, plan. Si on change de produit ? QUOI, spécification. Si on change d'outil ? réglage. Sinon, structure : constitution.
 :::
@@ -249,10 +250,10 @@ Règles de version du prompt `constitution.md` : « MAJOR: Backward incompatible
 Corrigé cité par `file=` : `tp/tp03/.specify/memory/constitution.md`, sept principes, les quatre de structure avec leur ADR, deux sections libres (« Contraintes techniques », « Workflow »), `## Governance`. Les sections libres reçoivent ce qui n'est pas un principe mais vaut pour tout le projet : la pile (Python 3.14, uv, FastAPI et SQLite inchangés, conteneur et authentification en attente : ADR 2 à 5) et l'ordre des artefacts.
 :::
 
-## Structure du code dans la constitution, comportement du produit dans la spécification. {.statement kicker="La constitution"}
+## La `constitution` impose le **cadre**, les `ADR` capturent le **pourquoi**, les `spécifications` définissent le **comportement**. {.statement kicker="La constitution"}
 
 ::: notes
-Conclut les deux slides : chaque phrase a son artefact, et le fichier a sa forme. Renvoie à l'idée clé du module 2 « La spécification porte le QUOI ; le plan porte le COMMENT » : la constitution s'ajoute en amont, pour ce qui vaut quelle que soit la fonctionnalité. La section suivante donne le contenu de ces principes de structure.
+Conclut les deux slides : chaque phrase a son artefact, et le fichier a sa forme. La constitution porte la structure du code, la pile et le workflow, tout ce qui vaut quelle que soit la fonctionnalité ; l'ADR garde le pourquoi des décisions structurantes ; la spécification porte le comportement d'une fonctionnalité. Renvoie à l'idée clé du module 2 « La spécification porte le QUOI ; le plan porte le COMMENT » : la constitution s'ajoute en amont, pour ce qui vaut quelle que soit la fonctionnalité. La section suivante donne le contenu de ces principes de structure.
 :::
 
 ## Couches, dépendances, frontière {kicker="Structure et frontières"}
