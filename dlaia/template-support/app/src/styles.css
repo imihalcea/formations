@@ -55,6 +55,7 @@ body { background-color: var(--deck); color: var(--deck-foreground); }
   font-family: var(--font-mono); font-size: 0.85em; padding: 0.05em 0.3em; border-radius: 6px;
   background: oklch(0.54 0.21 262 / 9%);
 }
+.slide-statement strong { font-weight: 400; color: oklch(0.74 0.14 255); }
 .slide-statement code { background: oklch(0.985 0.004 250 / 14%); }
 /* Un code en ligne de titre ne se coupe pas entre deux lignes. */
 .slide-heading code, .slide-statement code, .slide-title-lg code, .tp-step-title code { white-space: nowrap; }
