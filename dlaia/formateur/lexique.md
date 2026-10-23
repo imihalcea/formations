@@ -16,6 +16,11 @@ Les définitions ci-dessous sont provisoires jusqu'au plan du module concerné, 
 | Claude Sonnet 4.6 | modèle unique de la formation, identifiant `claude-sonnet-4-6` | 00 | Sonnet seul, Claude 4.6, le modèle d'Anthropic |
 | bookit | projet fil rouge : application de réservation de ressources | 00 | Bookit, l'application ou le projet sans son nom |
 | fil rouge | projet bookit repris de TP en TP | 00 | projet d'exemple, cas d'école |
+| Amazon Bedrock | service d'Amazon Web Services qui héberge des modèles ; les deux agents de code l'appellent pour Claude Sonnet 4.6 | 00 | Bedrock seul, AWS Bedrock |
+| TP | séance de pratique guidée à la suite d'un module ; l'énoncé se lit sur une page dédiée | 00 | atelier, exercice, lab |
+| énoncé | texte d'un TP, sur sa page dédiée | 00 | consigne, sujet |
+| archive | `dlaia.zip` : le support, `bookit/` et `fichiers/` | 00 | zip, paquet |
+| support | cours compilé, `dlaia.html` | 00 | slides (pour l'ensemble), présentation |
 
 ## Domaine bookit (module 3, règles et codes de refus dès le module 1)
 
