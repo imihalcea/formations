@@ -18,7 +18,7 @@ Le texte du milieu est l'objet des deux jours : d'une phrase (TP 1) à une spéc
 La définition mécanique de l'agent (modèle dans une boucle d'outils) vient dans la section « L'agent » ; ici, son comportement observable suffit.
 :::
 
-## Ce que le développeur écrit décide de ce que l'agent produit. {.statement kicker="Point de départ"}
+## La qualité et la pertinence du code sont sensibles à la qualité des informations reçues. {.statement kicker="Point de départ"}
 
 ::: notes
 Thèse du module. Le TP 1 la fait éprouver : même fonction, deux textes, deux résultats.
