@@ -142,6 +142,13 @@ Les définitions ci-dessous sont provisoires jusqu'au plan du module concerné, 
 | trou dans les tests | sorte de survivant : un comportement observable change et aucun scénario ne le voit ; se comble par un scénario dans `spec.md` et le `.feature`, jamais dans `tests/` seul ; slide « Classer un survivant » | 06 | manque de test, test manquant, faille, lacune |
 | mutant équivalent | sorte de survivant : aucune entrée ne distingue le mutant du code d'origine, aucun test ne peut le tuer ; noté dans `mutation.md` avec sa raison ; slide « Classer un survivant » | 06 | faux positif, mutant inutile, survivant légitime |
 | converger | ramener le code et les artefacts à l'accord : `converge` mesure l'écart entre le code et `spec.md`, `plan.md`, `tasks.md`, ajoute les tâches manquantes en fin de `tasks.md`, `implement` les exécute, jusqu'à « Converged » ; slide « Entrées et sorties de `converge` » | 06 | boucler, itérer, finaliser |
+| fixture | valeur que pytest fournit à un test ou à une étape ; `target_fixture` fait d'une étape Soit ou Quand une fixture que les étapes suivantes reçoivent ; slide « Une définition d'étape par phrase » | 06 | variable partagée, contexte, setup |
+| survivant | mutant que la suite laisse passer ; deux sortes : trou dans les tests, mutant équivalent ; slide « Mutation testing : le code modifié » | 06 | mutant vivant, mutant non détecté |
+| tâche Test, tâche Code | tâche d'une paire du template de tâches : la tâche Test lie les scénarios d'une règle et doit échouer ; la tâche Code écrit la règle dans `validate_booking.py` ; slide « Relire le diff d'une tâche » | 06 | tâche de test, tâche d'implémentation, étape de test |
+| opérateur (de mutation) | type de modification que cosmic-ray applique au code (`>=` devient `==`) ; slide « Mutation testing : le code modifié » | 06 | mutateur, règle de mutation |
+| liaison (d'un scénario) | `@scenario(FEATURE, "titre")` qui lie un scénario du `.feature` à une fonction de test ; slide « Lier le `.feature` aux tests » | 06 | binding, branchement, association |
+| fichier de suivi | `mutation.md` : une section par passe, une ligne par survivant avec sa sorte et son action ; slide « Classer un survivant » | 06 | journal, rapport de mutation |
+| passe (de mutation) | un cycle `init`, `exec`, `cr-report` sur le code et les tests du moment ; slide « Les commandes de cosmic-ray » | 06 | itération, run, session (réservé à l'agent) |
 
 ## Contexte, sécurité et choix des outils (module 7)
 

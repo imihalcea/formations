@@ -155,9 +155,9 @@ Travail :
 4. REG-02 à REG-05, même geste par paire, en un lot ; commit.
 5. Tâches restantes (Test REG-06, Test REG-07, finition), `tasks.md` entièrement coché ; commit. API relancée, le `curl` du TP 3 envoyé deux fois répond 422 `overlap`.
 
-Commits : `TP 6 : socle de test`, `TP 6 : REG-01 rouge`, `TP 6 : REG-01 vert`, `TP 6 : REG-02 à REG-05`, `TP 6 : tâches restantes`.
+Commits : `TP 6 : socle de test`, `TP 6 : REG-01 en échec`, `TP 6 : REG-01 vert`, `TP 6 : REG-02 à REG-05`, `TP 6 : tâches restantes`.
 
-Arrivée : 19 commits, suite verte (1 test de fumée et 19 scénarios), `git log --oneline -- bookit/application bookit/infrastructure` ne montre que le commit du squelette, `tasks.md` tout coché.
+Arrivée : 19 commits, suite verte à 20 tests (1 test de fumée et 19 scénarios ; montée 1, 5, 10, 12, 14, 17, 20 aux tâches T001, T003, T005, T007, T009, T011, T013), `git log --oneline -- bookit/application bookit/infrastructure` ne montre que le commit du squelette, `tasks.md` tout coché.
 
 ### TP 6, partie B (module 6, 40 min)
 
@@ -165,14 +165,14 @@ Lancée en fin de module, après « Couverture et mutation » et « Converger »
 
 Travail :
 
-1. `uv add --dev cosmic-ray==8.7.0`, `~/fichiers/cosmic-ray.toml` copié à la racine et `~/fichiers/mutation.md` dans `specs/001-valider-reservation/`, passe 1 (`baseline`, `init`, `exec`, `cr-report --surviving-only`), survivants relevés dans `mutation.md` ; commit. Le fichier de session de cosmic-ray n'est pas commité.
+1. `uv add --dev cosmic-ray==8.7.0` (la passe comprend `cr-filter-operators` entre `init` et `exec`), `~/fichiers/cosmic-ray.toml` copié à la racine et `~/fichiers/mutation.md` dans `specs/001-valider-reservation/`, passe 1 (`baseline`, `init`, `exec`, `cr-report --surviving-only`), survivants relevés dans `mutation.md` ; commit. Le fichier de session de cosmic-ray n'est pas commité.
 2. Analyse des survivants par l'agent : prompt qui lui donne la sortie de `cr-report --show-diff` et demande, pour chaque survivant, mutant équivalent ou trou dans les tests, et le cas manquant ; le stagiaire juge le classement. Cas ajoutés dans `spec.md`, le `.feature` et les tests (l'exemple du dimanche dans tous les cas), suite verte, passe 2, `mutation.md` à deux passes ; commit.
 
 Commits : `TP 6 : mutation, passe 1`, `TP 6 : trous comblés, passe 2`.
 
-Arrivée : 21 commits, suite verte (1 test de fumée et 20 scénarios), `mutation.md` à deux passes.
+Arrivée : 21 commits, `mutation.md` à deux passes. Corrigé : passe 1 à 192 mutants dont 66 filtrés (annotations de retour), 119 tués, 7 survivants, tous des trous (dimanche, 60 jours pile et 60 jours et 1 minute, quatre comparaisons de `_check_overlap`) ; six scénarios ajoutés, 26 tests, passe 2 à 0 survivant. `exec` dure environ une minute.
 
-Corrigé `tp/tp06/` : le contenu de `tp/tp05/` plus `bookit/domain/validate_booking.py`, `tests/test_valider_reservation.py`, `tasks.md` coché, `cosmic-ray.toml`, `pyproject.toml`, `uv.lock`, `mutation.md`, `spec.md` et `.feature` complétés.
+Corrigé `tp/tp06/` (testé sous Python 3.14 par superposition : 26 tests, ruff sans constat) : le contenu de `tp/tp05/` plus `bookit/domain/validate_booking.py`, `tests/test_valider_reservation.py`, `tasks.md` coché, `cosmic-ray.toml`, `pyproject.toml`, `uv.lock`, `mutation.md`, `spec.md` et `.feature` complétés.
 
 ## Archive distribuée
 
@@ -223,6 +223,7 @@ uv sync && uv run pytest -q && uv run ruff check && uv run ruff format --check
 ```sh
 uv run cosmic-ray baseline cosmic-ray.toml
 uv run cosmic-ray init cosmic-ray.toml mutation.sqlite
+uv run cr-filter-operators mutation.sqlite cosmic-ray.toml
 uv run cosmic-ray exec cosmic-ray.toml mutation.sqlite
 uv run cr-report mutation.sqlite --surviving-only
 ```
@@ -258,14 +259,19 @@ Décision : cosmic-ray reste l'outil du module 6 et du TP 6 ; le repli mutmut es
 
 ```toml
 [cosmic-ray]
-module-path = "bookit/domain"
+module-path = "bookit/domain/validate_booking.py"
 timeout = 30.0
 excluded-modules = []
 test-command = "uv run pytest -q tests"
 
 [cosmic-ray.distributor]
 name = "local"
+
+[cosmic-ray.filters.operators-filter]
+exclude-operators = ["core/ReplaceBinaryOperator_BitOr_.*"]
 ```
+
+Le module muté est `validate_booking.py` seul (`models.py` ne porte que des dataclasses). Le filtre écarte les mutants du `|` des annotations de retour : Python 3.14 n'évalue plus les annotations, 66 des 73 survivants d'une passe sans filtre en venaient. Commande à lancer entre `init` et `exec` : `uv run cr-filter-operators mutation.sqlite cosmic-ray.toml`.
 
 Piège relevé : `test-command` est exécuté depuis la racine du projet, et pytest n'ajoute pas cette racine au `sys.path` par défaut. Sans `pythonpath = ["."]` dans `[tool.pytest.ini_options]` (ou un paquet installé), chaque exécution échoue à la collecte et cosmic-ray compte tous les mutants comme tués : le baseline doit être lancé avant `exec`.
 
