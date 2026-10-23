@@ -64,6 +64,16 @@ Ce qui change pour le développeur : il ne colle plus, il ne place plus. Il écr
 Conclut les deux slides précédentes. « Formuler » et « relire » reviennent à chaque TP.
 :::
 
+## Les LLM expliqués en vidéo {.video kicker="Le LLM" src="https://youtu.be/wjZofJX0v4M"}
+
+::: sources
+- [3Blue1Brown, Transformers, the tech behind LLMs | Deep Learning Chapter 5](https://youtu.be/wjZofJX0v4M)
+:::
+
+::: notes
+Vidéo de 3Blue1Brown sur les transformers, lancée au début (le clic sur la slide charge le lecteur ; la vidéo se joue en ligne, hors connexion le lien du bas ne mène nulle part). Elle ouvre la section « Le LLM » : les slides suivantes reprennent la prédiction du texte suivant, les tokens et la température.
+:::
+
 ## Prédire la suite du texte {kicker="Le LLM"}
 
 ![Un début de fonction Python et les candidats pour la suite, avec leur probabilité](images/01-prediction.svg)
