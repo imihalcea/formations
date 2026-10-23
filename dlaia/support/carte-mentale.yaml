@@ -3,16 +3,6 @@ modules:
   - module: "01"
     titre: L'IA appliquée au développement logiciel
     sections:
-      - section: Point de départ
-        concepts:
-          - concept: Règle métier
-            definition: "Contrainte du domaine que toute réservation respecte, numérotée REG-NN."
-            slide: "01-ia-developpement-logiciel.md#Les règles métier de bookit"
-            voir: [Code de refus, Exigence]
-          - concept: Code de refus
-            definition: "Identifiant de la règle enfreinte, un par règle : duration, hours, lead_time, horizon, overlap."
-            slide: "01-ia-developpement-logiciel.md#Les règles métier de bookit"
-            voir: [Règle métier]
       - section: Quatre générations
         concepts:
           - concept: Génération d'assistance
@@ -30,22 +20,12 @@ modules:
           - concept: Fenêtre de contexte
             definition: "Tout ce que le modèle lit pour produire une réponse, de taille bornée."
             slide: "01-ia-developpement-logiciel.md#Ce que le modèle lit"
-            voir: [Instructions fixes, Token, Session]
-          - concept: Instructions fixes
-            definition: "Texte que le harnais place en tête de la fenêtre de contexte à chaque appel, avant le prompt."
-            slide: "01-ia-developpement-logiciel.md#Ce que le modèle lit"
+            voir: [Token, Session]
           - concept: Température
             definition: "Réglage de la part de hasard dans le choix de chaque token."
             slide: "01-ia-developpement-logiciel.md#La température règle le hasard"
-            voir: [Non-déterminisme]
-          - concept: Non-déterminisme
-            definition: "Deux appels identiques au modèle peuvent produire deux réponses différentes, même à température 0."
-            slide: "01-ia-developpement-logiciel.md#Quatre limites structurelles du modèle"
           - concept: Hallucination
             definition: "Affirmation produite avec assurance et fausse."
-            slide: "01-ia-developpement-logiciel.md#Quatre limites structurelles du modèle"
-          - concept: Date de coupure
-            definition: "Date jusqu'à laquelle les connaissances du modèle sont fiables, fixée par son entraînement."
             slide: "01-ia-developpement-logiciel.md#Quatre limites structurelles du modèle"
       - section: L'agent
         concepts:
@@ -60,10 +40,6 @@ modules:
             definition: "Logiciel qui entoure le modèle : boucle, outils, permissions, affichage."
             slide: "01-ia-developpement-logiciel.md#Le harnais entoure le modèle"
             voir: [Permission]
-          - concept: Tour
-            definition: "Un échange de la session : message, appels d'outils, réponse ; chaque tour reste entier dans la fenêtre de contexte."
-            slide: "01-ia-developpement-logiciel.md#Chaque tour remplit la fenêtre"
-            voir: [Fenêtre de contexte]
           - concept: Permission
             definition: "Accord demandé à l'utilisateur avant une action de l'agent."
             slide: "01-ia-developpement-logiciel.md#Permission et session neuve"
@@ -127,10 +103,6 @@ modules:
           - concept: Constitution
             definition: "Fichier `.specify/memory/constitution.md` : les principes du projet, que chaque plan et chaque diff respectent."
             slide: "02-introduction-spec-driven-development.md#Une constitution, quatre artefacts"
-            voir: [Principe]
-          - concept: Principe
-            definition: "Une règle de la constitution."
-            slide: "02-introduction-spec-driven-development.md#Une constitution, quatre artefacts"
       - section: La spécification
         concepts:
           - concept: Spécification
@@ -140,7 +112,6 @@ modules:
           - concept: Exigence
             definition: "Une phrase vérifiable de la spécification, numérotée REG-NN dans bookit."
             slide: "02-introduction-spec-driven-development.md#L'exigence : une phrase vérifiable, numérotée"
-            voir: [Règle métier]
           - concept: QUOI et COMMENT
             definition: "Partage entre la spécification (QUOI) et le plan (COMMENT)."
             slide: "02-introduction-spec-driven-development.md#Le QUOI et le COMMENT"
@@ -163,15 +134,8 @@ modules:
             definition: "Syntaxe d'exigence en une phrase à mots-clés : Quand, Tant que, Si, doit."
             slide: "02-introduction-spec-driven-development.md#EARS, une phrase à mots-clés"
             voir: [Exigence]
-          - concept: Patron EARS
-            definition: "Forme de phrase EARS propre à une situation : toujours, sur un événement, dans un état, cas indésirable."
-            slide: "02-introduction-spec-driven-development.md#EARS, une phrase à mots-clés"
           - concept: Gherkin
             definition: "Syntaxe de scénario Soit, Quand, Alors (`# language: fr`), exécutable avec pytest-bdd."
-            slide: "02-introduction-spec-driven-development.md#Gherkin : Soit, Quand, Alors"
-            voir: [Scénario]
-          - concept: Scénario
-            definition: "Un cas d'une exigence écrit en Gherkin : contexte, action, résultat."
             slide: "02-introduction-spec-driven-development.md#Gherkin : Soit, Quand, Alors"
       - section: Spec Kit
         concepts:
@@ -184,14 +148,6 @@ modules:
             outils:
               claude-code: "Skill invoqué `/speckit-x`."
               opencode: "Commande invoquée `/speckit.x`."
-          - concept: Fichier à trous
-            definition: "Fichier Markdown de `.specify/templates/` dont les sections entre crochets sont remplies par une commande Spec Kit."
-            slide: "02-introduction-spec-driven-development.md#Ce que `specify init` dépose"
-            voir: [Template]
-          - concept: Workflow speckit
-            definition: "Workflow en six étapes lancé par `specify workflow run`, avec un point de contrôle `type: gate`."
-            slide: "02-introduction-spec-driven-development.md#Le workflow `speckit`, six étapes"
-            voir: [Point de contrôle]
   - module: "03"
     titre: Constitution et architecture
     sections:
@@ -203,10 +159,6 @@ modules:
             voir: [Constitution]
       - section: ADR et constitution
         concepts:
-          - concept: Décision structurante
-            definition: "Décision qui engage tout le projet : style d'architecture, exposition, stockage, déploiement, identité ; seule matière d'un ADR."
-            slide: "03-constitution-architecture.md#Cinq décisions structurantes"
-            voir: [ADR]
           - concept: Principe vérifiable
             definition: "Principe dont un diff montre qu'il est respecté ou enfreint."
             slide: "03-constitution-architecture.md#Principe vérifiable sur un diff"
@@ -223,15 +175,6 @@ modules:
             definition: "Principe de la constitution qui porte sur les couches, les dépendances ou l'emplacement des fichiers."
             slide: "03-constitution-architecture.md#L'ADR 1 motive quatre principes"
             voir: [Frontière]
-          - concept: Principe de workflow
-            definition: "Principe de la constitution qui porte sur la manière de travailler : test avant le code, lint, commit."
-            slide: "03-constitution-architecture.md#L'ADR 1 motive quatre principes"
-      - section: La constitution
-        concepts:
-          - concept: Base de la constitution
-            definition: "Fichier `docs/constitution-base.md` : sept principes avec leur pourquoi, repris par la commande `constitution`."
-            slide: "03-constitution-architecture.md#Principes, sections libres, gouvernance"
-            voir: [Constitution]
       - section: Structure et frontières
         concepts:
           - concept: Couche
@@ -243,10 +186,6 @@ modules:
           - concept: Frontière
             definition: "Règle qui dit quelle couche, ou quel service, peut dépendre de quelle autre."
             slide: "03-constitution-architecture.md#Couches, dépendances, frontière"
-            voir: [Style d'architecture]
-          - concept: Style d'architecture
-            definition: "Manière d'organiser les modules et leurs dépendances : hexagonale, clean, microservices."
-            slide: "03-constitution-architecture.md#Trois aspects de la structure"
           - concept: Architecture hexagonale
             definition: "Domaine au centre, ports et adaptateurs à l'extérieur ; les dépendances pointent vers le domaine."
             slide: "03-constitution-architecture.md#L'architecture hexagonale"
@@ -263,14 +202,6 @@ modules:
           - concept: Microservices
             definition: "Services en processus séparés, chacun propriétaire de sa base, échanges par le réseau (Lewis et Fowler, 2014)."
             slide: "03-constitution-architecture.md#Hexagonale, le style de bookit"
-      - section: Spec Kit
-        concepts:
-          - concept: Commande constitution
-            definition: "Commande Spec Kit qui n'écrit qu'un fichier, `.specify/memory/constitution.md`."
-            slide: "03-constitution-architecture.md#`constitution` n'écrit qu'un fichier"
-            outils:
-              claude-code: "`/speckit-constitution`"
-              opencode: "`/speckit.constitution`"
       - section: Fil rouge bookit
         concepts:
           - concept: Ressource
@@ -279,24 +210,9 @@ modules:
           - concept: Demande de réservation
             definition: "Une ressource visée, un début et une fin, soumise à bookit."
             slide: "03-constitution-architecture.md#Ressource, demande, créneau, réservation"
-          - concept: Créneau
-            definition: "Intervalle entre un début et une fin, début inclus et fin exclue."
-            slide: "03-constitution-architecture.md#Ressource, demande, créneau, réservation"
           - concept: Réservation confirmée
             definition: "Demande acceptée et enregistrée sur sa ressource."
             slide: "03-constitution-architecture.md#Ressource, demande, créneau, réservation"
-          - concept: Décision
-            definition: "Résultat de la validation d'une demande : acceptée, ou refusée avec un code."
-            slide: "03-constitution-architecture.md#Décision, refus, instant courant"
-          - concept: Instant courant
-            definition: "Moment auquel la demande est jugée, fourni en entrée à la validation."
-            slide: "03-constitution-architecture.md#Décision, refus, instant courant"
-          - concept: Squelette
-            definition: "Le `fil-rouge/` fourni : bookit avec son API, son stockage et son test de fumée, sans `validate_booking`."
-            slide: "03-constitution-architecture.md#Le squelette, trois couches"
-          - concept: Test de fumée
-            definition: "Unique test fourni avec le squelette : une réservation valide via l'API répond 201."
-            slide: "03-constitution-architecture.md#Fourni et à construire"
   - module: "04"
     titre: Spécifier
     sections:
@@ -305,7 +221,7 @@ modules:
           - concept: Borne
             definition: "Valeur limite d'une règle (30 minutes, 4 heures, 2 heures, 60 jours, 20h00), incluse ou exclue."
             slide: "04-specifier.md#Borne, code, instant courant"
-            voir: [Exigence, Scénario]
+            voir: [Exigence]
       - section: EARS et Gherkin
         concepts:
           - concept: Exigence EARS
@@ -336,31 +252,12 @@ modules:
             voir: [Fichier de contexte]
       - section: Specify et clarify
         concepts:
-          - concept: Brief
-            definition: "Besoin écrit en langage courant, entrée de `specify` ; fichier `docs/brief.md` dans bookit."
-            slide: "04-specifier.md#Le brief de bookit"
-          - concept: Brouillon
-            definition: "Spécification produite par `specify`, avant `clarify`."
-            slide: "04-specifier.md#Du brief au brouillon"
-            outils:
-              claude-code: "`/speckit-specify`"
-              opencode: "`/speckit.specify`"
-          - concept: Liste de contrôle
-            definition: "Fichier `checklists/requirements.md` écrit par `specify` : questions de qualité sur les exigences."
-            slide: "04-specifier.md#Exigences REG-NN dès le brouillon"
           - concept: Clarification
             definition: "Question posée par `clarify` et réponse consignée dans la spécification."
             slide: "04-specifier.md#Cinq questions, par impact"
             outils:
               claude-code: "`/speckit-clarify`"
               opencode: "`/speckit.clarify`"
-          - concept: Responsable produit
-            definition: "Personne qui répond pour le métier aux questions de `clarify` ; ses réponses sont versionnées dans `docs/clarifications.md`."
-            slide: "04-specifier.md#Dix réponses du responsable produit"
-          - concept: Réconciliation
-            definition: "Réécriture du brouillon clarifié d'après les règles métier et les clarifications, jusqu'à sept exigences sans marqueur."
-            slide: "04-specifier.md#Clarifier avant de planifier"
-            voir: [Brouillon, Clarification]
   - module: "05"
     titre: Personnaliser Spec Kit, planifier, découper
     sections:
@@ -369,27 +266,13 @@ modules:
           - concept: Template
             definition: "Gabarit Markdown d'un artefact Spec Kit, fichier versionné de `.specify/templates/`."
             slide: "05-planifier-decouper.md#Le template, fichier du dépôt"
-            voir: [Fichier à trous]
       - section: Commande et template
         concepts:
-          - concept: Frontmatter
-            definition: "En-tête YAML entre deux lignes `---` en tête du fichier d'une commande."
-            slide: "05-planifier-decouper.md#`plan` : deux fichiers, deux frontmatters"
-          - concept: Argument de commande
-            definition: "Texte qui suit la commande Spec Kit à l'invocation, substitué à `$ARGUMENTS` dans son prompt."
-            slide: "05-planifier-decouper.md#Prompt, script, template"
-            voir: [Template]
           - concept: Personnalisation
-            definition: "Trois endroits fixent ce qu'on impose : le template (format de l'artefact), l'argument (ce qu'un appel impose), le prompt de la commande (la procédure)."
+            definition: "Trois endroits fixent ce qu'on impose : le template (format de l'artefact), le texte saisi à l'appel (ce qu'un appel impose), le prompt de la commande (la procédure)."
             slide: "05-planifier-decouper.md#Trois endroits pour personnaliser"
       - section: Planifier
         concepts:
-          - concept: Phases 0 et 1 de plan
-            definition: "Phase 0, recherche qui lève les inconnues ; phase 1, conception (modèle de données, quickstart, contrats)."
-            slide: "05-planifier-decouper.md#Entrées et sorties de `plan`"
-            outils:
-              claude-code: "`/speckit-plan`"
-              opencode: "`/speckit.plan`"
           - concept: Constitution Check
             definition: "Section de `plan.md` où `plan` confronte le plan à la constitution ; un principe enfreint sans justification arrête la commande."
             slide: "05-planifier-decouper.md#Le Constitution Check de `plan`"
@@ -404,9 +287,6 @@ modules:
             definition: "Ligne de `tasks.md` : case à cocher, identifiant T001, marqueur [P] si les fichiers diffèrent, description avec chemin de fichier."
             slide: "05-planifier-decouper.md#Le format d'une tâche"
             voir: [Tâche]
-          - concept: Socle de test
-            definition: "Tâche T001 : le fichier de tests et ses fonctions pytest-bdd, sans scénario lié."
-            slide: "05-planifier-decouper.md#Tâches : le template de bookit"
           - concept: Une tâche par session
             definition: "Chaque tâche s'exécute dans sa propre session, pour repartir d'une fenêtre de contexte vide."
             slide: "05-planifier-decouper.md#Une tâche par session"
@@ -419,9 +299,6 @@ modules:
             outils:
               claude-code: "`/speckit-analyze`"
               opencode: "`/speckit.analyze`"
-          - concept: Rapport d'analyse
-            definition: "Tableau des écarts relevés par `analyze`, avec catégorie, sévérité, emplacement et recommandation."
-            slide: "05-planifier-decouper.md#Le rapport d'analyse"
   - module: "06"
     titre: Implémenter et vérifier
     sections:
@@ -443,9 +320,6 @@ modules:
             definition: "Test écrit avant le code : rouge, vert, remaniement."
             slide: "06-implementer-verifier.md#TDD : rouge, vert, remaniement"
             voir: [BDD]
-          - concept: Suite rouge, suite verte
-            definition: "Rouge, au moins un test échoue ; verte, tous les tests passent."
-            slide: "06-implementer-verifier.md#TDD : rouge, vert, remaniement"
           - concept: BDD
             definition: "Scénarios Gherkin exécutés comme tests."
             slide: "06-implementer-verifier.md#BDD : le scénario comme test"
@@ -455,13 +329,6 @@ modules:
           - concept: Liaison d'un scénario
             definition: "`@scenario(FEATURE, \"titre\")` lie un scénario du `.feature` à une fonction de test."
             slide: "06-implementer-verifier.md#Lier le `.feature` aux tests"
-          - concept: Définition d'étape
-            definition: "Fonction Python liée à une phrase Soit, Quand ou Alors du `.feature`."
-            slide: "06-implementer-verifier.md#Une définition d'étape par phrase"
-            voir: [Fixture]
-          - concept: Fixture
-            definition: "Valeur que pytest fournit à un test ou à une étape ; `target_fixture` en fait d'une étape Soit une."
-            slide: "06-implementer-verifier.md#Une définition d'étape par phrase"
       - section: Couverture et mutants
         concepts:
           - concept: Couverture
@@ -474,24 +341,12 @@ modules:
           - concept: Mutant
             definition: "Version modifiée du code ; tué si un test échoue, survivant si la suite passe."
             slide: "06-implementer-verifier.md#Mutation testing : le code modifié"
-          - concept: Opérateur de mutation
-            definition: "Type de modification que cosmic-ray applique au code (`>=` devient `==`)."
-            slide: "06-implementer-verifier.md#Mutation testing : le code modifié"
-          - concept: Passe de mutation
-            definition: "Un cycle `init`, `exec`, `cr-report` sur le code et les tests du moment."
-            slide: "06-implementer-verifier.md#Les commandes de cosmic-ray"
           - concept: Survivant
-            definition: "Mutant que la suite laisse passer : trou dans les tests ou mutant équivalent."
+            definition: "Mutant que la suite laisse passer : comportement non couvert ou mutant équivalent."
             slide: "06-implementer-verifier.md#Le rapport : survivants et diff"
-          - concept: Trou dans les tests
-            definition: "Survivant dont le comportement observable change sans qu'aucun scénario le voie ; se comble dans `spec.md` et le `.feature`."
-            slide: "06-implementer-verifier.md#Classer un survivant"
           - concept: Mutant équivalent
             definition: "Survivant qu'aucune entrée ne distingue du code d'origine ; aucun test ne peut le tuer."
             slide: "06-implementer-verifier.md#Classer un survivant"
-          - concept: Fichier de suivi
-            definition: "`mutation.md` : une section par passe, une ligne par survivant avec sa sorte et son action."
-            slide: "06-implementer-verifier.md#L'agent propose, le développeur classe"
       - section: Converger
         concepts:
           - concept: Converger
@@ -527,30 +382,15 @@ modules:
               claude-code: "`/compact`, accepte des instructions."
               opencode: "Option `compaction.auto` d'`opencode.json`."
             voir: [Fenêtre de contexte]
-          - concept: Réflexion
-            definition: "Tokens que le modèle produit avant sa réponse pour raisonner, facturés comme tokens de sortie."
-            slide: "07-contexte-securite-outils.md#Durée et coût d'un tour"
-          - concept: Niveau d'effort
-            definition: "Réglage de la quantité de réflexion d'un tour (`/effort` sous Claude Code), à essayer avant de changer de modèle."
-            slide: "07-contexte-securite-outils.md#Durée et coût d'un tour"
-            voir: [Réflexion]
           - concept: Cache de prompt
             definition: "Réutilisation d'un préfixe de contexte déjà traité, facturé au dixième du prix d'entrée pendant cinq minutes."
             slide: "07-contexte-securite-outils.md#Le cache de prompt"
-          - concept: Prix du modèle
-            definition: "Par million de tokens : 3 $ en entrée, 3,75 $ en écriture de cache, 0,30 $ en lecture de cache, 15 $ en sortie."
-            slide: "07-contexte-securite-outils.md#Prix de Claude Sonnet 4.6"
-            voir: [Cache de prompt]
       - section: Unité de travail
         concepts:
           - concept: Unité de travail
             definition: "Ce qu'une session traite d'un bout à l'autre : une tâche, le contexte qu'elle lit, le diff, sa vérification, puis le commit."
             slide: "07-contexte-securite-outils.md#L'unité de travail"
             voir: [Session]
-          - concept: workflow run
-            definition: "Commande `specify workflow run` qui enchaîne les étapes du workflow et s'arrête à chaque point de contrôle."
-            slide: "07-contexte-securite-outils.md#Lancer `workflow run`"
-            voir: [Point de contrôle]
       - section: Sécurité
         concepts:
           - concept: Dépendance hallucinée
@@ -585,22 +425,9 @@ modules:
             definition: "Gain estimé par le développeur, comparé au gain mesuré."
             slide: "08-lucidite-cloture.md#Attendu, ressenti, mesuré"
             voir: [Productivité mesurée]
-          - concept: Productivité attendue
-            definition: "Gain que le développeur prévoit avant la tâche."
-            slide: "08-lucidite-cloture.md#Productivité ressentie ou mesurée"
           - concept: Productivité mesurée
             definition: "Gain relevé sur des tâches comparables, chronométrées."
             slide: "08-lucidite-cloture.md#Productivité ressentie ou mesurée"
-          - concept: Essai randomisé
-            definition: "Comparaison où le hasard décide quelle tâche reçoit l'outil d'assistance."
-            slide: "08-lucidite-cloture.md#Essai randomisé de METR"
-            voir: [Enquête]
-          - concept: Enquête
-            definition: "Recueil d'avis par questionnaire, qui relève des associations ; l'essai randomisé établit une cause."
-            slide: "08-lucidite-cloture.md#DORA : adoption et livraison"
-          - concept: Débit et stabilité de livraison
-            definition: "Mesures DORA : vitesse à laquelle les changements arrivent en production, fréquence des échecs et des reprises."
-            slide: "08-lucidite-cloture.md#DORA : adoption et livraison"
       - section: Relecture et compétence
         concepts:
           - concept: Dette de relecture
@@ -613,20 +440,12 @@ modules:
           - concept: Atrophie des compétences
             definition: "Perte de pratique du développeur qui délègue."
             slide: "08-lucidite-cloture.md#L'atrophie des compétences"
-          - concept: Parade
-            definition: "Pratique de la méthode qui maintient la compétence du développeur."
-            slide: "08-lucidite-cloture.md#Quatre parades contre l'atrophie"
-            voir: [Atrophie des compétences]
       - section: Orchestrateur
         concepts:
           - concept: Orchestrateur
             definition: "Développeur qui cadre, délègue et vérifie au lieu d'écrire chaque ligne."
             slide: "08-lucidite-cloture.md#Le développeur devient orchestrateur"
             voir: [Signataire]
-          - concept: Quatre points de contrôle
-            definition: "Spécification, plan, tâches et diff : le développeur pose une question à chacun avant de continuer."
-            slide: "08-lucidite-cloture.md#Les quatre points de contrôle"
-            voir: [Point de contrôle]
       - section: Pour continuer
         concepts:
           - concept: Feuille de route personnelle
