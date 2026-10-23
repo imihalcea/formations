@@ -154,12 +154,16 @@ Les définitions ci-dessous sont provisoires jusqu'au plan du module concerné, 
 
 | Terme | Définition | Introduit | À ne pas employer |
 |---|---|---|---|
-| lost in the middle | baisse d'attention du modèle sur le milieu d'un long contexte | 07 | effet de milieu, dilution |
-| cache de prompt | réutilisation d'un préfixe de contexte déjà traité, facturé moins cher | 07 | caching, mise en cache, prompt caching |
-| unité de travail | ce qu'une session traite d'un bout à l'autre : une tâche, son contexte, sa vérification | 07 | lot, itération, sprint, incrément |
-| dépendance hallucinée | paquet inventé par le modèle, parfois enregistré par un attaquant | 07 | slopsquatting (à définir si employé), paquet fantôme |
-| fichier de règles piégé | fichier de contexte ou skill contenant une instruction malveillante | 07 | prompt injection (à définir si employé), fichier empoisonné |
-| coût total | prix des tokens, temps de relecture et risque, additionnés | 07 | TCO, coût réel |
+| lost in the middle | baisse d'attention du modèle sur le milieu d'un long contexte ; dans une session, le milieu, ce sont les anciens tours ; slide « Lost in the middle » (légende du schéma) | 07 | effet de milieu, dilution |
+| compaction | remplacement des tours d'une session par un résumé quand la fenêtre approche de sa limite ; déclenchée par le harnais ou par `/compact` ; le fichier de contexte et les skills sont relus depuis le disque ; slide « La compaction résume la session » | 07 | résumé automatique, compactage |
+| réflexion | tokens que le modèle produit avant sa réponse pour raisonner, facturés comme tokens de sortie ; slide « Ce qui allonge un tour » | 07 | thinking, raisonnement |
+| niveau d'effort | réglage de la quantité de réflexion d'un tour, `/effort` sous Claude Code ; à essayer avant de changer de modèle ; slide « Ce qui allonge un tour » | 07 | effort seul, budget de réflexion |
+| cache de prompt | réutilisation d'un préfixe de contexte déjà traité, facturé au dixième du prix d'entrée pendant cinq minutes ; invalidé par tout changement en tête du préfixe ; slide « Le cache de prompt » (étiquette du schéma) | 07 | caching, mise en cache, prompt caching |
+| unité de travail | ce qu'une session traite d'un bout à l'autre : une tâche, le contexte qu'elle lit, le diff qu'elle produit, sa vérification, puis le commit ; slide « L'unité de travail » (étiquette du schéma) | 07 | lot, itération, sprint, incrément |
+| dépendance hallucinée | paquet inventé par le modèle, parfois enregistré ensuite par un attaquant sous ce nom ; slide « La dépendance hallucinée » (étiquette du schéma) | 07 | slopsquatting (à définir si employé), paquet fantôme |
+| injection de prompt | instruction hostile placée dans un contenu que l'agent lit (fichier, page, sortie d'outil) et que le modèle peut suivre comme une instruction du développeur ; slide « L'injection de prompt » (légende du schéma) | 07 | prompt injection, injection seule |
+| fichier de règles piégé | fichier de contexte ou skill portant une instruction malveillante, souvent invisible à la relecture (caractères Unicode de largeur nulle ou bidirectionnels) ; cas particulier d'injection de prompt ; slide « Le fichier de règles piégé » | 07 | fichier empoisonné |
+| coût total | prix des tokens, temps de lecture des diffs et défauts passés, additionnés ; chacun se mesure sur le dépôt ; slide « Le coût total » (tableau) | 07 | TCO, coût réel |
 
 ## Lucidité et clôture (module 8)
 
