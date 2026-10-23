@@ -383,6 +383,7 @@ Billet du 28 juillet 2026 (consulté le 24 octobre 2026) : « The average securi
 | tâches avec faille | 45 % | 44 % |
 | échec sur injection de script | 86 % | 85 % |
 | échec sur injection dans les journaux | 88 % | 88 % |
+| modèle le mieux classé | non publié | GPT-5.5, 68 % de réussite |
 
 Les modèles testés ont changé d'une édition à l'autre ; la part de code vulnérable reste stable.
 
@@ -392,7 +393,7 @@ Les modèles testés ont changé d'une édition à l'autre ; la part de code vul
 :::
 
 ::: notes
-Comparaison de deux éditions, pas d'une série suivie : jeux de modèles différents, 80 tâches et plus de 100 modèles en 2025, nombre de tâches et de modèles non publié en 2026. Les valeurs 2025 sont celles du communiqué (45 %, 86 %, 88 %). Les valeurs 2026 viennent du billet : 44 % de tâches avec faille (taux de réussite 56 %, contre 55 % dans la première édition), et pour les deux injections les compléments des taux de réussite publiés, 15 % et 12 %. Lire « environ » devant chaque valeur. Veracode conclut à la stagnation : « security performance has stayed flat while the amount of AI-generated code entering pipelines has surged ». Les relire, pas les croire : un éditeur d'outils de sécurité, tâches de test construites par lui.
+Comparaison de deux éditions, pas d'une série suivie : jeux de modèles différents, 80 tâches et plus de 100 modèles en 2025, nombre de tâches et de modèles non publié en 2026. Les valeurs 2025 sont celles du communiqué (45 %, 86 %, 88 %). Les valeurs 2026 viennent du billet : 44 % de tâches avec faille (taux de réussite 56 %, contre 55 % dans la première édition), et pour les deux injections les compléments des taux de réussite publiés, 15 % et 12 %. Lire « environ » devant chaque valeur. Modèle en tête : « GPT-5.5 leads the current snapshot at 68% » (billet 2026) ; le communiqué 2025 ne nomme aucun modèle, ses résultats par modèle sont dans une figure sans données textuelles. Veracode conclut à la stagnation : « security performance has stayed flat while the amount of AI-generated code entering pipelines has surged ». Les relire, pas les croire : un éditeur d'outils de sécurité, tâches de test construites par lui.
 :::
 
 ## Paquets inventés, mesurés {.figures kicker="Sécurité"}
