@@ -10,17 +10,18 @@ Les définitions ci-dessous sont provisoires jusqu'au plan du module concerné, 
 
 | Terme | Définition | Introduit | À ne pas employer |
 |---|---|---|---|
+| agent de code | programme en ligne de commande qui pilote un modèle pour lire, écrire et exécuter du code dans un dépôt ; Claude Code et Open Code en sont deux ; « agent » seul à partir du module 1 ; slide « Deux agents de code » | 00 | assistant, outil, CLI, harnais (pour l'agent de code) |
 | Claude Code | agent de code en ligne de commande d'Anthropic | 00 | Claude (pour l'outil), ClaudeCode, claude hors commande |
 | Open Code | agent de code libre en ligne de commande, version 2 sur la VM | 00 | OpenCode, opencode hors commande |
 | Spec Kit | outil de GitHub qui installe dans l'agent les commandes du Spec Driven Development | 02 | SpecKit, spec-kit, specify (pour l'outil entier) |
 | Claude Sonnet 4.6 | modèle unique de la formation, identifiant `claude-sonnet-4-6` | 00 | Sonnet seul, Claude 4.6, le modèle d'Anthropic |
 | bookit | projet fil rouge : application de réservation de ressources | 00 | Bookit, l'application ou le projet sans son nom |
 | fil rouge | projet bookit repris de TP en TP | 00 | projet d'exemple, cas d'école |
-| Amazon Bedrock | service d'Amazon Web Services qui héberge des modèles ; les deux agents de code l'appellent pour Claude Sonnet 4.6 | 00 | Bedrock seul, AWS Bedrock |
-| TP | séance de pratique guidée à la suite d'un module ; l'énoncé se lit sur une page dédiée | 00 | atelier, exercice, lab |
-| énoncé | texte d'un TP, sur sa page dédiée | 00 | consigne, sujet |
-| archive | `dlaia.zip` : le support, `bookit/` et `fichiers/` | 00 | zip, paquet |
-| support | cours compilé, `dlaia.html` | 00 | slides (pour l'ensemble), présentation |
+| Amazon Bedrock | service d'Amazon Web Services qui héberge des modèles ; les deux agents de code l'appellent pour Claude Sonnet 4.6 ; slide « Claude Sonnet 4.6, modèle unique » (étiquette du schéma) | 00 | Bedrock seul, AWS Bedrock |
+| TP | travaux pratiques : séance de pratique guidée à la suite d'un module ; l'énoncé se lit sur une page dédiée ; slide « Jour 1 : piloter, cadrer, spécifier » (légende du schéma, « travaux pratiques » développé une fois) | 00 | atelier, exercice, lab |
+| énoncé | texte d'un TP, sur sa page dédiée ; slide « L'archive et la page de TP » | 00 | consigne, sujet |
+| archive | `dlaia.zip` : le support, `bookit/` et `fichiers/` ; slide « L'archive et la page de TP » | 00 | zip, paquet |
+| support | cours compilé, `dlaia.html` ; slide « L'archive et la page de TP » | 00 | slides (pour l'ensemble), présentation |
 
 ## Domaine bookit (module 3, règles et codes de refus dès le module 1)
 
