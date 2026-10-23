@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 440" width="1680" height="440">
+  <text x="0" y="24" class="accent mono" font-size="22" font-weight="600" letter-spacing="3">FENÊTRE DE CONTEXTE D'UNE SESSION</text>
+
+  <rect x="0" y="50" width="760" height="300" rx="12" class="deck"/>
+  <rect x="0" y="50" width="760" height="6" class="accent"/>
+  <text x="24" y="100" class="display" font-size="32">Au lancement</text>
+  <text x="24" y="134" class="ink" font-size="22" opacity="0.7">avant le premier message</text>
+  <g font-size="26" class="ink">
+    <rect x="24" y="160" width="28" height="28" rx="4" class="accent" opacity="0.8"/>
+    <text x="68" y="184">instructions fixes de l'outil</text>
+    <rect x="24" y="208" width="28" height="28" rx="4" class="accent" opacity="0.8"/>
+    <text x="68" y="232"><tspan class="mono">AGENTS.md</tspan></text>
+    <rect x="24" y="256" width="28" height="28" rx="4" class="accent" opacity="0.8"/>
+    <text x="68" y="280">description de chaque skill</text>
+    <rect x="24" y="304" width="28" height="28" rx="4" class="accent" opacity="0.8"/>
+    <text x="68" y="328">noms des outils</text>
+  </g>
+
+  <path d="M790 200 H880" class="stroke-accent" stroke-width="4"/>
+  <path d="M878 186 L896 200 L878 214 Z" class="accent"/>
+
+  <rect x="920" y="50" width="760" height="300" rx="12" class="deck"/>
+  <rect x="920" y="50" width="760" height="6" class="accent"/>
+  <text x="944" y="100" class="display" font-size="32">À chaque tour</text>
+  <text x="944" y="134" class="ink" font-size="22" opacity="0.7">le contenu s'ajoute, rien ne part</text>
+  <g font-size="26" class="ink">
+    <rect x="944" y="160" width="28" height="28" rx="4" class="ink" opacity="0.85"/>
+    <text x="988" y="184">message du développeur</text>
+    <rect x="944" y="208" width="28" height="28" rx="4" class="ink" opacity="0.6"/>
+    <text x="988" y="232">fichiers lus</text>
+    <rect x="944" y="256" width="28" height="28" rx="4" class="ink" opacity="0.6"/>
+    <text x="988" y="280">sorties d'outils</text>
+    <rect x="944" y="304" width="28" height="28" rx="4" class="ink" opacity="0.85"/>
+    <text x="988" y="328">réponse du modèle</text>
+  </g>
+
+  <text x="0" y="410" class="ink" font-size="24" opacity="0.6">claude-sonnet-4-6 par Amazon Bedrock : fenêtre de 200 000 tokens, partagée par les deux colonnes</text>
+</svg>

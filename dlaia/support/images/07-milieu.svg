@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 560" width="1680" height="560">
+  <text x="0" y="24" class="accent mono" font-size="22" font-weight="600" letter-spacing="3">EXACTITUDE SELON LA POSITION DU DOCUMENT UTILE, SUR VINGT</text>
+
+  <path d="M120 60 V400 H1640" class="stroke-ink" stroke-width="2" opacity="0.5"/>
+  <g class="ink" font-size="22" opacity="0.7" text-anchor="end">
+    <text x="104" y="408">0 %</text>
+    <text x="104" y="238">50 %</text>
+    <text x="104" y="68">100 %</text>
+  </g>
+
+  <rect x="220" y="143" width="200" height="257" rx="6" class="ink" opacity="0.85"/>
+  <rect x="520" y="206" width="200" height="194" rx="6" class="accent"/>
+  <rect x="820" y="217" width="200" height="183" rx="6" class="accent"/>
+  <rect x="1120" y="212" width="200" height="188" rx="6" class="accent"/>
+  <rect x="1420" y="186" width="200" height="214" rx="6" class="ink" opacity="0.85"/>
+
+  <g class="ink display" font-size="36" text-anchor="middle">
+    <text x="320" y="130">76 %</text>
+    <text x="620" y="193">57 %</text>
+    <text x="920" y="204">54 %</text>
+    <text x="1220" y="199">55 %</text>
+    <text x="1520" y="173">63 %</text>
+  </g>
+  <g class="ink" font-size="24" text-anchor="middle">
+    <text x="320" y="436">1er</text>
+    <text x="620" y="436">5e</text>
+    <text x="920" y="436">10e</text>
+    <text x="1220" y="436">15e</text>
+    <text x="1520" y="436">20e</text>
+  </g>
+
+  <path d="M120 209 H1640" class="stroke-muted" stroke-width="3" stroke-dasharray="12 10"/>
+  <path d="M470 118 V209" class="stroke-muted" stroke-width="2"/>
+  <text x="450" y="106" class="ink" font-size="24">sans document : 56 %</text>
+
+  <text x="0" y="500" class="ink" font-size="26"><tspan class="accent display" font-size="28">lost in the middle</tspan> : baisse d'attention sur le milieu d'un long contexte ; dans une session, le milieu, ce sont les anciens tours</text>
+  <text x="0" y="540" class="ink" font-size="22" opacity="0.6">GPT-3.5 Turbo, 2023</text>
+</svg>

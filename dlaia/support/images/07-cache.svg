@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 560" width="1680" height="560">
+  <text x="0" y="24" class="accent mono" font-size="22" font-weight="600" letter-spacing="3">CACHE DE PROMPT : DEUX TOURS SUCCESSIFS</text>
+
+  <g font-size="26" class="ink">
+    <text x="0" y="104" class="mono" font-size="24" font-weight="600">TOUR N</text>
+    <rect x="200" y="64" width="760" height="60" rx="8" class="ink" opacity="0.35"/>
+    <text x="224" y="104">préfixe</text>
+    <rect x="966" y="64" width="300" height="60" rx="8" class="accent" opacity="0.8"/>
+    <text x="990" y="104" class="paper">nouveau</text>
+    <text x="1290" y="104" class="accent display" font-size="26">écrit, 1,25 ×</text>
+
+    <text x="0" y="244" class="mono" font-size="24" font-weight="600">TOUR N+1</text>
+    <rect x="200" y="204" width="760" height="60" rx="8" class="ink" opacity="0.35"/>
+    <text x="224" y="244">préfixe identique</text>
+    <rect x="966" y="204" width="200" height="60" rx="8" class="ink" opacity="0.6"/>
+    <text x="990" y="244" class="paper">tour N</text>
+    <rect x="1172" y="204" width="200" height="60" rx="8" class="accent" opacity="0.8"/>
+    <text x="1196" y="244" class="paper">nouveau</text>
+  </g>
+  <text x="200" y="304" class="ink display" font-size="28">lu en cache, 0,1 ×</text>
+  <path d="M200 280 H960" class="stroke-ink" stroke-width="3"/>
+
+  <g>
+    <circle cx="1480" cy="234" r="46" class="stroke-ink" stroke-width="4"/>
+    <path d="M1480 234 V204 M1480 234 L1500 246" class="stroke-ink" stroke-width="4"/>
+    <text x="1480" y="312" class="ink display" font-size="30" text-anchor="middle">5 min</text>
+  </g>
+
+  <text x="0" y="400" class="mono accent" font-size="22" font-weight="600" letter-spacing="3">UN CHANGEMENT EN TÊTE INVALIDE LA SUITE</text>
+  <rect x="200" y="424" width="200" height="60" rx="8" class="accent" opacity="0.8"/>
+  <text x="224" y="464" class="paper" font-size="26">outils</text>
+  <rect x="406" y="424" width="300" height="60" rx="8" class="ink" opacity="0.35" stroke-dasharray="10 8"/>
+  <rect x="406" y="424" width="300" height="60" rx="8" class="stroke-muted" stroke-width="3" stroke-dasharray="10 8"/>
+  <text x="430" y="464" class="ink" font-size="26" opacity="0.6">instructions</text>
+  <rect x="712" y="424" width="300" height="60" rx="8" class="stroke-muted" stroke-width="3" stroke-dasharray="10 8"/>
+  <text x="736" y="464" class="ink" font-size="26" opacity="0.6">tours passés</text>
+  <text x="1050" y="464" class="ink" font-size="26">définition d'outil modifiée : tout le reste est réécrit</text>
+</svg>

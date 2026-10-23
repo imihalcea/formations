@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 330" width="1680" height="330">
+  <text x="0" y="24" class="accent mono" font-size="22" font-weight="600" letter-spacing="3">DÉPENDANCE HALLUCINÉE : PAQUET INVENTÉ, PUIS ENREGISTRÉ PAR UN ATTAQUANT (ILLUSTRATION)</text>
+
+  <g>
+    <rect x="0" y="60" width="380" height="200" rx="12" class="deck"/>
+    <rect x="0" y="60" width="380" height="6" class="accent"/>
+    <text x="20" y="108" class="display" font-size="26">1. le modèle écrit</text>
+    <text x="20" y="160" class="mono ink" font-size="20">import fastapi_</text>
+    <text x="20" y="188" class="mono ink" font-size="20">booking_utils</text>
+    <text x="20" y="232" class="ink" font-size="20" opacity="0.7">nom plausible, inventé</text>
+
+    <path d="M386 160 H420" class="stroke-accent" stroke-width="4"/>
+    <path d="M418 148 L434 160 L418 172 Z" class="accent"/>
+
+    <rect x="440" y="60" width="380" height="200" rx="12" class="deck"/>
+    <rect x="440" y="60" width="380" height="6" class="accent"/>
+    <text x="460" y="108" class="display" font-size="26">2. l'installation</text>
+    <text x="460" y="160" class="mono ink" font-size="20">uv add</text>
+    <text x="460" y="188" class="mono ink" font-size="20">fastapi-booking-utils</text>
+    <text x="460" y="232" class="ink" font-size="20" opacity="0.7">paquet absent du dépôt</text>
+
+    <path d="M826 160 H860" class="stroke-accent" stroke-width="4"/>
+    <path d="M858 148 L874 160 L858 172 Z" class="accent"/>
+
+    <rect x="880" y="60" width="380" height="200" rx="12" class="deck"/>
+    <rect x="880" y="60" width="380" height="6" class="accent"/>
+    <text x="900" y="108" class="display" font-size="26">3. un attaquant</text>
+    <text x="900" y="160" class="ink" font-size="22">publie ce nom</text>
+    <text x="900" y="188" class="ink" font-size="22">avec son code</text>
+
+    <path d="M1266 160 H1300" class="stroke-accent" stroke-width="4"/>
+    <path d="M1298 148 L1314 160 L1298 172 Z" class="accent"/>
+
+    <rect x="1320" y="60" width="360" height="200" rx="12" class="accent"/>
+    <text x="1340" y="108" class="paper display" font-size="26">4. la prochaine</text>
+    <text x="1340" y="140" class="paper display" font-size="26">installation</text>
+    <text x="1340" y="188" class="paper" font-size="22">exécute son code</text>
+  </g>
+</svg>

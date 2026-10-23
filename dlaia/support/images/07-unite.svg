@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 520" width="1680" height="520">
+  <text x="0" y="24" class="accent mono" font-size="22" font-weight="600" letter-spacing="3">UNITÉ DE TRAVAIL : UNE TÂCHE, UNE SESSION, UN COMMIT</text>
+
+  <rect x="0" y="50" width="1180" height="400" rx="12" class="deck"/>
+  <rect x="0" y="50" width="1180" height="6" class="accent"/>
+  <text x="24" y="100" class="display" font-size="32">session</text>
+
+  <rect x="24" y="130" width="340" height="290" rx="10" class="paper"/>
+  <rect x="24" y="130" width="340" height="6" class="accent"/>
+  <text x="44" y="176" class="display" font-size="26">tâche</text>
+  <text x="44" y="220" class="mono" font-size="24">T0NN</text>
+  <text x="44" y="262" class="ink" font-size="22" opacity="0.7">une ligne de</text>
+  <text x="44" y="290" class="mono ink" font-size="22" opacity="0.7">tasks.md</text>
+
+  <rect x="388" y="130" width="400" height="290" rx="10" class="paper"/>
+  <rect x="388" y="130" width="400" height="6" class="accent"/>
+  <text x="408" y="176" class="display" font-size="26">contexte lu</text>
+  <g class="mono ink" font-size="22">
+    <text x="408" y="216">AGENTS.md</text>
+    <text x="408" y="248">constitution.md</text>
+    <text x="408" y="280">spec.md</text>
+    <text x="408" y="312">plan.md</text>
+    <text x="408" y="344">fichier visé</text>
+  </g>
+  <text x="408" y="396" class="ink" font-size="20" opacity="0.7">artefacts versionnés</text>
+
+  <rect x="812" y="130" width="344" height="290" rx="10" class="paper"/>
+  <rect x="812" y="130" width="344" height="6" class="accent"/>
+  <text x="832" y="176" class="display" font-size="26">vérification</text>
+  <g class="mono ink" font-size="22">
+    <text x="832" y="226">uv run pytest -q</text>
+    <text x="832" y="274">diff relu</text>
+  </g>
+
+  <path d="M1190 250 H1300" class="stroke-accent" stroke-width="4"/>
+  <path d="M1298 236 L1316 250 L1298 264 Z" class="accent"/>
+  <rect x="1330" y="210" width="190" height="80" rx="10" class="accent"/>
+  <text x="1425" y="259" class="paper display" font-size="30" text-anchor="middle">commit</text>
+
+  <path d="M590 460 V490 H1550 V400" class="stroke-ink" stroke-width="3" fill="none"/>
+  <text x="620" y="514" class="mono ink" font-size="22">/clear ou /new</text>
+  <rect x="1530" y="290" width="120" height="110" rx="10" class="stroke-muted" stroke-width="3" stroke-dasharray="10 8"/>
+  <text x="1590" y="352" class="ink" font-size="22" text-anchor="middle" opacity="0.6">session</text>
+  <text x="1590" y="380" class="ink" font-size="22" text-anchor="middle" opacity="0.6">vide</text>
+</svg>

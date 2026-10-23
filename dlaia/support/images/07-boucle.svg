@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 430" width="1680" height="430">
+  <text x="0" y="24" class="accent mono" font-size="22" font-weight="600" letter-spacing="3">DU TP 3 AU TP 6 : CHAQUE COMMANDE LANCÉE, RELUE, COMMITÉE</text>
+
+  <g class="mono" font-size="21" text-anchor="middle">
+    <rect x="0" y="60" width="200" height="90" rx="10" class="deck"/>
+    <rect x="0" y="60" width="200" height="6" class="accent"/>
+    <text x="100" y="116" class="ink">constitution</text>
+
+    <rect x="224" y="60" width="200" height="90" rx="10" class="deck"/>
+    <rect x="224" y="60" width="200" height="6" class="accent"/>
+    <text x="324" y="116" class="ink">specify</text>
+
+    <rect x="448" y="60" width="200" height="90" rx="10" class="deck"/>
+    <rect x="448" y="60" width="200" height="6" class="accent"/>
+    <text x="548" y="116" class="ink">clarify</text>
+
+    <rect x="672" y="60" width="200" height="90" rx="10" class="deck"/>
+    <rect x="672" y="60" width="200" height="6" class="accent"/>
+    <text x="772" y="116" class="ink">plan</text>
+
+    <rect x="896" y="60" width="200" height="90" rx="10" class="deck"/>
+    <rect x="896" y="60" width="200" height="6" class="accent"/>
+    <text x="996" y="116" class="ink">tasks</text>
+
+    <rect x="1120" y="60" width="200" height="90" rx="10" class="deck"/>
+    <rect x="1120" y="60" width="200" height="6" class="accent"/>
+    <text x="1220" y="116" class="ink">analyze</text>
+
+    <rect x="1344" y="60" width="336" height="90" rx="10" class="accent"/>
+    <text x="1512" y="116" class="paper">implement × 14</text>
+  </g>
+
+  <path d="M0 250 H1680" class="stroke-muted" stroke-width="2"/>
+  <g class="display ink" font-size="40" text-anchor="middle">
+    <text x="100" y="334">4</text>
+    <text x="548" y="334">9</text>
+    <text x="1220" y="334">14</text>
+    <text x="1430" y="334">19</text>
+    <text x="1620" y="334">21</text>
+  </g>
+  <g class="ink" font-size="22" text-anchor="middle" opacity="0.7">
+    <text x="100" y="372">fin du TP 3</text>
+    <text x="548" y="372">fin du TP 4</text>
+    <text x="1220" y="372">fin du TP 5</text>
+    <text x="1430" y="372">fin partie A</text>
+    <text x="1620" y="372">fin partie B</text>
+  </g>
+  <text x="0" y="278" class="ink" font-size="22" opacity="0.7">commits cumulés</text>
+  <text x="0" y="410" class="ink" font-size="22" opacity="0.6">partie B : mutation testing en deux passes</text>
+</svg>

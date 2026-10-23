@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 340" width="1680" height="340">
+  <text x="0" y="24" class="accent mono" font-size="22" font-weight="600" letter-spacing="3">INJECTION DE PROMPT : INSTRUCTION HOSTILE DANS CE QUE L'AGENT LIT</text>
+
+  <g font-size="26" class="ink">
+    <rect x="0" y="50" width="380" height="60" rx="10" class="deck"/>
+    <text x="24" y="90">fichier du dépôt</text>
+    <rect x="0" y="120" width="380" height="60" rx="10" class="deck"/>
+    <text x="24" y="160">page web</text>
+    <rect x="0" y="190" width="380" height="60" rx="10" class="deck"/>
+    <text x="24" y="230">sortie d'outil</text>
+  </g>
+
+  <path d="M386 80 C 520 80, 520 150, 640 150" class="stroke-accent" stroke-width="4"/>
+  <path d="M386 150 H640" class="stroke-accent" stroke-width="4"/>
+  <path d="M386 220 C 520 220, 520 150, 640 150" class="stroke-accent" stroke-width="4"/>
+
+  <rect x="650" y="50" width="620" height="200" rx="12" class="deck"/>
+  <rect x="650" y="50" width="620" height="6" class="accent"/>
+  <text x="674" y="92" class="display" font-size="28">fenêtre de contexte</text>
+  <rect x="674" y="108" width="572" height="44" rx="8" class="accent" opacity="0.8"/>
+  <text x="698" y="138" class="paper" font-size="24">prompt du développeur</text>
+  <rect x="674" y="160" width="572" height="44" rx="8" class="ink" opacity="0.6"/>
+  <text x="698" y="190" class="paper" font-size="24">contenu lu, avec l'instruction hostile</text>
+  <text x="674" y="234" class="ink" font-size="20" opacity="0.7">aucune séparation entre instruction et donnée</text>
+
+  <path d="M1276 150 H1380" class="stroke-accent" stroke-width="4"/>
+  <path d="M1378 136 L1396 150 L1378 164 Z" class="accent"/>
+  <rect x="1410" y="90" width="270" height="120" rx="12" class="accent"/>
+  <text x="1545" y="140" class="paper display" font-size="30" text-anchor="middle">modèle</text>
+  <text x="1545" y="176" class="paper" font-size="22" text-anchor="middle">peut suivre les deux</text>
+
+  <text x="0" y="304" class="ink" font-size="24" opacity="0.7">injection de prompt : instruction hostile placée dans un contenu que l'agent lit</text>
+</svg>
