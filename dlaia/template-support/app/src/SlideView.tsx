@@ -194,7 +194,26 @@ function ContentBody({ slide }: { slide: Slide }) {
           </ol>
         </div>
       );
-    case "agenda":
+    case "agenda": {
+      if (slide.days) {
+        // Une colonne par jour, coiffée de « Jour N » ; l'ordre de haut en bas suit celui des modules.
+        const days = Array.from({ length: Math.ceil(slide.modules.length / slide.days) }, (_, d) => slide.modules.slice(d * slide.days!, (d + 1) * slide.days!));
+        return (
+          <div className="grid gap-x-24" style={{ gridTemplateColumns: `repeat(${days.length}, minmax(0, 1fr))` }}>
+            {days.map((mods, d) => (
+              <div key={d} className="flex flex-col gap-10">
+                <p className="slide-kicker text-slide-accent">Jour {d + 1}</p>
+                {mods.map((m) => (
+                  <div key={m.number} className="flex items-baseline gap-8 border-t-4 border-slide-ink pt-5">
+                    <span className="slide-caption font-mono font-semibold text-slide-accent tabular-nums">{m.number}</span>
+                    <span className="slide-body">{m.title}</span>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        );
+      }
       return (
         // Remplit la colonne de gauche, puis celle de droite, pour une lecture dans l'ordre des modules.
         <div
@@ -209,6 +228,7 @@ function ContentBody({ slide }: { slide: Slide }) {
           ))}
         </div>
       );
+    }
     case "facts":
       return (
         <div className="grid grid-cols-2 gap-x-24 gap-y-14">

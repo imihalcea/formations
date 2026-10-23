@@ -14,7 +14,7 @@ type Base = {
 
 export type Slide =
   | (Base & { kind: "title"; subtitleHtml?: string })
-  | (Base & { kind: "agenda"; modules: { number: string; title: string }[] })
+  | (Base & { kind: "agenda"; modules: { number: string; title: string }[]; days?: number })
   | (Base & { kind: "module-title"; subtitleHtml?: string })
   // afterHtml : bloc pleine largeur affiché sous les deux colonnes (après un second « ||| »).
   | (Base & { kind: "content"; columns: string[]; afterHtml?: string })

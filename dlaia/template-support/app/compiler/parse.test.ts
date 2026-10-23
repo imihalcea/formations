@@ -19,6 +19,14 @@ describe("compileDeck", () => {
     expect(deck.slides.filter((s) => s.kind === "module-title")).toHaveLength(2);
   });
 
+  it("lit l'attribut days de l'agenda et rejette une valeur invalide", async () => {
+    const md = (attr: string) => `# M\n\n## Plan {.agenda ${attr}}\n`;
+    const deck = await compileDeck(supportWith({ "01-m.md": md('days="4"') }));
+    const agenda = deck.slides.find((s) => s.kind === "agenda");
+    expect(agenda?.kind === "agenda" && agenda.days).toBe(4);
+    await expect(compileDeck(supportWith({ "01-m.md": md('days="x"') }))).rejects.toThrow(/days="x" invalide/);
+  });
+
   it("ignore les titres situés dans un bloc de code", async () => {
     const dir = supportWith({ "01-m.md": "# M\n\n## Code\n\n```markdown\n## Pas une slide\n```\n" });
     const deck = await compileDeck(dir);

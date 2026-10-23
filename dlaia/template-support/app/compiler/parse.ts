@@ -15,7 +15,7 @@ const PROMPT_LANG = "prompt";
 const KINDS: SlideKind[] = [
   "title", "agenda", "content", "statement", "facts", "figure", "figures", "quote", "compare", "end",
 ];
-const ATTRS = new Set(["kicker", "value", "duration", "author"]);
+const ATTRS = new Set(["kicker", "value", "duration", "author", "days"]);
 const CONTAINERS = new Set(["notes", "sources", "claude-code", "opencode"]);
 // Une slide de ces types avance un fait chiffré ou cité : sa source est obligatoire.
 const NEEDS_SOURCES = new Set<SlideKind>(["facts", "figure", "figures", "quote"]);
@@ -304,6 +304,11 @@ function moduleTitle(b: Block, number: string, ctx: Ctx): Slide {
   };
 }
 
+function positiveInt(value: string, origin: string, key: string): number {
+  if (!/^[1-9]\d*$/.test(value)) throw new SupportError(`${origin} : attribut ${key}="${value}" invalide, entier positif attendu`);
+  return Number(value);
+}
+
 function buildSlide(b: Block, ctx: Ctx): Slide {
   const kind = (b.kind ?? "content") as SlideKind;
   if (!KINDS.includes(kind)) throw new SupportError(`${b.origin} : type de slide inconnu « ${b.kind} »`);
@@ -331,7 +336,7 @@ function buildSlide(b: Block, ctx: Ctx): Slide {
       return { ...base, kind, ...subtitle };
     case "agenda":
       empty();
-      return { ...base, kind, modules: [] };
+      return { ...base, kind, modules: [], ...(b.attrs["days"] ? { days: positiveInt(b.attrs["days"], b.origin, "days") } : {}) };
     case "content": {
       const { columns: cols, after } = columns(rest, b.origin);
       return {

@@ -37,7 +37,7 @@ Chaque titre `##` ouvre une slide. Une classe entre accolades fixe son type, et 
 |---|---|---|
 | `content` (défaut) | Markdown libre : listes, code, tableaux, images | `kicker` |
 | `title` | sous-titre | `kicker` |
-| `agenda` | aucun ; la liste des modules est générée | |
+| `agenda` | aucun ; la liste des modules est générée | `days` (facultatif, nombre de modules par jour : une colonne « Jour N » par jour) |
 | `statement` | aucun | `kicker` |
 | `facts` | 2 à 4 éléments `- …`, ou `- **Terme** explication` pour mettre le terme en vedette | `kicker` |
 | `figure` | aucun ; le titre décrit le chiffre | `value` (obligatoire), `kicker` |
