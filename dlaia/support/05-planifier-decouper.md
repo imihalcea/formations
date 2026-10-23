@@ -77,7 +77,7 @@ Preuve que le fichier est un fichier de dépôt comme un autre : `git log --onel
 `specify` a lu `spec-template.md` au TP 4 (module 4) ; `plan` et `tasks` lisent les deux autres de la même façon : `setup-plan.sh` copie `plan-template.md` dans `plan.md`, `setup-tasks.sh` renvoie le contenu de `tasks-template.md` à la commande. `constitution` lit `constitution-template.md` (TP 3). `customization.md` 1.2.2 : « Templates are resolved when needed, using the first match by default » ; dans bookit, le premier et seul niveau est `.specify/templates/`. Le lien des commandes aux templates vient des prompts `plan` (« Load IMPL_PLAN template (already copied) ») et `tasks` (« Use TASKS_TEMPLATE_CONTENT (from the JSON output above) as the structure »), que `customization.md` ne nomme pas. Modifier ces fichiers change l'artefact que la commande écrit ; modifier le prompt de la commande change sa procédure.
 :::
 
-## Le template d'un artefact se règle avant la commande qui l'écrit. {.statement kicker="Point de départ"}
+## Un template définit et personnalise l'artefact que la commande écrit. {.statement kicker="Point de départ"}
 
 ::: notes
 Conclut les deux slides : le dépôt n'a ni `plan.md` ni `tasks.md`, et les gabarits de ces artefacts sont déjà là, versionnés. La section suivante ouvre le fichier d'une commande pour voir ce qu'il contient et ce qui se personnalise.
