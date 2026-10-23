@@ -104,25 +104,43 @@ Définition du lexique portée par la légende du schéma. Source : tableau 6 de
 Retenir la forme en U, pas les chiffres : 2023, un modèle ancien, une tâche de question-réponse sur documents. Le milieu au sens de l'article est le milieu d'une liste de documents ; dans une session, les anciens tours jouent ce rôle, d'où l'intérêt d'une session courte. Un résultat sous le niveau « sans document » (54 % contre 56 %) montre que le document utile au milieu aide moins que pas de document.
 :::
 
-## Retrouver une information enfouie {kicker="Contexte"}
+## Plus de texte, moins de précision {kicker="Contexte"}
 
-| Taille du prompt | Informations retrouvées |
-|---|---|
-| jusqu'à 256 000 tokens | 91 % |
-| de 524 000 à 1 million | 65 % |
+![Exactitude de Claude 3.5 Sonnet selon la longueur du texte autour de l'information cherchée : 85 % à 1 000 tokens, 84 % à 2 000, 78 % à 4 000, 62 % à 8 000, 46 % à 16 000, 30 % à 32 000](images/07-longueur.svg)
 
-Selon Anthropic, la performance se dégrade à mesure que la fenêtre se remplit.
+Claude 3.5 Sonnet (2024), même question à chaque longueur : seul le texte autour s'allonge.
 
 ::: sources
-- [Anthropic, Claude Sonnet 4.6 System Card, § 2.16 Long context](https://anthropic.com/claude-sonnet-4-6-system-card)
-- [Claude Code, Best practices](https://code.claude.com/docs/en/best-practices)
-- [Claude Code, Amazon Bedrock](https://code.claude.com/docs/en/amazon-bedrock)
-- `formateur/fil-rouge.md`, fenêtre de 200 000 tokens relevée le 19 octobre 2026
+- [Modarressi et al., NoLiMa : Long-Context Evaluation Beyond Literal Matching, ICML 2025](https://arxiv.org/abs/2502.05167)
+- [Hong, Troynikov, Huber, Context Rot, Chroma, 2025](https://research.trychroma.com/context-rot)
 :::
 
 ::: notes
-Légende du bloc : Claude Sonnet 4.6, rappel de huit informations dispersées. Test OpenAI MRCR v2 à huit aiguilles, score Mean Match Ratio, 64k de réflexion étendue : 90,6 % pour les prompts de 128 000 à 256 000 tokens, 65,1 % de 524 000 à 1 024 000 ; Claude Sonnet 4.5 : 10,8 % et 18,5 % ; Claude Opus 4.6 : 91,9 % et 78,3 %. La fenêtre de la VM fait 200 000 tokens (`formateur/fil-rouge.md`) et reste dans la première tranche ; la variante `[1m]` du modèle atteint 1 million de tokens sur l'API Invoke de Bedrock (page Claude Code, Amazon Bedrock), non utilisée ici. Documentation de Claude Code : « Most best practices are based on one constraint: Claude's context window fills up fast, and performance degrades as it fills. »
-La mesure porte sur un test de rappel exact, pas sur la qualité d'un code produit : les chiffres disent ce que le modèle retrouve, pas ce qu'il écrit.
+NoLiMa, tableau 3 : 13 modèles annoncés à 128K tokens ou plus. Une information (l'« aiguille ») est cachée dans un long texte sans rapport ; la question ne reprend aucun mot de l'aiguille, le modèle doit faire le lien. Score de référence de Claude 3.5 Sonnet en contexte court : 87,5 %. Longueur effective (score au-dessus de 85 % de la référence) : 4K, pour 200K annoncés.
+« At 32K, for instance, 11 models drop below 50% of their strong short-length baselines. » GPT-4o passe de 99,3 % à 69,7 %.
+Chroma (juillet 2025) : 18 modèles, dont Claude Sonnet 4 et Opus 4, tâches volontairement simples. Test LongMemEval : même question avec seulement les passages utiles (~300 tokens) ou avec tout l'historique de conversation (~113 000 tokens). Tous les modèles réussissent mieux la version courte. Chez Claude, l'écart vient surtout de réponses du type « impossible à déterminer ».
+Pourquoi : chaque token est mis en relation avec tous les autres, soit n² relations pour n tokens ; l'attention se dilue quand n grandit (Anthropic, Effective context engineering for AI agents). « While some models exhibit more gentle degradation than others, this characteristic emerges across all models. »
+Modèle de 2024 : la slide suivante donne l'échelle de Sonnet 4.6.
+:::
+
+## Sonnet 4.6 : le même effet, plus loin {kicker="Contexte"}
+
+![Score MRCR v2 à 8 aiguilles : de 128 000 à 256 000 tokens, Sonnet 4.5 obtient 11 % et Sonnet 4.6 91 % ; de 512 000 à 1 million de tokens, Sonnet 4.5 obtient 19 % et Sonnet 4.6 65 %](images/07-sonnet46.svg)
+
+Sonnet 4.6 garde 91 % jusqu'à 256 000 tokens, puis baisse. L'effet demeure, à une autre échelle.
+
+::: sources
+- [Anthropic, Claude Sonnet 4.6 System Card, 2.16 Long context, février 2026](https://anthropic.com/claude-sonnet-4-6-system-card)
+- [Claude Code, Best practices](https://code.claude.com/docs/en/best-practices)
+:::
+
+::: notes
+MRCR v2 (OpenAI) : retrouver la 2e ou la 4e occurrence d'une demande parmi des demandes identiques dans une longue conversation ; variante à 8 aiguilles, « the hardest setting ». Tableau 2.16.A, réflexion étendue à 64k : Sonnet 4.6 90,6 % (tranche 128K à 256K) et 65,1 % (512K à 1M) ; Sonnet 4.5 10,8 % et 18,5 %. Opus 4.6 : 91,9 % et 78,3 %.
+Tranche 1M : une partie des problèmes dépasse la limite de l'API ; sur le sous-ensemble sous 1M tokens, Sonnet 4.6 obtient 71,3 %.
+Aucune tranche sous 128K publiée : on ne sait pas où commence la baisse.
+Avec `claude-sonnet-4-6` : fenêtre de 200K, compaction avant la limite. Une session reste dans la première tranche.
+La doc Claude Code de 2026 décrit toujours la dégradation : « performance degrades as it fills ». Un benchmark ne mesure pas une session de code : les sessions courtes restent la règle.
+Comparaison avec les slides précédentes : la baisse commençait vers 4K à 8K tokens pour Claude 3.5 Sonnet (2024), elle apparaît ici au-delà de 256K.
 :::
 
 ## La compaction résume la session {kicker="Contexte"}

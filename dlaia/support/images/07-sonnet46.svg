@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 440" width="1680" height="440">
+  <path d="M160 340 H1640" class="stroke-ink" stroke-width="2"/>
+  <rect x="1060" y="8" width="28" height="28" class="muted"/>
+  <text x="1100" y="32" class="ink" font-size="26">Sonnet 4.5</text>
+  <rect x="1300" y="8" width="28" height="28" class="accent"/>
+  <text x="1340" y="32" class="ink" font-size="26">Sonnet 4.6</text>
+  <rect x="330" y="311" width="180" height="29" class="muted"/>
+  <text x="420" y="295" class="ink display" font-size="40" text-anchor="middle">11 %</text>
+  <rect x="530" y="95" width="180" height="245" class="accent"/>
+  <text x="620" y="79" class="accent display" font-size="40" text-anchor="middle">91 %</text>
+  <text x="520" y="390" class="ink" font-size="28" text-anchor="middle">128 000 à 256 000 tokens</text>
+  <rect x="1050" y="290" width="180" height="50" class="muted"/>
+  <text x="1140" y="274" class="ink display" font-size="40" text-anchor="middle">19 %</text>
+  <rect x="1250" y="164" width="180" height="176" class="accent"/>
+  <text x="1340" y="148" class="accent display" font-size="40" text-anchor="middle">65 %</text>
+  <text x="1240" y="390" class="ink" font-size="28" text-anchor="middle">512 000 à 1 million de tokens</text>
+  <text x="900" y="436" class="ink" font-size="26" text-anchor="middle">8 informations semblables à distinguer dans une longue conversation</text>
+</svg>
