@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 641" width="1680" height="641">
+  <g class="ink" font-size="26">
+    <rect x="340" y="20" width="1000" height="60" rx="8" class="deck"/>
+    <text x="372" y="59" class="ink display" font-size="28">Module 5</text>
+    <text x="560" y="58" class="ink" font-size="26">Personnaliser Spec Kit, planifier, découper</text>
+    <rect x="340" y="89" width="1000" height="60" rx="8" class="accent"/>
+    <text x="372" y="128" class="paper display" font-size="28">TP 5</text>
+    <rect x="340" y="158" width="1000" height="60" rx="8" class="deck"/>
+    <text x="372" y="197" class="ink display" font-size="28">Module 6</text>
+    <text x="560" y="196" class="ink" font-size="26">Implémenter et vérifier</text>
+    <rect x="340" y="227" width="1000" height="60" rx="8" class="accent"/>
+    <text x="372" y="266" class="paper display" font-size="28">TP 6, partie A</text>
+    <rect x="340" y="296" width="1000" height="60" rx="8" class="deck"/>
+    <text x="372" y="335" class="ink display" font-size="28">Module 6, suite</text>
+    <rect x="340" y="365" width="1000" height="60" rx="8" class="accent"/>
+    <text x="372" y="404" class="paper display" font-size="28">TP 6, partie B</text>
+    <rect x="340" y="434" width="1000" height="60" rx="8" class="deck"/>
+    <text x="372" y="473" class="ink display" font-size="28">Module 7</text>
+    <text x="560" y="472" class="ink" font-size="26">Contexte, sécurité et choix des outils</text>
+    <rect x="340" y="503" width="1000" height="60" rx="8" class="deck"/>
+    <text x="372" y="542" class="ink display" font-size="28">Module 8</text>
+    <text x="560" y="541" class="ink" font-size="26">Lucidité et clôture</text>
+    <rect x="340" y="572" width="1000" height="60" rx="8" class="deck"/>
+    <text x="372" y="611" class="ink display" font-size="28">Bilan</text>
+    <text x="560" y="610" class="ink" font-size="26">Jour 2</text>
+  </g>
+</svg>

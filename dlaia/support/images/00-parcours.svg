@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 300" width="1680" height="300">
+  <g class="ink" font-size="26">
+    <rect x="0" y="40" width="300" height="220" rx="12" class="deck"/>
+    <rect x="0" y="40" width="300" height="6" class="accent"/>
+    <text x="30" y="100" class="accent mono" font-size="28" font-weight="600">TP 1</text>
+    <text x="30" y="170" class="ink display" font-size="42">Piloter</text>
+    <path d="M308 150 H330" class="stroke-accent" stroke-width="5"/>
+    <path d="M326 138 L342 150 L326 162 Z" class="accent"/>
+    <rect x="345" y="40" width="300" height="220" rx="12" class="deck"/>
+    <rect x="345" y="40" width="300" height="6" class="accent"/>
+    <text x="375" y="100" class="accent mono" font-size="28" font-weight="600">TP 3</text>
+    <text x="375" y="170" class="ink display" font-size="42">Cadrer</text>
+    <path d="M653 150 H675" class="stroke-accent" stroke-width="5"/>
+    <path d="M671 138 L687 150 L671 162 Z" class="accent"/>
+    <rect x="690" y="40" width="300" height="220" rx="12" class="deck"/>
+    <rect x="690" y="40" width="300" height="6" class="accent"/>
+    <text x="720" y="100" class="accent mono" font-size="28" font-weight="600">TP 4</text>
+    <text x="720" y="170" class="ink display" font-size="42">Spécifier</text>
+    <path d="M998 150 H1020" class="stroke-accent" stroke-width="5"/>
+    <path d="M1016 138 L1032 150 L1016 162 Z" class="accent"/>
+    <rect x="1035" y="40" width="300" height="220" rx="12" class="deck"/>
+    <rect x="1035" y="40" width="300" height="6" class="accent"/>
+    <text x="1065" y="100" class="accent mono" font-size="28" font-weight="600">TP 5</text>
+    <text x="1065" y="170" class="ink display" font-size="42">Planifier</text>
+    <path d="M1343 150 H1365" class="stroke-accent" stroke-width="5"/>
+    <path d="M1361 138 L1377 150 L1361 162 Z" class="accent"/>
+    <rect x="1380" y="40" width="300" height="220" rx="12" class="accent"/>
+    <text x="1410" y="100" class="paper mono" font-size="28" font-weight="600">TP 6</text>
+    <text x="1410" y="170" class="paper display" font-size="42">Implémenter</text>
+    <text x="1410" y="220" class="paper display" font-size="42">et vérifier</text>
+  </g>
+</svg>
