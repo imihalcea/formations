@@ -207,7 +207,7 @@ Conclut les slides 8 à 10 : le cycle de TDD, le scénario comme test de BDD, ce
 
 ## Lier le `.feature` aux tests {kicker="Scénario et test"}
 
-**`scenarios()` : tout le fichier d'un coup (illustration, écartée)**
+**`scenarios()` : tous les scénarios d'un coup**
 
 ```python
 from pytest_bdd import scenarios
@@ -215,9 +215,11 @@ from pytest_bdd import scenarios
 scenarios("../specs/001-valider-reservation/valider-reservation.feature")
 ```
 
+Tous les tests naissent rouges, avant le code.
+
 |||
 
-**`@scenario` : un scénario nommé (retenue)**
+**`@scenario` : un scénario à la fois, retenu par bookit**
 
 ```python
 from pytest_bdd import scenario
@@ -239,7 +241,7 @@ def test_reg01_29_minutes(): ...
 ::: notes
 pytest-bdd, documentation stable : `scenarios('features')` lie tous les scénarios trouvés ; `scenarios()` accepte plusieurs chemins, fichiers `.feature` ou dossiers (reformulation, la phrase exacte de la documentation n'est pas revérifiée) ; `@scenario('publish_article.feature', 'Publishing the article')` lie un scénario nommé à une fonction. Changelog 8.0.0 : « Added localization support. The language of the feature file can be specified using the *# language: <language>* directive » : `# language: fr` est accepté depuis 8.0.0 ; pytest-bdd 9.0.0 (30 septembre 2026) est installé par `uv sync` dans le fil rouge. Mots-clés français reconnus (Cucumber, Gherkin languages, `fr`) : Fonctionnalité, Scénario ou Exemple, Soit (ou Étant donné), Quand (ou Lorsque), Alors, Et, Mais.
 Pourquoi `@scenario` pour bookit : avec `scenarios()`, les dix-neuf scénarios seraient liés dès T001, la suite serait rouge sur tous les refus et les tâches Test REG-NN n'auraient rien à faire ; la paire Test puis Code perdrait son sens. Avec `@scenario`, T001 laisse la suite verte, Test REG-01 lie quatre scénarios, Code REG-01 les fait passer.
-Le bloc `scenarios()` est une illustration, écartée. La constante `FEATURE` et la liaison `@scenario` sont citées du corrigé `tp/tp06/tests/test_valider_reservation.py` (testé sous Python 3.14, 26 tests verts).
+Le bloc `scenarios()` est un exemple inventé, écarté pour bookit. La constante `FEATURE` et la liaison `@scenario` sont citées du corrigé `tp/tp06/tests/test_valider_reservation.py` (testé sous Python 3.14, 26 tests verts).
 :::
 
 ## Une définition d'étape par phrase {kicker="Scénario et test"}
