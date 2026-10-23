@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 440" width="1680" height="440">
+  <g class="ink" font-size="26">
+    <rect x="0" y="0" width="380" height="120" rx="12" class="deck"/><rect x="0" y="0" width="380" height="6" class="accent"/>
+    <text x="190" y="72" class="display" font-size="34" text-anchor="middle">spécification</text>
+    <rect x="433" y="0" width="380" height="120" rx="12" class="deck"/><rect x="433" y="0" width="380" height="6" class="accent"/>
+    <text x="623" y="72" class="display" font-size="34" text-anchor="middle">plan</text>
+    <rect x="866" y="0" width="380" height="120" rx="12" class="deck"/><rect x="866" y="0" width="380" height="6" class="accent"/>
+    <text x="1056" y="72" class="display" font-size="34" text-anchor="middle">tâches</text>
+    <rect x="1299" y="0" width="380" height="120" rx="12" class="ink" opacity="0.85"/>
+    <text x="1489" y="72" class="paper display" font-size="34" text-anchor="middle">diff</text>
+  </g>
+  <g class="accent">
+    <path d="M190 140 L210 160 L190 180 L170 160 Z"/>
+    <path d="M623 140 L643 160 L623 180 L603 160 Z"/>
+    <path d="M1056 140 L1076 160 L1056 180 L1036 160 Z"/>
+    <path d="M1489 140 L1509 160 L1489 180 L1469 160 Z"/>
+  </g>
+  <path d="M190 120 V140 M623 120 V140 M1056 120 V140 M1489 120 V140" class="stroke-accent" stroke-width="4"/>
+  <g class="ink" font-size="28" text-anchor="middle">
+    <text x="190" y="240">est-ce le bon QUOI ?</text>
+    <text x="623" y="240">le plan respecte-t-il</text>
+    <text x="623" y="278">la constitution ?</text>
+    <text x="1056" y="240">la tâche est-elle</text>
+    <text x="1056" y="278">vérifiable seule ?</text>
+    <text x="1489" y="240">le diff est-il signable ?</text>
+  </g>
+  <text x="0" y="420" class="ink" font-size="22" opacity="0.6">illustration : les questions du développeur à chaque point de contrôle</text>
+</svg>

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 380" width="1680" height="380">
+  <text x="0" y="24" class="accent mono" font-size="22" font-weight="600" letter-spacing="3">UN ESSAI RANDOMISÉ, TÂCHE PAR TÂCHE</text>
+  <text x="0" y="74" class="ink" font-size="24" opacity="0.7">tâches d'un dépôt (illustration)</text>
+  <text x="640" y="74" class="ink" font-size="24" opacity="0.7">tirage au sort</text>
+  <g font-size="26" class="ink">
+    <rect x="0" y="94" width="560" height="52" rx="8" class="deck"/><text x="20" y="129">corriger un bogue de tri</text>
+    <rect x="0" y="164" width="560" height="52" rx="8" class="deck"/><text x="20" y="199">ajouter une option de filtre</text>
+    <rect x="0" y="234" width="560" height="52" rx="8" class="deck"/><text x="20" y="269">remanier un module</text>
+    <rect x="0" y="304" width="560" height="52" rx="8" class="deck"/><text x="20" y="339">corriger un test instable</text>
+  </g>
+  <path d="M572 120 H620 M572 190 H620 M572 260 H620 M572 330 H620" class="stroke-muted" stroke-width="3"/>
+  <g font-size="26" text-anchor="middle">
+    <rect x="636" y="96" width="150" height="48" rx="24" class="accent"/><text x="711" y="130" class="paper">avec</text>
+    <rect x="636" y="166" width="150" height="48" rx="24" class="ink" opacity="0.85"/><text x="711" y="200" class="paper">sans</text>
+    <rect x="636" y="236" width="150" height="48" rx="24" class="ink" opacity="0.85"/><text x="711" y="270" class="paper">sans</text>
+    <rect x="636" y="306" width="150" height="48" rx="24" class="accent"/><text x="711" y="340" class="paper">avec</text>
+  </g>
+  <path d="M810 225 H900" class="stroke-accent" stroke-width="4"/>
+  <path d="M898 211 L916 225 L898 239 Z" class="accent"/>
+  <rect x="940" y="94" width="740" height="120" rx="12" class="deck"/>
+  <rect x="940" y="94" width="740" height="6" class="accent"/>
+  <text x="964" y="150" class="display ink" font-size="32">avec outil d'assistance</text>
+  <text x="964" y="192" class="ink" font-size="24" opacity="0.8">temps de résolution</text>
+  <rect x="940" y="236" width="740" height="120" rx="12" class="deck"/>
+  <rect x="940" y="236" width="740" height="6" class="ink" opacity="0.85"/>
+  <text x="964" y="292" class="display ink" font-size="32">sans outil d'assistance</text>
+  <text x="964" y="334" class="ink" font-size="24" opacity="0.8">temps de résolution</text>
+</svg>

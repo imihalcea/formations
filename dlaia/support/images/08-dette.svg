@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 480" width="1680" height="480">
+  <text x="0" y="24" class="accent mono" font-size="22" font-weight="600" letter-spacing="3">CODE GÉNÉRÉ ET CODE RELU, AU FIL DU TEMPS (ILLUSTRATION)</text>
+  <path d="M120 60 V400 H1640" class="stroke-ink" stroke-width="2" opacity="0.5"/>
+  <text x="1640" y="440" class="ink" font-size="24" text-anchor="end" opacity="0.7">temps</text>
+  <path d="M120 400 L1380 100 L1380 250 Z" class="tint"/>
+  <path d="M120 400 L1380 100" class="stroke-accent" stroke-width="6"/>
+  <path d="M120 400 L1380 250" class="stroke-ink" stroke-width="6"/>
+  <text x="1400" y="110" class="accent display" font-size="30">code généré</text>
+  <text x="1400" y="260" class="ink display" font-size="30">code relu</text>
+  <text x="1150" y="238" class="accent display" font-size="30" text-anchor="middle">dette de relecture</text>
+</svg>

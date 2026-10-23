@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 520" width="1680" height="520">
+  <text x="0" y="24" class="accent mono" font-size="22" font-weight="600" letter-spacing="3">SCORE AU TEST DE COMPRÉHENSION</text>
+  <path d="M120 60 V400 H1640" class="stroke-ink" stroke-width="2" opacity="0.5"/>
+  <g class="ink" font-size="22" opacity="0.7" text-anchor="end">
+    <text x="104" y="408">0 %</text>
+    <text x="104" y="238">50 %</text>
+    <text x="104" y="68">100 %</text>
+  </g>
+  <rect x="320" y="230" width="360" height="170" rx="6" class="accent"/>
+  <rect x="920" y="172" width="360" height="228" rx="6" class="ink" opacity="0.85"/>
+  <g class="ink display" font-size="48" text-anchor="middle">
+    <text x="500" y="212">50 %</text>
+    <text x="1100" y="154">67 %</text>
+  </g>
+  <g class="ink" font-size="28" text-anchor="middle">
+    <text x="500" y="442">avec outil d'assistance</text>
+    <text x="1100" y="442">sans outil d'assistance</text>
+  </g>
+  <text x="0" y="500" class="ink" font-size="22" opacity="0.6">Anthropic, test de compréhension</text>
+</svg>
