@@ -135,6 +135,20 @@ describe("compileDeck", () => {
     expect(slide.kind === "facts" && slide.facts).toEqual([{ termHtml: "Terme", textHtml: "explication" }, { textHtml: "Texte seul" }]);
   });
 
+  it("compile une slide video YouTube avec départ", async () => {
+    const src = "::: sources\n- [S](https://s)\n:::\n";
+    const dir = supportWith({ "01-m.md": `# M\n\n## V {.video src="https://youtu.be/wjZofJX0v4M?si=x&t=8"}\n\n${src}` });
+    const slide = (await compileDeck(dir)).slides.find((s) => s.kind === "video")!;
+    expect(slide.kind === "video" && slide.embedUrl).toBe("https://www.youtube-nocookie.com/embed/wjZofJX0v4M?rel=0&start=8");
+    expect(slide.kind === "video" && slide.posterUrl).toBe("https://i.ytimg.com/vi/wjZofJX0v4M/maxresdefault.jpg");
+  });
+
+  it("refuse une vidéo sans src ou d'un hébergeur inconnu", async () => {
+    const src = "::: sources\n- [S](https://s)\n:::\n";
+    await expect(compileDeck(supportWith({ "01-m.md": `# M\n\n## V {.video}\n\n${src}` }))).rejects.toThrow("attribut src");
+    await expect(compileDeck(supportWith({ "01-m.md": `# M\n\n## V {.video src="https://exemple.org/a"}\n\n${src}` }))).rejects.toThrow("vidéo non reconnue");
+  });
+
   it("lit la remarque qui suit les chiffres d'une slide figures", async () => {
     const src = "::: sources\n- [S](https://s)\n:::\n";
     const dir = supportWith({ "01-m.md": `# M\n\n## X {.figures}\n\n- **1** a\n- **2** b\n- **3** c\n\nUne remarque.\n\n${src}` });

@@ -43,6 +43,7 @@ Chaque titre `##` ouvre une slide. Une classe entre accolades fixe son type, et 
 | `figure` | aucun ; le titre décrit le chiffre | `value` (obligatoire), `kicker` |
 | `figures` | 3 à 5 éléments `- **valeur** légende`, puis un paragraphe facultatif affiché en remarque | `kicker` |
 | `quote` | lignes `> …` | `author`, `kicker` |
+| `video` | aucun ; le lecteur se charge au clic | `src` (obligatoire : adresse https YouTube, Vimeo ou fichier `.mp4` / `.webm`), `start` (secondes, à défaut le paramètre `t` de l'adresse), `kicker` |
 | `compare` | conteneurs `claude-code` et `opencode` | `kicker` |
 | `tp` | voir « Travaux pratiques » | `duration`, `kicker` |
 | `end` | sous-titre | `kicker` |
@@ -61,7 +62,7 @@ Notes d'animation, visibles dans la vue présentateur (touche P) et le panneau d
 
 Dans une slide `content`, une ligne `|||` coupe le corps en deux colonnes ; une seconde ligne `|||` ferme les colonnes, et ce qui la suit s'affiche en pleine largeur dessous. Les titres `##` et `###` acceptent le Markdown en ligne : le code entre accents graves y est rendu comme dans le corps, sans coupure de ligne, et une espace insécable est placée avant « ; », « : », « ? » et « ! » au rendu.
 
-Les types `facts`, `figure`, `figures` et `quote` refusent de compiler sans `::: sources`. Les blocs de code ```` ```console ```` prennent le style terminal, les blocs ```` ```prompt ```` le style d'un prompt à copier ; sur les slides comme sur la page de TP, chaque bloc a un bouton « Tout copier », et chaque commande `$` d'une session `console` un bouton qui copie cette seule commande, visible au survol de sa ligne ; les autres langages sont colorés par Shiki sur fond clair. Les images sont référencées relativement au fichier Markdown et intégrées au fichier généré. Un SVG est inséré en ligne : il utilise les polices de la charte et les classes de `styles.css` (`ink`, `accent`, `paper`, `deck`, `muted`, `tint`, `stroke-accent`, `display`, `mono`…), ce qui garde les schémas dans les couleurs du support.
+Les types `facts`, `figure`, `figures`, `quote` et `video` refusent de compiler sans `::: sources`. Les blocs de code ```` ```console ```` prennent le style terminal, les blocs ```` ```prompt ```` le style d'un prompt à copier ; sur les slides comme sur la page de TP, chaque bloc a un bouton « Tout copier », et chaque commande `$` d'une session `console` un bouton qui copie cette seule commande, visible au survol de sa ligne ; les autres langages sont colorés par Shiki sur fond clair. Les images sont référencées relativement au fichier Markdown et intégrées au fichier généré. Un SVG est inséré en ligne : il utilise les polices de la charte et les classes de `styles.css` (`ink`, `accent`, `paper`, `deck`, `muted`, `tint`, `stroke-accent`, `display`, `mono`…), ce qui garde les schémas dans les couleurs du support.
 
 Un bloc de code vide peut reprendre le contenu d'un fichier, chemin relatif au fichier Markdown, éventuellement limité à une plage de lignes. Le code d'un corrigé se cite ainsi depuis `tp/`, où il est testé, au lieu d'être recopié :
 

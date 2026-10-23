@@ -60,6 +60,8 @@ const deck = await page.evaluate(() => ({
 const goto = async (hash, ready) => {
   await page.evaluate((h) => (location.hash = h), hash);
   await page.waitForFunction(ready, undefined, { timeout: 10_000 });
+  // Les aperçus de vidéo viennent du réseau : attendre leur chargement (ou leur échec) avant la capture.
+  await page.evaluate(() => Promise.all([...document.images].map((i) => (i.complete ? null : new Promise((r) => { i.onload = i.onerror = r; })))));
   await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))));
 };
 

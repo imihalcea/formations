@@ -13,12 +13,12 @@ const TERMINAL_LANGS = new Set(["console", "shellsession"]);
 const PROMPT_LANG = "prompt";
 
 const KINDS: SlideKind[] = [
-  "title", "agenda", "content", "statement", "facts", "figure", "figures", "quote", "compare", "end",
+  "title", "agenda", "content", "statement", "facts", "figure", "figures", "quote", "video", "compare", "end",
 ];
-const ATTRS = new Set(["kicker", "value", "duration", "author", "days"]);
+const ATTRS = new Set(["kicker", "value", "duration", "author", "days", "src", "start"]);
 const CONTAINERS = new Set(["notes", "sources", "claude-code", "opencode"]);
 // Une slide de ces types avance un fait chiffré ou cité : sa source est obligatoire.
-const NEEDS_SOURCES = new Set<SlideKind>(["facts", "figure", "figures", "quote"]);
+const NEEDS_SOURCES = new Set<SlideKind>(["facts", "figure", "figures", "quote", "video"]);
 const TP_CONTAINERS = new Set<string>(["claude-code", "opencode", "attendu", "indice"]);
 
 const MIME: Record<string, string> = {
@@ -309,6 +309,42 @@ function positiveInt(value: string, origin: string, key: string): number {
   return Number(value);
 }
 
+// Adresse d'une vidéo : YouTube et Vimeo passent par leur lecteur intégré, un .mp4 ou .webm par la balise video.
+// Le départ en secondes vient de l'attribut start, à défaut du paramètre t de l'adresse.
+function videoSource(src: string, startAttr: string | undefined, origin: string) {
+  const fail = (msg: string): never => {
+    throw new SupportError(`${origin} : ${msg}`);
+  };
+  let u: URL;
+  try {
+    u = new URL(src);
+  } catch {
+    return fail(`adresse de vidéo invalide « ${src} »`);
+  }
+  if (u.protocol !== "https:") fail(`la vidéo « ${src} » doit être en https`);
+  const startRaw = startAttr ?? u.searchParams.get("t") ?? u.searchParams.get("start") ?? undefined;
+  if (startRaw !== undefined && !/^\d+s?$/.test(startRaw)) fail(`départ de vidéo « ${startRaw} » invalide, nombre de secondes attendu`);
+  const start = startRaw ? Number(startRaw.replace("s", "")) : 0;
+  const host = u.hostname.replace(/^(www|m)\./, "");
+  const segs = u.pathname.split("/").filter(Boolean);
+
+  if (host === "youtu.be" || host === "youtube.com") {
+    const id = host === "youtu.be" ? segs[0] : u.searchParams.get("v") ?? (["embed", "shorts"].includes(segs[0] ?? "") ? segs[1] : undefined);
+    if (!id || !/^[\w-]{11}$/.test(id)) return fail(`identifiant YouTube introuvable dans « ${src} »`);
+    const q = new URLSearchParams({ rel: "0", ...(start ? { start: String(start) } : {}) });
+    return { provider: "youtube" as const, embedUrl: `https://www.youtube-nocookie.com/embed/${id}?${q}`, watchUrl: src, posterUrl: `https://i.ytimg.com/vi/${id}/maxresdefault.jpg` };
+  }
+  if (host === "vimeo.com") {
+    const id = segs.find((s) => /^\d+$/.test(s));
+    if (!id) return fail(`identifiant Vimeo introuvable dans « ${src} »`);
+    return { provider: "vimeo" as const, embedUrl: `https://player.vimeo.com/video/${id}${start ? `#t=${start}s` : ""}`, watchUrl: src };
+  }
+  if (/\.(mp4|webm)$/i.test(u.pathname)) {
+    return { provider: "file" as const, embedUrl: start ? `${src}#t=${start}` : src, watchUrl: src };
+  }
+  return fail(`vidéo non reconnue « ${src} » : YouTube, Vimeo ou fichier .mp4 / .webm attendu`);
+}
+
 function buildSlide(b: Block, ctx: Ctx): Slide {
   const kind = (b.kind ?? "content") as SlideKind;
   if (!KINDS.includes(kind)) throw new SupportError(`${b.origin} : type de slide inconnu « ${b.kind} »`);
@@ -381,6 +417,11 @@ function buildSlide(b: Block, ctx: Ctx): Slide {
       if (lines.length === 0) fail("citation « > » manquante");
       const author = b.attrs["author"];
       return { ...base, kind, quoteHtml: inline(lines.join(" ")), ...(author ? { author } : {}) };
+    }
+    case "video": {
+      empty();
+      const src = b.attrs["src"] ?? fail('attribut src="…" obligatoire');
+      return { ...base, kind, ...videoSource(src, b.attrs["start"], b.origin) };
     }
     case "compare": {
       empty();

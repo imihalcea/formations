@@ -23,6 +23,8 @@ export type Slide =
   | (Base & { kind: "figure"; value: string })
   | (Base & { kind: "figures"; stats: { value: string; labelHtml: string }[]; remarkHtml?: string })
   | (Base & { kind: "quote"; quoteHtml: string; author?: string })
+  // video : `embedUrl` est l'adresse du lecteur intégré (iframe) ou du fichier (balise video) ; `watchUrl` l'adresse d'origine, `posterUrl` l'aperçu affiché avant la lecture (YouTube).
+  | (Base & { kind: "video"; provider: "youtube" | "vimeo" | "file"; embedUrl: string; watchUrl: string; posterUrl?: string })
   | (Base & { kind: "compare"; claudeHtml: string; opencodeHtml: string })
   // stepTitles : titres des étapes rendus en HTML (Markdown en ligne).
   | (Base & { kind: "tp"; tpId: string; introHtml: string; stepTitles: string[]; optionalFirst?: boolean; duration?: string })

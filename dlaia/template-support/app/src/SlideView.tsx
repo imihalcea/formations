@@ -272,9 +272,63 @@ function ContentBody({ slide }: { slide: Slide }) {
           ))}
         </div>
       );
+    case "video":
+      return <VideoPlayer key={slide.origin} slide={slide} />;
     case "carte":
       return <CartePreview carte={slide.carte} />;
     default:
       return null;
   }
+}
+
+// Le lecteur ne se charge qu'au clic : les vues d'ensemble, la vue présentateur et les captures
+// n'ouvrent aucune connexion, et la vidéo ne démarre pas sans le formateur.
+function VideoPlayer({ slide }: { slide: Extract<Slide, { kind: "video" }> }) {
+  const [playing, setPlaying] = useState(false);
+  return (
+    <div className="mx-auto flex flex-col items-center gap-6">
+      <div className="relative shrink-0 overflow-hidden bg-slide-ink" style={{ width: 1000, height: 563 }}>
+        {playing ? (
+          slide.provider === "file" ? (
+            <video src={slide.embedUrl} controls autoPlay className="h-full w-full" />
+          ) : (
+            <iframe
+              src={slide.embedUrl}
+              title={slide.title}
+              className="h-full w-full border-0"
+              allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            />
+          )
+        ) : (
+          <button
+            type="button"
+            onClick={() => setPlaying(true)}
+            className="relative flex h-full w-full cursor-pointer items-center justify-center text-slide-paper"
+            aria-label={`Lire la vidéo : ${slide.title}`}
+          >
+            {slide.posterUrl && (
+              <img
+                src={slide.posterUrl}
+                alt=""
+                className="absolute inset-0 h-full w-full object-cover"
+                // maxresdefault n'existe pas pour toutes les vidéos : repli sur hqdefault.
+                onError={(e) => {
+                  const img = e.currentTarget;
+                  if (img.src.includes("maxresdefault")) img.src = img.src.replace("maxresdefault", "hqdefault");
+                }}
+              />
+            )}
+            <span className="relative flex h-40 w-40 items-center justify-center rounded-full bg-slide-accent shadow-2xl">
+              <svg viewBox="0 0 24 24" width="72" height="72" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+            </span>
+          </button>
+        )}
+      </div>
+      <a href={slide.watchUrl} target="_blank" rel="noreferrer" className="slide-caption opacity-60">
+        Ouvrir dans un nouvel onglet ↗
+      </a>
+    </div>
+  );
 }
