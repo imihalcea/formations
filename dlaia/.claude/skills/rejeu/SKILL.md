@@ -25,4 +25,4 @@ Non rejouable, à vérifier sur la VM : liste.
 Attendus mis à jour : liste.
 ```
 
-Claude Code et Open Code sont installés et configurés sur la machine. Tous les rejeux imposent le même modèle par `--model` : `claude-sonnet-4-6` sous Claude Code, la clé `model` de l'`opencode.json` du fil rouge sous Open Code ; un identifiant qui ne contient pas `claude-sonnet-4-6` arrête le rejeu. Le rejeu ne remplace pas un essai interactif (permissions à l'écran, complétion, `/clear` et `/new`) : l'issue #57 garde cette vérification, réduite aux points « non rejouable » des rapports.
+Claude Code et Open Code sont installés sur la machine et configurés comme sur la VM, par Amazon Bedrock avec le même modèle (conditions réelles). Tous les rejeux imposent le même modèle par `--model` : `claude-sonnet-4-6` sous Claude Code, la clé `model` de l'`opencode.json` du fil rouge sous Open Code ; un identifiant qui ne contient pas `claude-sonnet-4-6` arrête le rejeu. Le rejeu ne remplace pas un essai interactif (permissions à l'écran, complétion, `/clear` et `/new`) : l'issue #57 garde cette vérification, réduite aux points « non rejouable » des rapports.
