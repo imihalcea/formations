@@ -137,7 +137,7 @@ pytest-bdd : un scénario d'un `.feature` est lié à un test par `@scenario('fi
 EARS se lit ; Gherkin s'exécute. Une exigence sans scénario reste une phrase ; un scénario sans exigence est un cas sans règle.
 :::
 
-## EARS dit la condition ; Gherkin fixe chaque côté de la borne. {.statement kicker="EARS et Gherkin"}
+## EARS énonce la règle ; Gherkin la vérifie sur des cas. {.statement kicker="EARS et Gherkin"}
 
 ::: notes
 Conclut les trois slides : REG-05 en une phrase, en deux scénarios, puis ce que chaque format fixe. Écrire dans ces deux formats, en français et avec la numérotation REG-NN, demande une convention que l'agent doit recevoir à chaque session : c'est l'objet de la section suivante, le fichier de contexte.
