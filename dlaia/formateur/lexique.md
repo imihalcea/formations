@@ -176,6 +176,11 @@ Les définitions ci-dessous sont provisoires jusqu'au plan du module concerné, 
 | atrophie des compétences | perte de pratique du développeur qui délègue | 08 | déqualification, deskilling |
 | signataire | le développeur répond du code qu'il livre, généré ou non | 08 | responsable, owner, garant |
 | orchestrateur | développeur qui cadre, délègue et vérifie au lieu d'écrire chaque ligne | 08 | chef d'orchestre, superviseur, pilote |
+| productivité mesurée | gain relevé sur des tâches comparables, chronométrées ; slide « Productivité ressentie ou mesurée » | 08 | gain réel, performance |
+| essai randomisé | comparaison où le hasard décide quelle tâche reçoit l'outil ; slide « Essai randomisé de METR » | 08 | RCT, expérience contrôlée |
+| parade | pratique de la méthode qui maintient la compétence du développeur ; slide « Quatre parades contre l'atrophie » | 08 | garde-fou, contre-mesure |
+| feuille de route personnelle | quatre engagements écrits par le développeur pour son dépôt et sa pratique ; slide « Feuille de route personnelle » | 08 | plan d'action, plan de progression |
+| débit de livraison, stabilité de livraison | mesures DORA : vitesse à laquelle les changements arrivent en production, fréquence des échecs et des reprises ; en-tête du tableau de la slide « DORA : l'outil amplifie » | 08 | vélocité, qualité (pour la stabilité) |
 
 ## Hors slides
 
