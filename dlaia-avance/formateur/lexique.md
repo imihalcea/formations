@@ -80,7 +80,10 @@ Les termes des modules 1 à 3 de DLAIA (agent, harnais, fenêtre de contexte, sk
 | diff | liste des lignes ajoutées et retirées d'un fichier entre deux états ; slide « Un test désactivé masque l'échec » | 01 | différentiel, patch |
 | code de retour | nombre rendu par une commande à sa fin, 0 si elle réussit ; slide « Un critère vérifiable » | 01 | exit code, statut de sortie |
 | mode non interactif | exécution sans session ouverte : un prompt en entrée, le résultat en sortie (`claude -p`, `opencode run`) ; slide « Une boucle par script » | 01 | headless, batch |
-| Claude Agent SDK | SDK d'Anthropic qui pilote Claude Code depuis TypeScript ou Python ; slide « Définition d'un SDK » (notes) | 01 | SDK Claude, SDK Anthropic |
+| script shell | fichier de commandes exécuté par le shell, qui lance l'agent de code en mode non interactif ; slide « Une boucle par script » | 01 | bash, batch |
+| programme | code écrit par le développeur (TypeScript ou Python dans le support) qui appelle le SDK ; slide « Définition d'un SDK » | 01 | service, application, bot |
+| appel (au SDK) | envoi d'un prompt à l'agent de code par le SDK ; slide « Un premier appel au SDK » | 01 | requête, invocation |
+| Claude Agent SDK | SDK d'Anthropic qui pilote Claude Code depuis TypeScript ou Python ; slide « Un premier appel au SDK » | 01 | SDK Claude, SDK Anthropic |
 
 ## Revue de code automatisée (module 2)
 
