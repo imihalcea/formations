@@ -1,0 +1,196 @@
+# Lexique
+
+Vocabulaire de référence du support. Une notion a un seul nom, celui de la colonne « Terme » ; les slides, les notes et les énoncés l'emploient sous cette forme et sous aucune autre. Un terme entre au lexique avec le plan du module qui l'introduit, et la slide qui le définit précède toute slide qui l'emploie. Un module ne redéfinit pas un terme d'un module antérieur : il le reprend tel quel. Une notion absente du lexique ne s'emploie pas comme notion : soit elle y entre, soit la phrase se reformule avec les termes existants.
+
+La colonne « Introduit » donne le module de la première définition. La colonne « À ne pas employer » liste les synonymes, anglicismes et variantes à remplacer par le terme. Les noms de fichiers, de commandes et d'identifiants (`spec.md`, `/speckit-plan`, `claude-sonnet-4-6`) gardent leur forme d'origine et ne figurent pas ici. Les sigles (LLM, ADR, EARS, TDD, BDD) sont développés une fois, sur la slide qui les définit, puis employés seuls.
+
+Les définitions ci-dessous sont provisoires jusqu'au plan du module concerné, qui les confirme ou les corrige. La carte mentale (`support/carte-mentale.yaml`) reprend ces définitions en fin de rédaction.
+
+## Produits et noms propres
+
+| Terme | Définition | Introduit | À ne pas employer |
+|---|---|---|---|
+| agent de code | programme en ligne de commande qui pilote un modèle pour lire, écrire et exécuter du code dans un dépôt ; Claude Code et Open Code en sont deux ; « agent » seul à partir du module 1 ; slide « Deux agents de code » | 00 | assistant, outil, CLI, harnais (pour l'agent de code) |
+| Claude Code | agent de code en ligne de commande d'Anthropic | 00 | Claude (pour l'outil), ClaudeCode, claude hors commande |
+| Open Code | agent de code libre en ligne de commande, version 2 sur la VM | 00 | OpenCode, opencode hors commande |
+| Spec Kit | outil de GitHub qui installe dans l'agent les commandes du Spec Driven Development | 02 | SpecKit, spec-kit, specify (pour l'outil entier) |
+| Claude Sonnet 4.6 | modèle unique de la formation, identifiant `claude-sonnet-4-6` | 00 | Sonnet seul, Claude 4.6, le modèle d'Anthropic |
+| bookit | projet fil rouge : application de réservation de ressources | 00 | Bookit, l'application ou le projet sans son nom |
+| fil rouge | projet bookit repris de TP en TP | 00 | projet d'exemple, cas d'école |
+| Amazon Bedrock | service d'Amazon Web Services qui héberge des modèles ; les deux agents de code l'appellent pour Claude Sonnet 4.6 ; slide « Claude Sonnet 4.6, modèle unique » (étiquette du schéma) | 00 | Bedrock seul, AWS Bedrock |
+| TP | travaux pratiques : séance de pratique guidée à la suite d'un module ; l'énoncé se lit sur une page dédiée ; slide « Jour 1 : piloter, cadrer, spécifier » (légende du schéma, « travaux pratiques » développé une fois) | 00 | atelier, exercice, lab |
+| énoncé | texte d'un TP, sur sa page dédiée ; slide « L'archive et la page de TP » | 00 | consigne, sujet |
+| archive | `dlaia-avance.zip` : le support, `bookit/` et `fichiers/` ; slide « L'archive et la page de TP » | 00 | zip, paquet |
+| support | cours compilé, `dlaia-avance.html` ; slide « L'archive et la page de TP » | 00 | slides (pour l'ensemble), présentation |
+
+## Domaine bookit (module 3, règles et codes de refus dès le module 1)
+
+| Terme | Définition | Introduit | À ne pas employer |
+|---|---|---|---|
+| ressource | ce qui se réserve : salle, équipement ou personne ; connaît ses réservations confirmées | 03 (sens courant dès le 01) | salle (pour la notion), asset, objet réservable |
+| demande de réservation | une ressource visée, un début et une fin, soumise à bookit ; « demande » seule une fois définie | 03 | requête, booking, réservation (avant décision) |
+| créneau | intervalle entre un début et une fin, début inclus et fin exclue ; deux créneaux jointifs ne se chevauchent pas | 03 | plage, slot, intervalle, période |
+| réservation confirmée | demande acceptée et enregistrée sur sa ressource ; « réservation » seule une fois définie | 03 | booking, réservation existante, occupation |
+| décision | résultat de la validation d'une demande : acceptée, ou refusée avec un code | 03 | résultat, verdict, réponse (pour la décision) |
+| code de refus | identifiant de la règle enfreinte, un par règle : `duration`, `hours`, `lead_time`, `horizon`, `overlap` | 01 | code d'erreur, erreur, motif |
+| instant courant | moment auquel la demande est jugée, fourni en entrée à la validation | 03 (sens courant dès le 01) | maintenant, now (hors code), heure système, date du jour |
+| règle métier | contrainte du domaine que toute réservation respecte, numérotée REG-NN ; devient une exigence dans la spécification | 01 | règle de gestion, contrainte métier, business rule |
+
+## Modèle et agent (module 1)
+
+| Terme | Définition | Introduit | À ne pas employer |
+|---|---|---|---|
+| génération (d'assistance) | une des quatre étapes de l'assistance au code : complétion de l'IDE, suggestion dans l'éditeur, assistant conversationnel, agent | 01 | vague, ère, phase |
+| LLM | modèle de langage qui produit du texte token par token à partir d'un contexte ; « modèle » seul une fois le sigle défini | 01 | grand modèle de langage, IA (pour le modèle), réseau de neurones |
+| token | unité de texte que le modèle lit et produit, comptée dans la fenêtre et facturée | 01 | jeton, mot, caractère |
+| fenêtre de contexte | tout ce que le modèle lit pour produire une réponse, de taille bornée | 01 | contexte seul (pour la fenêtre), context window, mémoire |
+| instructions fixes | texte que le harnais place en tête de la fenêtre de contexte à chaque appel, avant le prompt ; slide « Ce que le modèle lit » (étiquette du schéma) | 01 | prompt système, system prompt, préambule |
+| température | réglage de la part de hasard dans le choix de chaque token | 01 | créativité, aléa, randomness |
+| hallucination | affirmation produite avec assurance et fausse | 01 | invention, erreur du modèle, confabulation |
+| date de coupure | date jusqu'à laquelle les connaissances du modèle sont fiables, fixée par son entraînement | 01 | cutoff, date limite, fraîcheur |
+| non-déterminisme | deux appels identiques au modèle peuvent produire deux réponses différentes, même à température 0 | 01 | aléa (pour la propriété), instabilité, variabilité |
+| agent | modèle dans une boucle d'outils : il lit, exécute, relit, jusqu'au résultat | 01 | assistant, IA (pour l'agent), copilote, bot |
+| outil (de l'agent) | action que l'agent peut déclencher : lire un fichier, écrire, exécuter une commande, chercher | 01 | fonction, tool, capacité |
+| harnais | logiciel qui entoure le modèle : boucle, outils, permissions, affichage | 01 | runtime, wrapper, outil agentique, agent CLI |
+| permission | accord demandé à l'utilisateur avant une action de l'agent | 01 | autorisation, droit, approbation |
+| session | une suite d'échanges avec l'agent, du lancement à `/clear` ou `/new` | 01 | conversation, chat, contexte (pour la session) |
+| tour | un échange de la session : message, appels d'outils, réponse ; chaque tour reste entier dans la fenêtre de contexte | 01 | turn, itération, aller-retour |
+| prompt | texte envoyé au modèle ; ses quatre composants : rôle, contexte, instruction, format | 01 | invite, requête, demande, instruction (pour l'ensemble) |
+| vibe coding | pilotage par prompts successifs, sans intention écrite ni vérification | 01 | codage à l'instinct, prompt-and-pray |
+| intention | ce que le logiciel doit faire, écrit, versionné, vérifié | 01 | besoin, idée, vision, objectif (pour l'intention) |
+| méthode | manière dont l'équipe organise le travail avec l'agent : ce qui s'écrit avant le code et ce qui se relit après | 01 | process, pratique, approche (pour la méthode) |
+| artefact | fichier versionné dans le dépôt qui porte le travail au-delà d'une session : code, tests, règles, intention écrite | 01 | livrable, document, sortie |
+
+## Spec Driven Development (module 2)
+
+| Terme | Définition | Introduit | À ne pas employer |
+|---|---|---|---|
+| Spec Driven Development | méthode où une spécification écrite précède et pilote le plan, les tâches et le code ; « SDD » une fois le sigle défini | 02 | développement piloté par la spécification, spec-first, approche spec |
+| workflow | suite ordonnée des étapes du SDD, chacune produisant un artefact relu par un humain | 02 | pipeline, processus, cycle, chaîne |
+| point de contrôle | moment du workflow où le développeur relit l'artefact produit et l'approuve ou le refuse ; `gate` dans le fichier de workflow de Spec Kit | 02 | gate hors identifiant, checkpoint, transition, porte |
+| spécification | ce que le logiciel doit faire et pourquoi, sans dire comment ; fichier `spec.md` | 02 | spec hors nom de fichier, cahier des charges, exigences (pour l'ensemble) |
+| exigence | une phrase vérifiable de la spécification, numérotée REG-NN dans bookit | 02 | requirement, règle (pour une exigence), critère |
+| QUOI et COMMENT | partage entre la spécification (QUOI) et le plan (COMMENT) | 02 | what et how, fond et forme, besoin et solution |
+| plan | artefact `plan.md` : le COMMENT, les choix techniques qui réalisent la spécification | 02 | design, conception, architecture (pour le plan) |
+| tâche | ligne de `tasks.md` : une part du plan, réalisable et vérifiable seule | 02 | ticket, étape, story, item |
+| constitution | fichier `.specify/memory/constitution.md` : les principes du projet, que chaque plan et chaque diff respectent | 02 | charte, règles du projet, guidelines, convention |
+| principe | une règle de la constitution ; trois sortes définies au module 3 : invariant, pattern imposé, anti-pattern interdit | 02 | règle (pour un principe), contrainte |
+| fichier à trous | fichier Markdown de `.specify/templates/` dont les sections entre crochets sont remplies par une commande Spec Kit ; nommé « template » à partir du module 5 | 02 | template (avant le module 5), gabarit, modèle, squelette |
+| Markdown structuré | sections titrées et exigences numérotées qui donnent sa structure à `spec.md` | 02 | squelette, structure Markdown, Markdown seul (pour le format) |
+| ADR | note qui trace une décision d'architecture, son contexte et ses conséquences ; « architecture decision record » développé une fois ; sa seule matière est une décision structurante (module 3) | 02 | décision seule, RFC, note de conception |
+| EARS | syntaxe d'exigence en une phrase à mots-clés (Quand, Tant que, Si, doit), traduits de l'anglais ; développé une fois | 02 | syntaxe structurée, exigence formelle, mots-clés anglais (SHALL, WHEN, WHILE, IF) hors citation de Mavin |
+| patron (EARS) | forme de phrase EARS propre à une situation : toujours, sur un événement, dans un état, cas indésirable ; slide « EARS, une phrase à mots-clés » | 02 | pattern, template EARS, type d'exigence, modèle de phrase |
+| Gherkin | syntaxe de scénario Soit, Quand, Alors (`# language: fr`), exécutable avec pytest-bdd | 02 | cucumber, BDD (pour le format), feature (pour la syntaxe), Given, When, Then hors citation de Cucumber ou de Spec Kit |
+| scénario | un cas d'une exigence écrit en Gherkin : contexte, action, résultat | 02 | exemple, cas de test, test (pour le scénario) |
+| commande Spec Kit | prompt versionné, invoqué `/speckit-x` sous Claude Code et `/speckit.x` sous Open Code | 02 | slash command, skill speckit, étape (pour la commande) |
+
+## Constitution et architecture (module 3)
+
+| Terme | Définition | Introduit | À ne pas employer |
+|---|---|---|---|
+| architecture implicite | structure que l'équipe connaît sans l'avoir écrite, invisible pour l'agent | 03 | architecture tacite, non-dit |
+| invariant | sorte de principe : ce qui est toujours vrai dans le code | 03 | contrainte, règle d'or |
+| pattern imposé | sorte de principe : la manière de faire que tout diff suit | 03 | patron, bonne pratique, convention |
+| anti-pattern interdit | sorte de principe : ce qu'aucun diff ne fait | 03 | anti-patron, interdit seul, mauvaise pratique |
+| couche | ensemble de modules de même rôle : domaine, application, infrastructure | 03 | niveau, tier, strate |
+| dépendance | import d'un module vers un autre ; son sens est ce que la frontière contraint | 03 | couplage, référence, lien |
+| frontière | règle qui dit quelle couche, ou quel service, peut dépendre de quelle autre | 03 | limite, séparation, barrière |
+| port | interface que le domaine déclare pour ce qu'il attend de l'extérieur : `BookingRepository`, `Clock` (`ports.py`) | 03 | interface seule, protocole, contrat |
+| adaptateur | module d'infrastructure qui réalise un port ou pilote le domaine : `sqlite_repository.py`, `system_clock.py`, `api.py` | 03 | adapter, implémentation, driver |
+| architecture hexagonale | domaine au centre, ports, adaptateurs à l'extérieur ; les dépendances pointent vers le domaine | 03 | ports et adaptateurs, onion, clean architecture (notion distincte) |
+| clean architecture | cercles concentriques, les dépendances pointent vers l'intérieur (Martin, 2012) | 03 | architecture propre, onion |
+| microservices | services en processus séparés, chacun propriétaire de sa base, échanges par le réseau (Lewis et Fowler, 2014) | 03 | micro-services, services seuls |
+| squelette | le `fil-rouge/` fourni dans l'archive : bookit avec son API, son stockage et son test de fumée, sans `validate_booking` ni artefact SDD | 03 | stub, base, projet de départ ; squelette pour un fichier à trous ou le Markdown structuré |
+| test de fumée | unique test fourni avec le squelette (`tests/test_fumee.py`) : une réservation valide via l'API répond 201 ; reste vert une fois les règles écrites | 03 | smoke test, test d'intégration, test de l'API |
+| style d'architecture | manière d'organiser les modules et leurs dépendances, dont la constitution retient la règle de frontière : hexagonale, clean, microservices | 03 | pattern d'architecture, modèle d'architecture, architecture seule (pour le style) |
+| décision structurante | décision qui engage tout le projet et survit à chaque spécification : style d'architecture, exposition, stockage, déploiement, identité ; seule matière d'un ADR, une convention de code en est une conséquence ; slide « Cinq décisions structurantes » | 03 | décision d'architecture (pour la notion), choix technique, convention |
+| principe de structure | principe de la constitution qui porte sur les couches, les dépendances ou l'emplacement des fichiers ; bookit I à IV, avec mention `(ADR n)` ; slide « L'ADR 1 motive quatre principes » | 03 | principe technique, règle d'architecture, principe d'architecture |
+| principe de workflow | principe de la constitution qui porte sur la manière de travailler : test avant le code, lint, commit ; bookit V à VII, pourquoi sans ADR ; slide « L'ADR 1 motive quatre principes » | 03 | principe de process, règle d'équipe, bonne pratique |
+| base de la constitution | fichier `docs/constitution-base.md` fourni au TP 3 : sept principes avec leur pourquoi, les quatre de structure avec leur mention `(ADR n)`, deux sections et la gouvernance, dont trois phrases pièges ; la commande `constitution` le reprend pour écrire `.specify/memory/constitution.md` ; « base » seule une fois définie | 03 | brouillon, draft, template de constitution, constitution de base |
+
+## Spécifier (module 4)
+
+| Terme | Définition | Introduit | À ne pas employer |
+|---|---|---|---|
+| borne | valeur limite d'une règle (30 minutes, 4 heures, 2 heures, 60 jours, 20h00), incluse ou exclue ; une exigence la tranche, un scénario Gherkin la teste de chaque côté | 04 | limite, seuil, valeur extrême |
+| fichier de contexte | `AGENTS.md`, lu par l'agent au lancement de chaque session | 04 | fichier de règles, mémoire, fichier d'instructions, CLAUDE.md (absent du fil rouge) |
+| skill | dossier `.claude/skills/<nom>/SKILL.md` : savoir-faire chargé sur demande, lu par les deux outils | 04 | compétence, extension, plugin, command |
+| brief | besoin écrit en langage courant, entrée de `specify` ; fichier `docs/brief.md` dans bookit | 04 | description de la fonctionnalité, demande, prompt de spécification, user story (pour le brief) |
+| brouillon | spécification produite par `/speckit-specify`, avant `clarify` | 04 | première version, draft, ébauche |
+| liste de contrôle | fichier `checklists/requirements.md` écrit par `specify` : questions de qualité sur les exigences (« checklist » dans Spec Kit) | 04 | checklist hors identifiant, check-list, liste de vérification |
+| clarification | question posée par `/speckit-clarify` et réponse consignée dans la spécification | 04 | ambiguïté levée, question ouverte, précision |
+| responsable produit | personne qui répond pour le métier aux questions de `clarify` ; ses réponses sont versionnées dans `docs/clarifications.md` | 04 | le produit (pour la personne), product owner, PO, client, métier seul |
+| réconciliation | réécriture du brouillon clarifié par l'agent d'après `docs/regles-metier.md` et `docs/clarifications.md`, puis relecture à la main, jusqu'à sept exigences sans marqueur | 04 | alignement, finalisation, nettoyage |
+
+## Personnaliser, planifier, découper (module 5)
+
+| Terme | Définition | Introduit | À ne pas employer |
+|---|---|---|---|
+| template | gabarit Markdown d'un artefact Spec Kit (`spec`, `plan`, `tasks`, `constitution`), fichier versionné de `.specify/templates/` modifié en place par les TP 4 et 5 ; nommé « fichier à trous » au module 2, avant que le mot soit défini ; slide « Le template, fichier du dépôt » | 05 | modèle (pour template), gabarit, squelette, fichier à trous (à partir du module 5), surcharge, override (le fil rouge ne se sert pas de `overrides/`) |
+| argument (de commande) | texte qui suit la commande Spec Kit à l'invocation, substitué à `$ARGUMENTS` dans son prompt ; fixe ce qu'un appel impose, là où le template fixe le format de l'artefact ; « sans argument » dès l'énoncé du TP 4 ; slide « Prompt, script, template » (étiquette du schéma) | 05 | consigne, prompt fourni, instruction de la commande, prompt (pour l'argument seul) |
+| socle de test | tâche T001 de `tasks.md` : le fichier `tests/test_valider_reservation.py` et ses fonctions pytest-bdd, sans scénario lié, tests existants inchangés ; ce sur quoi chaque tâche Test REG-NN s'appuie, en liant par `@scenario` les scénarios de sa règle ; slide « Tâches : le template de bookit » | 05 | harnais (pour les tests), squelette de test, fixture, setup |
+| analyse | passe `/speckit-analyze` de cohérence entre spécification, plan et tâches, la constitution en référence ; slide « `analyze` croise spécification, plan, tâches » (étiquette du schéma) | 05 | audit, revue, vérification (pour analyze) |
+| frontmatter | en-tête YAML entre deux lignes `---` en tête du fichier d'une commande (nom, description, options de l'outil) ; slide « Prompt, script, template » (étiquette du schéma) | 05 | métadonnées, en-tête de commande, entête |
+| Constitution Check | section de `plan.md` où `plan` confronte le plan à la constitution, une ligne par principe ; un principe enfreint sans justification arrête la commande ; slide « Le Constitution Check de `plan` » | 05 | contrôle de conformité, revue de constitution, gate (pour le contrôle) |
+| phase 0, phase 1 (de `plan`) | les deux temps de `plan` : phase 0, recherche qui lève les inconnues (`research.md`) ; phase 1, conception (`data-model.md`, `quickstart.md`, `contracts/`) ; slide « Entrées et sorties de `plan` » (étiquettes du schéma) | 05 | étape 0, étape 1, première passe |
+
+## Implémenter et vérifier (module 6)
+
+| Terme | Définition | Introduit | À ne pas employer |
+|---|---|---|---|
+| TDD | test écrit avant le code : rouge, vert, remaniement ; « test-driven development » développé une fois ; slide « TDD : rouge, vert, remaniement » | 06 | test-first, tests d'abord |
+| suite rouge, suite verte | état de la suite de tests : rouge, au moins un test échoue ; verte, tous passent ; un test seul « échoue » ou « passe » ; slide « TDD : rouge, vert, remaniement » (étiquettes du cycle) | 06 | rouge ou vert seuls pour un test, tests cassés, build vert |
+| BDD | scénarios Gherkin exécutés comme tests ; « behaviour-driven development » développé une fois ; slide « BDD : le scénario comme test » | 06 | tests comportementaux, spécification exécutable |
+| définition d'étape | fonction Python liée par `parsers.parse` à une phrase Soit, Quand ou Alors du `.feature` ; `target_fixture` fait d'une étape Soit une fixture ; pluriel « définitions d'étape » ; slide « Une définition d'étape par phrase » | 06 | step definition, step, implémentation d'étape, fixture (pour la définition), définitions d'étapes |
+| couverture | part du code exécutée par les tests ; slide « Couverture : les lignes exécutées » | 06 | coverage, taux de test |
+| mutation testing | modification automatique du code pour vérifier qu'un test échoue ; outil cosmic-ray ; slide « Mutation testing : le code modifié » | 06 | test de mutation, mutation seule |
+| mutant | une version modifiée du code ; tué si un test échoue, survivant si la suite passe, incompétent si le code plante (mots de cosmic-ray) ; slide « Mutation testing : le code modifié » | 06 | mutation (pour un mutant), variante |
+| trou dans les tests | sorte de survivant : un comportement observable change et aucun scénario ne le voit ; se comble par un scénario dans `spec.md` et le `.feature`, jamais dans `tests/` seul ; slide « Classer un survivant » | 06 | manque de test, test manquant, faille, lacune |
+| mutant équivalent | sorte de survivant : aucune entrée ne distingue le mutant du code d'origine, aucun test ne peut le tuer ; noté dans `mutation.md` avec sa raison ; slide « Classer un survivant » | 06 | faux positif, mutant inutile, survivant légitime |
+| converger | ramener le code et les artefacts à l'accord : `converge` mesure l'écart entre le code et `spec.md`, `plan.md`, `tasks.md`, ajoute les tâches manquantes en fin de `tasks.md`, `implement` les exécute, jusqu'à « Converged » ; slide « Entrées et sorties de `converge` » | 06 | boucler, itérer, finaliser |
+| fixture | valeur que pytest fournit à un test ou à une étape ; `target_fixture` fait d'une étape Soit ou Quand une fixture que les étapes suivantes reçoivent ; slide « Une définition d'étape par phrase » | 06 | variable partagée, contexte, setup |
+| survivant | mutant que la suite laisse passer ; deux sortes : trou dans les tests, mutant équivalent ; slide « Mutation testing : le code modifié » | 06 | mutant vivant, mutant non détecté |
+| tâche Test, tâche Code | tâche d'une paire du template de tâches : la tâche Test lie les scénarios d'une règle et doit échouer ; la tâche Code écrit la règle dans `validate_booking.py` ; slide « Relire le diff d'une tâche » | 06 | tâche de test, tâche d'implémentation, étape de test |
+| opérateur (de mutation) | type de modification que cosmic-ray applique au code (`>=` devient `==`) ; slide « Mutation testing : le code modifié » | 06 | mutateur, règle de mutation |
+| liaison (d'un scénario) | `@scenario(FEATURE, "titre")` qui lie un scénario du `.feature` à une fonction de test ; slide « Lier le `.feature` aux tests » | 06 | binding, branchement, association |
+| fichier de suivi | `mutation.md` : une section par passe, une ligne par survivant avec sa sorte et son action ; slide « Classer un survivant » | 06 | journal, rapport de mutation |
+| passe (de mutation) | un cycle `init`, `exec`, `cr-report` sur le code et les tests du moment ; slide « Les commandes de cosmic-ray » | 06 | itération, run, session (réservé à l'agent) |
+
+## Contexte, sécurité et choix des outils (module 7)
+
+| Terme | Définition | Introduit | À ne pas employer |
+|---|---|---|---|
+| lost in the middle | baisse d'attention du modèle sur le milieu d'un long contexte ; dans une session, le milieu, ce sont les anciens tours ; slide « Lost in the middle » (légende du schéma) | 07 | effet de milieu, dilution |
+| compaction | remplacement des tours d'une session par un résumé quand la fenêtre approche de sa limite ; déclenchée par le harnais ou par `/compact` ; le fichier de contexte et les skills sont relus depuis le disque ; slide « La compaction résume la session » | 07 | résumé automatique, compactage |
+| réflexion | tokens que le modèle produit avant sa réponse pour raisonner, facturés comme tokens de sortie ; slide « Durée et coût d'un tour » | 07 | thinking, raisonnement |
+| niveau d'effort | réglage de la quantité de réflexion d'un tour, `/effort` sous Claude Code ; à essayer avant de changer de modèle ; slide « Durée et coût d'un tour » | 07 | effort seul, budget de réflexion |
+| cache de prompt | réutilisation d'un préfixe de contexte déjà traité, facturé au dixième du prix d'entrée pendant cinq minutes ; invalidé par tout changement en tête du préfixe ; slide « Le cache de prompt » (étiquette du schéma) | 07 | caching, mise en cache, prompt caching |
+| unité de travail | ce qu'une session traite d'un bout à l'autre : une tâche, le contexte qu'elle lit, le diff qu'elle produit, sa vérification, puis le commit ; slide « L'unité de travail » (étiquette du schéma) | 07 | lot, itération, sprint, incrément |
+| dépendance hallucinée | paquet inventé par le modèle, parfois enregistré ensuite par un attaquant sous ce nom ; slide « La dépendance hallucinée » (étiquette du schéma) | 07 | slopsquatting (à définir si employé), paquet fantôme |
+| injection de prompt | instruction hostile placée dans un contenu que l'agent lit (fichier, page, sortie d'outil) et que le modèle peut suivre comme une instruction du développeur ; slide « L'injection de prompt » (légende du schéma) | 07 | prompt injection, injection seule |
+| fichier de règles piégé | fichier de contexte ou skill portant une instruction malveillante, souvent invisible à la relecture (caractères Unicode de largeur nulle ou bidirectionnels) ; cas particulier d'injection de prompt ; slide « Le fichier de règles piégé » | 07 | fichier empoisonné |
+| coût total | prix des tokens, temps de lecture des diffs et défauts passés, additionnés ; chacun se mesure sur le dépôt ; slide « Le coût total » (tableau) | 07 | TCO, coût réel |
+| `workflow run` | commande Spec Kit (`specify workflow run`) qui enchaîne les étapes du workflow et s'arrête à chaque point de contrôle ; slide « Lancer `workflow run` » (phrase sous le tableau) | 07 | exécution automatique, pipeline |
+| jeu de tâches | tâches de l'équipe rejouées sur chaque modèle ou harnais pour les comparer sur la suite verte et le diff relu ; slide « Quatre critères pour choisir » (phrase sous le tableau) | 07 | benchmark (sauf mesure publique citée), banc d'essai |
+
+## Lucidité et clôture (module 8)
+
+| Terme | Définition | Introduit | À ne pas employer |
+|---|---|---|---|
+| productivité ressentie | gain estimé par le développeur, comparé au gain mesuré | 08 | impression, perception |
+| dette de relecture | code généré plus vite qu'il n'est relu | 08 | dette de revue, backlog de review |
+| atrophie des compétences | perte de pratique du développeur qui délègue | 08 | déqualification, deskilling |
+| signataire | le développeur répond du code qu'il livre, généré ou non | 08 | responsable, owner, garant |
+| orchestrateur | développeur qui cadre, délègue et vérifie au lieu d'écrire chaque ligne | 08 | chef d'orchestre, superviseur, pilote |
+| productivité attendue | gain que le développeur prévoit avant la tâche, comparé au gain ressenti puis mesuré ; slide « Productivité ressentie ou mesurée » | 08 | estimation initiale, prévision |
+| productivité mesurée | gain relevé sur des tâches comparables, chronométrées ; slide « Productivité ressentie ou mesurée » | 08 | gain réel, performance |
+| essai randomisé | comparaison où le hasard décide quelle tâche reçoit l'outil ; slide « Essai randomisé de METR » | 08 | RCT, expérience contrôlée |
+| parade | pratique de la méthode qui maintient la compétence du développeur ; slide « Quatre parades contre l'atrophie » | 08 | garde-fou, contre-mesure |
+| feuille de route personnelle | quatre engagements écrits par le développeur pour son dépôt et sa pratique ; slide « Feuille de route personnelle » | 08 | plan d'action, plan de progression |
+| outil d'assistance | produit d'assistance au code (assistant conversationnel ou agent) utilisé dans une étude citée ; « outil » seul reste réservé à l'outil de l'agent ; slide « Essai randomisé de METR » | 08 | l'outil (pour une étude), IA, assistant IA |
+| enquête | recueil d'avis par questionnaire, qui relève des associations ; s'oppose à l'essai randomisé, qui établit une cause ; slide « DORA : adoption et livraison » | 08 | sondage, étude (seul) |
+| débit de livraison, stabilité de livraison | mesures DORA : vitesse à laquelle les changements arrivent en production, fréquence des échecs et des reprises ; en-tête du tableau de la slide « DORA : adoption et livraison » | 08 | vélocité, qualité (pour la stabilité) |
+
+## Hors slides
+
+Ces mots désignent la situation de formation et restent dans les notes et les énoncés : stagiaire, formateur, salle, VM, séance, journée. Une slide parle du sujet, pas du public.
