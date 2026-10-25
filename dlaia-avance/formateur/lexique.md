@@ -12,20 +12,24 @@ Les termes des modules 1 à 3 de DLAIA (agent, harnais, fenêtre de contexte, sk
 
 | Terme | Définition | Introduit | À ne pas employer |
 |---|---|---|---|
-| agent de code | programme en ligne de commande qui pilote un modèle pour lire, écrire et exécuter du code dans un dépôt ; Claude Code et Open Code en sont deux ; « agent » seul à partir du module 1 ; slide « Deux agents de code » | 00 | assistant, outil, CLI, harnais (pour l'agent de code) |
+| agent de code | programme en ligne de commande qui pilote un modèle pour lire, écrire et exécuter du code dans un dépôt ; Claude Code et Open Code en sont deux ; « agent » seul aux slides 1 à 3 de l'ouverture (acquis DLAIA), « agent de code » dès la slide 4 ; slide « Deux agents de code » | 00 | assistant, outil, CLI, harnais (pour l'agent de code) |
 | Claude Code | agent de code en ligne de commande d'Anthropic | 00 | Claude (pour l'outil), ClaudeCode, claude hors commande |
-| Open Code | agent de code libre en ligne de commande, version 2 sur le poste | 00 | OpenCode, opencode hors commande |
+| Open Code | agent de code libre en ligne de commande, version 2 | 00 | OpenCode, opencode hors commande |
+| alias (de modèle) | nom court d'un modèle (`sonnet`) dont la version change avec le fournisseur ; slide « Claude Sonnet 4.6, modèle unique » | 00 | raccourci, surnom |
 | Claude Sonnet 4.6 | modèle unique de la formation, identifiant `claude-sonnet-4-6` | 00 | Sonnet seul, Claude 4.6, le modèle d'Anthropic |
 | Amazon Bedrock | service d'Amazon Web Services qui héberge des modèles ; Open Code l'appelle pour Claude Sonnet 4.6 (Claude Code passe par l'abonnement Anthropic) ; slide « Claude Sonnet 4.6, modèle unique » (étiquette du schéma) | 00 | Bedrock seul, AWS Bedrock |
 | fichier de contexte | fichier lu par l'agent de code au lancement : `CLAUDE.md` (Claude Code), `AGENTS.md` (Open Code) ; slide « Deux agents de code » | 00 | fichier d'instructions, mémoire |
-| plafond | limite que l'agent de code atteint sur un dépôt réel, malgré une spécification et un harnais en place ; slide « Définition d'un plafond » | 00 | goulot, blocage, limite (pour la notion) |
-| démonstration | exécution commentée d'une manœuvre de l'agent de code, jouée par le formateur ; slide « Contenu de l'archive » | 00 | démo, TP, atelier |
+| plafond | limite que l'agent de code atteint seul sur un dépôt réel, malgré une spécification et un harnais en place ; slide « Définition d'un plafond » | 00 | goulot, blocage, limite (pour la notion) |
+| démonstration | exécution commentée, en direct, d'une tâche confiée à l'agent de code, jouée par le formateur ; slide « Une démonstration » | 00 | démo, TP, atelier |
 | tickets-api | dépôt de démonstration commun aux modules 1 à 3 ; slide « Le dépôt tickets-api » | 00 | fil rouge, bookit |
+| copie de travail | copie privée de tickets-api créée sur GitHub puis clonée, propre à une démonstration ; slide « Créer la copie de travail » | 00 | dépôt de session, référence, fork |
+| identifiant (de copie) | suffixe qui nomme une copie de travail : `tickets-api-<identifiant>` ; slide « Créer la copie de travail » | 00 | session (réservé à l'agent), nom de session |
 | branche de départ | branche de tickets-api sur laquelle une démonstration commence ; slide « Branches de départ » | 00 | branche de démo |
 | dépôt | répertoire versionné du projet | DLAIA | repo, projet (pour le dépôt) |
+| spécification | document versionné qui écrit l'intention d'une fonctionnalité avant le code | DLAIA | cahier des charges, specs |
 | pull request | demande de fusion d'une branche dans une autre, relue avant fusion | DLAIA | PR, merge request |
-| archive | `dlaia-avance.zip` : le support et les dossiers `demos/` | 00 | zip, paquet |
-| support | cours compilé, `dlaia-avance.html` | 00 | slides (pour l'ensemble), présentation |
+| archive | `dlaia-avance.zip` : le support et les dossiers `demos/` ; slide « Contenu de l'archive » | 00 | zip, paquet |
+| support | cours compilé, `dlaia-avance.html` ; slide « Contenu de l'archive » | 00 | slides (pour l'ensemble), présentation |
 
 ## Modèle et agent (acquis DLAIA, module 1)
 
@@ -71,6 +75,7 @@ Les termes des modules 1 à 3 de DLAIA (agent, harnais, fenêtre de contexte, sk
 
 | Terme | Définition | Introduit | À ne pas employer |
 |---|---|---|---|
+| modèle distant | modèle hébergé hors du poste, appelé par le réseau (Claude Sonnet 4.6 par l'abonnement Anthropic ou par Amazon Bedrock) | 04 | modèle cloud, API |
 
 ## Hors slides
 
