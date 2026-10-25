@@ -109,7 +109,7 @@ Conclut les trois situations (information absente, fenêtre saturée, arrêt pr�
 | orchestrateur | fenêtre saturée, tâche trop longue pour une session |
 | boucles | arrêt malgré des tests rouges |
 | garde-fous | relances sans fin, tests contournés |
-| SDK (bibliothèque qui pilote l'agent de code) | intégration dans un programme |
+| SDK (bibliothèque qui pilote l'agent de code) | code déterministe qui décide, agent de code qui exécute |
 
 ::: notes
 Classement du support, pas une source externe. Ordre des sections de la journée. Chaque terme est défini dans sa section : ne pas l'expliquer ici. L'interface web reprend le serveur MCP avec un navigateur. Les garde-fous et le SDK prolongent les boucles : ils ne répondent pas à une limitation de l'agent seul, ils encadrent ou intègrent la réponse.
@@ -943,7 +943,7 @@ Open Code : `OpenCode.create()`, `sessions.create`, `sessions.prompt` du README 
 
 ## Quand utiliser un SDK {kicker="SDK"}
 
-Le SDK sert quand le programme décide du prochain appel.
+Le SDK mêle du code déterministe, qui décide, et l'agent de code, qui exécute.
 
 | Forme | Tient le critère vérifiable | Sortie | Usage |
 |---|---|---|---|
