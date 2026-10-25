@@ -1,4 +1,4 @@
-# Démonstration 6 : MCP et interface, corriger un bandeau
+# Démonstration 5 : MCP et interface, corriger un bandeau
 
 Slide « Démonstration : corriger un bandeau ». L'agent de code constate le défaut dans le navigateur, le corrige et vérifie le rendu. Branche `feat/front` : front minimal sur `/ui`, bandeau `position: fixed` qui recouvre le formulaire (titre « Tickets » masqué, bouton « Ajouter » rogné), API et tests corrects (37 verts).
 

@@ -1,4 +1,4 @@
-# Sortie de référence, démonstration 6
+# Sortie de référence, démonstration 5
 
 Statut : provisoire. Les deux captures PNG du dossier viennent de Chromium headless (hors agent de code).
 
