@@ -59,31 +59,6 @@ Open Code : « open source AI coding agent » (page d'accueil de la documentatio
 Versions relevées sur le poste le 25 octobre 2026 : Claude Code 2.1.310, Open Code v2.0.32. À revérifier avant la séance (`claude --version`, `opencode --version`).
 :::
 
-## Claude Sonnet 4.6, modèle unique {.compare kicker="Environnement"}
-
-Sur Amazon Bedrock, l'alias `sonnet` désigne Sonnet 4.5, une version plus ancienne. Les démonstrations imposent l'identifiant complet.
-
-::: claude-code
-![Claude Code passe par l'abonnement Anthropic vers le modèle claude-sonnet-4-6](images/00-modele-claude-code.svg)
-:::
-
-::: opencode
-![Open Code passe par Amazon Bedrock vers le modèle claude-sonnet-4-6](images/00-modele-opencode.svg)
-:::
-
-::: sources
-- [Claude Code, Model configuration](https://code.claude.com/docs/en/model-config)
-- [Open Code, Providers](https://opencode.ai/docs/providers/)
-- [Claude Code, Amazon Bedrock](https://code.claude.com/docs/en/amazon-bedrock)
-:::
-
-::: notes
-Convention du poste : Claude Code par l'abonnement Anthropic, Open Code par Amazon Bedrock (région eu-west-1). Claude Code sait aussi passer par Bedrock (page Claude Code on Amazon Bedrock) ; le poste n'emploie pas cette voie.
-Alias : la documentation dit que les alias suivent « the recommended version for your provider » et changent avec le temps ; `sonnet` désigne Sonnet 4.5 sur Bedrock (page Amazon Bedrock : sans variable de pin, `sonnet` vaut Sonnet 4.5) et un modèle plus récent sur l'API Anthropic. L'identifiant complet fige le modèle.
-Tous les appels des démonstrations imposent `claude-sonnet-4-6` en entier, jamais l'alias.
-Page providers d'Open Code : authentification Bedrock documentée, identifiant `amazon-bedrock/eu.anthropic.claude-sonnet-4-6` non documenté. Il vient de `opencode.json` de tickets-api, relevé sur le poste.
-:::
-
 ## Une démonstration {kicker="Environnement"}
 
 Une démonstration est l'exécution commentée, en direct, d'une tâche confiée à l'agent de code.
@@ -126,6 +101,9 @@ Fichier `opencode.json`, clé `model`.
 :::
 
 ::: notes
+À dire à l'oral : un seul modèle pour la journée, Claude Sonnet 4.6 (`claude-sonnet-4-6`). Claude Code passe par l'abonnement Anthropic, Open Code par Amazon Bedrock (région eu-west-1). Claude Code sait aussi passer par Bedrock (page Claude Code on Amazon Bedrock) ; le poste n'emploie pas cette voie.
+Alias : la documentation dit que les alias suivent « the recommended version for your provider » et changent avec le temps ; `sonnet` désigne Sonnet 4.5 sur Bedrock (page Amazon Bedrock : sans variable de pin, `sonnet` vaut Sonnet 4.5) et un modèle plus récent sur l'API Anthropic. L'identifiant complet fige le modèle : tous les appels des démonstrations l'imposent, jamais l'alias.
+Sources : Claude Code Model configuration (code.claude.com/docs/en/model-config), Claude Code Amazon Bedrock (code.claude.com/docs/en/amazon-bedrock), Open Code Providers (opencode.ai/docs/providers/). Page providers d'Open Code : authentification Bedrock documentée, identifiant `amazon-bedrock/eu.anthropic.claude-sonnet-4-6` non documenté, relevé dans `opencode.json` de tickets-api.
 Claude Code : l'option `--model` prend l'identifiant complet (exemple de la doc : `claude --model claude-sonnet-5`). Le dépôt tickets-api l'épingle aussi dans `.claude/settings.json`, clé `model` (doc Settings : « "model": "claude-sonnet-5" » en exemple de fichier d'équipe ; contenu vérifié par `gh api` le 25 octobre 2026).
 Open Code : la doc annonce `--model`/`-m` sur la TUI, mais `opencode --help` en v2.0.32 ne la montre pas (relevé du 25 octobre 2026). `-m` existe sur `opencode run`, utilisé par le rejeu. Format `provider/model`. Donc modèle fixé par `opencode.json`.
 Jamais deux `opencode run` en parallèle. Avant le module 1 : `opencode mcp list` de chauffe.
@@ -245,7 +223,6 @@ Copie de travail : `~/demos/00-tickets-api/session.sh <identifiant>` crée `imih
 
 - **Fichier de contexte** : fichier lu par l'agent de code au lancement
 - **Claude Sonnet 4.6** : modèle unique de la formation, identifiant `claude-sonnet-4-6`
-- **Alias** : nom court d'un modèle (`sonnet`) dont la version change avec le fournisseur
 - **Amazon Bedrock** : service d'Amazon Web Services qui héberge des modèles
 
 ::: sources

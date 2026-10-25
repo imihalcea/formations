@@ -15,9 +15,8 @@ Les termes des modules 1 à 3 de DLAIA (agent, harnais, fenêtre de contexte, sk
 | agent de code | programme en ligne de commande qui pilote un modèle pour lire, écrire et exécuter du code dans un dépôt ; Claude Code et Open Code en sont deux ; « agent » seul aux slides 1 à 3 de l'ouverture (acquis de la formation initiale), « agent de code » dès la slide 4 ; slide « Choisir l'agent de code » | 00 | assistant, outil, CLI, harnais (pour l'agent de code) |
 | Claude Code | agent de code en ligne de commande d'Anthropic | 00 | Claude (pour l'outil), ClaudeCode, claude hors commande |
 | Open Code | agent de code libre en ligne de commande, version 2 | 00 | OpenCode, opencode hors commande |
-| alias (de modèle) | nom court d'un modèle (`sonnet`) dont la version change avec le fournisseur ; slide « Claude Sonnet 4.6, modèle unique » | 00 | raccourci, surnom |
 | Claude Sonnet 4.6 | modèle unique de la formation, identifiant `claude-sonnet-4-6` | 00 | Sonnet seul, Claude 4.6, le modèle d'Anthropic |
-| Amazon Bedrock | service d'Amazon Web Services qui héberge des modèles ; Open Code l'appelle pour Claude Sonnet 4.6 (Claude Code passe par l'abonnement Anthropic) ; slide « Claude Sonnet 4.6, modèle unique » (étiquette du schéma) | 00 | Bedrock seul, AWS Bedrock |
+| Amazon Bedrock | service d'Amazon Web Services qui héberge des modèles ; Open Code l'appelle pour Claude Sonnet 4.6 (Claude Code passe par l'abonnement Anthropic) (étiquette du schéma) | 00 | Bedrock seul, AWS Bedrock |
 | fichier de contexte | fichier lu par l'agent de code au lancement : `CLAUDE.md` (Claude Code), `AGENTS.md` (Open Code) ; slide « Choisir l'agent de code » | 00 | fichier d'instructions, mémoire |
 | limitation | ce que l'agent de code ne dépasse pas seul, même avec une spécification et un harnais ; slide « Définition d'une limitation » | 00 | goulot, blocage, plafond (pour la notion) |
 | démonstration | exécution commentée, en direct, d'une tâche confiée à l'agent de code, jouée par le formateur ; slide « Une démonstration » | 00 | démo, TP, atelier |
