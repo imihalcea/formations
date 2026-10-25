@@ -100,6 +100,21 @@ Sigle MCP : développé à la section suivante.
 Conclut les trois situations (information absente, fenêtre saturée, arrêt prématuré). Mécanisme par limitation : serveur MCP, sous-agents, boucles. Ordre des sections : MCP, sous-agents, orchestrateur, boucles, garde-fous, SDK, interface, choix.
 :::
 
+## Six mécanismes au programme {kicker="Limitations"}
+
+| Mécanisme | Limitation qu'il aide à dépasser |
+|---|---|
+| serveur MCP | information hors du dépôt |
+| sous-agents | fenêtre de contexte saturée |
+| orchestrateur | fenêtre saturée, tâche trop longue pour une session |
+| boucles | arrêt malgré des tests rouges |
+| garde-fous | relances sans fin, tests contournés |
+| SDK | relances à tenir depuis un programme |
+
+::: notes
+Classement du support, pas une source externe. Ordre des sections de la journée. Chaque terme est défini dans sa section : ne pas l'expliquer ici. L'interface web reprend le serveur MCP avec un navigateur. Les garde-fous et le SDK prolongent les boucles : ils ne répondent pas à une limitation de l'agent seul, ils encadrent la réponse.
+:::
+
 ## Définition d'un serveur MCP {kicker="MCP"}
 
 ![L'agent de code échange avec un serveur MCP par le protocole MCP ; le serveur appelle l'API du service GitHub](images/01-serveur-mcp.svg)
