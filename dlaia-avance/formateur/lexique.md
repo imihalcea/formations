@@ -89,6 +89,18 @@ Les termes des modules 1 à 3 de DLAIA (agent, harnais, fenêtre de contexte, sk
 
 | Terme | Définition | Introduit | À ne pas employer |
 |---|---|---|---|
+| revue automatisée | exécution de l'agent de code qui relit un diff ; l'humain tranche ; slide « Définition d'une revue automatisée » | 02 | revue par IA, revue de code (pour la notion) |
+| finding | remarque localisée rendue par une revue automatisée sur un diff ; slide « Définition d'un finding » | 02 | constat, anomalie, remarque |
+| sévérité | niveau d'un finding : haute, moyenne ou basse ; slide « Trois niveaux de sévérité » | 02 | gravité, criticité, priorité |
+| règle de revue | énoncé que le diff peut violer, avec vérification, exemple de violation, exemple conforme et sévérité ; slide « Définition d'une règle de revue » | 02 | convention, règle d'équipe (pour la règle de revue), check |
+| vérification (d'une règle) | ce que la revue lit pour décider si le diff viole la règle ; slide « Définition d'une règle de revue » | 02 | contrôle, test (pour la vérification) |
+| réviseur | sous-agent en lecture seule qui applique les règles de revue et rend des findings, identifiant `reviseur` ; slide « Définition d'un réviseur » | 02 | relecteur, agent de revue, reviewer |
+| scénario d'échec | entrée concrète qui produit le défaut décrit par le finding ; slide « Le scénario d'échec » | 02 | cas de test, exemple de défaut |
+| mode de revue | moment où le réviseur tourne : à la demande, sur la pull request, avant le commit ; slide « Trois modes de revue » | 02 | niveau, étape |
+| faux positif | finding sur un code conforme ; slide « Définition d'un faux positif » | 02 | fausse alerte, faux finding |
+| contradicteur | sous-agent chargé de prouver qu'un finding est faux ; slide « Définition d'un contradicteur » | 02 | avocat du diable, vérificateur adverse |
+| verdict | réponse du contradicteur : confirmé, plausible ou réfuté, avec preuve ; slide « Trois verdicts » | 02 | décision, résultat |
+| revue adverse | revue suivie d'un contradicteur par finding de sévérité haute ; slide « Lancer la revue adverse » | 02 | passage adverse, revue simple (pour la revue sans contradicteur : « revue sans contradicteur ») |
 
 ## Hooks et pipeline (module 3)
 
