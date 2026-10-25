@@ -86,7 +86,7 @@ Le mot est choisi pour la suite de la journée : on ne dit ni plafond, ni goulot
 Le schéma est une illustration. Archétype repris au module 2 : l'agent produit plus de code que l'équipe n'en relit.
 :::
 
-## Quatre modules, quatre limitations {kicker="Limitations"}
+## Quatre modules, quatre limitations dépassées {kicker="Limitations"}
 
 | Limitation | Module |
 |---|---|
@@ -118,7 +118,7 @@ Première ligne : illustration inventée, pour montrer le format.
 
 ::: notes
 Conclut les trois slides : définition, classement, cas de la salle.
-Renvoi d'un cas de la salle : demander ce qui a cassé, le rapprocher de la colonne gauche de « Quatre modules, quatre limitations » (outils d'origine : module 1 ; volume à relire : module 2 ; règle contournée : module 3 ; code qui quitte le poste : module 4), puis noter le numéro de module sur la ligne. La suite présente le matériel avec lequel les réponses sont jouées.
+Renvoi d'un cas de la salle : demander ce qui a cassé, le rapprocher de la colonne gauche de « Quatre modules, quatre limitations dépassées » (outils d'origine : module 1 ; volume à relire : module 2 ; règle contournée : module 3 ; code qui quitte le poste : module 4), puis noter le numéro de module sur la ligne. La suite présente le matériel avec lequel les réponses sont jouées.
 :::
 
 ## Contenu de l'archive {kicker="Matériel"}
