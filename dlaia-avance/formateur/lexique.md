@@ -14,9 +14,16 @@ Les termes des modules 1 à 3 de DLAIA (agent, harnais, fenêtre de contexte, sk
 |---|---|---|---|
 | agent de code | programme en ligne de commande qui pilote un modèle pour lire, écrire et exécuter du code dans un dépôt ; Claude Code et Open Code en sont deux ; « agent » seul à partir du module 1 ; slide « Deux agents de code » | 00 | assistant, outil, CLI, harnais (pour l'agent de code) |
 | Claude Code | agent de code en ligne de commande d'Anthropic | 00 | Claude (pour l'outil), ClaudeCode, claude hors commande |
-| Open Code | agent de code libre en ligne de commande, version 2 sur la VM | 00 | OpenCode, opencode hors commande |
+| Open Code | agent de code libre en ligne de commande, version 2 sur le poste | 00 | OpenCode, opencode hors commande |
 | Claude Sonnet 4.6 | modèle unique de la formation, identifiant `claude-sonnet-4-6` | 00 | Sonnet seul, Claude 4.6, le modèle d'Anthropic |
-| Amazon Bedrock | service d'Amazon Web Services qui héberge des modèles ; les deux agents de code l'appellent pour Claude Sonnet 4.6 ; slide « Claude Sonnet 4.6, modèle unique » (étiquette du schéma) | 00 | Bedrock seul, AWS Bedrock |
+| Amazon Bedrock | service d'Amazon Web Services qui héberge des modèles ; Open Code l'appelle pour Claude Sonnet 4.6 (Claude Code passe par l'abonnement Anthropic) ; slide « Claude Sonnet 4.6, modèle unique » (étiquette du schéma) | 00 | Bedrock seul, AWS Bedrock |
+| fichier de contexte | fichier lu par l'agent de code au lancement : `CLAUDE.md` (Claude Code), `AGENTS.md` (Open Code) ; slide « Deux agents de code » | 00 | fichier d'instructions, mémoire |
+| plafond | limite que l'agent de code atteint sur un dépôt réel, malgré une spécification et un harnais en place ; slide « Définition d'un plafond » | 00 | goulot, blocage, limite (pour la notion) |
+| démonstration | exécution commentée d'une manœuvre de l'agent de code, jouée par le formateur ; slide « Contenu de l'archive » | 00 | démo, TP, atelier |
+| tickets-api | dépôt de démonstration commun aux modules 1 à 3 ; slide « Le dépôt tickets-api » | 00 | fil rouge, bookit |
+| branche de départ | branche de tickets-api sur laquelle une démonstration commence ; slide « Branches de départ » | 00 | branche de démo |
+| dépôt | répertoire versionné du projet | DLAIA | repo, projet (pour le dépôt) |
+| pull request | demande de fusion d'une branche dans une autre, relue avant fusion | DLAIA | PR, merge request |
 | archive | `dlaia-avance.zip` : le support et les dossiers `demos/` | 00 | zip, paquet |
 | support | cours compilé, `dlaia-avance.html` | 00 | slides (pour l'ensemble), présentation |
 
