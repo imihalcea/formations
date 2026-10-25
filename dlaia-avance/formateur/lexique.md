@@ -92,12 +92,15 @@ Les termes des modules 1 à 3 de DLAIA (agent, harnais, fenêtre de contexte, sk
 | revue automatisée | exécution de l'agent de code qui relit un diff ; l'humain tranche ; slide « Définition d'une revue automatisée » | 02 | revue par IA, revue de code (pour la notion) |
 | finding | remarque localisée rendue par une revue automatisée sur un diff ; slide « Définition d'un finding » | 02 | constat, anomalie, remarque |
 | sévérité | niveau d'un finding : haute, moyenne ou basse ; slide « Trois niveaux de sévérité » | 02 | gravité, criticité, priorité |
-| règle de revue | énoncé que le diff peut violer, avec vérification, exemple de violation, exemple conforme et sévérité ; slide « Définition d'une règle de revue » | 02 | convention, règle d'équipe (pour la règle de revue), check |
+| règle d'équipe | phrase de `AGENTS.md` qui dit quoi faire, sans vérification ni exemple ; slide « Les règles d'équipe de tickets-api » | 02 | convention, règle de revue (pour la phrase d'`AGENTS.md`) |
+| règle de revue | énoncé que le diff peut violer, avec vérification, exemple de violation, exemple conforme et sévérité ; slide « Définition d'une règle de revue » | 02 | convention, check |
 | vérification (d'une règle) | ce que la revue lit pour décider si le diff viole la règle ; slide « Définition d'une règle de revue » | 02 | contrôle, test (pour la vérification) |
-| réviseur | sous-agent en lecture seule qui applique les règles de revue et rend des findings, identifiant `reviseur` ; slide « Définition d'un réviseur » | 02 | relecteur, agent de revue, reviewer |
+| reviewer | sous-agent en lecture seule qui applique les règles de revue et rend des findings, identifiant `reviewer` ; slide « Définition d'un reviewer » | 02 | réviseur, relecteur, agent de revue |
+| identifiant émis | jeton, mot de passe ou clé délivré par un fournisseur, distinct d'une valeur factice de test ; slide « Corriger la règle » | 02 | secret (pour la valeur factice), credential |
 | scénario d'échec | entrée concrète qui produit le défaut décrit par le finding ; slide « Le scénario d'échec » | 02 | cas de test, exemple de défaut |
-| mode de revue | moment où le réviseur tourne : à la demande, sur la pull request, avant le commit ; slide « Trois modes de revue » | 02 | niveau, étape |
+| mode de revue | moment où le reviewer tourne : à la demande, sur la pull request, avant le commit ; slide « Trois modes de revue » | 02 | niveau, étape |
 | faux positif | finding sur un code conforme ; slide « Définition d'un faux positif » | 02 | fausse alerte, faux finding |
+| Code Review | service hébergé d'Anthropic qui relit les pull requests GitHub, distinct de la commande `/code-review` ; slide « Code Review hébergé » | 02 | revue d'Anthropic, /review (pour le service) |
 | contradicteur | sous-agent chargé de prouver qu'un finding est faux ; slide « Définition d'un contradicteur » | 02 | avocat du diable, vérificateur adverse |
 | verdict | réponse du contradicteur : confirmé, plausible ou réfuté, avec preuve ; slide « Trois verdicts » | 02 | décision, résultat |
 | revue adverse | revue suivie d'un contradicteur par finding de sévérité haute ; slide « Lancer la revue adverse » | 02 | passage adverse, revue simple (pour la revue sans contradicteur : « revue sans contradicteur ») |
@@ -106,7 +109,7 @@ Les termes des modules 1 à 3 de DLAIA (agent, harnais, fenêtre de contexte, sk
 
 | Terme | Définition | Introduit | À ne pas employer |
 |---|---|---|---|
-| contrôle | ce qu'un hook ou un job exécute pour laisser passer ou refuser une modification (gitleaks, ruff, tests, réviseur) ; distinct de la vérification d'une règle de revue ; slide « Définition d'un hook » | 03 | vérification (pour le hook ou le job), check |
+| contrôle | ce qu'un hook ou un job exécute pour laisser passer ou refuser une modification (gitleaks, ruff, tests, reviewer) ; distinct de la vérification d'une règle de revue ; slide « Définition d'un hook » | 03 | vérification (pour le hook ou le job), check |
 | événement | moment où une commande ou un job démarre : appel d'outil, commit, événement du dépôt (`pull_request`, `workflow_run`) ; slide « Définition d'un hook » | 03 | déclencheur, trigger |
 | hook | contrôle exécuté sur un événement, sans prompt, qui peut laisser passer ou refuser ; slide « Définition d'un hook » | 03 | crochet, callback |
 | hook du harnais | hook que le harnais exécute avant ou après un appel d'outil de l'agent de code ; slide « Définition d'un hook du harnais » | 03 | plugin (pour la notion), hook de l'agent |
@@ -115,7 +118,7 @@ Les termes des modules 1 à 3 de DLAIA (agent, harnais, fenêtre de contexte, sk
 | workflow | fichier YAML qui décrit les jobs d'une CI et l'événement qui les lance ; slide « Définition d'un workflow » | 03 | pipeline, flux |
 | job de CI | suite d'étapes d'un workflow ; slide « Définition d'un job de CI » | 03 | tâche, job seul |
 | journal de CI | sortie texte d'un job de CI, lue ligne par ligne ; slide « Définition d'un job de CI » | 03 | log, build |
-| branche principale | branche vers laquelle les pull requests sont fusionnées (`main`) ; le job y lit le réviseur et les règles ; slide « Règles lues sur main » | 03 | branche par défaut, master |
+| branche principale | branche vers laquelle les pull requests sont fusionnées (`main`) ; le job y lit le reviewer et les règles ; slide « Règles lues sur main » | 03 | branche par défaut, master |
 | analyse d'échec | job qui lit le journal de CI d'un job en échec et commente la cause avec un correctif proposé ; slide « Définition d'une analyse d'échec » | 03 | diagnostic, post-mortem |
 | jeton du job | droits que le workflow accorde au job sur le dépôt (`permissions`) ; slide « Quatre garde-fous d'un job » | 03 | jeton seul, token |
 | budget | garde-fou de durée et de tours posé à un job ; slide « Quatre garde-fous d'un job » | 03 | limite, plafond |
