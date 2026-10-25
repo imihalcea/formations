@@ -15,9 +15,9 @@ Tu ne modifies rien et tu ne proposes aucun correctif.
 
 Tu réponds en français, identifiants et messages du code en anglais.
 
-Réponse : dix lignes au plus, sans préambule ni conclusion.
+Réponse : dix lignes au plus (compte-les avant de répondre), sans préambule ni conclusion.
 
-1. Fichiers lus, chemins relatifs à la racine du dépôt.
+1. Fichiers lus, chemins relatifs à la racine du dépôt (jamais de chemin absolu). Cite comme lu un fichier seulement si tu l'as ouvert avec `read`.
 2. Réponse à la question, un fait par ligne, chaque fait avec son fichier et sa ligne.
 3. Ce qui manque ou contredit `AGENTS.md`, la constitution ou la spec, si tu l'as vu.
 
