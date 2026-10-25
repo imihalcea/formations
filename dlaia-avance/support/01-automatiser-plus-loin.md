@@ -311,7 +311,7 @@ Le dernier mot reste à la tâche : la grille de choix finale reprend ce critèr
 
 ## Quelques serveurs MCP {kicker="MCP"}
 
-Liste partielle, au 25 octobre 2026.
+Il existe des centaines de serveurs MCP, voire des milliers. Quatre exemples.
 
 | Serveur | Éditeur | Ce qu'il permet |
 |---|---|---|
@@ -328,7 +328,7 @@ Liste partielle, au 25 octobre 2026.
 :::
 
 ::: notes
-Liste datée, à revérifier avant la séance. URL distantes lues le 25 octobre 2026 : GitHub `https://api.githubcopilot.com/mcp/`, Context7 `https://mcp.context7.com/mcp` (clé d'API en en-tête `Authorization: Bearer`), Sentry `https://mcp.sentry.dev/mcp` (OAuth à la première connexion).
+Quatre exemples parmi des centaines de serveurs MCP, voire des milliers (aucun recensement sourcé : le chiffre est un ordre de grandeur, à revérifier). URL distantes lues le 25 octobre 2026 : GitHub `https://api.githubcopilot.com/mcp/`, Context7 `https://mcp.context7.com/mcp` (clé d'API en en-tête `Authorization: Bearer`), Sentry `https://mcp.sentry.dev/mcp` (OAuth à la première connexion).
 Outils Context7 : `resolve-library-id`, `query-docs`. Sentry : la page ne nomme pas d'éditeur explicitement (domaine sentry.dev) : d'où « service connecté ».
 Les autres serveurs existent : le support n'en cite pas davantage.
 :::
