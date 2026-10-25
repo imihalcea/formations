@@ -24,18 +24,6 @@ Tableau : liste partielle. Claude Code a aussi `WebFetch`, `WebSearch`, `Agent` 
 Le nom de l'outil sert dans les permissions et dans les listes d'outils d'un sous-agent : il revient aux sections suivantes.
 :::
 
-## Définition d'une issue {kicker="Limitations"}
-
-Une issue est la fiche de suivi d'un dépôt GitHub : description et commentaires.
-
-::: sources
-- [GitHub, À propos des issues](https://docs.github.com/en/issues/tracking-your-work-with-issues/learning-about-issues/about-issues)
-:::
-
-::: notes
-Définition d'« issue » : fiche de suivi, d'après la page GitHub (« track ideas, feedback, tasks, or bugs »). Distincte du ticket métier de tickets-api (l'objet que l'API gère).
-:::
-
 ## Une information hors du dépôt {kicker="Limitations"}
 
 | Hors de portée des outils d'origine |
