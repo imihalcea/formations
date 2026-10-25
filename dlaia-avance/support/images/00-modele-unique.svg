@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 400" width="1680" height="400">
+  <g class="ink" font-size="26">
+    <rect x="40" y="30" width="380" height="130" rx="12" class="deck"/>
+    <rect x="40" y="30" width="380" height="6" class="accent"/>
+    <text x="230" y="92" class="display" font-size="40" text-anchor="middle">Claude Code</text>
+    <text x="230" y="136" class="mono" font-size="26" text-anchor="middle">claude</text>
+
+    <rect x="40" y="240" width="380" height="130" rx="12" class="deck"/>
+    <rect x="40" y="240" width="380" height="6" class="accent"/>
+    <text x="230" y="302" class="display" font-size="40" text-anchor="middle">Open Code</text>
+    <text x="230" y="346" class="mono" font-size="26" text-anchor="middle">opencode</text>
+
+    <path d="M432 95 H500" class="stroke-accent" stroke-width="5"/>
+    <path d="M494 82 L512 95 L494 108 Z" class="accent"/>
+    <path d="M432 305 H500" class="stroke-accent" stroke-width="5"/>
+    <path d="M494 292 L512 305 L494 318 Z" class="accent"/>
+
+    <rect x="520" y="30" width="480" height="130" rx="12" class="deck"/>
+    <rect x="520" y="30" width="480" height="6" class="accent"/>
+    <text x="760" y="104" class="display" font-size="38" text-anchor="middle">Abonnement Anthropic</text>
+
+    <rect x="520" y="240" width="480" height="130" rx="12" class="deck"/>
+    <rect x="520" y="240" width="480" height="6" class="accent"/>
+    <text x="760" y="298" class="display" font-size="38" text-anchor="middle">Amazon Bedrock</text>
+    <text x="760" y="333" font-size="24" text-anchor="middle">service d'Amazon Web Services</text>
+    <text x="760" y="360" font-size="24" text-anchor="middle">qui héberge des modèles</text>
+
+    <path d="M1012 95 H1060 V200 H1108" class="stroke-accent" stroke-width="5"/>
+    <path d="M1012 305 H1060 V200" class="stroke-accent" stroke-width="5"/>
+    <path d="M1102 187 L1120 200 L1102 213 Z" class="accent"/>
+
+    <rect x="1130" y="115" width="510" height="170" rx="12" class="accent"/>
+    <text x="1385" y="188" class="paper mono" font-size="32" text-anchor="middle">claude-sonnet-4-6</text>
+    <text x="1385" y="238" class="paper display" font-size="30" text-anchor="middle">Claude Sonnet 4.6</text>
+  </g>
+</svg>
