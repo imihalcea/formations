@@ -6,6 +6,7 @@ Monorepo des formations. Chaque formation occupe un répertoire à la racine et 
 |---|---|---|
 | `claude-code/` | Claude Code et Open Code en ligne de commande | `claude-code` |
 | `dlaia/` | Développement logiciel assisté par l'IA | `dlaia` |
+| `dlaia-avance/` | DLAIA Avancé, module complémentaire et facultatif de dlaia | `dlaia-avance` |
 
 ## Suivi GitHub
 
