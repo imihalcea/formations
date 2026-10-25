@@ -35,7 +35,7 @@ Depuis `template-support/app/` : `npm run build` génère `dist/index.html` à p
 
 ## Contexte pédagogique et contraintes techniques
 
-- **Environnement** : poste du formateur équipé de Claude Code et d'Open Code, Claude Code par l'abonnement Anthropic, Open Code par Amazon Bedrock, tous deux avec `claude-sonnet-4-6` désigné par son identifiant complet (l'alias `sonnet` ne garantit pas la version). Tout se fait en CLI.
+- **Environnement** : poste du formateur équipé de Claude Code (abonnement Anthropic) et d'Open Code (Amazon Bedrock), tous deux avec `claude-sonnet-4-6` désigné par son identifiant complet (l'alias `sonnet` ne garantit pas la version). Tout se fait en CLI.
 - **Double outil** : chaque démonstration est jouable avec Open Code comme avec Claude Code. Une étape porte des variantes `::: claude-code` / `::: opencode` seulement quand elle diffère. Les équivalences (commandes, fichier de contexte, permissions, skills, hooks, MCP, sous-agents) sont vérifiées dans la documentation officielle de chaque outil et tenues dans `formateur/equivalences.md`.
 - **Mécanismes des outils, aucun framework tiers** : pas de LangGraph ni de CrewAI. GitHub et GitHub Actions sont l'unique forge d'exemple. Les produits SaaS ne figurent qu'en panorama daté et sourcé.
 - **Version d'Open Code : v2.0.32** (poste de démonstration, décision du 25 octobre 2026). Le support d'origine citait 1.18.29 (v1) ; les plugins et les hooks diffèrent entre v1 et v2.
