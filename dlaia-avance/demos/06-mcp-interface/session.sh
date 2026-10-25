@@ -10,8 +10,8 @@ base="${2:-$HOME/travail}"
 work="$base/tickets-api-$session"
 "$ici/../01-commun/prepare.sh" "$session" "feat/front" "$ici/overlay" "$base"
 
-# Navigateur de Playwright : un échec ne bloque pas la préparation (voir le repli du runbook).
-npx --yes playwright install chromium || echo "AVERTISSEMENT : navigateur non installé, voir le repli du runbook" >&2
+# Navigateur de Playwright MCP (celui que le serveur attend avec --browser chromium) : un échec ne bloque pas la préparation (voir le repli du runbook).
+npx --yes @playwright/mcp@0.0.83 install-browser chrome-for-testing || echo "AVERTISSEMENT : navigateur non installé, voir le repli du runbook" >&2
 
 # API et front sur http://localhost:8000/ui/ (arrière-plan, journal et pid dans la copie de travail).
 if [ -f "$work/serve.pid" ] && kill -0 "$(cat "$work/serve.pid")" 2>/dev/null; then

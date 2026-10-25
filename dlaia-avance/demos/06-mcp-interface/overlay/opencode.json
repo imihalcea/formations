@@ -6,7 +6,7 @@
     "servers": {
       "playwright": {
         "type": "local",
-        "command": ["npx", "@playwright/mcp@0.0.83", "--headless", "--isolated"]
+        "command": ["npx", "@playwright/mcp@0.0.83", "--browser", "chromium", "--headless", "--isolated"]
       }
     }
   },
