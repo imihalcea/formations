@@ -123,11 +123,6 @@ Les termes des modules 1 à 3 de DLAIA (agent, harnais, fenêtre de contexte, sk
 | jeton du job | droits que le workflow accorde au job sur le dépôt (`permissions`) ; slide « Quatre éléments d'un job » | 03 | jeton seul, token |
 | budget | garde-fou de durée posé à un job (`timeout-minutes`) ; il borne aussi les tours de l'agent de code, slide « Borner le budget » ; slide « Quatre éléments d'un job » | 03 | limite, plafond |
 | archive du job | fichiers que le job conserve après son exécution ; slide « Quatre éléments d'un job » | 03 | artefact (déjà pris), pièce jointe |
-| injection de prompt | texte lu par l'agent de code qui contient une instruction que l'agent de code suit ; slide « Injection de prompt par issue » | 03 | prompt injection, piratage du prompt |
-| règle des deux | une session réunit au plus deux propriétés parmi : entrée non fiable, accès sensible, action vers l'extérieur ; slide « La règle des deux » | 03 | rule of two |
-| entrée non fiable | texte rédigé par un tiers que l'agent de code lit (diff, issue, commentaire) ; slide « La règle des deux » | 03 | donnée externe, input |
-| accès sensible | secret, donnée privée ou droit d'écriture auquel la session a accès ; slide « La règle des deux » | 03 | droit sensible |
-| action vers l'extérieur | écriture ou envoi hors de la session (commentaire, push, requête réseau) ; slide « La règle des deux » | 03 | exfiltration (pour la notion), sortie |
 | emplacement (de contrôle) | endroit où un contrôle s'exécute : hook du harnais, hook git, job de CI, humain ; slide « Quatre emplacements de contrôle » | 03 | étape, niveau |
 | changements indexés | modifications ajoutées par `git add`, que `git commit` va enregistrer et que le hook git lit ; slide « Le reviewer avant le commit » | 03 | diff indexé, staged (pour la notion) |
 | diagnostiqueur | sous-agent en lecture seule qui lit un journal de CI et rend la cause avec un correctif en diff ; slide « Définition d'une analyse d'échec » | 03 | analyseur, debugger |
