@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Hook git de la démonstration : gitleaks sur le diff indexé, ruff sur les fichiers Python indexés,
+# puis le reviewer sur le diff indexé (60 s au plus, échec seulement sur une sévérité haute).
+# Variables : OUTIL=claude|opencode (défaut claude), SANS_REVIEWER=1 saute le reviewer.
+set -e
+gitleaks git --staged
+git diff --cached --name-only --diff-filter=ACM -- '*.py' | xargs -r uv run ruff check
+[ "${SANS_REVIEWER:-0}" = "1" ] && exit 0
+
+if [ "${OUTIL:-claude}" = "opencode" ]; then
+  sortie=$(git diff --cached | timeout 60 opencode run --model amazon-bedrock/eu.anthropic.claude-sonnet-4-6 \
+    --agent reviewer "Applique revue/regles.md à ce diff.") || exit 0
+else
+  sortie=$(git diff --cached | timeout 60 claude -p \
+    "Lance le sous-agent reviewer sur ce diff avec revue/regles.md. Affiche ses findings tels quels." \
+    --model claude-sonnet-4-6) || exit 0
+fi
+echo "$sortie"
+! grep -q '"severite": *"haute"' <<<"$sortie"
