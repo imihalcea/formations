@@ -109,26 +109,31 @@ Les termes des modules 1 à 3 de DLAIA (agent, harnais, fenêtre de contexte, sk
 
 | Terme | Définition | Introduit | À ne pas employer |
 |---|---|---|---|
-| contrôle | ce qu'un hook ou un job exécute pour laisser passer ou refuser une modification (gitleaks, ruff, tests, reviewer) ; distinct de la vérification d'une règle de revue ; slide « Définition d'un hook » | 03 | vérification (pour le hook ou le job), check |
-| événement | moment où une commande ou un job démarre : appel d'outil, commit, événement du dépôt (`pull_request`, `workflow_run`) ; slide « Définition d'un hook » | 03 | déclencheur, trigger |
-| hook | contrôle exécuté sur un événement, sans prompt, qui peut laisser passer ou refuser ; slide « Définition d'un hook » | 03 | crochet, callback |
+| contrôle | ce qu'un hook exécute (ou un job de CI) pour laisser passer ou refuser une modification (gitleaks, ruff, tests, reviewer) ; distinct de la vérification d'une règle de revue ; slide « Définition d'un hook » | 03 | vérification (pour le hook ou le job), check |
+| événement | moment où une commande démarre (appel d'outil, commit, événement du dépôt : `pull_request`, `workflow_run`) ; « job » est réservé à la section CI ; slide « Définition d'un hook » | 03 | déclencheur, trigger |
+| hook | contrôle qu'un événement lance, sans que le modèle décide de le lancer ; il laisse passer ou refuse ; slide « Définition d'un hook » | 03 | crochet, callback |
 | hook du harnais | hook que le harnais exécute avant ou après un appel d'outil de l'agent de code ; slide « Définition d'un hook du harnais » | 03 | plugin (pour la notion), hook de l'agent |
 | hook git | script que git exécute avant une opération ; un code de retour non nul l'annule ; slide « Définition d'un hook git » | 03 | hook seul pour git, crochet git |
-| CI | sigle d'intégration continue : serveur qui exécute des workflows à chaque événement du dépôt ; slide « Définition d'un workflow » | 03 | pipeline (pour le serveur), intégration continue après la définition |
-| workflow | fichier YAML qui décrit les jobs d'une CI et l'événement qui les lance ; slide « Définition d'un workflow » | 03 | pipeline, flux |
-| job de CI | suite d'étapes d'un workflow ; slide « Définition d'un job de CI » | 03 | tâche, job seul |
+| CI | sigle d'intégration continue : serveur qui exécute des workflows à chaque événement du dépôt ; slide « Définition d'un workflow » | 03 | pipeline (pour le serveur), intégration continue après la définition ; `ci` seul désigne le workflow de ce nom : écrire « le workflow `ci` » |
+| workflow | fichier de configuration YAML qui décrit des jobs de CI et l'événement qui les lance ; slide « Définition d'un workflow » | 03 | pipeline (exception : le titre du module « Hooks et pipeline », figé par le programme, n'est employé nulle part ailleurs), flux |
+| job de CI | suite d'étapes d'un workflow ; slide « Définition d'un job de CI » | 03 | tâche ; « job » seul est admis après cette slide, comme « CI » |
 | journal de CI | sortie texte d'un job de CI, lue ligne par ligne ; slide « Définition d'un job de CI » | 03 | log, build |
-| branche principale | branche vers laquelle les pull requests sont fusionnées (`main`) ; le job y lit le reviewer et les règles ; slide « Règles lues sur main » | 03 | branche par défaut, master |
-| analyse d'échec | job qui lit le journal de CI d'un job en échec et commente la cause avec un correctif proposé ; slide « Définition d'une analyse d'échec » | 03 | diagnostic, post-mortem |
-| jeton du job | droits que le workflow accorde au job sur le dépôt (`permissions`) ; slide « Quatre garde-fous d'un job » | 03 | jeton seul, token |
-| budget | garde-fou de durée et de tours posé à un job ; slide « Quatre garde-fous d'un job » | 03 | limite, plafond |
-| archive du job | fichiers que le job conserve après son exécution ; slide « Quatre garde-fous d'un job » | 03 | artefact (déjà pris), pièce jointe |
-| injection de prompt | texte lu par l'agent de code qui contient une instruction que l'agent suit ; slide « Injection de prompt par issue » | 03 | prompt injection, piratage du prompt |
+| branche principale | branche vers laquelle les pull requests sont fusionnées (`main`) ; le job y lit le reviewer et les règles ; slide « Définition d'un workflow » | 03 | branche par défaut, master |
+| analyse d'échec | job qui lit en lecture seule le journal de CI d'un job en échec ; une étape sans agent de code publie la cause et un correctif proposé ; slide « Définition d'une analyse d'échec » | 03 | diagnostic, post-mortem |
+| jeton du job | droits que le workflow accorde au job sur le dépôt (`permissions`) ; slide « Quatre éléments d'un job » | 03 | jeton seul, token |
+| budget | garde-fou de durée posé à un job (`timeout-minutes`) ; il borne aussi les tours de l'agent de code, slide « Borner le budget » ; slide « Quatre éléments d'un job » | 03 | limite, plafond |
+| archive du job | fichiers que le job conserve après son exécution ; slide « Quatre éléments d'un job » | 03 | artefact (déjà pris), pièce jointe |
+| injection de prompt | texte lu par l'agent de code qui contient une instruction que l'agent de code suit ; slide « Injection de prompt par issue » | 03 | prompt injection, piratage du prompt |
 | règle des deux | une session réunit au plus deux propriétés parmi : entrée non fiable, accès sensible, action vers l'extérieur ; slide « La règle des deux » | 03 | rule of two |
 | entrée non fiable | texte rédigé par un tiers que l'agent de code lit (diff, issue, commentaire) ; slide « La règle des deux » | 03 | donnée externe, input |
 | accès sensible | secret, donnée privée ou droit d'écriture auquel la session a accès ; slide « La règle des deux » | 03 | droit sensible |
 | action vers l'extérieur | écriture ou envoi hors de la session (commentaire, push, requête réseau) ; slide « La règle des deux » | 03 | exfiltration (pour la notion), sortie |
 | emplacement (de contrôle) | endroit où un contrôle s'exécute : hook du harnais, hook git, job de CI, humain ; slide « Quatre emplacements de contrôle » | 03 | étape, niveau |
+| changements indexés | modifications ajoutées par `git add`, que `git commit` va enregistrer et que le hook git lit ; slide « Le reviewer avant le commit » | 03 | diff indexé, staged (pour la notion) |
+| diagnostiqueur | sous-agent en lecture seule qui lit un journal de CI et rend la cause avec un correctif en diff ; slide « Définition d'une analyse d'échec » | 03 | analyseur, debugger |
+| migration | fichier versionné qui fait évoluer le schéma de la base ; une colonne ajoutée au modèle sans migration fait échouer les tests ; slide « Journal d'un job en échec » | 03 | script SQL, évolution de schéma |
+| pull request en brouillon | pull request que son auteur marque non prête à relire (état `draft` de GitHub) ; le job de revue ne la lit pas ; slide « Revue sur pull request » | 03 | WIP, pull request incomplète |
+| runner | machine qui exécute un job de CI (`runs-on`) ; slide « Définition d'un job de CI » | 03 | exécuteur, agent de CI |
 
 ## Modèles locaux (module 4)
 
