@@ -59,46 +59,19 @@ Open Code : « open source AI coding agent » (page d'accueil de la documentatio
 Versions relevées sur le poste le 25 octobre 2026 : Claude Code 2.1.310, Open Code v2.0.32. À revérifier avant la séance (`claude --version`, `opencode --version`).
 :::
 
-## Fixer le modèle {.compare kicker="Environnement"}
-
-::: claude-code
-```console
-$ claude --model claude-sonnet-4-6
-```
-:::
-
-::: opencode
-```json
-{
-  "model": "amazon-bedrock/eu.anthropic.claude-sonnet-4-6"
-}
-```
-
-Fichier `opencode.json`, clé `model`.
-:::
-
-::: sources
-- [Claude Code, CLI reference](https://code.claude.com/docs/en/cli-reference)
-- [Claude Code, Settings](https://code.claude.com/docs/en/settings)
-- [Open Code, Models](https://opencode.ai/docs/models/)
-- [Open Code, CLI](https://opencode.ai/docs/cli/)
-:::
-
-::: notes
-À dire à l'oral : un seul modèle pour la journée, Claude Sonnet 4.6 (`claude-sonnet-4-6`). Claude Code passe par l'abonnement Anthropic, Open Code par Amazon Bedrock (région eu-west-1). Claude Code sait aussi passer par Bedrock (page Claude Code on Amazon Bedrock) ; le poste n'emploie pas cette voie.
-Alias : la documentation dit que les alias suivent « the recommended version for your provider » et changent avec le temps ; `sonnet` désigne Sonnet 4.5 sur Bedrock (page Amazon Bedrock : sans variable de pin, `sonnet` vaut Sonnet 4.5) et un modèle plus récent sur l'API Anthropic. L'identifiant complet fige le modèle : tous les appels des démonstrations l'imposent, jamais l'alias.
-Sources : Claude Code Model configuration (code.claude.com/docs/en/model-config), Claude Code Amazon Bedrock (code.claude.com/docs/en/amazon-bedrock), Open Code Providers (opencode.ai/docs/providers/). Page providers d'Open Code : authentification Bedrock documentée, identifiant `amazon-bedrock/eu.anthropic.claude-sonnet-4-6` non documenté, relevé dans `opencode.json` de tickets-api.
-Claude Code : l'option `--model` prend l'identifiant complet (exemple de la doc : `claude --model claude-sonnet-5`). Le dépôt tickets-api l'épingle aussi dans `.claude/settings.json`, clé `model` (doc Settings : « "model": "claude-sonnet-5" » en exemple de fichier d'équipe ; contenu vérifié par `gh api` le 25 octobre 2026).
-Open Code : la doc annonce `--model`/`-m` sur la TUI, mais `opencode --help` en v2.0.32 ne la montre pas (relevé du 25 octobre 2026). `-m` existe sur `opencode run`, utilisé par le rejeu. Format `provider/model`. Donc modèle fixé par `opencode.json`.
-Jamais deux `opencode run` en parallèle. Avant le module 1 : `opencode mcp list` de chauffe.
-:::
-
 ## Les démonstrations se jouent avec l'agent de code choisi. {.statement kicker="Environnement"}
 
 ::: notes
 Conclut la section : un seul agent de code joue la journée. La commande, le fichier de contexte et la configuration diffèrent d'un outil à l'autre ; les slides à variantes suivent le sélecteur.
 À dire à l'oral : une démonstration est l'exécution commentée, en direct, d'une tâche confiée à l'agent de code. Chacune a quatre parties : le prompt (la consigne donnée à l'agent de code), le déroulé (les étapes jouées et commentées), le résultat attendu et le repli (la solution de secours si l'agent dérive). Aucun TP : la salle observe et pose des questions.
 Chaque démonstration a un runbook dans `demos/NN-nom/` ; le prompt, le déroulé, le résultat attendu et le repli sont dans les notes de la slide qui la porte.
+Fixer le modèle : Claude Code `claude --model claude-sonnet-4-6` ; Open Code, fichier `opencode.json`, clé `model` : `amazon-bedrock/eu.anthropic.claude-sonnet-4-6`. Sources : Claude Code CLI reference et Settings, Open Code Models et CLI (code.claude.com/docs/en/cli-reference, /settings ; opencode.ai/docs/models/, /cli/).
+À dire à l'oral : un seul modèle pour la journée, Claude Sonnet 4.6 (`claude-sonnet-4-6`). Claude Code passe par l'abonnement Anthropic, Open Code par Amazon Bedrock (région eu-west-1). Claude Code sait aussi passer par Bedrock (page Claude Code on Amazon Bedrock) ; le poste n'emploie pas cette voie.
+Alias : la documentation dit que les alias suivent « the recommended version for your provider » et changent avec le temps ; `sonnet` désigne Sonnet 4.5 sur Bedrock (page Amazon Bedrock : sans variable de pin, `sonnet` vaut Sonnet 4.5) et un modèle plus récent sur l'API Anthropic. L'identifiant complet fige le modèle : tous les appels des démonstrations l'imposent, jamais l'alias.
+Sources : Claude Code Model configuration (code.claude.com/docs/en/model-config), Claude Code Amazon Bedrock (code.claude.com/docs/en/amazon-bedrock), Open Code Providers (opencode.ai/docs/providers/). Page providers d'Open Code : authentification Bedrock documentée, identifiant `amazon-bedrock/eu.anthropic.claude-sonnet-4-6` non documenté, relevé dans `opencode.json` de tickets-api.
+Claude Code : l'option `--model` prend l'identifiant complet (exemple de la doc : `claude --model claude-sonnet-5`). Le dépôt tickets-api l'épingle aussi dans `.claude/settings.json`, clé `model` (doc Settings : « "model": "claude-sonnet-5" » en exemple de fichier d'équipe ; contenu vérifié par `gh api` le 25 octobre 2026).
+Open Code : la doc annonce `--model`/`-m` sur la TUI, mais `opencode --help` en v2.0.32 ne la montre pas (relevé du 25 octobre 2026). `-m` existe sur `opencode run`, utilisé par le rejeu. Format `provider/model`. Donc modèle fixé par `opencode.json`.
+Jamais deux `opencode run` en parallèle. Avant le module 1 : `opencode mcp list` de chauffe.
 :::
 
 ## Définition d'une limitation {kicker="Limitations"}
