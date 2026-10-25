@@ -167,8 +167,7 @@ Spécification : les clients devraient demander une confirmation humaine pour le
 Le jeton d'accès authentifie l'agent de code auprès du serveur.
 
 ::: claude-code
-```jsonc
-// .mcp.json
+```json
 {
   "mcpServers": {
     "github": {
@@ -182,8 +181,7 @@ Le jeton d'accès authentifie l'agent de code auprès du serveur.
 :::
 
 ::: opencode
-```jsonc
-// opencode.json
+```json
 {
   "mcp": {
     "servers": {
@@ -205,7 +203,7 @@ Le jeton d'accès authentifie l'agent de code auprès du serveur.
 :::
 
 ::: notes
-Claude Code : forme équivalente en ligne de commande `claude mcp add --transport http github https://api.githubcopilot.com/mcp/ --header "Authorization: Bearer ..."` (écrit `.mcp.json` avec `--scope project` ; portée par défaut `local`). `${VAR}` développé dans `url` et `headers` ; variable absente sans défaut : chargement avec avertissement. Un serveur de `.mcp.json` demande une approbation en session interactive ; en `claude -p`, aucune invite (doc headless).
+Fichiers : `.mcp.json` (Claude Code), `opencode.json` (Open Code). Claude Code : forme équivalente en ligne de commande `claude mcp add --transport http github https://api.githubcopilot.com/mcp/ --header "Authorization: Bearer ..."` (écrit `.mcp.json` avec `--scope project` ; portée par défaut `local`). `${VAR}` développé dans `url` et `headers` ; variable absente sans défaut : chargement avec avertissement. Un serveur de `.mcp.json` demande une approbation en session interactive ; en `claude -p`, aucune invite (doc headless).
 Open Code v2 : `mcp.servers.<nom>` ; `{env:NOM}` substitué, `$NOM` non développé ; la doc interdit la clé `enabled` (ancienne forme v1 `mcp.github` du dépôt tickets-api à porter). Aucune approbation de serveur de projet.
 Jeton : lu dans une variable d'environnement, jamais écrit dans le fichier ; ici un PAT GitHub dans `GITHUB_TOKEN`. À ne pas confondre avec le token de la fenêtre de contexte.
 À relever : Claude Code accepte-t-il l'en-tête statique `Authorization` pour ce serveur (équivalences : un en-tête statique refusé par le serveur échoue sans repli OAuth) ; Open Code v2.0.32 lit-il bien cette forme.
@@ -364,8 +362,6 @@ Lexique : « agent principal » et « sous-agent », pas « agent parent » ni �
 Un fichier Markdown déclare le sous-agent : un en-tête de configuration, puis ses instructions fixes.
 
 ::: claude-code
-`.claude/agents/explorateur.md`
-
 ```markdown
 ---
 name: explorateur
@@ -378,8 +374,6 @@ Tu explores le dépôt, tu ne modifies rien, dix lignes au plus.
 :::
 
 ::: opencode
-`.opencode/agents/explorateur.md`
-
 ```markdown
 ---
 description: Explore un périmètre du dépôt en lecture seule
@@ -399,7 +393,7 @@ Tu explores le dépôt, tu ne modifies rien, dix lignes au plus.
 :::
 
 ::: notes
-Extraits abrégés des fichiers de tickets-api (instructions fixes raccourcies : les vraies demandent aussi la forme du rapport en trois points). Claude Code : seuls `name` et `description` sont requis ; `tools` est une liste blanche ; `maxTurns` borne les tours du sous-agent.
+Fichiers : `.claude/agents/explorateur.md` (Claude Code), `.opencode/agents/explorateur.md` (Open Code). Extraits abrégés des fichiers de tickets-api (instructions fixes raccourcies : les vraies demandent aussi la forme du rapport en trois points). Claude Code : seuls `name` et `description` sont requis ; `tools` est une liste blanche ; `maxTurns` borne les tours du sous-agent.
 Open Code v2 : le frontmatter reprend les champs de l'entrée de configuration `agents` ; `mode: subagent` ; `steps` est le nombre maximal d'étapes du modèle (à la dernière, les outils sont retirés et le modèle résume) ; les permissions sont dans `permissions`, il n'y a pas de champ `tools` en v2. Les fichiers actuels de tickets-api utilisent la forme v1 (`permission:` avec `edit: deny`) acceptée et migrée ; la forme v2 est celle de la documentation, à vérifier à la démonstration.
 Invocation : Claude Code, en langage naturel ou `@"explorateur (agent)"` ; Open Code, le modèle choisit d'après `description`.
 Le fichier réel fixe aussi `model: claude-sonnet-4-6` et 25 tours (`maxTurns`, `steps`), omis de l'extrait.
@@ -1046,8 +1040,6 @@ Redimensionner à 1280x720 par `browser_resize` ou par le prompt.
 La déclaration suit la forme de la section MCP.
 
 ::: claude-code
-`.mcp.json`
-
 ```json
 {
   "mcpServers": {
@@ -1061,8 +1053,6 @@ La déclaration suit la forme de la section MCP.
 :::
 
 ::: opencode
-`opencode.json`
-
 ```json
 {
   "mcp": {
@@ -1084,7 +1074,7 @@ La déclaration suit la forme de la section MCP.
 :::
 
 ::: notes
-Configuration fournie par la démonstration. Serveur local : processus lancé par l'agent de code. Claude Code : `command` et `args` (sans `type`, une entrée vaut stdio). Open Code v2 : `type: "local"`, `command` en tableau. `--isolated` (profil en mémoire) est confirmé dans le README de Playwright MCP.
+Fichiers : `.mcp.json` (Claude Code), `opencode.json` (Open Code). Configuration fournie par la démonstration. Serveur local : processus lancé par l'agent de code. Claude Code : `command` et `args` (sans `type`, une entrée vaut stdio). Open Code v2 : `type: "local"`, `command` en tableau. `--isolated` (profil en mémoire) est confirmé dans le README de Playwright MCP.
 Le serveur de projet de `.mcp.json` demande une approbation en session interactive de Claude Code. Claude Code : `.mcp.json` du dépôt ; Open Code : `opencode.json` fourni par la démonstration, rien à ajouter.
 :::
 
