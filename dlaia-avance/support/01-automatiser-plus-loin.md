@@ -90,7 +90,7 @@ Un mécanisme est un moyen d'étendre l'agent de code.
 
 ::: notes
 Classement du support, pas une source externe. Les trois sections portent les noms serveur MCP, sous-agents et orchestrateur, boucles : définis dans leur section, ne pas les expliquer ici.
-Les trois autres mécanismes prolongent ces sections : les garde-fous bornent les boucles, le SDK programme une boucle, l'interface reprend le serveur MCP avec un navigateur. Le module se clôt par une grille de choix.
+Les trois autres mécanismes prolongent ces sections : les garde-fous bornent les boucles, le SDK intègre l'agent de code dans un programme, l'interface reprend le serveur MCP avec un navigateur. Le module se clôt par une grille de choix.
 Sigle MCP : développé à la section suivante.
 :::
 
@@ -109,10 +109,10 @@ Conclut les trois situations (information absente, fenêtre saturée, arrêt pr�
 | orchestrateur | fenêtre saturée, tâche trop longue pour une session |
 | boucles | arrêt malgré des tests rouges |
 | garde-fous | relances sans fin, tests contournés |
-| SDK | relances à tenir depuis un programme |
+| SDK (bibliothèque qui pilote l'agent de code) | intégration dans un programme |
 
 ::: notes
-Classement du support, pas une source externe. Ordre des sections de la journée. Chaque terme est défini dans sa section : ne pas l'expliquer ici. L'interface web reprend le serveur MCP avec un navigateur. Les garde-fous et le SDK prolongent les boucles : ils ne répondent pas à une limitation de l'agent seul, ils encadrent la réponse.
+Classement du support, pas une source externe. Ordre des sections de la journée. Chaque terme est défini dans sa section : ne pas l'expliquer ici. L'interface web reprend le serveur MCP avec un navigateur. Les garde-fous et le SDK prolongent les boucles : ils ne répondent pas à une limitation de l'agent seul, ils encadrent ou intègrent la réponse.
 :::
 
 ## Définition d'un serveur MCP {kicker="MCP"}
@@ -880,14 +880,14 @@ Résultat attendu : tous les tests passent en cinq relances au plus. Résultat o
 
 ::: notes
 Conclut la section : définition, dérives, options par appel, test désactivé, protection des tests, relecture.
-Transition : jusqu'ici la boucle est une commande ou un script shell. Un programme peut la tenir lui-même : le SDK.
+Transition : jusqu'ici la boucle est une commande ou un script shell. Un programme peut aussi piloter l'agent de code : le SDK.
 :::
 
 ## Définition d'un SDK {kicker="SDK"}
 
 ![Un programme appelle le SDK, qui pilote l'agent de code](images/01-sdk.svg)
 
-Un SDK (Software Development Kit) est une bibliothèque qui pilote l'agent de code depuis un programme.
+Le programme décide quand lancer l'agent de code et lit sa réponse.
 
 ::: sources
 - [Claude Code, Agent SDK quickstart](https://code.claude.com/docs/en/agent-sdk/quickstart)
@@ -895,8 +895,9 @@ Un SDK (Software Development Kit) est une bibliothèque qui pilote l'agent de co
 :::
 
 ::: notes
+SDK : Software Development Kit, bibliothèque qui pilote l'agent de code depuis un programme. Le sigle développé figure aussi sur l'étiquette du schéma.
 Claude Code : Claude Agent SDK (SDK d'Anthropic), paquet `@anthropic-ai/claude-agent-sdk` (TypeScript, Node 18+) ou `claude-agent-sdk` (Python 3.10+). Le SDK embarque un binaire Claude Code.
-Open Code : paquet `@opencode/sdk` du dépôt v2.0.32, « In-process OpenCode host for Promise and Effect applications ». Version épinglée dans les fichiers fournis par la démonstration : 2.0.32 (npm donne 2.1.4 le 25 octobre 2026). L'ancien paquet `@opencode-ai/sdk` (1.18.29 dans tickets-api) est celui de la v1.
+Open Code : paquet `@opencode/sdk` du dépôt v2.0.32, « In-process OpenCode host for Promise and Effect applications » (npm donne 2.1.4 le 25 octobre 2026). L'ancien paquet `@opencode-ai/sdk` est celui de la v1.
 :::
 
 ## Un premier appel au SDK {.compare kicker="SDK"}
@@ -919,17 +920,14 @@ for await (const message of query({
 :::
 
 ::: opencode
+`@opencode/sdk`, le SDK d'Open Code.
+
 ```typescript
 import { OpenCode } from "@opencode/sdk"
 
 await using opencode = await OpenCode.create()
-const session = await opencode.sessions.create({
-  location: { directory: process.cwd() },
-})
-await opencode.sessions.prompt({
-  sessionID: session.id,
-  text: "Corrige les tests en échec",
-})
+const session = await opencode.sessions.create({ location: { directory: process.cwd() } })
+await opencode.sessions.prompt({ sessionID: session.id, text: "Corrige les tests en échec" })
 ```
 :::
 
@@ -939,69 +937,23 @@ await opencode.sessions.prompt({
 :::
 
 ::: notes
-Claude Code : adapté de l'exemple du quickstart (`query`, `allowedTools`, `permissionMode`). Authentification : clé `ANTHROPIC_API_KEY`, ou `CLAUDE_CODE_USE_BEDROCK=1` avec identifiants AWS. La doc interdit d'offrir la connexion claude.ai (abonnement) dans un produit bâti sur le SDK : sur le poste de démonstration, l'abonnement de Claude Code ne suffit pas, prévoir une clé ou Bedrock. À relever.
-Open Code : `OpenCode.create()`, `sessions.create`, `sessions.prompt` du README v2.0.32 ; le README ne donne aucune signature de type ni l'option pour choisir un agent. À relever : faisabilité de l'appel avec l'agent `implementeur`.
+Claude Code : adapté de l'exemple du quickstart (`query`, `allowedTools`, `permissionMode`). Authentification : clé `ANTHROPIC_API_KEY`, ou `CLAUDE_CODE_USE_BEDROCK=1` avec identifiants AWS. La doc interdit d'offrir la connexion claude.ai (abonnement) dans un produit bâti sur le SDK : l'abonnement de Claude Code ne suffit pas pour un programme bâti sur le SDK, prévoir une clé ou Bedrock.
+Open Code : `OpenCode.create()`, `sessions.create`, `sessions.prompt` du README v2.0.32 ; le README ne donne aucune signature de type ni l'option pour choisir un agent.
 :::
 
-## Le programme tient la boucle {kicker="SDK"}
+## Quand utiliser un SDK {kicker="SDK"}
 
-```typescript
-for (let i = 1; i <= MAX; i++) {
-  if (testsPassent()) { corrige = true; break }
-  await relancer(objectif)
-  console.error(`relance ${i} / ${MAX}`)
-}
-```
+Le SDK sert quand le programme décide du prochain appel.
 
-Extrait simplifié de `scripts/fix-loop.ts` (même structure dans `fix-loop-claude.ts`) ; le libellé du journal est abrégé.
-
-::: notes
-Le critère (`testsPassent` lance `make test`), le nombre maximal de relances (`MAX`, 5 par défaut) et le journal (sortie d'erreur) sont du code ordinaire : testables, versionnables. Le résultat final part sur la sortie standard en JSON (`corrige`, `iterations`, `journal`).
-Scripts fournis par la démonstration : `fix-loop.ts` (`@opencode/sdk`) et `fix-loop-claude.ts` (`@anthropic-ai/claude-agent-sdk`). Le script de tickets-api (v1, `@opencode-ai/sdk` 1.18.29, branche `fix/ticket-ferme-commentaires-sdk`) reste l'origine.
-:::
-
-::: sources
-- Dépôt tickets-api du formateur, `scripts/fix-loop.ts`
-:::
-
-## Trois façons de boucler {kicker="SDK"}
-
-| Forme | Tient le critère | Sortie | Usage |
+| Forme | Tient le critère vérifiable | Sortie | Usage |
 |---|---|---|---|
-| commande | le prompt | texte de la session | session interactive |
-| script shell | le script | code de sortie | automatisation simple |
-| SDK | le programme | JSON et journal | intégration dans un service |
+| commande personnalisée | le prompt | texte de la session | session interactive |
+| script shell | le script | code de retour | automatisation simple |
+| SDK | le programme | messages typés | intégration dans un programme |
 
 ::: notes
 Comparaison du support, pas une source externe. Le critère vérifiable par le script ou le programme est un garde-fou ; dans la commande, il reste une instruction du prompt.
 Question probable : « SDK ou `claude -p` ? » `claude -p` suffit pour une boucle shell ; le SDK sert quand le programme doit décider entre deux appels, structurer ses résultats ou traiter les messages.
-:::
-
-## Démonstration : boucle par SDK {.compare kicker="SDK"}
-
-::: claude-code
-```console
-$ npx --prefix scripts tsx scripts/fix-loop-claude.ts "interdire les commentaires sur un ticket fermé"
-```
-:::
-
-::: opencode
-```console
-$ node scripts/fix-loop.ts "interdire les commentaires sur un ticket fermé"
-```
-:::
-
-::: notes
-Démonstration 5, runbook `demos/05-sdk/`. Branche `fix/ticket-ferme-commentaires-sdk`. Scripts `scripts/fix-loop-claude.ts` (Claude Agent SDK) et `scripts/fix-loop.ts` (Open Code), fournis par la démonstration.
-Déroulé : 1. lire le script. 2. Exécuter. 3. Journal par relance sur la sortie d'erreur, résultat JSON sur la sortie standard. 4. `git diff`.
-Résultat attendu : JSON final avec `"corrige": true`. Résultat observé : à relever. Repli : branche `fix/ticket-ferme-commentaires-sdk-done`.
-Variantes : Claude Agent SDK (TypeScript ou Python), SDK d'Open Code. À relever : plafonds de tours et de coût côté Claude Agent SDK, authentification (clé ou Bedrock).
-:::
-
-## Le programme décide de chaque relance de l'agent de code. {.statement kicker="SDK"}
-
-::: notes
-Conclut la section : définition, premier appel, boucle en code, comparaison, démonstration.
 Transition : jusqu'ici, la vérification porte sur des tests. Un défaut visible seulement dans un navigateur échappe aux tests : section Interface.
 :::
 
@@ -1111,7 +1063,7 @@ Avec le serveur MCP playwright, ouvre l'interface web de tickets-api à 1280x720
 ```
 
 ::: notes
-Démonstration 6, runbook `demos/06-mcp-interface/`. Branche `feat/front`. Serveur Playwright. Claude Code : `.mcp.json` du dépôt ; Open Code : `opencode.json` fourni par la démonstration, rien à ajouter.
+Démonstration 5, runbook `demos/06-mcp-interface/`. Branche `feat/front`. Serveur Playwright. Claude Code : `.mcp.json` du dépôt ; Open Code : `opencode.json` fourni par la démonstration, rien à ajouter.
 Déroulé : 1. serveur lancé. 2. Capture initiale. 3. Bandeau repéré. 4. Correction CSS. 5. Capture finale. 6. `make test` toujours passant.
 Résultat attendu : bouton « Ajouter » cliquable, capture avant et après. Résultat observé : à relever. Repli : captures enregistrées et branche corrigée.
 À relever : outils Playwright réellement appelés, durée, comportement sans interface graphique (`--headless`).
@@ -1144,7 +1096,7 @@ Récapitulatif visuel : le harnais de la formation initiale reste le centre ; ch
 
 ::: notes
 Grille du support, pas une source externe. Trois questions : la tâche tient-elle dans une session ? existe-t-il une commande qui dit « fini » ? le travail se découpe-t-il en parties indépendantes ?
-Le serveur MCP et le SDK ne figurent pas en colonne : le premier ajoute des outils à n'importe quelle colonne, le second est une façon de tenir une boucle.
+Le serveur MCP et le SDK ne figurent pas en colonne : le premier ajoute des outils à n'importe quelle colonne, le second relève de l'intégration dans un programme.
 Lien avec la slide « MCP ou ligne de commande » : même arbitrage, coût contre capacité.
 :::
 
@@ -1216,6 +1168,7 @@ Slide de référence, à ne pas lire en salle. Définitions du lexique.
 
 - **Commande personnalisée** : prompt enregistré dans un fichier du dépôt, lancé par `/nom`
 - **Code de retour** : nombre rendu par une commande à sa fin, 0 si elle réussit
+- **Mode non interactif** : exécution sans session ouverte, un prompt en entrée et le résultat en sortie
 
 ::: sources
 - [METR, Time Horizon 1.1](https://metr.org/blog/2026-01-29-time-horizon-1-1/)
@@ -1246,7 +1199,6 @@ Slide de référence, à ne pas lire en salle. Définitions du lexique. « Déri
 
 - **SDK** : Software Development Kit, bibliothèque qui pilote l'agent de code depuis un programme
 - **Claude Agent SDK** : SDK d'Anthropic qui pilote Claude Code depuis TypeScript ou Python
-- **Mode non interactif** : exécution sans session ouverte, un prompt en entrée et le résultat en sortie
 
 ::: sources
 - [Claude Code, Agent SDK quickstart](https://code.claude.com/docs/en/agent-sdk/quickstart)
