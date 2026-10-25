@@ -25,7 +25,8 @@ Décisions prises :
 - **Démonstrations seulement, aucun TP** : le formateur joue chaque démonstration ; les stagiaires regardent. Le prompt, le déroulé, le résultat attendu et le repli sont dans les notes de la slide qui porte la démonstration et dans le runbook de `demos/NN-nom/`.
 - **Une base de code par démonstration** : chaque démonstration apporte le dépôt ou les artefacts dont elle a besoin. bookit n'est pas imposé. Un dépôt externe est vérifié (`gh repo view`) avant reprise.
 - **Notes d'animation à côté de chaque slide** (bloc `::: notes`), rédigées comme des notes du formateur pour lui-même, en style télégraphique.
-- **Archive `dlaia-avance.zip`** : produite par `npm run dist`, elle contient à plat `dlaia-avance.html` et `demos/` (sans `.venv`, caches, `node_modules` ni base SQLite).
+- **Distribution : les slides seulement.** Les stagiaires reçoivent le support (`dlaia-avance.html`), jamais les démonstrations (runbooks, dépôts, scripts de session, sorties de référence), qui restent chez le formateur. Aucune slide ne renvoie à `demos/` ni à l'archive. Décision du 25 octobre 2026.
+- **Archive `dlaia-avance.zip`** : produite par `npm run dist`. Son contenu actuel (`dlaia-avance.html` et `demos/`) est à réduire à `dlaia-avance.html` pour suivre la décision de distribution ci-dessus.
 
 Le skill `support-formation-html` ne doit pas être utilisé sur ce projet.
 
