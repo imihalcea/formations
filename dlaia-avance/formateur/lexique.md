@@ -19,7 +19,7 @@ Les termes des modules 1 à 3 de DLAIA (agent, harnais, fenêtre de contexte, sk
 | Amazon Bedrock | service d'Amazon Web Services qui héberge des modèles ; Open Code l'appelle pour Claude Sonnet 4.6 (Claude Code passe par l'abonnement Anthropic) (étiquette du schéma) | 00 | Bedrock seul, AWS Bedrock |
 | fichier de contexte | fichier lu par l'agent de code au lancement : `CLAUDE.md` (Claude Code), `AGENTS.md` (Open Code) ; slide « Choisir l'agent de code » | 00 | fichier d'instructions, mémoire |
 | limitation | ce que l'agent de code ne dépasse pas seul, même avec une spécification et un harnais ; slide « Définition d'une limitation » | 00 | goulot, blocage, plafond (pour la notion) |
-| démonstration | exécution commentée, en direct, d'une tâche confiée à l'agent de code, jouée par le formateur ; slide « Une démonstration » | 00 | démo, TP, atelier |
+| démonstration | exécution commentée, en direct, d'une tâche confiée à l'agent de code, jouée par le formateur ; définie à l'oral et dans le glossaire | 00 | démo, TP, atelier |
 | tickets-api | dépôt de démonstration commun aux modules 1 à 3 ; slide « Le dépôt tickets-api » | 00 | fil rouge, bookit |
 | dépôt | répertoire versionné du projet | DLAIA | repo, projet (pour le dépôt) |
 | spécification | document versionné qui écrit l'intention d'une fonctionnalité avant le code | DLAIA | cahier des charges, specs |

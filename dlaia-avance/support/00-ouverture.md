@@ -59,22 +59,6 @@ Open Code : « open source AI coding agent » (page d'accueil de la documentatio
 Versions relevées sur le poste le 25 octobre 2026 : Claude Code 2.1.310, Open Code v2.0.32. À revérifier avant la séance (`claude --version`, `opencode --version`).
 :::
 
-## Une démonstration {kicker="Environnement"}
-
-Une démonstration est l'exécution commentée, en direct, d'une tâche confiée à l'agent de code.
-
-| Partie | Rôle |
-|---|---|
-| Prompt | la consigne donnée à l'agent de code |
-| Déroulé | les étapes jouées et commentées |
-| Résultat attendu | ce que la tâche doit produire |
-| Repli | la solution de secours si l'agent dérive |
-
-::: notes
-Définition posée avant son premier emploi sur une slide. Aucun TP : la salle observe et pose des questions.
-Chaque démonstration a un runbook dans `demos/NN-nom/` ; le prompt, le déroulé, le résultat attendu et le repli sont dans les notes de la slide qui la porte.
-:::
-
 ## Fixer le modèle {.compare kicker="Environnement"}
 
 ::: claude-code
@@ -113,6 +97,8 @@ Jamais deux `opencode run` en parallèle. Avant le module 1 : `opencode mcp list
 
 ::: notes
 Conclut la section : un seul agent de code joue la journée. La commande, le fichier de contexte et la configuration diffèrent d'un outil à l'autre ; les slides à variantes suivent le sélecteur.
+À dire à l'oral : une démonstration est l'exécution commentée, en direct, d'une tâche confiée à l'agent de code. Chacune a quatre parties : le prompt (la consigne donnée à l'agent de code), le déroulé (les étapes jouées et commentées), le résultat attendu et le repli (la solution de secours si l'agent dérive). Aucun TP : la salle observe et pose des questions.
+Chaque démonstration a un runbook dans `demos/NN-nom/` ; le prompt, le déroulé, le résultat attendu et le repli sont dans les notes de la slide qui la porte.
 :::
 
 ## Définition d'une limitation {kicker="Limitations"}
