@@ -185,7 +185,7 @@ Un agent est un modèle dans une boucle d'outils. Un outil est une action que l'
 Doc Claude Code : « gather context, take action, verify results », les phases s'entremêlent ; « Each tool use returns information that feeds back into the loop ».
 Doc API : le modèle répond `stop_reason: "tool_use"` avec un bloc `tool_use` ; le programme exécute et renvoie un `tool_result`.
 Exemple du schéma : un test qui échoue. L'agent cherche le test, lit le code appelé, modifie, relance `uv run pytest`. Tant que le test échoue, nouveau tour ; quand il passe, l'agent rend la main.
-Reprend la définition de la première slide (lit le dépôt, écrit, lance) en montrant le mécanisme.
+Reprend la définition de la première slide (lit le dépôt, écrit, lance) en montrant le mécanisme. Le détail d'une itération est sur la slide « Une itération de la boucle ».
 :::
 
 ## Les outils de l'agent {kicker="L'agent"}
@@ -211,11 +211,29 @@ Claude Code sous Linux, macOS et WSL : `Grep` et `Glob` sont absents par défaut
 Autres outils documentés : `Glob` et `glob` (fichiers par motif), `WebFetch` et `webfetch`, `WebSearch` et `websearch` (indisponible pour Claude Code sur Amazon Bedrock) ; Claude Code a aussi des outils de sous-agents et de questions à l'utilisateur, Open Code un outil `question`.
 :::
 
+## Une itération de la boucle {kicker="L'agent"}
+
+![Échange entre le harnais et le modèle : contexte et outils envoyés, demande d'outil, résultat renvoyé, réponse en texte seul](images/01-boucle-mecanisme.svg)
+
+Le modèle ne fait que demander : le harnais exécute chaque outil.
+
+::: sources
+- [Claude Platform, Tool use overview : How tool use works](https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview#how-tool-use-works)
+- [Claude Code, How Claude Code works : The agentic loop](https://code.claude.com/docs/en/how-claude-code-works#the-agentic-loop)
+:::
+
+::: notes
+Doc API : les outils clients « run in your application » ; le modèle répond `stop_reason: "tool_use"` avec un bloc `tool_use`, « Your code runs the operation and sends back a `tool_result` ». Sous Claude Code ou Open Code, « your code » est le harnais.
+À chaque tour de boucle, le modèle choisit : demander un outil ou répondre directement (doc API, « When Claude uses tools »). Une réponse sans demande d'outil termine la boucle et rend la main à l'utilisateur.
+Doc Claude Code : « Each tool use returns information that feeds back into the loop, informing Claude's next decision ».
+Un tour (une demande de l'utilisateur) contient autant d'itérations que nécessaire. Le schéma montre le dernier échange du test qui échoue : 02 à 03 se répètent tant que le test échoue.
+:::
+
 ## Le harnais entoure le modèle {kicker="L'agent"}
 
-![Le modèle au centre ; autour, le harnais fait tourner la boucle, décrit et exécute les outils, demande les permissions, affiche la session](images/01-harnais.svg)
+![Le modèle au centre ; autour, le harnais contrôle la boucle, met les outils à disposition et les exécute, demande les permissions, affiche la session](images/01-harnais.svg)
 
-Le harnais est le logiciel autour du modèle. Une permission est l'accord demandé à l'utilisateur avant une action de l'agent.
+Le harnais est le logiciel autour du modèle : il contrôle la boucle et met les outils à sa disposition. Une permission est l'accord demandé à l'utilisateur avant une action de l'agent.
 
 ::: sources
 - [Claude Code, Glossary : Agentic harness](https://code.claude.com/docs/en/glossary#agentic-harness)
@@ -225,6 +243,7 @@ Le harnais est le logiciel autour du modèle. Une permission est l'accord demand
 
 ::: notes
 Glossaire Claude Code : « Claude Code is the harness; Claude is the model inside it. The harness supplies file access, shell execution, permission gating, memory loading, and the loop that chains actions together. »
+Le harnais contrôle la boucle : il appelle le modèle, exécute les outils demandés, renvoie les résultats et décide quels outils sont déclarés au modèle (le modèle ne peut demander que ceux-là).
 Les permissions sont appliquées par le harnais, jamais par le modèle. Claude Code en mode Manual demande avant une édition et avant une commande hors d'un jeu de commandes en lecture seule ; Open Code suit les règles `allow`, `ask`, `deny` de `opencode.json`.
 Le même modèle tourne dans les deux harnais de la formation : slide suivante.
 :::

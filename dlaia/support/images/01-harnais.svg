@@ -8,9 +8,9 @@
 
   <g font-size="28" class="ink">
     <rect x="40" y="110" width="480" height="80" rx="40" class="paper"/>
-    <text x="280" y="161" text-anchor="middle">Fait tourner la boucle</text>
+    <text x="280" y="161" text-anchor="middle">Contrôle la boucle</text>
     <rect x="40" y="220" width="480" height="80" rx="40" class="paper"/>
-    <text x="280" y="271" text-anchor="middle">Décrit et exécute les outils</text>
+    <text x="280" y="271" text-anchor="middle">Met les outils à disposition</text>
     <rect x="40" y="330" width="480" height="80" rx="40" class="paper"/>
     <text x="280" y="381" text-anchor="middle">Renvoie leur résultat au modèle</text>
 
