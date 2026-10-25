@@ -4,7 +4,7 @@
 
 Relevé repris de `claude-code/formateur/equivalences.md` (documentation consultée les 17 et 18 octobre 2026, code d'Open Code au tag v2.0.26) et complété le 19 octobre 2026 pour la formation DLAIA : lignes Spec Kit, skills partagés, `AGENTS.md` commun, Amazon Bedrock. Documentation : [Claude Code](https://code.claude.com/docs/en/), [Open Code](https://opencode.ai/docs/), [Spec Kit v1.2.2](https://github.com/github/spec-kit/tree/v1.2.2/docs). Chaque ligne cite la page ou le fichier qui l'établit ; une ligne sans date a été consultée les 17 ou 18 octobre 2026, une ligne datée « 19 oct. » a été consultée ou réexaminée le 19 octobre 2026.
 
-Versions : la VM a Claude Code 2.1.303 et Open Code v2.0.32 (relevé dans `formateur/fil-rouge.md`). La documentation d'Open Code décrit en partie la v1 ; quand le code du dépôt [anomalyco/opencode](https://github.com/anomalyco/opencode) la contredit, la ligne suit le code et cite son fichier, au tag v2.0.26 ou, pour les lignes réexaminées le 19 octobre, au tag [v2.0.32](https://github.com/anomalyco/opencode/tree/v2.0.32). « Non documenté » signifie que les pages consultées ne disent rien du point : il reste à vérifier sur la VM avant d'en parler en salle.
+Versions : le poste du formateur a Claude Code 2.1.310 et Open Code v2.0.32 (relevé du 25 octobre 2026, section ci-dessous). La documentation d'Open Code décrit en partie la v1 ; quand le code du dépôt [anomalyco/opencode](https://github.com/anomalyco/opencode) la contredit, la ligne suit le code et cite son fichier, au tag v2.0.26 ou, pour les lignes réexaminées le 19 octobre, au tag [v2.0.32](https://github.com/anomalyco/opencode/tree/v2.0.32). « Non documenté » signifie que les pages consultées ne disent rien du point : il reste à vérifier sur la VM avant d'en parler en salle.
 
 ## CLI, session, permissions
 
@@ -89,3 +89,17 @@ Open Code n'a pas d'équivalent de la mémoire automatique, de `/context` ni des
 ## À vérifier sur la VM
 
 - Démarrage de Claude Code en Manual avec `claude-sonnet-4-6` sur Bedrock : la ligne de mode affichée au lancement doit indiquer Manual, sans `--permission-mode`.
+
+## Relevé sur le poste du 25 octobre 2026
+
+Poste du formateur, répertoire de test hors dépôt (`tmp/rejeu/env/`), modèle imposé par `--model claude-sonnet-4-6` (Claude Code) et `-m amazon-bedrock/eu.anthropic.claude-sonnet-4-6` (Open Code). Fournisseurs effectifs : Claude Code par l'abonnement Anthropic (`provider: firstParty` dans `modelUsage`), Open Code par Amazon Bedrock (région `eu-west-1`, définie dans `~/.config/opencode/opencode.jsonc`). Claude Code répond aussi par Bedrock quand `CLAUDE_CODE_USE_BEDROCK=1` et `AWS_REGION=eu-west-1` sont posés (`provider: bedrock`), mais la convention du poste est l'abonnement.
+
+| Point | Résultat observé |
+|---|---|
+| Versions | Claude Code 2.1.310, Open Code v2.0.32 (`opencode --version`) |
+| `opencode run` sans `--auto`, règle `ask` | l'action est rejetée d'office, l'agent continue sans elle et le dit ; la sortie `--format json` porte le statut `error` de l'outil ; fichier non créé |
+| `opencode run --auto`, règle `ask` | l'action s'exécute, fichier créé |
+| `opencode run`, MCP local déclaré dans `opencode.json` (`mcp.<nom>` de type `local`) | l'outil MCP est appelé et son résultat renvoyé ; en v2, l'appel passe par l'outil `execute` (`tools.<serveur>.<outil>()`) |
+| `claude -p`, serveur `.mcp.json` de portée projet | `claude mcp list` l'affiche « Pending approval » ; sans règle, l'appel est refusé (`permission_denials`) ; avec `--allowedTools mcp__<serveur>__<outil>`, l'appel aboutit |
+
+Deux comportements d'Open Code à connaître avant une session. Après une action `ask` non approuvée ou un `opencode run` coupé par `timeout`, le service d'arrière-plan peut rester bloqué : les `opencode run` suivants expirent sans sortie, et `opencode service restart` les débloque. Juste après un redémarrage, `opencode mcp list` répond « No MCP servers configured » et un `opencode run` avec MCP lancé tout de suite après a expiré à 90 s (une observation) ; lancé après un `opencode mcp list` qui affichait « connected », il a abouti. Prévoir un `opencode mcp list` de chauffe avant la démonstration MCP.
