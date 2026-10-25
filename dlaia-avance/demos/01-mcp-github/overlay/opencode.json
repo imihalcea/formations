@@ -13,6 +13,8 @@
   },
   "permissions": [
     { "action": "github_*", "resource": "*", "effect": "ask" },
-    { "action": "github_issue_read", "resource": "*", "effect": "allow" }
+    { "action": "github_issue_read", "resource": "*", "effect": "allow" },
+    { "action": "github_list_issues", "resource": "*", "effect": "allow" },
+    { "action": "github_get_me", "resource": "*", "effect": "allow" }
   ]
 }

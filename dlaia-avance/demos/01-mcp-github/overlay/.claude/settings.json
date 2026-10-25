@@ -9,7 +9,9 @@
       "Bash(git status *)",
       "Bash(git diff *)",
       "Bash(git log *)",
-      "mcp__github__issue_read"
+      "mcp__github__issue_read",
+      "mcp__github__list_issues",
+      "mcp__github__get_me"
     ],
     "ask": [
       "mcp__github__issue_write",
