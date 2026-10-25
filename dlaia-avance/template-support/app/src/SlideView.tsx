@@ -263,7 +263,7 @@ function ContentBody({ slide }: { slide: Slide }) {
     }
     case "compare":
       return (
-        <div className="grid grid-cols-2 gap-20">
+        <div className="slide-compare grid grid-cols-2 gap-20">
           {([["claude", slide.claudeHtml], ["opencode", slide.opencodeHtml]] as const).map(([tool, html]) => (
             <div key={tool} className="min-w-0 border-t-4 border-slide-accent pt-7">
               <p className="slide-kicker mb-8 text-slide-accent">{TOOL_LABELS[tool]}</p>

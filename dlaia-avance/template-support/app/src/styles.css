@@ -89,6 +89,7 @@ body { background-color: var(--deck); color: var(--deck-foreground); }
   background-color: var(--deck) !important; border-top: 4px solid var(--slide-accent);
 }
 .slide-md pre.shiki.terminal { background-color: var(--slide-ink) !important; border-top-color: var(--slide-ink); }
+.slide-compare pre.shiki { font-size: 21px; padding: 36px 28px; white-space: pre; }
 .slide-md table { width: 100%; border-collapse: collapse; font-size: var(--slide-caption); }
 .slide-md th { text-align: left; font-weight: 600; padding: 16px 24px 16px 0; border-bottom: 4px solid var(--slide-accent); }
 .slide-md td { padding: 16px 24px 16px 0; border-bottom: 2px solid var(--deck-muted); vertical-align: top; }
