@@ -25,7 +25,7 @@ d'usage dans `application/`, routes dans `adapters/inbound/http/`, base dans
 Les tests sont ta cible, jamais ton chantier : tu ne modifies aucun fichier sous
 `tests/`. Si un test te paraît faux, tu le dis dans ta réponse et tu t'arrêtes.
 
-Avant de rendre la main : `make lint` et `make test` verts, ou l'explication précise de
+Avant de rendre la main : `make lint` et `make test` verts (lance chaque commande seule, sans `cd` ni `&&`), ou l'explication précise de
 ce qui bloque.
 
 Tu réponds en français, identifiants et messages du code en anglais.
