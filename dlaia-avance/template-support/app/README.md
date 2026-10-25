@@ -44,7 +44,7 @@ Chaque titre `##` ouvre une slide. Une classe entre accolades fixe son type, et 
 | `figures` | 3 à 5 éléments `- **valeur** légende`, puis un paragraphe facultatif affiché en remarque | `kicker` |
 | `quote` | lignes `> …` | `author`, `kicker` |
 | `video` | aucun ; le lecteur se charge au clic | `src` (obligatoire : adresse https YouTube, Vimeo ou fichier `.mp4` / `.webm`), `start` (secondes, à défaut le paramètre `t` de l'adresse), `kicker` |
-| `compare` | conteneurs `claude-code` et `opencode` | `kicker` |
+| `compare` | conteneurs `claude-code` et `opencode`, texte commun facultatif au-dessus ; seule la variante de l'outil choisi s'affiche (sélecteur en haut à droite, `?outil=opencode` dans l'adresse) | `kicker` |
 | `tp` | voir « Travaux pratiques » | `duration`, `kicker` |
 | `end` | sous-titre | `kicker` |
 

@@ -25,7 +25,7 @@ export type Slide =
   | (Base & { kind: "quote"; quoteHtml: string; author?: string })
   // video : `embedUrl` est l'adresse du lecteur intégré (iframe) ou du fichier (balise video) ; `watchUrl` l'adresse d'origine, `posterUrl` l'aperçu affiché avant la lecture (YouTube).
   | (Base & { kind: "video"; provider: "youtube" | "vimeo" | "file"; embedUrl: string; watchUrl: string; posterUrl?: string })
-  | (Base & { kind: "compare"; claudeHtml: string; opencodeHtml: string })
+  | (Base & { kind: "compare"; claudeHtml: string; opencodeHtml: string; commonHtml?: string })
   // stepTitles : titres des étapes rendus en HTML (Markdown en ligne).
   | (Base & { kind: "tp"; tpId: string; introHtml: string; stepTitles: string[]; optionalFirst?: boolean; duration?: string })
   | (Base & { kind: "end"; subtitleHtml?: string })

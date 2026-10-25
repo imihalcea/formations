@@ -424,12 +424,12 @@ function buildSlide(b: Block, ctx: Ctx): Slide {
       return { ...base, kind, ...videoSource(src, b.attrs["start"], b.origin) };
     }
     case "compare": {
-      empty();
+      const common = text.trim() ? ctx.md.render(text, ctx.env) : "";
       const col = (name: string) => {
         const lines = containers.get(name) ?? fail(`conteneur « ${name} » manquant`);
         return ctx.md.render(join_(lines), ctx.env);
       };
-      return { ...base, kind, claudeHtml: col("claude-code"), opencodeHtml: col("opencode") };
+      return { ...base, kind, claudeHtml: col("claude-code"), opencodeHtml: col("opencode"), ...(common ? { commonHtml: common } : {}) };
     }
     case "module-title":
       return fail("le type module-title est généré par le titre « # »");

@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { Section, Slide, SlideKind } from "./types";
 import { addCopyButtons } from "./copy";
 import { CartePreview } from "./Carte";
+import { useOutil } from "./outil";
 
 export const TOOL_LABELS = { claude: "Claude Code", opencode: "Open Code" };
 
@@ -262,16 +263,7 @@ function ContentBody({ slide }: { slide: Slide }) {
       );
     }
     case "compare":
-      return (
-        <div className="slide-compare grid grid-cols-2 gap-20">
-          {([["claude", slide.claudeHtml], ["opencode", slide.opencodeHtml]] as const).map(([tool, html]) => (
-            <div key={tool} className="min-w-0 border-t-4 border-slide-accent pt-7">
-              <p className="slide-kicker mb-8 text-slide-accent">{TOOL_LABELS[tool]}</p>
-              <Html html={html} className="slide-md" />
-            </div>
-          ))}
-        </div>
-      );
+      return <Compare slide={slide} />;
     case "video":
       return <VideoPlayer key={slide.origin} slide={slide} />;
     case "carte":
@@ -279,6 +271,21 @@ function ContentBody({ slide }: { slide: Slide }) {
     default:
       return null;
   }
+}
+
+// Une slide compare ne montre que l'outil choisi en début de formation ; le texte commun passe au-dessus.
+function Compare({ slide }: { slide: Extract<Slide, { kind: "compare" }> }) {
+  const outil = useOutil();
+  const [label, html] = outil === "opencode" ? [TOOL_LABELS.opencode, slide.opencodeHtml] : [TOOL_LABELS.claude, slide.claudeHtml];
+  return (
+    <>
+      {slide.commonHtml && <Html html={slide.commonHtml} className="slide-md mb-12" />}
+      <div className="slide-compare min-w-0 border-t-4 border-slide-accent pt-7">
+        <p className="slide-kicker mb-8 text-slide-accent">{label}</p>
+        <Html html={html} className="slide-md" />
+      </div>
+    </>
+  );
 }
 
 // Le lecteur ne se charge qu'au clic : les vues d'ensemble, la vue présentateur et les captures

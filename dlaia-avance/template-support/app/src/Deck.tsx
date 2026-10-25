@@ -4,6 +4,7 @@ import deck from "virtual:deck";
 import { ScaledSlide } from "./SlideView";
 import { TpPage } from "./TpPage";
 import { CartePage } from "./Carte";
+import { OUTILS, setOutil, useOutil } from "./outil";
 
 const { slides, sections, tps } = deck;
 const total = slides.length;
@@ -31,6 +32,7 @@ export function Deck() {
   const peer = useRef<Window | null>(presenter ? window.opener : null);
   const touchX = useRef<number | null>(null);
   const elapsed = useElapsed();
+  const outil = useOutil();
 
   const show = useCallback((k: number) => {
     setI(k);
@@ -201,6 +203,19 @@ export function Deck() {
           </Fragment>
         ))}
         <div className="ml-auto flex items-center gap-1">
+          <div className="mr-3 flex rounded-full border border-deck-muted p-0.5" role="radiogroup" aria-label="Outil">
+            {OUTILS.map((o) => (
+              <button
+                key={o.id}
+                role="radio"
+                aria-checked={outil === o.id}
+                onClick={() => setOutil(o.id)}
+                className={`rounded-full px-3 py-1 transition-colors ${outil === o.id ? "bg-slide-accent text-slide-paper" : "hover:bg-deck-muted"}`}
+              >
+                {o.label}
+              </button>
+            ))}
+          </div>
           <button title="Remettre à zéro" onClick={elapsed.reset} className="mr-3 flex items-center gap-1.5 tabular-nums opacity-70">
             <Timer className="h-3.5 w-3.5" />{elapsed.text}
           </button>

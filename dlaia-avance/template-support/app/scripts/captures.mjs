@@ -3,7 +3,8 @@
 // les slides dont le contenu déborde du canevas, avec la mesure de SlideView.tsx en mode dev
 // (scrollHeight > clientHeight + 1). Les pages de TP sont capturées en demi-écran (960 px).
 //
-// Usage : npm run captures [-- --module NN] [-- --html chemin/vers/index.html]
+// Usage : npm run captures [-- --module NN] [-- --outil opencode] [-- --html chemin/vers/index.html]
+// --outil choisit la variante des slides compare (claude-code par défaut).
 // Sortie : un fichier NN-SSS-titre.png par slide, NN-tp-NN.png par TP ; code 1 si une slide déborde.
 import { existsSync, mkdirSync, readdirSync, rmSync } from "node:fs";
 import { dirname, resolve } from "node:path";
@@ -17,6 +18,7 @@ const opt = (name) => {
   return i >= 0 ? args[i + 1] : undefined;
 };
 const moduleFilter = opt("--module");
+const outil = opt("--outil") ?? "claude-code";
 const html = resolve(root, opt("--html") ?? "dist/index.html");
 const outDir = resolve(root, "tmp/captures");
 
@@ -41,7 +43,7 @@ const modulePrefix = (origin) => /^(\d\d)-/.exec(origin)?.[1] ?? "carte";
 
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
-await page.goto(`${pathToFileURL(html).href}#1`, { waitUntil: "networkidle" });
+await page.goto(`${pathToFileURL(html).href}?outil=${outil}#1`, { waitUntil: "networkidle" });
 await page.waitForFunction(() => Boolean(window.__deck));
 await page.evaluate(() => document.fonts.ready);
 
