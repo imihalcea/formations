@@ -90,7 +90,7 @@ Le schéma est une illustration. Archétype repris au module 2 : l'agent produit
 
 | Limitation | Module |
 |---|---|
-| l'agent de code n'a que ses outils d'origine, sans rien de plus installé | 1 Automatiser plus loin |
+| l'agent de code seul n'a que ses outils d'origine, une seule fenêtre de contexte et une seule passe | 1 Automatiser plus loin |
 | l'agent de code produit plus de code que l'équipe n'en relit | 2 Revue de code automatisée |
 | l'agent de code peut contourner une règle que rien ne vérifie | 3 Hooks et pipeline |
 | le code du dépôt quitte le poste à chaque appel du modèle | 4 Modèles locaux |
