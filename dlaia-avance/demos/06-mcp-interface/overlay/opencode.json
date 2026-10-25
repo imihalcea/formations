@@ -1,0 +1,16 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "amazon-bedrock/eu.anthropic.claude-sonnet-4-6",
+  "instructions": [".specify/memory/constitution.md"],
+  "mcp": {
+    "servers": {
+      "playwright": {
+        "type": "local",
+        "command": ["npx", "@playwright/mcp@0.0.83", "--headless", "--isolated"]
+      }
+    }
+  },
+  "permissions": [
+    { "action": "playwright_*", "resource": "*", "effect": "allow" }
+  ]
+}

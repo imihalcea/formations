@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Cache gh à l'agent de code : placer ce dossier en tête du PATH de la session de démonstration.
+echo "gh: command not found" >&2
+exit 127

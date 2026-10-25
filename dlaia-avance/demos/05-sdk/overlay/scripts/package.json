@@ -1,0 +1,15 @@
+{
+  "name": "tickets-api-scripts",
+  "private": true,
+  "type": "module",
+  "description": "Boucle de correction pilotée par le SDK de l'agent de code",
+  "dependencies": {
+    "@anthropic-ai/claude-agent-sdk": "0.3.310",
+    "@opencode/sdk": "2.0.32"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.5",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3"
+  }
+}

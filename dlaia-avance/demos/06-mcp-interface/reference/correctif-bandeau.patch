@@ -1,0 +1,10 @@
+diff --git a/src/tickets/ui/style.css b/src/tickets/ui/style.css
+index 9952538..214b2e9 100644
+--- a/src/tickets/ui/style.css
++++ b/src/tickets/ui/style.css
+@@ -7,4 +7,4 @@ h1 { margin: 0 0 8px; font-size: 1.5rem; }
+ .barre button { padding: 8px 16px; background: #1d4ed8; color: #fff; border: 0; border-radius: 4px; cursor: pointer; }
+ ul { list-style: none; padding: 0; margin: 0; }
+ li { background: #fff; border: 1px solid #d9dde3; border-radius: 4px; padding: 8px 12px; margin-bottom: 8px; display: flex; justify-content: space-between; }
+-.bandeau { position: fixed; top: 0; left: 0; right: 0; height: 64px; z-index: 10; background: #fde68a; border-bottom: 1px solid #b45309; display: flex; align-items: center; justify-content: center; }
++.bandeau { position: static; height: 64px; z-index: 10; background: #fde68a; border-bottom: 1px solid #b45309; display: flex; align-items: center; justify-content: center; }
