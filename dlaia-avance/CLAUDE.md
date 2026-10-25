@@ -38,6 +38,7 @@ Depuis `template-support/app/` : `npm run build` génère `dist/index.html` à p
 - **Environnement** : poste du formateur équipé de Claude Code et d'Open Code, tous deux par Amazon Bedrock avec `claude-sonnet-4-6`, désigné par son identifiant complet (l'alias `sonnet` ne garantit pas la version). Tout se fait en CLI.
 - **Double outil** : chaque démonstration est jouable avec Open Code comme avec Claude Code. Une étape porte des variantes `::: claude-code` / `::: opencode` seulement quand elle diffère. Les équivalences (commandes, fichier de contexte, permissions, skills, hooks, MCP, sous-agents) sont vérifiées dans la documentation officielle de chaque outil et tenues dans `formateur/equivalences.md`.
 - **Mécanismes des outils, aucun framework tiers** : pas de LangGraph ni de CrewAI. GitHub et GitHub Actions sont l'unique forge d'exemple. Les produits SaaS ne figurent qu'en panorama daté et sourcé.
+- **Version d'Open Code : v2.0.32** (poste de démonstration, décision du 25 octobre 2026). Le support d'origine citait 1.18.29 (v1) ; les plugins et les hooks diffèrent entre v1 et v2.
 - **Contenu daté** : versions d'outils, listes de serveurs MCP, modèles, prix et benchmarks portent leur date et sont revérifiés avant chaque session.
 - **Aucun numéro d'issue ni de pull request** sur les slides : ces numéros dépendent du dépôt de la session.
 
@@ -48,8 +49,8 @@ L'ordre et le périmètre sont figés (25 octobre 2026) : ne pas les modifier sa
 0. **Ouverture** : retours de terrain après DLAIA.
 1. **Automatiser plus loin** (six démonstrations) : harnais et limites de l'agent seul ; MCP ; sous-agents et orchestrateur ; boucles et garde-fous ; SDK ; grille de choix. La sixième démonstration lie MCP et IHM : un serveur MCP pilote un navigateur, l'agent constate un défaut d'interface sur un front ajouté à `tickets-api`, le corrige et vérifie le rendu.
 2. **Revue de code automatisée** (trois démonstrations) : règles en vérifications, format d'un finding, trois modes (commande, pull request, pre-commit), faux positifs et contradicteur.
-3. **Hooks et pipeline** (trois démonstrations) : hook du harnais, hook git, job CI, workflow `workflow_run`, garde-fous (droits, secrets, budget).
-4. **Modèles locaux** : mémoire, bande passante, pile moteur-format-serveur, écart avec les modèles frontier, tâches adaptées au local.
+3. **Hooks et pipeline** (trois démonstrations) : hook du harnais, hook git, job CI, workflow `workflow_run`, garde-fous (droits, secrets, budget), avec l'ancien module Sécurité réduit à deux ou trois slides sourcées (injection de prompt par issue, règle des deux, ce qui sort du pipeline).
+4. **Modèles locaux** (démonstration facultative, décidée au plan : petit modèle Haiku, Mistral Mini ou Kimi 2.7 rapide, ou aucune) : décision « ce qui sort, ce qui reste local » issue de l'ancien module Sécurité ; mémoire, bande passante, pile moteur-format-serveur, écart avec les modèles frontier, tâches adaptées au local.
 99. **Clôture** : bilan de la journée.
 
 ## Rédaction du support
