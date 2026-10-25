@@ -121,25 +121,6 @@ Conclut les trois slides : définition, classement, cas de la salle.
 Renvoi d'un cas de la salle : demander ce qui a cassé, le rapprocher de la colonne gauche de « Quatre modules, quatre limitations dépassées » (outils d'origine : module 1 ; volume à relire : module 2 ; règle contournée : module 3 ; code qui quitte le poste : module 4), puis noter le numéro de module sur la ligne. La suite présente le matériel avec lequel les réponses sont jouées.
 :::
 
-## Contenu de l'archive {kicker="Matériel"}
-
-L'archive regroupe le support et les démonstrations.
-
-```console
-$ unzip dlaia-avance.zip -d ~
-$ ls ~
-dlaia-avance.html  demos
-```
-
-::: sources
-- `template-support/app/scripts/archive.sh` (composition de l'archive)
-:::
-
-::: notes
-Archive `dlaia-avance.zip`, produite par `npm run dist` : à plat `dlaia-avance.html` (le support) et `demos/`, sans `.venv`, caches, `node_modules` ni base SQLite. Un dossier par démonstration : `demos/NN-nom/` avec runbook (`README.md`) et script de session.
-Le support s'ouvre sans serveur dans un navigateur.
-:::
-
 ## Le dépôt tickets-api {.compare kicker="Matériel"}
 
 tickets-api est le dépôt de démonstration commun aux modules 1 à 3 : une API de tickets en Python (FastAPI).
@@ -203,7 +184,6 @@ Slide de référence, à ne pas lire en salle. Définitions du lexique de la for
 
 |||
 
-- **Archive** : `dlaia-avance.zip`, le support et les dossiers `demos/`
 - **Support** : cours compilé, `dlaia-avance.html`
 
 ::: notes

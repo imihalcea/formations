@@ -24,8 +24,7 @@ Les termes des modules 1 à 3 de DLAIA (agent, harnais, fenêtre de contexte, sk
 | dépôt | répertoire versionné du projet | DLAIA | repo, projet (pour le dépôt) |
 | spécification | document versionné qui écrit l'intention d'une fonctionnalité avant le code | DLAIA | cahier des charges, specs |
 | pull request | demande de fusion d'une branche dans une autre, relue avant fusion | DLAIA | PR, merge request |
-| archive | `dlaia-avance.zip` : le support et les dossiers `demos/` ; slide « Contenu de l'archive » | 00 | zip, paquet |
-| support | cours compilé, `dlaia-avance.html` ; slide « Contenu de l'archive » | 00 | slides (pour l'ensemble), présentation |
+| support | cours compilé, `dlaia-avance.html` ; défini au glossaire | 00 | slides (pour l'ensemble), présentation |
 
 ## Modèle et agent (acquis DLAIA, module 1)
 
