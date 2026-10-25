@@ -29,7 +29,7 @@ Avant de jouer : `make db-up`, `make test` (37 tests verts sur `main`), `uv sync
 |---|---|---|
 | `main` | spec 001 livrée, 37 tests verts | point de départ |
 | `fix/ticket-ferme-commentaires` | ticket fermé qui accepte des commentaires, deux tests rouges ; `-done` corrigée ; `-sdk` et `-sdk-done` pour la boucle SDK | module 1 |
-| `feat/responsable-priorite-haute-done` | spec 002 livrée, 57 tests | module 1 (orchestrateur), base de deux branches `demo/` |
+| `feat/responsable-priorite-haute-done` | spec 002 livrée, 61 tests | module 1 (orchestrateur), base de deux branches `demo/` |
 | `feat/front` | front minimal sur `/ui` : un bandeau `position: fixed` recouvre le bouton « Ajouter » à 1280x720, l'API répond 201 et les tests passent | module 1, MCP et IHM |
 | `demo/revue-defauts` | quatre défauts plantés : jeton en clair (`notifications.py`), routeur qui écrit en base (`routers/tickets.py`), retrait du responsable accepté sur un ticket `high`, route sans test ; jeton factice dans `tests/conftest.py` pour le faux positif | module 2 |
 | `demo/hook-harnais` | copie de la branche de correction, deux tests rouges | module 3, hook du harnais |
