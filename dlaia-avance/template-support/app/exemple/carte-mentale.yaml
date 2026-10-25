@@ -1,0 +1,34 @@
+# Carte mentale du support d'exemple : un module par fichier numéroté, dans l'ordre.
+titre: Titre de la formation
+modules:
+  - module: "01"
+    titre: Types de slides
+    sections:
+      - section: Listes
+        concepts:
+          - concept: Liste à puces
+            definition: Éléments `- …` affichés avec le filet d'accent.
+            slide: 01-types-de-slides.md#Liste à puces
+          - concept: Liste numérotée
+            definition: Éléments `1. …` numérotés `01`, `02` en accent.
+            slide: 01-types-de-slides.md#Liste numérotée
+            voir: [Liste à puces]
+      - section: Chiffres
+        concepts:
+          - concept: Chiffre clé
+            definition: Une valeur en grand et sa légende.
+            slide: 01-types-de-slides.md#Description courte du chiffre
+  - module: "02"
+    titre: Code et outils
+    sections:
+      - section: Code
+        concepts:
+          - concept: Session terminal
+            definition: Bloc `console`, au style du terminal.
+            slide: 02-code-et-outils.md#Session terminal
+          - concept: Fichier de contexte
+            definition: Instructions lues au lancement de chaque session.
+            slide: 02-code-et-outils.md#Fichier de contexte
+            outils:
+              claude-code: "`CLAUDE.md`"
+              opencode: "`AGENTS.md`"
