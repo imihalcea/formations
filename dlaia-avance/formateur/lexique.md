@@ -19,7 +19,7 @@ Les termes des modules 1 à 3 de DLAIA (agent, harnais, fenêtre de contexte, sk
 | Claude Sonnet 4.6 | modèle unique de la formation, identifiant `claude-sonnet-4-6` | 00 | Sonnet seul, Claude 4.6, le modèle d'Anthropic |
 | Amazon Bedrock | service d'Amazon Web Services qui héberge des modèles ; Open Code l'appelle pour Claude Sonnet 4.6 (Claude Code passe par l'abonnement Anthropic) ; slide « Claude Sonnet 4.6, modèle unique » (étiquette du schéma) | 00 | Bedrock seul, AWS Bedrock |
 | fichier de contexte | fichier lu par l'agent de code au lancement : `CLAUDE.md` (Claude Code), `AGENTS.md` (Open Code) ; slide « Deux agents de code » | 00 | fichier d'instructions, mémoire |
-| plafond | limite que l'agent de code atteint seul sur un dépôt réel, malgré une spécification et un harnais en place ; slide « Définition d'un plafond » | 00 | goulot, blocage, limite (pour la notion) |
+| limitation | ce que l'agent de code ne dépasse pas seul, même avec une spécification et un harnais ; slide « Définition d'une limitation » | 00 | goulot, blocage, plafond (pour la notion) |
 | démonstration | exécution commentée, en direct, d'une tâche confiée à l'agent de code, jouée par le formateur ; slide « Une démonstration » | 00 | démo, TP, atelier |
 | tickets-api | dépôt de démonstration commun aux modules 1 à 3 ; slide « Le dépôt tickets-api » | 00 | fil rouge, bookit |
 | copie de travail | copie privée de tickets-api créée sur GitHub puis clonée, propre à une démonstration ; slide « Créer la copie de travail » | 00 | dépôt de session, référence, fork |

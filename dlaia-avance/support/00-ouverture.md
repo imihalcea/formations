@@ -130,21 +130,21 @@ Jamais deux `opencode run` en parallèle. Avant le module 1 : `opencode mcp list
 Conclut la section : seuls la commande, le fichier de contexte et la configuration diffèrent d'un agent de code à l'autre. Les slides ne montrent une variante par outil que là où elles diffèrent.
 :::
 
-## Définition d'un plafond {kicker="Plafonds"}
+## Définition d'une limitation {kicker="Limitations"}
 
-![Deux barres : le code produit dépasse la ligne plafond, le code relu l'atteint sans la franchir](images/00-plafond.svg)
+![Deux barres : le code produit dépasse la ligne de limitation, le code relu l'atteint sans la franchir](images/00-limitation.svg)
 
-Un plafond est la limite que l'agent de code atteint seul, même avec une spécification et un harnais.
+Une limitation est ce que l'agent de code ne dépasse pas seul, même avec une spécification et un harnais.
 
 ::: notes
-Un défaut de prompt ou de méthode se corrige sans changer d'outil ; un plafond subsiste une fois spécification et harnais en place.
-Le mot est choisi pour la suite de la journée : on ne parle plus de goulot ni de blocage.
+Un défaut de prompt ou de méthode se corrige sans changer d'outil ; une limitation subsiste une fois spécification et harnais en place.
+Le mot est choisi pour la suite de la journée : on ne dit ni plafond, ni goulot, ni blocage.
 Le schéma est une illustration. Archétype repris au module 2 : l'agent produit plus de code que l'équipe n'en relit.
 :::
 
-## Quatre modules, quatre plafonds {kicker="Plafonds"}
+## Quatre modules, quatre limitations {kicker="Limitations"}
 
-| Plafond | Module |
+| Limitation | Module |
 |---|---|
 | l'agent de code n'a que ses outils d'origine, sans rien de plus installé | 1 Automatiser plus loin |
 | l'agent de code produit plus de code que l'équipe n'en relit | 2 Revue de code automatisée |
@@ -153,28 +153,28 @@ Le schéma est une illustration. Archétype repris au module 2 : l'agent produit
 
 ::: notes
 Classement du support, pas une source externe. Les termes de chaque colonne droite sont définis dans leur module : ne pas entrer dans le détail.
-Lecture : une ligne, un plafond, un module qui y répond.
+Lecture : une ligne, une limitation, un module qui y répond.
 :::
 
-## Cas vécus depuis la formation {kicker="Plafonds"}
+## Cas vécus depuis la formation {kicker="Limitations"}
 
-| Artefact ou méthode en place | Ce qui a cassé | Plafond atteint |
+| Artefact ou méthode en place | Ce qui a cassé | Limitation atteinte |
 |---|---|---|
 | 1 (illustration) | revue des pull requests par l'équipe | l'agent de code produit plus de code que l'équipe n'en relit |
 | 2 | | |
 | 3 | | |
 
 ::: notes
-Question posée à la salle : un cas vécu depuis la formation initiale. Une ligne par cas, noter l'artefact ou la méthode en place, ce qui a cassé, puis désigner le plafond par son numéro de module.
-Chaque cas cité est renvoyé au module du plafond correspondant et repris à ce module. Un cas hors des quatre plafonds : le noter, le reprendre à la clôture.
+Question posée à la salle : un cas vécu depuis la formation initiale. Une ligne par cas, noter l'artefact ou la méthode en place, ce qui a cassé, puis désigner la limitation par son numéro de module.
+Chaque cas cité est renvoyé au module de la limitation correspondante et repris à ce module. Un cas hors des quatre limitations : le noter, le reprendre à la clôture.
 Première ligne : illustration inventée, pour montrer le format.
 :::
 
-## Les modules 1 à 4 répondent chacun à un plafond. {.statement kicker="Plafonds"}
+## Les modules 1 à 4 répondent chacun à une limitation. {.statement kicker="Limitations"}
 
 ::: notes
 Conclut les trois slides : définition, classement, cas de la salle.
-Renvoi d'un cas de la salle : demander ce qui a cassé, le rapprocher de la colonne gauche de « Quatre modules, quatre plafonds » (outils d'origine : module 1 ; volume à relire : module 2 ; règle contournée : module 3 ; code qui quitte le poste : module 4), puis noter le numéro de module sur la ligne. La suite présente le matériel avec lequel les réponses sont jouées.
+Renvoi d'un cas de la salle : demander ce qui a cassé, le rapprocher de la colonne gauche de « Quatre modules, quatre limitations » (outils d'origine : module 1 ; volume à relire : module 2 ; règle contournée : module 3 ; code qui quitte le poste : module 4), puis noter le numéro de module sur la ligne. La suite présente le matériel avec lequel les réponses sont jouées.
 :::
 
 ## Contenu de l'archive {kicker="Matériel"}
@@ -290,9 +290,9 @@ Conclut la section : archive, dépôt, branches, copie de travail. La première 
 Slide de référence, à ne pas lire en salle. Définitions du lexique de la formation.
 :::
 
-## Glossaire : plafond et matériel {kicker="Glossaire"}
+## Glossaire : limitation et matériel {kicker="Glossaire"}
 
-- **Plafond** : limite que l'agent de code atteint seul, même avec une spécification et un harnais
+- **Limitation** : ce que l'agent de code ne dépasse pas seul, même avec une spécification et un harnais
 - **Démonstration** : exécution commentée, en direct, d'une tâche confiée à l'agent de code
 - **tickets-api** : dépôt de démonstration commun aux modules 1 à 3
 - **Branche de départ** : branche de tickets-api sur laquelle une démonstration commence
