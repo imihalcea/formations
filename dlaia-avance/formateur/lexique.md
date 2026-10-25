@@ -12,7 +12,7 @@ Les termes des modules 1 à 3 de DLAIA (agent, harnais, fenêtre de contexte, sk
 
 | Terme | Définition | Introduit | À ne pas employer |
 |---|---|---|---|
-| agent de code | programme en ligne de commande qui pilote un modèle pour lire, écrire et exécuter du code dans un dépôt ; Claude Code et Open Code en sont deux ; « agent » seul aux slides 1 à 3 de l'ouverture (acquis DLAIA), « agent de code » dès la slide 4 ; slide « Deux agents de code » | 00 | assistant, outil, CLI, harnais (pour l'agent de code) |
+| agent de code | programme en ligne de commande qui pilote un modèle pour lire, écrire et exécuter du code dans un dépôt ; Claude Code et Open Code en sont deux ; « agent » seul aux slides 1 à 3 de l'ouverture (acquis de la formation initiale), « agent de code » dès la slide 4 ; slide « Deux agents de code » | 00 | assistant, outil, CLI, harnais (pour l'agent de code) |
 | Claude Code | agent de code en ligne de commande d'Anthropic | 00 | Claude (pour l'outil), ClaudeCode, claude hors commande |
 | Open Code | agent de code libre en ligne de commande, version 2 | 00 | OpenCode, opencode hors commande |
 | alias (de modèle) | nom court d'un modèle (`sonnet`) dont la version change avec le fournisseur ; slide « Claude Sonnet 4.6, modèle unique » | 00 | raccourci, surnom |

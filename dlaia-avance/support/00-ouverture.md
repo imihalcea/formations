@@ -1,16 +1,16 @@
 # Ouverture
 
-## DLAIA Avancé {.title kicker="Ouverture"}
+## Développement logiciel assisté par l'IA {.title kicker="Ouverture"}
 
-Développement logiciel assisté par l'IA, module complémentaire. Un agent, un harnais et une spécification sont en place : la journée traite ce qui résiste sur un dépôt réel.
+Journée avancée, module complémentaire.
 
 ::: notes
-Module complémentaire et facultatif de Développement logiciel assisté par l'IA. Accueil, tour de table : dépôts sur lesquels l'agent est déjà utilisé, ce qui a résisté.
+Journée complémentaire et facultative de la formation Développement logiciel assisté par l'IA. Accueil, tour de table : dépôts sur lesquels l'agent est déjà utilisé, ce qui a résisté.
 Aucun TP aujourd'hui : le formateur joue des démonstrations, la salle observe et pose des questions.
-Rappeler que le support suppose DLAIA acquis : agent, harnais, spécification, Spec Kit ne sont pas réexpliqués.
+Rappeler que le support suppose la formation initiale acquise : agent, harnais, spécification, Spec Kit ne sont pas réexpliqués.
 :::
 
-## Acquis de DLAIA {kicker="Ouverture"}
+## Acquis de la formation initiale {kicker="Ouverture"}
 
 | Élément en place | Ce qu'il apporte |
 |---|---|
@@ -18,11 +18,11 @@ Rappeler que le support suppose DLAIA acquis : agent, harnais, spécification, S
 | Harnais | le logiciel autour du modèle : boucle, outils, permissions, affichage |
 | Spécification | l'intention écrite et versionnée, avant le code |
 
-La suite traite ce qui résiste sur un dépôt réel, malgré ces trois éléments.
+La journée traite ce qui résiste malgré ces trois éléments.
 
 ::: notes
-Pas de rappel de cours : trois lignes pour fixer le point de départ commun. Définitions du lexique de DLAIA.
-Si quelqu'un n'a pas suivi DLAIA : renvoyer au support DLAIA, modules 1 à 3 (agent et harnais : module 1, spécification : module 3).
+Pas de rappel de cours : trois lignes pour fixer le point de départ commun. Définitions du lexique de la formation initiale.
+Si quelqu'un n'a pas suivi la formation initiale : renvoyer à son support, modules 1 à 3 (agent et harnais : module 1, spécification : module 3).
 « Agent » seul jusqu'à la slide 3, « agent de code » dès la slide 4.
 :::
 
@@ -35,7 +35,7 @@ Les titres de module sont annoncés ici, définis dans leur module : ne rien exp
 
 ## Deux agents de code {kicker="Environnement"}
 
-Un agent de code est un agent, au sens de DLAIA, en ligne de commande : il pilote un modèle pour lire, écrire et exécuter du code dans un dépôt.
+Un agent de code est un agent en ligne de commande : il pilote un modèle pour lire, écrire et exécuter du code dans un dépôt.
 
 | Agent de code | Commande de lancement | Fichier de contexte |
 |---|---|---|
@@ -62,7 +62,7 @@ Versions relevées sur le poste le 25 octobre 2026 : Claude Code 2.1.310, Open C
 
 ![Claude Code passe par l'abonnement Anthropic, Open Code par Amazon Bedrock, vers le même modèle claude-sonnet-4-6](images/00-modele-unique.svg)
 
-L'alias `sonnet` désigne Claude Sonnet 4.5 sur Amazon Bedrock, un modèle plus récent chez Anthropic : les démonstrations imposent l'identifiant complet.
+Sur Amazon Bedrock, l'alias `sonnet` désigne Sonnet 4.5, une version plus ancienne. Les démonstrations imposent l'identifiant complet.
 
 ::: sources
 - [Claude Code, Model configuration](https://code.claude.com/docs/en/model-config)
@@ -134,7 +134,7 @@ Conclut la section : seuls la commande, le fichier de contexte et la configurati
 
 ![Deux barres : le code produit dépasse la ligne plafond, le code relu l'atteint sans la franchir](images/00-plafond.svg)
 
-Un plafond est la limite que l'agent de code atteint seul sur un dépôt réel, malgré une spécification et un harnais en place.
+Un plafond est la limite que l'agent de code atteint seul, même avec une spécification et un harnais.
 
 ::: notes
 Un défaut de prompt ou de méthode se corrige sans changer d'outil ; un plafond subsiste une fois spécification et harnais en place.
@@ -156,7 +156,7 @@ Classement du support, pas une source externe. Les termes de chaque colonne droi
 Lecture : une ligne, un plafond, un module qui y répond.
 :::
 
-## Cas vécus depuis DLAIA {kicker="Plafonds"}
+## Cas vécus depuis la formation {kicker="Plafonds"}
 
 | Artefact ou méthode en place | Ce qui a cassé | Plafond atteint |
 |---|---|---|
@@ -165,7 +165,7 @@ Lecture : une ligne, un plafond, un module qui y répond.
 | 3 | | |
 
 ::: notes
-Question posée à la salle : un cas vécu depuis DLAIA. Une ligne par cas, noter l'artefact ou la méthode en place, ce qui a cassé, puis désigner le plafond par son numéro de module.
+Question posée à la salle : un cas vécu depuis la formation initiale. Une ligne par cas, noter l'artefact ou la méthode en place, ce qui a cassé, puis désigner le plafond par son numéro de module.
 Chaque cas cité est renvoyé au module du plafond correspondant et repris à ce module. Un cas hors des quatre plafonds : le noter, le reprendre à la clôture.
 Première ligne : illustration inventée, pour montrer le format.
 :::
@@ -292,7 +292,7 @@ Slide de référence, à ne pas lire en salle. Définitions du lexique de la for
 
 ## Glossaire : plafond et matériel {kicker="Glossaire"}
 
-- **Plafond** : limite que l'agent de code atteint seul sur un dépôt réel, malgré une spécification et un harnais en place
+- **Plafond** : limite que l'agent de code atteint seul, même avec une spécification et un harnais
 - **Démonstration** : exécution commentée, en direct, d'une tâche confiée à l'agent de code
 - **tickets-api** : dépôt de démonstration commun aux modules 1 à 3
 - **Branche de départ** : branche de tickets-api sur laquelle une démonstration commence
