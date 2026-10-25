@@ -55,6 +55,21 @@ Les termes des modules 1 à 3 de DLAIA (agent, harnais, fenêtre de contexte, sk
 
 | Terme | Définition | Introduit | À ne pas employer |
 |---|---|---|---|
+| issue | fiche de suivi d'un dépôt GitHub : description et commentaires (distincte du ticket métier de tickets-api) ; slide « Une information hors du dépôt » | 01 | ticket (pour l'issue), bug report |
+| mécanisme | un des moyens du module qui étendent l'agent de code : serveur MCP, sous-agent, orchestrateur, boucle, SDK, garde-fou ; slide « Trois limitations, trois mécanismes » | 01 | fonctionnalité, brique, solution |
+| MCP | sigle de Model Context Protocol, protocole commun entre un agent de code et un serveur qui lui expose des outils ; slide « Définition d'un serveur MCP » | 01 | plugin, connecteur |
+| serveur MCP | programme qui expose des outils à l'agent de code par le MCP | 01 | plugin MCP, connecteur, extension |
+| outil MCP | outil d'un serveur MCP : nom, description et paramètres typés ; slide « Un outil MCP » | 01 | fonction MCP, tool |
+| jeton d'accès | secret lu dans une variable d'environnement qui authentifie l'agent de code auprès d'un serveur MCP, distinct du token de la fenêtre de contexte ; slide « Brancher un serveur MCP » | 01 | jeton seul, clé, token (pour le secret) |
+| agent principal | agent de code qui reçoit la tâche de l'utilisateur et lance les sous-agents ; slide « Définition d'un sous-agent » | 01 | agent parent, agent racine |
+| sous-agent | agent lancé par l'agent principal, avec sa propre fenêtre de contexte ; seul son rapport revient | 01 | agent enfant, spécialiste, worker |
+| orchestrateur | agent qui découpe une tâche, la délègue à des sous-agents et fait converger leurs rapports, sans rien modifier lui-même | 01 | chef d'orchestre, superviseur, graphe dynamique |
+| horizon de tâche | durée d'une tâche, mesurée en temps humain, qu'un modèle mène à bien avec une probabilité de 50 % (mesure METR) ; slide « Horizon de tâche : 131 jours » | 01 | autonomie, durée de tâche |
+| critère vérifiable | commande dont le code de retour dit si le travail est fini ; slide « Un critère vérifiable » | 01 | condition d'arrêt, test de sortie, vert |
+| boucle | relance de l'agent de code tant qu'un critère vérifiable n'est pas satisfait | 01 | itération, cycle, loop |
+| relance | nouvel appel de l'agent de code par la boucle quand le critère vérifiable n'est pas satisfait | 01 | itération, essai, retry |
+| garde-fou | limite posée hors du modèle, qui arrête ou borne l'agent de code ; slide « Définition d'un garde-fou » | 01 | borne, plafond, limite, safeguard |
+| SDK | sigle de Software Development Kit, bibliothèque qui pilote l'agent de code depuis un programme | 01 | API, bibliothèque cliente |
 
 ## Revue de code automatisée (module 2)
 
