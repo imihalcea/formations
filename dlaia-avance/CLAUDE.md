@@ -41,17 +41,16 @@ Depuis `template-support/app/` : `npm run build` génère `dist/index.html` à p
 - **Contenu daté** : versions d'outils, listes de serveurs MCP, modèles, prix et benchmarks portent leur date et sont revérifiés avant chaque session.
 - **Aucun numéro d'issue ni de pull request** sur les slides : ces numéros dépendent du dépôt de la session.
 
-## Programme
+## Programme validé
 
-Programme provisoire, repris du support d'origine et à valider à l'audit (`tmp/audit.md`). Une journée de 7 h, démonstrations formateur seulement.
+L'ordre et le périmètre sont figés (25 octobre 2026) : ne pas les modifier sans demande explicite. Les durées ne sont pas un critère. Chaque module est joué en démonstrations par le formateur.
 
-0. **Ouverture** (15 min) : retours de terrain.
-1. **Automatiser plus loin** (1h40 à 1h50, cinq démonstrations) : harnais et limites de l'agent seul ; MCP ; sous-agents et orchestrateur ; boucles et garde-fous ; SDK ; grille de choix.
-2. **Revue de code automatisée** (1h15, trois démonstrations) : règles en vérifications, format d'un finding, trois modes (commande, pull request, pre-commit), faux positifs et contradicteur.
-3. **Hooks et pipeline** (1h15, trois démonstrations) : hook du harnais, hook git, job CI, workflow `workflow_run`, garde-fous (droits, secrets, budget).
-4. **Sécurité et données** (45 min, deux démonstrations) : défauts du code généré, injection de prompt par le dépôt, couches de défense, flux vers des tiers.
-5. **Modèles locaux** (1h05) : mémoire, bande passante, pile moteur-format-serveur, écart avec les modèles frontier, tâches adaptées au local.
-99. **Clôture** (15 min).
+0. **Ouverture** : retours de terrain après DLAIA.
+1. **Automatiser plus loin** (six démonstrations) : harnais et limites de l'agent seul ; MCP ; sous-agents et orchestrateur ; boucles et garde-fous ; SDK ; grille de choix. La sixième démonstration lie MCP et IHM : un serveur MCP pilote un navigateur, l'agent constate un défaut d'interface sur un front ajouté à `tickets-api`, le corrige et vérifie le rendu.
+2. **Revue de code automatisée** (trois démonstrations) : règles en vérifications, format d'un finding, trois modes (commande, pull request, pre-commit), faux positifs et contradicteur.
+3. **Hooks et pipeline** (trois démonstrations) : hook du harnais, hook git, job CI, workflow `workflow_run`, garde-fous (droits, secrets, budget).
+4. **Modèles locaux** : mémoire, bande passante, pile moteur-format-serveur, écart avec les modèles frontier, tâches adaptées au local.
+99. **Clôture** : bilan de la journée.
 
 ## Rédaction du support
 

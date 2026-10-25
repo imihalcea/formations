@@ -1,6 +1,6 @@
 # Check-list de relecture
 
-Critères de relecture d'un plan de module, d'un fichier de `support/` ou d'un énoncé de TP. Chaque critère se vérifie sur le texte Markdown ou sur une capture de slide. Un constat cite la slide (titre), le critère (son code) et le passage fautif. Un constat sans citation ne vaut pas.
+Critères de relecture d'un plan de module, d'un fichier de `support/` ou des démonstrations d'un module. Chaque critère se vérifie sur le texte Markdown ou sur une capture de slide. Un constat cite la slide (titre), le critère (son code) et le passage fautif. Un constat sans citation ne vaut pas.
 
 Les critères reprennent `CLAUDE.md` (« Rédaction du support », « Qualité pédagogique des slides ») et les défauts relevés pendant la rédaction de la formation claude-code : formulations obscures, termes nouveaux à la place des termes introduits, ruptures de progression, slides pauvres.
 
@@ -29,9 +29,9 @@ Référence : `formateur/lexique.md`.
 - P1. Chaque slide répond à une question que la précédente a fait naître, ou ouvre une section annoncée par son kicker. Un saut (nouvelle notion sans amorce, retour en arrière, slide isolée) est un constat qui cite les deux slides.
 - P2. Aucune notion n'est employée avant sa slide de définition, dans ce module ou dans un module antérieur.
 - P3. Une idée clé dit de quoi elle découle : elle conclut les slides qui la précèdent dans la section avec ses propres mots. Elle ne reprend ni le mot central d'une idée clé antérieure (y compris des modules précédents) ni une phrase d'une slide de la section ; elle peut nommer l'acteur, le rôle ou les artefacts que la suite développe.
-- P4. La première section du module reprend ce que le module précédent a laissé en suspens (sa dernière idée clé, son TP, une question ouverte).
+- P4. La première section du module reprend ce que le module précédent a laissé en suspens (sa dernière idée clé, une question ouverte).
 - P5. Une slide `compare` suit la slide qui présente la notion comparée, jamais l'inverse.
-- P6. La slide de lancement du TP arrive après toutes les notions que le TP mobilise.
+- P6. La slide qui porte une démonstration arrive après toutes les notions que la démonstration mobilise.
 
 ## S. Substance
 
@@ -61,17 +61,14 @@ Rappel des interdits de `CLAUDE.md`, vérifiables par recherche de motif.
 - R7. Le modèle est désigné par `claude-sonnet-4-6` ou « Claude Sonnet 4.6 », jamais par l'alias `sonnet`.
 - R8. Orthographe et accentuation complètes, y compris sur les majuscules ; identifiants et commandes dans leur forme d'origine.
 
-## T. Énoncé de TP
+## D. Démonstration
 
-Référence : `formateur/fil-rouge.md` pour les états de départ et d'arrivée.
+Référence : `demos/NN-nom/` du module, notes de la slide qui porte la démonstration.
 
-- T1. Chaque étape a un bloc `::: attendu` qui donne une commande et sa sortie connue, ou un état de fichier vérifiable.
-- T2. Les variantes `::: claude-code` et `::: opencode` vont par paire et ne diffèrent que là où les outils diffèrent ; le texte commun porte tout le reste.
-- T3. Aucun numéro de slide, aucun renvoi « voir la slide » : l'énoncé est autoportant.
-- T4. Les fichiers fournis sont désignés par leur chemin dans `~/fichiers/` et existent dans `tp/fichiers/`.
-- T5. Le point de départ est l'état d'arrivée du TP précédent ; l'état d'arrivée est le point de départ du TP suivant ; le nombre de commits annoncé correspond aux étapes qui commitent.
-- T6. Le corrigé est cité par `file=` depuis `tp/tpNN/`, jamais recopié ; il passe `uv run pytest -q` sous Python 3.14.
-- T7. La durée annoncée est tenable : une étape à prompt, dix minutes au plus ; une étape de relecture, cinq.
-- T8. L'énoncé ne révèle aucune réponse du débrief ; un repli `::: indice` existe pour chaque étape où l'agent peut dériver.
-- T9. Les prompts fournis sont copiables tels quels (bloc `prompt`) et nomment la commande Spec Kit propre à chaque outil.
-- T10. Chaque valeur d'un `attendu` (nombre de tests, de questions, de tâches, de mutants, code HTTP, nom de fichier) provient d'un rejeu consigné dans `tmp/rejeu/rapport-tpNN-<outil>.md`, conforme dans les deux outils. Une valeur estimée ou marquée « à relever » est un constat.
+- D1. Le runbook donne les préalables, la préparation, le déroulé pas à pas, le résultat attendu, le repli et la remise à zéro.
+- D2. Les prompts sont copiables tels quels (bloc `prompt`) et nomment la commande, le serveur MCP ou l'agent propre à chaque outil.
+- D3. Les variantes `::: claude-code` et `::: opencode` vont par paire et ne diffèrent que là où les outils diffèrent.
+- D4. Le dépôt ou les artefacts de la démonstration sont dans `demos/NN-nom/` ou désignés par un dépôt externe vérifié ; un script ou un `Makefile` prépare la session en une commande.
+- D5. Chaque résultat attendu provient d'un rejeu consigné dans `tmp/rejeu/demos-NN-<outil>.md`. Une valeur estimée ou marquée « à relever » est un constat.
+- D6. Un repli existe pour chaque étape où le modèle, le réseau ou un service externe peut faire échouer la démonstration en séance (sortie de référence, branche prête, enregistrement).
+- D7. Aucun numéro d'issue ou de pull request sur les slides ni dans les prompts : ils dépendent du dépôt de la session.

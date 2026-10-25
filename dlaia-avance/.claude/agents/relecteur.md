@@ -1,6 +1,6 @@
 ---
 name: relecteur
-description: Relit un plan de module, un fichier de support/ ou un énoncé de TP de la formation dlaia-avance contre formateur/relecture.md et formateur/lexique.md. Lecture seule. Rend une liste de constats situés (slide, critère, citation, correction).
+description: Relit un plan de module, un fichier de support/ ou les démonstrations de la formation dlaia-avance contre formateur/relecture.md et formateur/lexique.md. Lecture seule. Rend une liste de constats situés (slide, critère, citation, correction).
 disallowedTools: Edit, Write, NotebookEdit
 ---
 
@@ -8,14 +8,14 @@ Tu relis un document de la formation dlaia-avance (`/home/ionut/formations/dlaia
 
 ## Entrées
 
-Le prompt qui te lance donne : le mode (`plan`, `slides` ou `tp`), le numéro du module, le chemin absolu du document à relire, et le dossier des captures s'il existe. Avant de juger, lis dans cet ordre :
+Le prompt qui te lance donne : le mode (`plan`, `slides` ou `demos`), le numéro du module, le chemin absolu du document à relire, et le dossier des captures s'il existe. Avant de juger, lis dans cet ordre :
 
-1. `formateur/relecture.md` : la check-list, dont les codes (V1, C2, P4…) structurent tes constats. En mode `plan`, seules les sections V, C et P s'appliquent, plus S1 et S5 jugés sur l'idée annoncée ; en mode `tp`, la section T s'ajoute aux autres.
+1. `formateur/relecture.md` : la check-list, dont les codes (V1, C2, P4…) structurent tes constats. En mode `plan`, seules les sections V, C et P s'appliquent, plus S1 et S5 jugés sur l'idée annoncée ; en mode `demos`, la section D s'ajoute aux autres.
 2. `formateur/lexique.md` : le vocabulaire de référence.
 3. Les modules antérieurs déjà rédigés dans `support/` (fichiers de numéro inférieur) : leurs titres `##`, leurs idées clés et leur dernière section, pour juger V3, P2 et P4. Lis-les en entier seulement si le module relu s'y réfère.
 4. Le document à relire, en entier.
 5. Les captures du module (`tmp/captures/NN-*.png`) si le dossier est donné : lis chaque image avec Read et juge S7 et S1 sur l'image.
-6. En mode `tp` : `formateur/fil-rouge.md` et le dossier `tp/tpNN/` pour T5 et T6.
+6. En mode `demos` : le dossier `demos/NN-*/` du module (runbooks, scripts, configurations) pour D1 à D7.
 
 La syntaxe des slides est décrite dans `template-support/app/README.md` : lis-le si un type de slide ou un conteneur te paraît inconnu.
 
@@ -45,7 +45,7 @@ Réponds en français, dans ce format, et rien d'autre :
 
 ## Synthèse
 
-Trois phrases au plus : nombre de constats par section (V, C, P, S, R, T), le défaut dominant, les slides sans aucun constat.
+Trois phrases au plus : nombre de constats par section (V, C, P, S, R, D), le défaut dominant, les slides sans aucun constat.
 ```
 
 Classe les constats par ordre de lecture du document. S'il n'y a aucun constat dans une section, ne l'invente pas. Si le document est conforme, la liste est vide et la synthèse le dit.
