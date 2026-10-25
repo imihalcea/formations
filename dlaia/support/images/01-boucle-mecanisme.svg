@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 500" width="1680" height="500">
+  <text x="0" y="24" class="accent mono" font-size="22" font-weight="600" letter-spacing="3">UNE ITÉRATION : LE TEST QUI ÉCHOUE</text>
+
+  <rect x="0" y="60" width="400" height="420" rx="12" class="deck"/>
+  <rect x="0" y="60" width="400" height="6" class="accent"/>
+  <text x="200" y="230" class="ink display" font-size="56" text-anchor="middle">Harnais</text>
+  <text x="200" y="284" class="ink" font-size="28" text-anchor="middle">exécute l'outil</text>
+
+  <rect x="1280" y="60" width="400" height="420" rx="16" class="ink"/>
+  <text x="1480" y="230" class="paper display" font-size="56" text-anchor="middle">Modèle</text>
+  <text x="1480" y="284" class="paper" font-size="24" text-anchor="middle" opacity="0.8">demande un outil, ou répond</text>
+
+  <g font-size="28" class="ink">
+    <text x="440" y="130" class="accent mono" font-size="24" font-weight="600">01</text>
+    <text x="840" y="130" text-anchor="middle">Contexte et description des outils</text>
+    <path d="M420 156 H1250" class="stroke-accent" stroke-width="4"/>
+    <path d="M1244 144 L1262 156 L1244 168 Z" class="accent"/>
+
+    <text x="440" y="226" class="accent mono" font-size="24" font-weight="600">02</text>
+    <text x="840" y="226" class="mono" text-anchor="middle">Bash : uv run pytest</text>
+    <path d="M1260 252 H430" class="stroke-accent" stroke-width="4"/>
+    <path d="M436 240 L418 252 L436 264 Z" class="accent"/>
+
+    <text x="440" y="322" class="accent mono" font-size="24" font-weight="600">03</text>
+    <text x="840" y="322" text-anchor="middle">Résultat de l'outil : 3 passed</text>
+    <path d="M420 348 H1250" class="stroke-accent" stroke-width="4"/>
+    <path d="M1244 336 L1262 348 L1244 360 Z" class="accent"/>
+
+    <text x="440" y="418" class="accent mono" font-size="24" font-weight="600">04</text>
+    <text x="840" y="418" text-anchor="middle">Texte seul : la boucle s'arrête</text>
+    <path d="M1260 444 H430" class="stroke-accent" stroke-width="4"/>
+    <path d="M436 432 L418 444 L436 456 Z" class="accent"/>
+  </g>
+</svg>
