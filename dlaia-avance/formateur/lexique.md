@@ -56,20 +56,31 @@ Les termes des modules 1 à 3 de DLAIA (agent, harnais, fenêtre de contexte, sk
 | Terme | Définition | Introduit | À ne pas employer |
 |---|---|---|---|
 | issue | fiche de suivi d'un dépôt GitHub : description et commentaires (distincte du ticket métier de tickets-api) ; slide « Une information hors du dépôt » | 01 | ticket (pour l'issue), bug report |
-| mécanisme | un des moyens du module qui étendent l'agent de code : serveur MCP, sous-agent, orchestrateur, boucle, SDK, garde-fou ; slide « Trois limitations, trois mécanismes » | 01 | fonctionnalité, brique, solution |
+| mécanisme | moyen d'étendre l'agent de code : serveur MCP, sous-agent, orchestrateur, boucle, SDK, garde-fou ; slide « Trois limitations, trois sections » | 01 | fonctionnalité, brique, solution |
 | MCP | sigle de Model Context Protocol, protocole commun entre un agent de code et un serveur qui lui expose des outils ; slide « Définition d'un serveur MCP » | 01 | plugin, connecteur |
-| serveur MCP | programme qui expose des outils à l'agent de code par le MCP | 01 | plugin MCP, connecteur, extension |
+| serveur MCP | programme qui expose des outils à l'agent de code par le MCP ; slide « Définition d'un serveur MCP » | 01 | plugin MCP, connecteur, extension |
 | outil MCP | outil d'un serveur MCP : nom, description et paramètres typés ; slide « Un outil MCP » | 01 | fonction MCP, tool |
 | jeton d'accès | secret lu dans une variable d'environnement qui authentifie l'agent de code auprès d'un serveur MCP, distinct du token de la fenêtre de contexte ; slide « Brancher un serveur MCP » | 01 | jeton seul, clé, token (pour le secret) |
 | agent principal | agent de code qui reçoit la tâche de l'utilisateur et lance les sous-agents ; slide « Définition d'un sous-agent » | 01 | agent parent, agent racine |
-| sous-agent | agent lancé par l'agent principal, avec sa propre fenêtre de contexte ; seul son rapport revient | 01 | agent enfant, spécialiste, worker |
-| orchestrateur | agent qui découpe une tâche, la délègue à des sous-agents et fait converger leurs rapports, sans rien modifier lui-même | 01 | chef d'orchestre, superviseur, graphe dynamique |
-| horizon de tâche | durée d'une tâche, mesurée en temps humain, qu'un modèle mène à bien avec une probabilité de 50 % (mesure METR) ; slide « Horizon de tâche : 131 jours » | 01 | autonomie, durée de tâche |
-| critère vérifiable | commande dont le code de retour dit si le travail est fini ; slide « Un critère vérifiable » | 01 | condition d'arrêt, test de sortie, vert |
-| boucle | relance de l'agent de code tant qu'un critère vérifiable n'est pas satisfait | 01 | itération, cycle, loop |
-| relance | nouvel appel de l'agent de code par la boucle quand le critère vérifiable n'est pas satisfait | 01 | itération, essai, retry |
-| garde-fou | limite posée hors du modèle, qui arrête ou borne l'agent de code ; slide « Définition d'un garde-fou » | 01 | borne, plafond, limite, safeguard |
-| SDK | sigle de Software Development Kit, bibliothèque qui pilote l'agent de code depuis un programme | 01 | API, bibliothèque cliente |
+| sous-agent | agent lancé par l'agent principal, avec sa propre fenêtre de contexte ; seul son rapport revient ; slide « Définition d'un sous-agent » | 01 | agent enfant, spécialiste, worker |
+| orchestrateur | agent qui découpe une tâche, la délègue à des sous-agents et fait converger leurs rapports, sans rien modifier lui-même ; slide « Définition d'un orchestrateur » | 01 | chef d'orchestre, superviseur, graphe dynamique |
+| horizon de tâche | durée d'une tâche, mesurée en temps humain, qu'un modèle mène à bien avec une probabilité de 50 % (mesure METR) ; slide « L'horizon double en 131 jours » | 01 | autonomie, durée de tâche |
+| critère vérifiable | commande dont le code de retour dit si le travail est fini ; slide « Un critère vérifiable » | 01 | condition d'arrêt, test de sortie, vert, commande de vérification |
+| boucle | relance de l'agent de code tant qu'un critère vérifiable n'est pas satisfait ; slide « Définition d'une boucle » | 01 | itération, cycle, loop |
+| relance | nouvel appel de l'agent de code par la boucle quand le critère vérifiable n'est pas satisfait ; slide « Définition d'une boucle » | 01 | itération, essai, retry |
+| garde-fou | limite posée hors du modèle, qui arrête ou borne l'agent de code ; slide « Définition d'un garde-fou » | 01 | borne, plafond, limite, safeguard, réglage |
+| SDK | sigle de Software Development Kit, bibliothèque qui pilote l'agent de code depuis un programme ; slide « Définition d'un SDK » | 01 | API, bibliothèque cliente |
+| outil d'origine | outil fourni avec l'agent de code, sans serveur MCP : lire, écrire, exécuter, chercher ; slide « Les outils d'origine » | 01 | outil natif, outil intégré, built-in |
+| rapport | texte court que le sous-agent renvoie à l'agent principal à la fin de sa tâche ; slide « Définition d'un sous-agent » | 01 | compte rendu, résumé, retour |
+| instructions fixes du sous-agent | corps du fichier d'agent, placé en tête de la fenêtre de contexte du sous-agent ; slide « Déclarer un sous-agent » | 01 | consigne, prompt système |
+| dérive | écart de comportement de l'agent de code que le garde-fou corrige ; slide « Quatre dérives d'un orchestrateur » | 01 | problème, défaut, risque |
+| imbrication | un sous-agent qui lance lui-même un sous-agent ; slide « Quatre dérives d'un orchestrateur » | 01 | récursion |
+| commande personnalisée | prompt enregistré dans un fichier du dépôt, lancé par `/nom` ; slide « Une boucle par commande » | 01 | commande du dépôt, slash command, macro |
+| règle de refus | permission qui interdit une action à l'agent de code (`deny`) ; slide « Protéger les tests » | 01 | blocage, interdiction |
+| diff | liste des lignes ajoutées et retirées d'un fichier entre deux états ; slide « Un test désactivé masque l'échec » | 01 | différentiel, patch |
+| code de retour | nombre rendu par une commande à sa fin, 0 si elle réussit ; slide « Un critère vérifiable » | 01 | exit code, statut de sortie |
+| mode non interactif | exécution sans session ouverte : un prompt en entrée, le résultat en sortie (`claude -p`, `opencode run`) ; slide « Une boucle par script » | 01 | headless, batch |
+| Claude Agent SDK | SDK d'Anthropic qui pilote Claude Code depuis TypeScript ou Python ; slide « Définition d'un SDK » (notes) | 01 | SDK Claude, SDK Anthropic |
 
 ## Revue de code automatisée (module 2)
 
