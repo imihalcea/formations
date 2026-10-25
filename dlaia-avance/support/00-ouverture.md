@@ -33,9 +33,9 @@ Lecture de la slide : les modules dans l'ordre où ils sont joués. Chaque modul
 Les titres de module sont annoncés ici, définis dans leur module : ne rien expliquer maintenant.
 :::
 
-## Deux agents de code {kicker="Environnement"}
+## Choisir l'agent de code {kicker="Environnement"}
 
-Un agent de code est un agent en ligne de commande : il pilote un modèle pour lire, écrire et exécuter du code dans un dépôt.
+Un agent de code est un agent en ligne de commande : il pilote un modèle pour lire, écrire et exécuter du code dans un dépôt. La journée se joue avec un seul des deux, choisi maintenant.
 
 | Agent de code | Commande de lancement | Fichier de contexte |
 |---|---|---|
@@ -52,17 +52,24 @@ Fichier de contexte : lu par l'agent de code au lancement.
 :::
 
 ::: notes
+Demander le choix à la salle, puis régler le sélecteur d'outil en haut à droite du support : les slides à variantes n'affichent plus que l'outil choisi. Les démonstrations se jouent avec cet outil seul.
 Les deux agents de code ont la même définition ; seuls la commande et le fichier de contexte diffèrent.
 Claude Code lit `AGENTS.md` quand aucun `CLAUDE.md` n'existe, à partir de la v2.1.277 (doc memory). Open Code : la doc (opencode.ai/docs/rules) annonce un repli vers `CLAUDE.md` quand aucun `AGENTS.md` n'existe ; non observé en v2.0.32 (code de découverte, `formateur/equivalences.md`). Dans tickets-api, `CLAUDE.md` importe `AGENTS.md` : une seule source, le repli ne joue pas.
 Open Code : « open source AI coding agent » (page d'accueil de la documentation).
 Versions relevées sur le poste le 25 octobre 2026 : Claude Code 2.1.310, Open Code v2.0.32. À revérifier avant la séance (`claude --version`, `opencode --version`).
 :::
 
-## Claude Sonnet 4.6, modèle unique {kicker="Environnement"}
-
-![Claude Code passe par l'abonnement Anthropic, Open Code par Amazon Bedrock, vers le même modèle claude-sonnet-4-6](images/00-modele-unique.svg)
+## Claude Sonnet 4.6, modèle unique {.compare kicker="Environnement"}
 
 Sur Amazon Bedrock, l'alias `sonnet` désigne Sonnet 4.5, une version plus ancienne. Les démonstrations imposent l'identifiant complet.
+
+::: claude-code
+![Claude Code passe par l'abonnement Anthropic vers le modèle claude-sonnet-4-6](images/00-modele-claude-code.svg)
+:::
+
+::: opencode
+![Open Code passe par Amazon Bedrock vers le modèle claude-sonnet-4-6](images/00-modele-opencode.svg)
+:::
 
 ::: sources
 - [Claude Code, Model configuration](https://code.claude.com/docs/en/model-config)
@@ -124,10 +131,10 @@ Open Code : la doc annonce `--model`/`-m` sur la TUI, mais `opencode --help` en 
 Jamais deux `opencode run` en parallèle. Avant le module 1 : `opencode mcp list` de chauffe.
 :::
 
-## Les deux agents de code jouent chaque démonstration sur le même dépôt. {.statement kicker="Environnement"}
+## Les démonstrations se jouent avec l'agent de code choisi. {.statement kicker="Environnement"}
 
 ::: notes
-Conclut la section : seuls la commande, le fichier de contexte et la configuration diffèrent d'un agent de code à l'autre. Les slides ne montrent une variante par outil que là où elles diffèrent.
+Conclut la section : un seul agent de code joue la journée. La commande, le fichier de contexte et la configuration diffèrent d'un outil à l'autre ; les slides à variantes suivent le sélecteur.
 :::
 
 ## Définition d'une limitation {kicker="Limitations"}
@@ -196,15 +203,25 @@ Archive `dlaia-avance.zip`, produite par `npm run dist` : à plat `dlaia-avance.
 Le support s'ouvre sans serveur dans un navigateur.
 :::
 
-## Le dépôt tickets-api {kicker="Matériel"}
+## Le dépôt tickets-api {.compare kicker="Matériel"}
 
 tickets-api est le dépôt de démonstration commun aux modules 1 à 3 : une API de tickets en Python (FastAPI).
 
-| Élément | Claude Code | Open Code |
-|---|---|---|
-| Fichier de contexte | `CLAUDE.md` | `AGENTS.md` |
-| Configuration du modèle | `.claude/settings.json` | `opencode.json` |
-| Dossier de configuration | `.claude/` | `.opencode/` |
+::: claude-code
+| Élément | Fichier |
+|---|---|
+| Fichier de contexte | `CLAUDE.md` |
+| Configuration du modèle | `.claude/settings.json` |
+| Dossier de configuration | `.claude/` |
+:::
+
+::: opencode
+| Élément | Fichier |
+|---|---|
+| Fichier de contexte | `AGENTS.md` |
+| Configuration du modèle | `opencode.json` |
+| Dossier de configuration | `.opencode/` |
+:::
 
 ::: sources
 - `demos/00-tickets-api/README.md`
@@ -214,56 +231,8 @@ tickets-api est le dépôt de démonstration commun aux modules 1 à 3 : une API
 Dépôt commun aux modules 1 à 3 (module 4 : démonstration facultative, décidée à son plan). Dépôt d'origine `imihalcea/tickets-api`, privé. `CLAUDE.md` importe `AGENTS.md` : une seule source de contexte pour les deux agents de code.
 Les sous-agents, serveurs MCP et hooks du dépôt sont présentés dans leur module.
 Les 37 tests sont verts sur `main`. Préalables d'une session : `make db-up`, `make test` (37 verts), `uv sync`. Détail dans le runbook.
-:::
-
-## Branches de départ {kicker="Matériel"}
-
-Une branche de départ est la branche de tickets-api sur laquelle une démonstration commence.
-
-| Module (exemples) | Branche de départ |
-|---|---|
-| 1 | `fix/ticket-ferme-commentaires` |
-| 1 | `feat/responsable-priorite-haute-done` |
-| 1 | `feat/front` |
-| 2 | `demo/revue-defauts` |
-| 3 | `demo/hook-harnais` |
-| 3 | `demo/build-casse` |
-
-::: sources
-- `demos/00-tickets-api/README.md`
-:::
-
-::: notes
-Liste partielle : les autres démonstrations des modules 1 à 3 partent de `main`. Le module 4 n'a pas de branche.
-Branches vérifiées par `gh api` le 25 octobre 2026 sur le dépôt d'origine. Les branches `demo/*` sont des squelettes complétés aux plans des modules 2 et 3.
-Autres branches existantes : variantes `-done` et `-sdk`, repli de la démonstration concernée.
-:::
-
-## Créer la copie de travail {kicker="Matériel"}
-
-Une copie de travail est une copie privée de tickets-api, créée sur GitHub puis clonée. L'identifiant la nomme : `tickets-api-<identifiant>`.
-
-```console
-$ ~/demos/00-tickets-api/session.sh <identifiant>
-$ ls ~/travail
-tickets-api-<identifiant>
-```
-
-::: sources
-- `demos/00-tickets-api/session.sh`
-:::
-
-::: notes
-Le script crée `imihalcea/tickets-api-<identifiant>` (privé, toutes les branches, copie miroir) puis clone dans `~/travail/tickets-api-<identifiant>`. Idempotent : un dépôt ou un clone déjà présent est laissé tel quel. Prérequis : `gh` connecté.
-Dans le script, l'argument s'appelle `<session>` ; `<identifiant>` sur la slide évite le mot « session », réservé à l'agent.
-Le dépôt d'origine reste intact : aucune issue ni pull request n'y est créée. Une copie par démonstration, supprimable après coup.
-Après le clone : `make db-up`, `make test` (37 tests verts sur `main`), `uv sync`.
-:::
-
-## Chaque démonstration travaille sur sa propre copie de travail. {.statement kicker="Matériel"}
-
-::: notes
-Conclut la section : archive, dépôt, branches, copie de travail. La première démonstration ouvre le module 1.
+Branche de départ : chaque démonstration commence sur une branche de tickets-api. Exemples vérifiés par `gh api` le 25 octobre 2026 : module 1 `fix/ticket-ferme-commentaires`, `feat/responsable-priorite-haute-done`, `feat/front` ; module 2 `demo/revue-defauts` ; module 3 `demo/hook-harnais`, `demo/build-casse`. Liste partielle : les autres démonstrations des modules 1 à 3 partent de `main`, le module 4 n'a pas de branche. Les branches `demo/*` sont des squelettes complétés aux plans des modules 2 et 3. Les variantes `-done` et `-sdk` servent de repli.
+Copie de travail : `~/demos/00-tickets-api/session.sh <identifiant>` crée `imihalcea/tickets-api-<identifiant>` (privé, toutes les branches, copie miroir) puis clone dans `~/travail/tickets-api-<identifiant>`. Idempotent. Prérequis : `gh` connecté. Dans le script, l'argument s'appelle `<session>` ; `<identifiant>` évite le mot « session », réservé à l'agent. Le dépôt d'origine reste intact (aucune issue ni pull request). Une copie par démonstration, supprimable après coup.
 :::
 
 ## Glossaire : agents et modèle {kicker="Glossaire"}
@@ -295,12 +264,9 @@ Slide de référence, à ne pas lire en salle. Définitions du lexique de la for
 - **Limitation** : ce que l'agent de code ne dépasse pas seul, même avec une spécification et un harnais
 - **Démonstration** : exécution commentée, en direct, d'une tâche confiée à l'agent de code
 - **tickets-api** : dépôt de démonstration commun aux modules 1 à 3
-- **Branche de départ** : branche de tickets-api sur laquelle une démonstration commence
 
 |||
 
-- **Copie de travail** : copie privée de tickets-api créée sur GitHub puis clonée, propre à une démonstration
-- **Identifiant** : suffixe qui nomme une copie de travail
 - **Archive** : `dlaia-avance.zip`, le support et les dossiers `demos/`
 - **Support** : cours compilé, `dlaia-avance.html`
 
