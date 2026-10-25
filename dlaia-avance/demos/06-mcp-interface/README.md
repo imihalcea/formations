@@ -26,7 +26,7 @@ Contrôles : `make check` dans ce dossier ; `curl -s -o /dev/null -w "%{http_cod
 2. Prompt exact :
 
    ```
-   Avec le serveur MCP playwright, ouvre http://localhost:8000/ui/ à 1280x720, saisis un titre dans le champ puis clique sur « Ajouter », constate le défaut d'interface, corrige-le dans la feuille de style et vérifie le rendu par une capture. Ne modifie ni la configuration MCP ni les tests.
+   Avec le serveur MCP playwright, ouvre http://localhost:8000/ui/ à 1280x720, saisis un titre dans le champ puis clique sur « Ajouter », constate le défaut d'interface, corrige-le dans src/tickets/ui/style.css, sans sous-agent, et vérifie le rendu par une capture. Ne modifie ni la configuration MCP ni les tests.
    ```
 
    Au rejeu, l'ancien prompt (sans URL ni « clique sur Ajouter ») a laissé l'agent chercher l'URL par `curl` ; sous Open Code il n'a jamais cliqué sur « Ajouter » et a modifié `opencode.json`. Effet de la formulation ci-dessus non rejoué.

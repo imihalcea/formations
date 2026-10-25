@@ -1071,7 +1071,7 @@ Ouverture sur la boucle : la vérification visuelle est une relance avec une cap
 ## Démonstration : corriger un bandeau {kicker="Interface"}
 
 ```prompt
-Avec le serveur MCP playwright, ouvre l'interface web de tickets-api à 1280x720, essaie d'ajouter un ticket, constate le défaut d'interface, corrige-le dans la feuille de style et vérifie le rendu par une capture.
+Avec le serveur MCP playwright, ouvre http://localhost:8000/ui/ à 1280x720, saisis un titre dans le champ puis clique sur « Ajouter », constate le défaut d'interface, corrige-le dans src/tickets/ui/style.css, sans sous-agent, et vérifie le rendu par une capture. Ne modifie ni la configuration MCP ni les tests.
 ```
 
 ::: notes
