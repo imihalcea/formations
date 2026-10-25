@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Finding de revue",
+  "type": "object",
+  "required": ["regle", "fichier", "ligne", "resume", "scenario", "severite"],
+  "additionalProperties": false,
+  "properties": {
+    "regle": { "type": "string", "enum": ["R1", "R2", "R3", "R4"] },
+    "fichier": { "type": "string" },
+    "ligne": { "type": "integer", "minimum": 1 },
+    "resume": { "type": "string" },
+    "scenario": { "type": "string", "minLength": 1 },
+    "severite": { "type": "string", "enum": ["haute", "moyenne", "basse"] }
+  }
+}
