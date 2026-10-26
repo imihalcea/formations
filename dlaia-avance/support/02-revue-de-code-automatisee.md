@@ -1,6 +1,6 @@
 # Revue de code automatisée
 
-Une revue automatisée relit un diff contre des règles écrites, rend des findings vérifiables et tient en trois modes.
+Un agent relit chaque diff.
 
 ## Le diff reste à relire {kicker="Périmètre"}
 
@@ -94,13 +94,16 @@ Les défauts de la branche `demo/revue-defauts` sont tirés de ces quatre lignes
 Exemple de comportement : la spécification 002 (FR-004) refuse un ticket de priorité haute sans responsable, y compris par retrait du responsable.
 :::
 
-## Limites mesurées des revues automatisées {.figures kicker="Périmètre"}
+## Limites mesurées des revues automatisées {kicker="Périmètre"}
 
-- **19 %** score F1, meilleur outil de revue
-- **20 à 32 %** défauts corrigés, un outil
-- **41 %** défauts corrigés, quatre outils
+| Indicateur | Valeur | Signification |
+|---|---|---|
+| Précision, meilleur outil (SWR-Bench) | 16,65 % | Part des remarques qui touchent un vrai défaut : environ une sur six. |
+| Score F1, même outil (SWR-Bench) | 19 % | Moyenne de la précision et de la part des vrais défauts relevés. |
+| Défauts corrigés, un outil (c-CRAB) | 20 à 32 % | Part des défauts que l'agent corrige en suivant la revue d'un seul outil. |
+| Défauts corrigés, quatre outils (c-CRAB) | 41 % | Même mesure en réunissant les revues des quatre outils. |
 
-Deux mesures de 2025 et 2026.
+Ces outils relisent sans les règles du dépôt.
 
 ::: sources
 - [SWR-Bench, arXiv 2509.01494, table 4](https://arxiv.org/pdf/2509.01494)
@@ -108,7 +111,7 @@ Deux mesures de 2025 et 2026.
 :::
 
 ::: notes
-Chiffres relus dans les PDF le 25 octobre 2026. Précision : part des remarques qui touchent un vrai défaut. Rappel : part des vrais défauts que les remarques touchent. Le score F1 combine les deux (moyenne harmonique).
+Chiffres relus dans les PDF le 25 octobre 2026. « 1 sur 6 » : précision de 16,65 % de la meilleure combinaison de SWR-Bench (SWR-Bench, F1 de 19,38 %). « 41 % » : union des quatre outils de c-CRAB (un seul outil : 20,1 % à 32,1 %). Précision : part des remarques qui touchent un vrai défaut. Rappel : part des vrais défauts que les remarques touchent. Le score F1 combine les deux (moyenne harmonique).
 SWR-Bench (Zeng et al., ACM FSE 2026) : 1 000 pull requests vérifiées à la main, tirées de 12 projets Python de SWE-Bench ; évaluation par un LLM juge (accord d'environ 90 % avec un jugement humain, d'après le résumé). 19 % : score F1 de 19,38 % pour la meilleure combinaison (PR-Review avec Gemini-2.5-Pro, table 4), une passe ; F1 = moyenne harmonique de la précision et du rappel des remarques qui touchent un défaut de la vérité terrain. Précision de 16,65 % pour cette combinaison, moins de 10 % pour les autres techniques : beaucoup de faux positifs. Modèles de 2025 (Claude 3.7 Sonnet, Gemini 2.5 Pro, DeepSeek-R1) : ils ne sont pas Claude Sonnet 4.6.
 c-CRAB (Zhang et al., mars 2026) : 184 pull requests de 67 dépôts Python, 234 tests écrits à partir de revues humaines ; une revue réussit un test si l'agent qui la suit corrige le défaut. Quatre outils : PR-Agent, Devin Review, Claude Code, Codex. 20,1 % à 32,1 % par outil ; union des quatre : 97 tests sur 234, soit 41,5 % (résumé : « environ 40 % »). Les revues humaines réussissent 100 % par construction. Le jeu mesure des outils sans règles du dépôt.
 Réserves : deux jeux de données Python, un LLM juge d'un côté, des tests générés de l'autre ; les deux chiffres ne se comparent pas entre eux. À présenter comme deux ordres de grandeur, pas comme un classement.
@@ -578,10 +581,8 @@ tools: Read, Grep, Glob, Bash
 disallowedTools: Write, Edit
 ---
 
-Tu reçois un finding. Prouve qu'il est faux : rejoue son scénario d'échec.
-Si un test existant le couvre, lance-le avec `make test`.
-Rends un verdict (confirmé, plausible ou réfuté) avec sa preuve :
-sortie de commande ou ligne de code citée.
+Tu reçois un finding. Prouve qu'il est faux : rejoue son scénario d'échec, ou lance `make test`
+s'il est couvert par un test. Rends un verdict (confirmé, plausible ou réfuté) avec sa preuve.
 ```
 :::
 
@@ -594,13 +595,10 @@ permissions:
   - { action: edit, resource: "*", effect: deny }
   - { action: shell, resource: "*", effect: deny }
   - { action: shell, resource: "make test*", effect: allow }
-  - { action: shell, resource: "grep *", effect: allow }
 ---
 
-Tu reçois un finding. Prouve qu'il est faux : rejoue son scénario d'échec.
-Si un test existant le couvre, lance-le avec `make test`.
-Rends un verdict (confirmé, plausible ou réfuté) avec sa preuve :
-sortie de commande ou ligne de code citée.
+Tu reçois un finding. Prouve qu'il est faux : rejoue son scénario d'échec, ou lance `make test`
+s'il est couvert par un test. Rends un verdict (confirmé, plausible ou réfuté) avec sa preuve.
 ```
 :::
 
@@ -611,9 +609,9 @@ sortie de commande ou ligne de code citée.
 
 ::: notes
 Fichiers : `.claude/agents/contradicteur.md`, `.opencode/agents/contradicteur.md`.
-Open Code : les règles se lisent dans l'ordre, la dernière qui correspond l'emporte : refus général de `shell`, puis exceptions pour `make test*` et `grep *`. Les ressources `shell` sont du texte de commande avec jokers ; la forme `make test*` et `grep *` suit la syntaxe documentée, sans exemple équivalent dans la doc ; à confirmer en séance (la commande réellement lancée par le sous-agent doit correspondre).
+Open Code : les règles se lisent dans l'ordre, la dernière qui correspond l'emporte : refus général de `shell`, puis exception pour `make test*`. Les ressources `shell` sont du texte de commande avec jokers ; la forme `make test*` suit la syntaxe documentée, sans exemple équivalent dans la doc ; à confirmer en séance (la commande réellement lancée par le sous-agent doit correspondre).
 Claude Code : `Bash` y est autorisé en entier. La doc dit qu'un motif dans `disallowedTools` retire l'outil entier, et ne montre pas de motif dans `tools` : la restriction aux seuls tests passe par des règles `permissions.allow` du projet (`Bash(make test *)`, `Bash(grep *)`) ou par un hook `PreToolUse` dans le fichier de l'agent (module 3). `disallowedTools` retire `Write` et `Edit`, mais pas les écritures par `Bash` : à dire en salle, la lecture seule de Claude Code est ici moins stricte que celle d'Open Code.
-Observé au rejeu du 25 octobre 2026 : les contradicteurs des deux outils ont cité des lignes de code lues (`Read`, `grep -n`) sans lancer `make test` ni requête, y compris pour R4 (« la lecture suffit ») ; la consigne « rejoue son scénario d'échec » seule ne déclenche pas de test, d'où la ligne ajoutée sur le test existant (non rejouée : à vérifier en séance). Aucun appel `bash` côté Open Code : les motifs `make test*` et `grep *` restent à vérifier en séance (TUI). Le fichier réel du contradicteur est un peu plus long que l'extrait.
+Observé au rejeu du 25 octobre 2026 : les contradicteurs des deux outils ont cité des lignes de code lues (`Read`, `grep -n`) sans lancer `make test` ni requête, y compris pour R4 (« la lecture suffit ») ; la consigne « rejoue son scénario d'échec » seule ne déclenche pas de test, d'où la ligne ajoutée sur le test existant (non rejouée : à vérifier en séance). Aucun appel `bash` côté Open Code : le motif `make test*` reste à vérifier en séance (TUI). Le fichier réel du contradicteur est un peu plus long que l'extrait.
 :::
 
 ## Lancer la revue adverse {.compare kicker="Contradicteur"}
