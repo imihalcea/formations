@@ -134,14 +134,15 @@ Les termes des modules 1 à 3 de DLAIA (agent, harnais, fenêtre de contexte, sk
 
 | Terme | Définition | Introduit | À ne pas employer |
 |---|---|---|---|
-| modèle distant | modèle hébergé hors du poste, appelé par le réseau (Claude Sonnet 4.6 par l'abonnement Anthropic ou par Amazon Bedrock, ou tout modèle d'un fournisseur) ; slide « Définition d'un modèle local » | 04 | modèle cloud, API |
+| modèle distant | modèle hébergé chez un fournisseur, hors du réseau de l'équipe (Claude Sonnet 4.6 par l'abonnement Anthropic ou par Amazon Bedrock, ou tout modèle d'un fournisseur) ; slide « Définition d'un modèle local » | 04 | modèle cloud, API |
 | modèle local | modèle exécuté sur une machine de l'équipe ; le prompt ne quitte pas le réseau de l'équipe ; slide « Définition d'un modèle local » | 04 | modèle on-premise, modèle embarqué |
-| poids | nombres appris du modèle, relus à chaque token ; taille en mémoire = paramètres × octets par paramètre ; slide « Définition d'un poids » | 04 | coefficients, weights |
+| poids | nombres appris du modèle, relus à chaque token (modèle dense) ; taille en mémoire = paramètres × octets par paramètre ; slide « Définition d'un poids » | 04 | coefficients, weights |
 | paramètre (du modèle) | un des nombres du modèle, distinct du paramètre d'un outil MCP ; slide « Définition d'un poids » | 04 | paramètre seul |
-| quantification | stockage des poids sur moins de bits (4 au lieu de 16) pour réduire la mémoire ; slide « Réduire les poids : quantification » | 04 | compression, quantisation |
+| quantification | stockage des poids sur moins de bits (4 au lieu de 16) pour réduire la mémoire ; slide « Quantification des poids » | 04 | compression, quantisation |
 | petit modèle | modèle de quelques milliards de paramètres, local ou distant ; slide « Définition d'un petit modèle » | 04 | modèle léger, SLM |
-| distillation | entraînement d'un petit modèle sur les réponses d'un grand ; slide « Définition d'un petit modèle » | 04 | compression de modèle |
+| distillation | entraînement d'un petit modèle sur les réponses d'un modèle plus grand ; slide « Définition d'un petit modèle » | 04 | compression de modèle |
 | mixture d'experts | modèle dont chaque token n'active qu'une partie des poids ; slide « Définition d'une mixture d'experts » | 04 | MoE |
+| expert | bloc de poids d'une mixture d'experts, activé ou non selon le token ; slide « Définition d'une mixture d'experts » | 04 | sous-modèle, spécialiste |
 | modèle dense | modèle dont chaque token relit tous les poids ; slide « Définition d'une mixture d'experts » | 04 | modèle classique |
 | grand modèle | modèle auquel le routage renvoie les cas que le petit modèle ne sait pas traiter (Claude Sonnet 4.6) ; slide « Routage vers le grand modèle » | 04 | modèle frontier, gros modèle |
 | bande passante (mémoire) | quantité de données que la mémoire envoie au processeur par seconde, en Go/s ; slide « Vitesse maximale d'un modèle » | 04 | débit mémoire, bande passante seule |
@@ -152,12 +153,20 @@ Les termes des modules 1 à 3 de DLAIA (agent, harnais, fenêtre de contexte, sk
 | moteur d'inférence | programme qui exécute le modèle (llama.cpp) ; slide « Trois couches d'un modèle local » | 04 | runtime, backend |
 | format de poids | fichier qui stocke les poids (GGUF) ; slide « Trois couches d'un modèle local » | 04 | format de modèle |
 | serveur d'API | programme qui expose le modèle par une adresse compatible avec l'API OpenAI ; slide « Trois couches d'un modèle local » | 04 | serveur compatible OpenAI, endpoint |
-| modèle ouvert | modèle dont les poids sont publiés ; slide « Écart des modèles ouverts » | 04 | open source (pour un modèle), open weights |
-| benchmark | jeu de tâches avec une méthode de notation ; un score porte une date, un harnais et un comptage ; slide « Définition d'un benchmark » | 04 | test de référence, classement |
-| taux d'accord | part des issues dont la réponse égale celle de l'équipe ; slide « Mesure sur les issues de l'équipe » | 04 | précision, accuracy |
+| modèle ouvert | modèle dont les poids sont publiés ; slide « Scores sur SWE-bench Pro » | 04 | open source (pour un modèle), open weights |
+| benchmark | jeu de tâches avec une méthode de notation ; un score porte une date et un harnais ; slide « Définition d'un benchmark » | 04 | test de référence, classement |
+| taux d'accord | part des issues dont la réponse égale celle de l'équipe ; slide « Mesurer le taux d'accord » | 04 | précision, accuracy |
 | trieur | agent qui range une issue dans une étiquette d'une liste fermée ; slide « Définition d'un trieur » | 04 | classifieur, tri |
-| confiance | champ du schéma du trieur, haute ou basse ; slide « Sortie imposée par un schéma » | 04 | score, certitude |
+| étiquette | catégorie d'une liste fermée dans laquelle le trieur range une issue (bug, fonctionnalité, question, inconnu) ; slide « Définition d'un trieur » | 04 | label, classe |
+| liste fermée | ensemble fixe de valeurs que la réponse du trieur ne peut pas dépasser ; slide « Définition d'un trieur » | 04 | liste exhaustive |
+| serveur d'équipe | machine partagée de l'équipe, dont le réseau garde le prompt, qui traite les prompts de plusieurs développeurs à la fois ; slide « Définition d'un serveur d'équipe » | 04 | serveur local, serveur partagé |
+| fournisseur | organisation qui héberge un modèle distant (Anthropic, Amazon Bedrock) ; slide « Lieux d'exécution d'un modèle » | 04 | cloud, hébergeur (sauf pour un serveur loué) |
+| poste | ordinateur du développeur ; slide « Lieux d'exécution d'un modèle » | 04 | machine locale, laptop |
+| machine de l'équipe | ordinateur que l'équipe contrôle : un poste ou un serveur d'équipe, l'endroit où s'exécute un modèle local ; slide « Lieux d'exécution d'un modèle » | 04 | machine locale |
+| serveur loué | serveur de calcul loué à un hébergeur, hors du réseau de l'équipe ; sert de repère de coût d'un serveur d'équipe ; slide « Définition d'un serveur loué » | 04 | serveur d'équipe (pour cette notion), cloud GPU |
+| confiance | champ de la réponse du trieur, haute ou basse ; slide « Définition d'un trieur » | 04 | score, certitude |
 | sortie imposée | réponse contrainte à un schéma JSON ; slide « Sortie imposée par un schéma » | 04 | sortie structurée |
+| trieur-distant | second agent identique au trieur, dont le modèle est le grand modèle ; reçoit les issues routées ; slide « Routage vers le grand modèle » | 04 | trieur de repli |
 | routage | envoi d'une tâche au grand modèle quand le petit modèle ne sait pas la traiter ; slide « Routage vers le grand modèle » | 04 | cascade, fallback |
 
 ## Hors slides
