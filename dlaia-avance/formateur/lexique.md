@@ -45,7 +45,7 @@ Les termes des modules 1 à 3 de DLAIA (agent, harnais, fenêtre de contexte, sk
 | permission | accord demandé à l'utilisateur avant une action de l'agent | 01 | autorisation, droit, approbation |
 | session | une suite d'échanges avec l'agent, du lancement à `/clear` ou `/new` | 01 | conversation, chat, contexte (pour la session) |
 | tour | un échange de la session : message, appels d'outils, réponse ; chaque tour reste entier dans la fenêtre de contexte | 01 | turn, itération, aller-retour |
-| prompt | texte envoyé au modèle ; ses quatre composants : rôle, contexte, instruction, format | 01 | invite, requête, demande, instruction (pour l'ensemble) |
+| prompt | texte envoyé au modèle ; ses quatre composants : rôle, contexte, instruction, format | 01 | invite, requête, demande, consigne, instruction (pour l'ensemble) |
 | vibe coding | pilotage par prompts successifs, sans intention écrite ni vérification | 01 | codage à l'instinct, prompt-and-pray |
 | intention | ce que le logiciel doit faire, écrit, versionné, vérifié | 01 | besoin, idée, vision, objectif (pour l'intention) |
 | méthode | manière dont l'équipe organise le travail avec l'agent : ce qui s'écrit avant le code et ce qui se relit après | 01 | process, pratique, approche (pour la méthode) |
@@ -168,6 +168,16 @@ Les termes des modules 1 à 3 de DLAIA (agent, harnais, fenêtre de contexte, sk
 | sortie imposée | réponse contrainte à un schéma JSON ; slide « Sortie imposée par un schéma » | 04 | sortie structurée |
 | trieur-distant | second agent identique au trieur, dont le modèle est le grand modèle ; reçoit les issues routées ; slide « Routage vers le grand modèle » | 04 | trieur de repli |
 | routage | envoi d'une tâche au grand modèle quand le petit modèle ne sait pas la traiter ; slide « Routage vers le grand modèle » | 04 | cascade, fallback |
+
+## Vocabulaire des démonstrations
+
+| Terme | Définition | Introduit | À ne pas employer |
+|---|---|---|---|
+| dépôt de session | dépôt privé sur GitHub, copie miroir du dépôt de référence, variable `$TARGET` | 01 | dépôt de test, dépôt cible, fork |
+| copie de travail | clone local du dépôt de session sur le poste, variable `$WORK` | 01 | clone local, répertoire de travail |
+| faux `gh` | exécutable `gh` factice placé en tête du `PATH` | 01 | mock de gh, gh simulé |
+| session interactive | utilisation de l'agent dans son interface en ligne de commande | 01 | TUI |
+| processus d'arrière-plan | programme qui continue de tourner sans terminal attaché | 01 | démon, daemon |
 
 ## Hors slides
 
