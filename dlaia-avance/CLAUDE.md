@@ -50,8 +50,8 @@ L'ordre et le périmètre sont figés (25 octobre 2026) : ne pas les modifier sa
 0. **Ouverture** : retours de terrain après DLAIA.
 1. **Automatiser plus loin** (cinq démonstrations) : harnais et limites de l'agent seul ; MCP ; sous-agents et orchestrateur ; boucles et garde-fous ; SDK (notion présentée sans démonstration : définition, exemple, cas d'usage) ; grille de choix. La cinquième démonstration lie MCP et IHM : un serveur MCP pilote un navigateur, l'agent constate un défaut d'interface sur un front ajouté à `tickets-api`, le corrige et vérifie le rendu.
 2. **Revue de code automatisée** (trois démonstrations) : règles en vérifications, format d'un finding, trois modes (commande, pull request, pre-commit), faux positifs et contradicteur.
-3. **Hooks et pipeline** (trois démonstrations) : hook du harnais, hook git, job CI, workflow `workflow_run`, garde-fous (droits, secrets, budget), avec l'ancien module Sécurité réduit à deux ou trois slides sourcées (injection de prompt par issue, règle des deux, ce qui sort du pipeline).
-4. **Modèles locaux** (démonstration facultative, décidée au plan : petit modèle Haiku, Mistral Mini ou Kimi 2.7 rapide, ou aucune) : décision « ce qui sort, ce qui reste local » issue de l'ancien module Sécurité ; mémoire, bande passante, pile moteur-format-serveur, écart avec les modèles frontier, tâches adaptées au local.
+3. **Hooks et pipeline** (trois démonstrations) : hook du harnais, hook git, job CI, workflow `workflow_run`, garde-fous (droits, secrets, budget). Le sujet sécurité (injection de prompt, règle des deux) est retiré du module (décision du 25 octobre 2026).
+4. **Modèles locaux** (démonstration facultative, décidée au plan : petit modèle Haiku, Mistral Mini ou Kimi 2.7 rapide, ou aucune) : décision « ce qui sort, ce qui reste local » ; mémoire, bande passante, pile moteur-format-serveur, écart avec les modèles frontier, tâches adaptées au local.
 99. **Clôture** : bilan de la journée.
 
 ## Rédaction du support
