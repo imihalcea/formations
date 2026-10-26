@@ -28,7 +28,8 @@ Le prompt donne : le mode (`slides`, `demos` ou `corrections`), le numéro du mo
 2. Pour chaque démonstration, créer `demos/NN-nom/` avec : `README.md` (runbook : préalables, préparation, déroulé pas à pas avec le prompt exact, résultat attendu, repli, variantes Claude Code et Open Code là où elles diffèrent, remise à zéro), un script ou `Makefile` de session, le dépôt ou les artefacts propres à la démonstration (un dépôt externe est vérifié par `gh repo view` avant reprise, jamais cloné de mémoire), les configurations d'outil nécessaires (`opencode.json`, `.mcp.json`, hooks, agents), les sorties de référence provisoires (marquées « à relever »).
 3. Reprendre le travail du support d'origine (`labs/avance/demo-01-automatiser-plus-loin/`) seulement après vérification de chaque commande et de chaque nom d'outil dans la documentation officielle de la version installée.
 4. Exécuter les scripts et configurations qui peuvent l'être sans le modèle (`make check`, validation de JSON, `bash -n`, tests du dépôt de démonstration) ; citer la sortie.
-5. `npm run build` passe.
+5. Section finale du module (avant le glossaire) : un bloc `## Démonstration N : titre {.tp}` par démonstration, numérotées sur toute la journée, étapes `###`, prompt copiable, `::: attendu` à chaque étape, `::: indice` (points de blocage, repli), variantes d'outil par paire seulement où elles diffèrent. Les préalables, la préparation en commandes et les extraits de configuration y sont écrits, sans renvoi à `demos/` (critères D8 à D10). La slide `## Démonstration : …` du cours se réduit à une slide courte qui annonce le numéro.
+6. `npm run build` passe.
 
 ## Mode `corrections`
 

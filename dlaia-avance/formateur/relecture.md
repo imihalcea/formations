@@ -72,3 +72,6 @@ Référence : `demos/NN-nom/` du module, notes de la slide qui porte la démonst
 - D5. Chaque résultat attendu provient d'un rejeu consigné dans `tmp/rejeu/demos-NN-<outil>.md`. Une valeur estimée ou marquée « à relever » est un constat.
 - D6. Un repli existe pour chaque étape où le modèle, le réseau ou un service externe peut faire échouer la démonstration en séance (sortie de référence, branche prête, enregistrement).
 - D7. Aucun numéro d'issue ou de pull request sur les slides ni dans les prompts : ils dépendent du dépôt de la session.
+- D8. La section finale du module contient un bloc `## Démonstration N : titre {.tp}` par démonstration, numérotées sur toute la journée, placées avant le glossaire ; chaque étape porte `::: attendu`, et `::: indice` donne les points de blocage et le repli.
+- D9. La section est autosuffisante : préalables, préparation en commandes et extraits de configuration figurent dans les étapes ; aucune slide ni note visible ne renvoie à `demos/`, à `session.sh` ou à une sortie de référence.
+- D10. La slide `## Démonstration : …` du cours est une slide courte qui annonce le numéro de la démonstration de la section finale.

@@ -19,7 +19,7 @@ $ npm test               # tests du compilateur Markdown
 $ npm run typecheck
 ```
 
-`npm run build` vide `dist/` avant d'écrire : tout fichier déposé à la main dans `dist/` est perdu. L'archive distribuée aux stagiaires, `dist/dlaia-avance.zip`, est toujours produite par `npm run archive` après le build. Elle contient à plat `dlaia-avance.html` (le support), `bookit/` (le fil rouge, sans environnement virtuel ni caches) et `fichiers/` (les fichiers fournis par les TP, copie de `tp/fichiers/`). Le stagiaire l'extrait par `unzip dlaia-avance.zip -d ~` et obtient `~/dlaia-avance.html`, `~/bookit/` et `~/fichiers/`.
+`npm run build` vide `dist/` avant d'écrire : tout fichier déposé à la main dans `dist/` est perdu. L'archive distribuée aux stagiaires, `dist/dlaia-avance.zip`, est toujours produite par `npm run archive` après le build. Elle contient `dlaia-avance.html` (le support) ; les démonstrations ne sont pas distribuées.
 
 En développement, une slide dont le contenu déborde du canevas est encadrée en rouge et signalée dans la console.
 
@@ -73,7 +73,7 @@ Un bloc de code vide peut reprendre le contenu d'un fichier, chemin relatif au f
 
 ## Travaux pratiques
 
-Un TP s'écrit dans le fichier de son module. Il produit une slide de lancement, projetée en salle, et une page d'énoncé qui défile, lisible en demi-écran à côté du terminal. Le stagiaire travaille uniquement avec cette page.
+Le type `tp` sert aux démonstrations de fin de module (`## Démonstration N : titre {.tp}`), jouées par le formateur ; « stagiaire » désigne alors le lecteur de la page. Un TP s'écrit dans le fichier de son module. Il produit une slide de lancement, projetée en salle, et une page d'énoncé qui défile, lisible en demi-écran à côté du terminal. Le stagiaire travaille uniquement avec cette page.
 
 ```markdown
 ## TP 3 : explorer le code {.tp duration="45 min"}
