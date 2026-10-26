@@ -336,20 +336,18 @@ Outils Context7 : `resolve-library-id`, `query-docs`. Sentry : la page ne nomme 
 Les autres serveurs existent : le support n'en cite pas davantage.
 :::
 
-## Démonstration : lire une issue {kicker="MCP"}
+## Démonstration 1 : lire une issue {kicker="MCP"}
 
-```prompt
-Avec le serveur MCP github, lis l'issue ouverte sur le ticket fermé et ses commentaires. Résume le bug en trois lignes et nomme le test qui devrait le couvrir. Ne modifie rien.
-```
+Un serveur MCP lit l'issue et ses commentaires.
 
 ::: notes
-Démonstration 1, runbook `demos/01-mcp-github/`. Branche `fix/ticket-ferme-commentaires` de la copie de travail.
+Démonstration 1, étapes en fin de module. Branche `fix/ticket-ferme-commentaires` de la copie de travail.
 Préalable : issue créée par le script de démonstration (`gh issue create`, deux commentaires), la copie miroir n'en contient aucune. Jeton `GITHUB_TOKEN` posé.
 Déroulé : 0. montrer l'impasse sans MCP : même prompt, serveur non déclaré, avec le shim `sans-gh` dans le `PATH` (l'agent de code ne lit pas l'issue ; il tente `curl`, refusé par les permissions). 1. déclaration du serveur (slide « Brancher un serveur MCP »). 2. Liste des outils chargés : `/mcp` (Claude Code) ou `/mcps` (Open Code), non rejoués. 3. Prompt ci-dessus. 4. Appels observés : `list_issues` (le corps de l'issue vient de là) puis `issue_read` avec `method: get_comments` ; `issue_read` avec `method: get` n'est pas appelé. Noms d'outils : `mcp__github__issue_read` et `mcp__github__list_issues` (Claude Code) ; `tools.github.issue_read` et `tools.github.list_issues` par l'outil `execute` (Open Code), `github_issue_read` seulement dans les règles de permission. 5. Comparer avec `gh`. 6. Taille de la fenêtre avant et après (`/context`).
 Résultat attendu : résumé exact du bug (un ticket fermé accepte des commentaires), test nommé, aucun fichier modifié (`git status` propre).
 Résultat observé. Claude Code : 16 s, 5 tours, 0,079 USD ; résumé exact, test `test_add_comment_on_closed_ticket_returns_409` nommé, seuls les fichiers de l'overlay modifiés ; la réponse tient en quatre paragraphes au lieu de trois lignes. Premier essai bloqué : le prompt ne donne ni dépôt ni numéro, l'agent appelle `get_me` et `list_issues`, hors de l'`allow` de l'overlay, refusés en `-p` (38 s, 0,25 USD). Open Code avec `--standalone` : 19 s, 7 étapes, 0,085 USD, résumé en trois lignes, test nommé, `git status` inchangé. Sans `--standalone`, le MCP échoue (jeton absent du démon) et l'agent lit l'issue par `curl` (12 s).
 Étape 5 : `gh issue view --comments` échoue avec gh 2.46.0 (`GraphQL: Projects (classic) is being deprecated`) ; `gh issue view 1 --json title,comments` fonctionne.
-Repli : sortie de référence enregistrée de l'appel, puis `gh issue view 1 --json title,comments` en direct.
+Repli : texte de l'issue lu à voix haute, puis `gh issue view 1 --json title,comments` en direct.
 Variantes : jeton `${GITHUB_TOKEN}` (`.mcp.json`) ou `{env:GITHUB_TOKEN}` (`opencode.json`, à lancer par `opencode run --standalone`). Invite d'approbation du serveur de projet et invite `ask` : absentes en mode non interactif, non rejouées.
 :::
 
@@ -432,14 +430,12 @@ Le sous-agent lit beaucoup de fichiers dans sa propre fenêtre et ne renvoie qu'
 Méthode. Claude Code : `subagent_tokens` du harnais pour le sous-agent (6 outils, 18,9 s) ; contexte de l'agent principal de 32 397 à 33 575 tokens entre le premier et le dernier message, rapport compris (`/context` impossible en `-p`, la session se termine). Open Code : `opencode session export` de la session enfant (3 étapes, 38 335 tokens dont 23 365 lus en cache, 0,083 USD) ; fenêtre de l'agent principal de 12 146 à 12 790 tokens. Un seul passage par outil, rapports de 15 et 18 lignes au lieu de dix.
 :::
 
-## Démonstration : sous-agent explorateur {kicker="Sous-agents"}
+## Démonstration 2 : sous-agent explorateur {kicker="Sous-agents"}
 
-```prompt
-Délègue à l'explorateur l'exploration de tout ce qui touche aux commentaires d'un ticket. Question : où vérifier le statut du ticket avant d'ajouter un commentaire ? Affiche son rapport tel quel.
-```
+Un sous-agent explore le code et rend dix lignes.
 
 ::: notes
-Démonstration 2, runbook `demos/02-sous-agent/`. Branche `fix/ticket-ferme-commentaires`.
+Démonstration 2, étapes en fin de module. Branche `fix/ticket-ferme-commentaires`.
 Déroulé : 1. ouvrir le fichier de l'agent (lecture seule). 2. Prompt ci-dessus. 3. Montrer la session du sous-agent. 4. Rapport reçu. 5. Taille de la fenêtre principale avant et après.
 Résultat attendu : rapport d'une dizaine de lignes qui désigne la règle du statut dans le domaine (`Comment.write`, `src/tickets/domain/ticket.py`), appelée par `AddComment.execute` (`src/tickets/application/comments.py`). Repli : rapport enregistré.
 Résultat observé : les deux outils désignent `Comment.write` et `AddComment.execute` (`TicketClosed` déclaré, jamais levé). Claude Code : 29 s, 0,22 USD, rapport de 15 lignes dont une phrase contradictoire, reformulé par l'agent principal. Open Code : 13 s, 0,022 USD côté agent principal, rapport de 18 lignes, un fichier cité comme lu mais non ouvert, ré-emballé par l'agent principal. « Affiche son rapport tel quel » n'est obéi par aucun des deux ; dix lignes dépassées par les deux. Tokens : slide précédente. Forme d'appel : le langage naturel fonctionne dans les deux outils.
@@ -503,7 +499,7 @@ Lecture du fichier : étape 1 trois `explorateur` dans le même tour (périmètr
 Les tests sont écrits avant le code : le testeur n'a pas vu l'implémentation.
 Extrait des instructions fixes de l'orchestrateur, étape 1 (abrégé) : « Lance dans le même tour trois explorateurs, chacun sur un périmètre. »
 Claude Code : 20 sous-agents simultanés au plus par défaut ; au vingtième sous-agent en cours, un nouveau lancement échoue avec « Concurrent subagent limit reached » ; variable `CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS`. La page cite en exemple « in parallel using separate subagents ».
-Open Code : la doc des agents ne décrit pas le parallélisme (sessions enfants en arrière-plan seulement). Observé : trois appels `subagent` dans le même tour sont lancés ensemble (`background: true`, créés à 0, 2 et 3 s). Sonde hors runbook de douze sous-agents dans le même message : dix sessions simultanées, deux jamais démarrées après plus de deux minutes ; plafond de dix actifs, aucun réglage documenté trouvé. Jamais deux `opencode run` en parallèle.
+Open Code : la doc des agents ne décrit pas le parallélisme (sessions enfants en arrière-plan seulement). Observé : trois appels `subagent` dans le même tour sont lancés ensemble (`background: true`, créés à 0, 2 et 3 s). Sonde hors démonstration de douze sous-agents dans le même message : dix sessions simultanées, deux jamais démarrées après plus de deux minutes ; plafond de dix actifs, aucun réglage documenté trouvé. Jamais deux `opencode run` en parallèle.
 Claude Code, rejeu : les trois explorateurs et chaque série de trois vérificateurs partent dans le même message (parallélisme effectif).
 L'orchestrateur réel déclare aussi `Read` et `Bash` dans ses outils ; « ne modifie rien lui-même » est une instruction du prompt, non une restriction d'outils.
 :::
@@ -540,33 +536,19 @@ Une dérive est un écart de comportement de l'agent de code que le garde-fou co
 
 ::: notes
 Coût : `maxTurns` (frontmatter Claude Code) ou `steps` (Open Code). Redondance : deux explorateurs sur le même dossier lisent deux fois la même chose, d'où le découpage par dossier de l'étape 1. Contradiction : deux vérificateurs sur le même critère peuvent se contredire, d'où un critère chacun.
-Imbrication (un sous-agent qui lance un sous-agent) : Claude Code autorise trois niveaux sous le fil principal d'après la doc (`CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH`, `1` coupe l'imbrication). Rejeu hors runbook, avec un agent `imbriqueur` (`tools: Agent, Read`) : par défaut il lance l'explorateur et en reçoit le rapport (deux niveaux, 0,22 USD) ; avec `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH=1` il n'appelle plus `Agent` et lit le fichier lui-même (0,08 USD). Le troisième niveau n'a pas été joué. L'orchestrateur réel n'imbrique rien : les 18 appels viennent du fil principal.
+Imbrication (un sous-agent qui lance un sous-agent) : Claude Code autorise trois niveaux sous le fil principal d'après la doc (`CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH`, `1` coupe l'imbrication). Rejeu hors démonstration, avec un agent `imbriqueur` (`tools: Agent, Read`) : par défaut il lance l'explorateur et en reçoit le rapport (deux niveaux, 0,22 USD) ; avec `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH=1` il n'appelle plus `Agent` et lit le fichier lui-même (0,08 USD). Le troisième niveau n'a pas été joué. L'orchestrateur réel n'imbrique rien : les 18 appels viennent du fil principal.
 Open Code v2.0.32 : imbrication refusée par défaut. Message exact du rejeu : « Subagent depth limit reached (1). Increase "experimental.subagent_depth" to allow nested subagents. » Réglage : `experimental.subagent_depth`. La doc des agents d'Open Code ne chiffre pas la profondeur : la valeur vient du comportement observé.
 Définition de « dérive » : celle du support, pas une source externe.
 :::
 
-## Démonstration : livrer une spécification {.compare kicker="Orchestrateur"}
+## Démonstration 3 : livrer une spécification {kicker="Orchestrateur"}
 
-```prompt
-Livre la spécification 002 en suivant tes étapes.
-```
-
-::: claude-code
-```console
-$ claude --agent orchestrateur --model claude-sonnet-4-6
-```
-:::
-
-::: opencode
-```console
-$ opencode
-```
-:::
+Un orchestrateur livre la spécification 002.
 
 ::: notes
-Démonstration 3, runbook `demos/03-orchestrateur/`. Branche `main` (spécification 002 écrite, code absent). Lancement de l'agent principal `orchestrateur`. Claude Code : `claude --agent orchestrateur` ; Open Code : `default_agent` des fichiers fournis par la démonstration, ou `opencode run --agent orchestrateur` en non interactif.
+Démonstration 3, étapes en fin de module. Branche `main` (spécification 002 écrite, code absent). Lancement de l'agent principal `orchestrateur`. Claude Code : `claude --agent orchestrateur` ; Open Code : `default_agent` des fichiers fournis par la démonstration, ou `opencode run --agent orchestrateur` en non interactif.
 Déroulé : 1. instructions fixes de l'orchestrateur. 2. Trois explorations dans le même tour. 3. Tests rouges. 4. Implémentation. 5. Trois vérifications, éventuelle remarque renvoyée à l'implémentation. 6. `make test` et coût total.
-Résultat attendu : tests verts et lint propre, migration créée, tests ajoutés aux 37 de départ. Le chiffre du runbook (61 tests, 12 fichiers) n'est pas reproduit : le nombre dépend de l'exécution. Repli : branche `feat/responsable-priorite-haute-done`.
+Résultat attendu : tests verts et lint propre, migration créée, tests ajoutés aux 37 de départ. Le chiffre de la branche livrée (61 tests, 12 fichiers) n'est pas reproduit : le nombre dépend de l'exécution. Repli : branche `feat/responsable-priorite-haute-done`.
 Résultat observé, Claude Code (`claude -p`) : 18 appels `Agent` (5 explorateurs, 3 testeurs, 4 implementeurs, 6 verificateurs), tous depuis le fil principal ; explorateurs 1 + 3 + 1 (un isolé avant les trois), vérificateurs en deux séries de trois dans le même message. Le testeur (30 tours) et l'implementeur (40 tours) atteignent leur limite au premier passage. Deux findings (lint, deux tests de la spécification 001 cassés) puis un sur le scénario 8. Fin : 71 tests verts, lint propre, 13 fichiers (10 de code et migration, 3 de tests), 18 min, 4,49 USD. Le compte rendu annonce trois passes de vérification, deux observées. Le processus `claude -p` ne se termine pas après le résultat final : jouer en interactif (non vérifié).
 Résultat observé, Open Code : `opencode run --agent orchestrateur` rend la main après 16 s, une fois les trois explorations lancées en arrière-plan ; l'orchestration continue côté démon (357 s) : jouer en TUI. 11 sous-agents (3 explorateurs, testeur, implementeur, testeur de correction, 2 relances, 3 verificateurs) ; trois explorations et trois vérifications dans le même tour, aucun finding des vérificateurs. Fin : 70 tests verts, 11 fichiers (10 modifiés et la migration), 2,40 USD. Le compte rendu annonce 26 tests ajoutés, 33 réellement : ne pas s'y fier pour relever les chiffres. Imbrication : voir la slide des dérives.
 Hook `guard-path.sh` des sous-agents : non observé.
@@ -872,17 +854,15 @@ Le code de retour mesure la réussite des tests ; la relecture du diff mesure le
 Dernière ligne : la relecture couvre ce que les trois autres garde-fous omettent.
 :::
 
-## Démonstration : boucle de correction {kicker="Garde-fous"}
+## Démonstration 4 : boucle de correction {kicker="Garde-fous"}
 
-```prompt
-/fix-until-green interdire les commentaires sur un ticket fermé
-```
+Une commande boucle jusqu'à des tests verts.
 
 ::: notes
-Démonstration 4, runbook `demos/04-boucle/`. Branche `fix/ticket-ferme-commentaires` (deux tests rouges). Commande `fix-until-green` (Claude Code : `.claude/commands/` ; Open Code : `.opencode/commands/`, en TUI).
+Démonstration 4, étapes en fin de module. Branche `fix/ticket-ferme-commentaires` (deux tests rouges). Commande `fix-until-green` (Claude Code : `.claude/commands/` ; Open Code : `.opencode/commands/`, en TUI).
 Déroulé : 1. `make test` rouge. 2. Lire la commande (cinq relances). 3. Relances comptées. 4. Un échec persistant puis la réussite. 5. Règle `deny` sur `tests/` visible si l'agent tente de modifier les tests. 6. `git diff` lu à voix haute.
 Résultat attendu : tous les tests passent en cinq relances au plus. Repli : branche `fix/ticket-ferme-commentaires-done`.
-Résultat observé, Claude Code (`claude -p`, commande développée) : `2 failed, 37 passed` avant, `39 passed` après, 42 s, 0,29 USD, une relance (« Relance 1 : succès »), pas d'échec persistant à montrer. Diff dans `src/tickets/domain/ticket.py` seulement : import de `TicketClosed` et `if ticket.status == Status.CLOSED: raise TicketClosed(ticket.id)` dans `Comment.write`, trois lignes, sans la méthode `ensure_accepts_comments` annoncée par le runbook.
+Résultat observé, Claude Code (`claude -p`, commande développée) : `2 failed, 37 passed` avant, `39 passed` après, 42 s, 0,29 USD, une relance (« Relance 1 : succès »), pas d'échec persistant à montrer. Diff dans `src/tickets/domain/ticket.py` seulement : import de `TicketClosed` et `if ticket.status == Status.CLOSED: raise TicketClosed(ticket.id)` dans `Comment.write`, trois lignes, sans la méthode `ensure_accepts_comments` annoncée par la branche corrigée.
 Open Code (`opencode run`, `--standalone`) : 43 s, 0,22 USD (parent 0,049, sous-agent 0,172), 39 verts, même diff limité à `ticket.py`. Le shell du sous-agent est refusé (`cd <chemin> && make test` ne correspond pas à la règle `make *`) : c'est l'agent principal qui lance `make test`, donc zéro test lancé par l'implementeur. Premier essai écarté : base de test contaminée par la démonstration 3, l'agent avait réécrit une migration.
 Tentative de contournement des tests : aucune dans les deux outils.
 :::
@@ -1068,14 +1048,12 @@ Le critère n'est plus un code de retour mais une capture que l'agent de code li
 Ouverture sur la boucle : la vérification visuelle est une relance avec une capture comme critère. À conserver sous contrôle humain : jugement du rendu final.
 :::
 
-## Démonstration : corriger un bandeau {kicker="Interface"}
+## Démonstration 5 : corriger un bandeau {kicker="Interface"}
 
-```prompt
-Avec le serveur MCP playwright, ouvre http://localhost:8000/ui/ à 1280x720, saisis un titre dans le champ puis clique sur « Ajouter », constate le défaut d'interface, corrige-le dans src/tickets/ui/style.css, sans sous-agent, et vérifie le rendu par une capture. Ne modifie ni la configuration MCP ni les tests.
-```
+Un serveur MCP de navigateur vérifie le correctif.
 
 ::: notes
-Démonstration 5, runbook `demos/06-mcp-interface/`. Branche `feat/front`. Serveur Playwright. Claude Code : `.mcp.json` du dépôt ; Open Code : `opencode.json` fourni par la démonstration, rien à ajouter.
+Démonstration 5, étapes en fin de module. Branche `feat/front`. Serveur Playwright. Claude Code : `.mcp.json` du dépôt ; Open Code : `opencode.json` fourni par la démonstration, rien à ajouter.
 Déroulé : 1. serveur lancé. 2. Capture initiale. 3. Bandeau repéré. 4. Correction CSS. 5. Capture finale. 6. `make test` toujours passant.
 Résultat attendu : bouton « Ajouter » cliquable, capture avant et après. Repli : captures enregistrées et branche corrigée.
 Résultat observé, Claude Code (configuration avec `--browser chromium`) : 155 s, 33 tours, 0,72 USD. L'agent clique sur `#ajouter` (le clic réussit malgré le bandeau) et ajoute « Bug de connexion ». Correctif : `body { margin: 0; padding-top: 64px; }` dans `src/tickets/ui/style.css`, une ligne ; le bandeau reste fixe, contrairement au correctif de référence (`position: static`). Cinq captures de vérification : les deux premières montrent l'ancienne feuille de style (cache HTTP du navigateur), l'agent recharge la feuille par `browser_evaluate`. `make test` : 37 verts, diff limité à `style.css`.
@@ -1119,6 +1097,989 @@ Lien avec la slide « MCP ou ligne de commande » : même arbitrage, coût contr
 ::: notes
 Conclut le schéma des six mécanismes et la grille de choix.
 Le module 2 reprend l'autre côté : le code produit doit être relu.
+:::
+
+## Démonstration 1 : lire une issue par MCP {.tp}
+
+Un serveur MCP GitHub donne à l'agent de code une issue et ses commentaires. Branche `fix/ticket-ferme-commentaires` de `tickets-api`.
+
+Prérequis : Claude Code 2.1.310 ou Open Code v2.0.32, `gh` connecté, `docker`, `uv`, accès à `imihalcea/tickets-api`, port 5432 libre.
+
+### Préparer la copie de session
+
+La copie est un dépôt privé distinct de la référence : la référence ne reçoit jamais d'issue.
+
+```bash
+export SESSION=demo
+export REFERENCE=imihalcea/tickets-api
+export TARGET="$REFERENCE-$SESSION"
+export WORK="$HOME/travail/tickets-api-$SESSION"
+
+gh repo create "$TARGET" --private --description "Dépôt de session $SESSION"
+tmp=$(mktemp -d)
+git clone --mirror "$(gh repo view "$REFERENCE" --json sshUrl -q .sshUrl)" "$tmp/reference.git"
+git -C "$tmp/reference.git" push --mirror "$(gh repo view "$TARGET" --json sshUrl -q .sshUrl)"
+rm -rf "$tmp"
+
+mkdir -p "$HOME/travail"
+git clone "$(gh repo view "$TARGET" --json sshUrl -q .sshUrl)" "$WORK"
+cd "$WORK"
+git checkout fix/ticket-ferme-commentaires
+make db-up
+uv sync
+```
+
+::: attendu
+`make test` affiche `2 failed, 37 passed`. Les échecs sont `test_add_comment_on_closed_ticket_returns_409` et `test_closed_ticket_refuses_comments`.
+:::
+
+::: indice
+Copie déjà créée lors d'une séance précédente : ignorer les lignes `gh repo create` à `rm -rf`, et cloner seulement si `$WORK` n'existe pas. Port 5432 pris par un autre projet (conteneur `tickets-api-db-1`) : `docker stop tickets-api-db-1` avant `make db-up`.
+:::
+
+### Créer l'issue de démonstration
+
+L'issue porte un constat et deux commentaires. Elle est créée dans la copie de session, jamais dans la référence.
+
+```bash
+cd "$WORK"
+gh issue create --repo "$TARGET" --title "Un ticket fermé accepte encore des commentaires" --body-file - <<'EOF'
+## Constat
+
+`POST /tickets/{id}/comments` répond 201 sur un ticket au statut `closed`. Le commentaire est enregistré.
+
+## Attendu
+
+Un ticket fermé refuse les commentaires. La réponse est un 409 avec un message qui nomme le statut.
+
+## Piste
+
+La vérification du statut manque au moment de l'ajout du commentaire.
+EOF
+gh issue comment 1 --repo "$TARGET" --body-file - <<'EOF'
+Reproduit sur `main` : création d'un ticket, passage à `closed`, ajout d'un commentaire. Le commentaire apparaît dans `GET /tickets/{id}/comments`.
+EOF
+gh issue comment 1 --repo "$TARGET" --body-file - <<'EOF'
+Le test d'intégration `test_add_comment_on_closed_ticket_returns_409` décrit déjà le comportement attendu. Il échoue aujourd'hui.
+EOF
+```
+
+::: attendu
+`gh issue view 1 --repo "$TARGET" --json title,comments` affiche le titre et deux commentaires.
+:::
+
+::: indice
+`gh issue view 1 --comments` échoue avec gh 2.46.0 (`GraphQL: Projects (classic) is being deprecated`) : employer toujours `--json title,comments`.
+:::
+
+### Montrer l'impasse sans MCP
+
+Un faux `gh` cache la ligne de commande GitHub à l'agent de code. Le serveur MCP n'est pas encore déclaré.
+
+```bash
+mkdir -p "$HOME/sans-gh"
+cat > "$HOME/sans-gh/gh" <<'EOF'
+#!/usr/bin/env bash
+echo "gh: command not found" >&2
+exit 127
+EOF
+chmod +x "$HOME/sans-gh/gh"
+```
+
+::: claude-code
+```console
+$ cd "$WORK"
+$ PATH="$HOME/sans-gh:$PATH" claude --model claude-sonnet-4-6
+```
+:::
+
+::: opencode
+Le modèle est fixé dans `opencode.json` : aucune option de modèle.
+
+```console
+$ cd "$WORK"
+$ PATH="$HOME/sans-gh:$PATH" opencode
+```
+:::
+
+Prompt, sans mention du serveur MCP :
+
+```prompt
+Lis l'issue n° 1 du dépôt imihalcea/tickets-api-demo et ses commentaires. Résume le bug en trois lignes exactement et nomme le test qui devrait le couvrir. Ne modifie rien.
+```
+
+::: attendu
+L'agent de code ne lit pas l'issue. Sous Claude Code, il tente `gh`, puis `curl`, puis `python3` (refusés ou sans résultat). Sous Open Code, l'impasse n'a pas été jouée : à relever à l'essai.
+:::
+
+::: indice
+Quitter la session de l'agent avant l'étape suivante. Si l'agent trouve l'issue par un autre moyen, le dire à la salle : le but est de montrer que l'information reste hors de portée sans outil dédié.
+:::
+
+### Déclarer le serveur MCP
+
+Le jeton est lu dans l'environnement du shell, jamais écrit dans un fichier.
+
+```console
+$ export GITHUB_TOKEN=$(gh auth token)
+```
+
+::: claude-code
+Fichiers `.mcp.json` et `.claude/settings.json` à la racine de la copie. Les trois outils de lecture sont autorisés, les trois outils d'écriture demandent une confirmation.
+
+```bash
+cd "$WORK"
+mkdir -p .claude
+cat > .mcp.json <<'EOF'
+{
+  "mcpServers": {
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "headers": { "Authorization": "Bearer ${GITHUB_TOKEN}" }
+    }
+  }
+}
+EOF
+cat > .claude/settings.json <<'EOF'
+{
+  "model": "claude-sonnet-4-6",
+  "permissions": {
+    "allow": [
+      "Bash(make test *)",
+      "Bash(make lint *)",
+      "Bash(uv run pytest *)",
+      "Bash(uv run ruff *)",
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "mcp__github__issue_read",
+      "mcp__github__list_issues",
+      "mcp__github__get_me"
+    ],
+    "ask": [
+      "mcp__github__issue_write",
+      "mcp__github__add_issue_comment",
+      "mcp__github__create_pull_request"
+    ]
+  }
+}
+EOF
+```
+
+Lancer `claude --model claude-sonnet-4-6`, approuver le serveur du projet à la demande d'approbation, puis taper `/mcp`.
+:::
+
+::: opencode
+Fichier `opencode.json` à la racine de la copie, en forme v2 (`mcp.servers`, `permissions` en tableau, la dernière règle correspondante l'emporte).
+
+```bash
+cd "$WORK"
+cat > opencode.json <<'EOF'
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "amazon-bedrock/eu.anthropic.claude-sonnet-4-6",
+  "instructions": [".specify/memory/constitution.md"],
+  "mcp": {
+    "servers": {
+      "github": {
+        "type": "remote",
+        "url": "https://api.githubcopilot.com/mcp/",
+        "headers": { "Authorization": "Bearer {env:GITHUB_TOKEN}" }
+      }
+    }
+  },
+  "permissions": [
+    { "action": "github_*", "resource": "*", "effect": "ask" },
+    { "action": "github_issue_read", "resource": "*", "effect": "allow" },
+    { "action": "github_list_issues", "resource": "*", "effect": "allow" },
+    { "action": "github_get_me", "resource": "*", "effect": "allow" }
+  ]
+}
+EOF
+opencode mcp list
+```
+
+Lancer `opencode` depuis le même shell (celui qui porte `GITHUB_TOKEN`), puis taper `/mcps`.
+:::
+
+::: attendu
+Le serveur `github` figure dans la liste (`/mcp` sous Claude Code, `✓ github` à `opencode mcp list` et `/mcps` sous Open Code). L'en-tête `Authorization` statique est accepté. L'invite d'approbation du serveur de projet et la liste en interactif n'ont pas été relevées : à relever à l'essai.
+:::
+
+::: indice
+Open Code v2 lance un démon d'arrière-plan qui n'hérite pas de l'environnement du shell : sans `GITHUB_TOKEN` côté démon, le serveur échoue (`Authorization header is badly formatted`) et l'agent contourne par `curl`. En non interactif, ajouter `--standalone` à `opencode run`. En TUI, vérifier `opencode mcp list` avant la séance. Sous Claude Code, sans `list_issues` ni `get_me` dans `allow`, l'agent est bloqué par les permissions.
+:::
+
+### Lire l'issue par le serveur MCP
+
+Relever d'abord la taille de la fenêtre de contexte : `/context` sous Claude Code ; sous Open Code, aucune commande équivalente documentée, noter le coût du premier tour.
+
+```prompt
+Avec le serveur MCP github, sans gh ni curl, lis l'issue n° 1 du dépôt imihalcea/tickets-api-demo et ses commentaires. Résume le bug en trois lignes exactement et nomme le test qui devrait le couvrir. Ne modifie rien.
+```
+
+::: attendu
+Résumé exact du bug (un ticket fermé accepte des commentaires, la réponse est 201 au lieu de 409) et test nommé, `test_add_comment_on_closed_ticket_returns_409`. Appels observés : `list_issues` (le corps de l'issue vient de là) puis `issue_read` avec `method: get_comments` ; `issue_read` avec `method: get` n'est pas appelé. Noms d'outils : `mcp__github__issue_read` et `mcp__github__list_issues` sous Claude Code, `tools.github.issue_read` et `tools.github.list_issues` par l'outil `execute` sous Open Code.
+
+Relevé du 25 octobre 2026 en non interactif. Claude Code : 16 s, 5 tours, 0,079 USD ; la réponse tient en quatre paragraphes au lieu de trois lignes. Open Code (`--standalone`) : 19 s, 7 étapes, 0,085 USD, trois lignes. Le déroulé en TUI est à relever à l'essai.
+:::
+
+::: indice
+Sans le dépôt ni le numéro dans le prompt, l'agent appelle `get_me` et `list_issues` pour chercher l'issue, hors de l'`allow` : refus en non interactif. Le dépôt de la copie s'obtient par `gh repo view --json nameWithOwner -q .nameWithOwner`. Pour forcer l'appel de `issue_read` avec `method: get`, écrire « lis l'issue avec `issue_read` » dans le prompt (non vérifié). Repli si le réseau ou le jeton échoue : lire à voix haute le titre et les commentaires de l'étape 02, puis `gh issue view 1 --repo "$TARGET" --json title,comments` en direct.
+:::
+
+### Comparer avec gh et contrôler
+
+Dans un autre terminal, sans le faux `gh`, puis dans la copie :
+
+```console
+$ gh issue view 1 --repo "$TARGET" --json title,comments
+$ git status --short
+```
+
+Relever la fenêtre de contexte après le prompt (`/context` sous Claude Code).
+
+::: attendu
+`gh` rend le même contenu que le serveur MCP. `git status` ne liste que les fichiers de configuration posés à l'étape 04 (`.mcp.json` et `.claude/settings.json`, ou `opencode.json`) : l'agent n'a rien modifié. Fenêtre sous Claude Code au relevé du 25 octobre 2026 : 26,9k tokens avant, 41,0k après (chiffres du poste, serveurs MCP et skills personnels compris). Sous Open Code, l'entrée par étape passe de 12 146 à 21 794 tokens.
+:::
+
+::: indice
+Remise à zéro avant la démonstration suivante : `cd "$WORK" && git checkout -- . && git clean -fdq -e .venv -e node_modules` (supprime la configuration posée à l'étape 04). L'issue reste dans la copie de session et n'est pas recréée.
+:::
+
+## Démonstration 2 : déléguer à un sous-agent explorateur {.tp}
+
+Un sous-agent explore le code des commentaires et rend dix lignes à l'agent principal. Branche `fix/ticket-ferme-commentaires`.
+
+Prérequis : Claude Code 2.1.310 ou Open Code v2.0.32, `gh`, `docker`, `uv`, copie de session de la démonstration 1. Aucun jeton GitHub.
+
+### Se placer sur la branche
+
+Variables `SESSION`, `TARGET` et `WORK` de la démonstration 1 posées.
+
+```bash
+cd "$WORK"
+git checkout -- . && git clean -fdq -e .venv -e node_modules
+git checkout fix/ticket-ferme-commentaires
+make db-up
+uv sync
+```
+
+::: claude-code
+Le sous-agent `explorateur` est dans le dépôt (`.claude/agents/explorateur.md`), sans changement.
+:::
+
+::: opencode
+Le dépôt porte l'explorateur en forme v1. Le remplacer par la forme v2 (`permissions` en tableau, quatre refus) :
+
+```bash
+mkdir -p .opencode/agents
+cat > .opencode/agents/explorateur.md <<'EOF'
+---
+description: Explore un périmètre du dépôt en lecture seule et rend un résumé de dix lignes au plus
+mode: subagent
+steps: 25
+permissions:
+  - { action: edit, resource: "*", effect: deny }
+  - { action: shell, resource: "*", effect: deny }
+  - { action: webfetch, resource: "*", effect: deny }
+  - { action: subagent, resource: "*", effect: deny }
+---
+
+Tu explores le dépôt `tickets-api` pour répondre à une question précise, dans le
+périmètre de fichiers indiqué par le prompt. Tu lis avec `read`, `grep` et `glob`.
+Tu ne modifies rien et tu ne proposes aucun correctif.
+
+Tu réponds en français, identifiants et messages du code en anglais.
+
+Réponse : dix lignes au plus (compte-les avant de répondre), sans préambule ni conclusion.
+
+1. Fichiers lus, chemins relatifs à la racine du dépôt (jamais de chemin absolu). Cite comme lu un fichier seulement si tu l'as ouvert avec `read`.
+2. Réponse à la question, un fait par ligne, chaque fait avec son fichier et sa ligne.
+3. Ce qui manque ou contredit `AGENTS.md`, la constitution ou la spec, si tu l'as vu.
+
+Aucun bloc de code.
+EOF
+opencode debug agents
+```
+:::
+
+::: attendu
+`make test` affiche `2 failed, 37 passed`. Sous Open Code, `opencode debug agents` liste `explorateur`, mode `subagent`, `steps` 25, quatre refus.
+:::
+
+::: indice
+Port 5432 pris par un autre projet `tickets-api` : `docker stop tickets-api-db-1`, puis relancer `make db-up`.
+:::
+
+### Lire le fichier de l'agent
+
+::: claude-code
+```console
+$ cat .claude/agents/explorateur.md
+```
+
+Contenu attendu :
+
+```markdown
+---
+name: explorateur
+description: Explore un périmètre du dépôt en lecture seule et rend un résumé de dix lignes au plus
+tools: Read, Grep, Glob
+model: claude-sonnet-4-6
+maxTurns: 25
+---
+
+Tu explores le dépôt `tickets-api` pour répondre à une question précise, dans le
+périmètre de fichiers indiqué par la consigne. Tu lis avec `Read`, `Grep` et `Glob`.
+Tu ne modifies rien et tu ne proposes aucun correctif.
+
+Tu réponds en français, identifiants et messages du code en anglais.
+
+Réponse : dix lignes au plus, sans préambule ni conclusion.
+
+1. Fichiers lus, chemins relatifs à la racine du dépôt.
+2. Réponse à la question, un fait par ligne, chaque fait avec son fichier et sa ligne.
+3. Ce qui manque ou contredit `AGENTS.md`, la constitution ou la spec, si tu l'as vu.
+
+Aucun bloc de code.
+```
+:::
+
+::: opencode
+```console
+$ cat .opencode/agents/explorateur.md
+```
+
+Le contenu est celui écrit à l'étape précédente.
+:::
+
+::: attendu
+Le fichier limite l'agent à la lecture (`tools: Read, Grep, Glob` et `maxTurns: 25` sous Claude Code ; `steps: 25` et quatre refus sous Open Code) et fixe le format du rapport : fichiers lus, faits avec fichier et ligne, écarts.
+:::
+
+### Lancer l'agent principal
+
+::: claude-code
+```console
+$ claude --model claude-sonnet-4-6
+```
+
+Relever la fenêtre de contexte : `/context`.
+:::
+
+::: opencode
+```console
+$ opencode
+```
+
+Open Code n'a pas de commande équivalente à `/context` : noter le coût affiché.
+:::
+
+::: attendu
+Une session interactive s'ouvre sur le modèle `claude-sonnet-4-6`. La fenêtre de départ est relevée.
+:::
+
+### Déléguer l'exploration
+
+```prompt
+Délègue à l'explorateur l'exploration de tout ce qui touche aux commentaires d'un ticket. Question : où vérifier le statut du ticket avant d'ajouter un commentaire ? Réponds en recopiant son rapport mot pour mot, sans le reformuler, le mettre en forme ni le commenter, et sans rien ajouter avant ou après.
+```
+
+::: attendu
+Rapport d'une quinzaine de lignes (15 sous Claude Code, 18 sous Open Code au relevé du 25 octobre 2026 pour une limite de dix). Il désigne `Comment.write` (`src/tickets/domain/ticket.py`, ligne 72), qui ne vérifie pas `ticket.status`, appelée par `AddComment.execute` (`src/tickets/application/comments.py`, lignes 23 à 26), et signale `TicketClosed` (`errors.py`, ligne 21) déclarée mais jamais levée. Le point de vérification du statut est donc dans le domaine, appelé depuis le cas d'usage.
+
+Écarts observés : avec l'ancienne formulation (« tel quel »), l'agent principal a reformulé le rapport dans les deux outils ; sous Open Code, `routers/comments.py` est listé comme lu sans avoir été ouvert. L'effet de la formulation ci-dessus n'a pas été rejoué : à relever à l'essai. Sous Claude Code, durée 29 s, 0,22 USD ; sous Open Code, 13 s, 0,022 USD pour l'agent principal et 0,083 USD pour la session enfant.
+:::
+
+::: indice
+Le langage naturel déclenche la délégation dans les deux outils. Sous Claude Code, `@"explorateur (agent)"` fonctionne aussi en non interactif ; la mention interactive est à vérifier à la main. Si le rapport dépasse dix lignes, l'annoncer comme « une quinzaine de lignes » ou durcir les instructions de l'explorateur. Repli : ouvrir `src/tickets/application/comments.py` et `src/tickets/domain/ticket.py` et lire à voix haute la réponse ci-dessus.
+:::
+
+### Montrer la session du sous-agent et mesurer
+
+Ouvrir la session du sous-agent : le panneau d'agents sous Claude Code, la session enfant sous Open Code. Relever la fenêtre de l'agent principal après le rapport.
+
+::: claude-code
+`/context` après le rapport.
+:::
+
+::: opencode
+```console
+$ opencode session export <id de la session enfant>
+```
+:::
+
+::: attendu
+Le sous-agent lit beaucoup, l'agent principal reçoit peu. Relevé du 25 octobre 2026. Claude Code : 15 017 tokens lus par le sous-agent (6 outils : `Grep` 2, `Glob` 1, `Read` 3, 18,9 s), environ 1,2k reçus par l'agent principal (contexte de 32 397 à 33 575). Open Code : environ 38 000 tokens dont 23 365 lus en cache pour la session enfant (3 étapes), environ 640 reçus par l'agent principal (fenêtre de 12 146 à 12 790). Le panneau d'agents et la session enfant en TUI sont à relever à l'essai. `git status` est propre hors configuration : l'explorateur ne modifie rien.
+:::
+
+::: indice
+Remise à zéro : `git checkout -- . && git clean -fdq -e .venv -e node_modules`.
+:::
+
+## Démonstration 3 : livrer une spécification avec un orchestrateur {.tp}
+
+L'orchestrateur répartit la spécification 002 entre cinq agents. Branche `main` de `tickets-api` : spécification écrite, code absent.
+
+Prérequis : Claude Code 2.1.310 ou Open Code v2.0.32, `gh`, `docker`, `uv`, copie de session de la démonstration 1. La plus longue et la plus coûteuse : la lancer une fois.
+
+### Se placer sur main
+
+La spécification 002 est écrite dans `specs/002-responsable-priorite-haute/`, le code est absent, 37 tests passent. Variables `SESSION`, `TARGET` et `WORK` de la démonstration 1 posées.
+
+```bash
+cd "$WORK"
+git checkout -- . && git clean -fdq -e .venv -e node_modules
+git checkout main
+make db-up
+uv sync
+```
+
+Les cinq agents (`orchestrateur`, `explorateur`, `testeur`, `implementeur`, `verificateur`) sont dans le dépôt : `.claude/agents/` et `.opencode/agents/`.
+
+::: claude-code
+Aucune configuration à poser : l'orchestrateur se lance par `--agent` à l'étape 03.
+:::
+
+::: opencode
+Un `opencode.json` désigne l'orchestrateur comme agent par défaut, pour que la TUI démarre dessus. Il ne déclare aucun serveur MCP, donc aucun jeton.
+
+```bash
+cat > opencode.json <<'EOF'
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "amazon-bedrock/eu.anthropic.claude-sonnet-4-6",
+  "instructions": [".specify/memory/constitution.md"],
+  "default_agent": "orchestrateur"
+}
+EOF
+opencode debug agents
+```
+:::
+
+::: attendu
+`make test` affiche 37 tests verts. Sous Open Code, `opencode debug agents` liste `orchestrateur` en mode `primary`.
+:::
+
+::: indice
+Base de test : l'orchestrateur ajoute une migration Alembic (`assignee`). La base partagée reste à la révision `0002` après la démonstration et fait échouer les suivantes (14 erreurs alembic au relevé). Avant la démonstration 4, la ramener à l'état de `main` (`uv run alembic downgrade -1`) ou employer une base dédiée. Port 5432 pris : `docker stop tickets-api-db-1`.
+:::
+
+### Lire les instructions fixes
+
+::: claude-code
+```console
+$ cat .claude/agents/orchestrateur.md
+```
+
+Contenu attendu :
+
+```markdown
+---
+name: orchestrateur
+description: Livre une spec en répartissant exploration, tests, implémentation et vérification entre sous-agents ; ne modifie rien lui-même
+tools: Agent(explorateur, testeur, implementeur, verificateur), Read, Bash
+model: claude-sonnet-4-6
+maxTurns: 60
+---
+
+Tu livres la fonctionnalité nommée dans la consigne : sa spec est le `spec.md` du
+dossier `specs/NNN-nom/` qui porte ce numéro ; sans numéro, prends le dossier pointé
+par `.specify/feature.json`. Tu ne lis pas le code toi-même et tu ne modifies aucun
+fichier : tu découpes, tu délègues avec l'outil `Agent`, tu fais converger.
+
+Avant de commencer : lis la spec, et note ses scénarios d'acceptation avec leurs codes
+HTTP. Ce sont tes critères de vérification.
+
+Étape 1, explorer. Lance dans le même tour trois `explorateur`, chacun sur un
+périmètre, avec la question : que faut-il ajouter ou modifier ici pour livrer la spec ?
+Périmètres : `src/tickets/domain/` et `src/tickets/application/` ;
+`src/tickets/adapters/` ; `tests/`. Ne lance rien d'autre tant que les trois résumés
+ne sont pas revenus.
+
+Étape 2, tester. Délègue à `testeur` l'écriture des tests de la spec, rouges avant le
+code, en lui transmettant les scénarios d'acceptation et les trois résumés.
+
+Étape 3, implémenter. Délègue à `implementeur` la livraison du code, en lui
+transmettant la spec, les trois résumés et la liste des tests à faire passer. Il rend
+`make test` et `make lint` verts.
+
+Étape 4, vérifier. Lance dans le même tour trois `verificateur`, un critère chacun :
+`make test` passe ; `make lint` passe ; chaque scénario d'acceptation de la spec est
+respecté par le code en place, codes HTTP compris. Si un vérificateur rend un finding,
+renvoie le finding tel quel à `implementeur`, puis relance les trois vérificateurs.
+Trois passages de vérification au plus : au troisième, tu t'arrêtes et tu rapportes ce
+qui reste.
+
+Étape 5, rendre compte. En français, sans préambule : fichiers modifiés ; tests ajoutés ; findings
+rencontrés et leur sort ; nombre de passages de vérification ; ce qui reste à faire
+par un humain, dont la relecture du diff et la pull request.
+```
+:::
+
+::: opencode
+```console
+$ cat .opencode/agents/orchestrateur.md
+```
+
+Même corps que sous Claude Code, avec l'outil `task` à la place de `Agent`. L'en-tête diffère :
+
+```markdown
+---
+description: Livre une spec en répartissant exploration, tests, implémentation et vérification entre sous-agents ; ne modifie rien lui-même
+mode: primary
+steps: 60
+permission:
+  edit: deny
+  bash:
+    "*": deny
+    "make test*": allow
+    "make lint*": allow
+    "git status*": allow
+    "git diff*": allow
+    "cat *": allow
+  webfetch: deny
+---
+```
+:::
+
+::: attendu
+Cinq étapes fixes : trois explorations dans le même tour, tests rouges, implémentation, trois vérifications dans le même tour, compte rendu. L'orchestrateur ne modifie aucun fichier.
+:::
+
+### Lancer l'orchestrateur
+
+::: claude-code
+```console
+$ claude --agent orchestrateur --model claude-sonnet-4-6
+```
+:::
+
+::: opencode
+```console
+$ opencode
+```
+:::
+
+::: attendu
+La session démarre sur l'agent `orchestrateur`.
+:::
+
+::: indice
+Jouer en interactif. Claude Code en `claude -p` : le processus est resté bloqué 20 min après le résultat final (observé une fois). Open Code en `opencode run --agent orchestrateur` : la main est rendue après 16 s, quand les trois explorations partent en arrière-plan, alors que l'orchestration continue dans le démon (357 s en tout). Si les invites de permission ralentissent la salle, prévoir `--permission-mode acceptEdits` sous Claude Code.
+:::
+
+### Déléguer la livraison
+
+```prompt
+Livre la spécification 002 en suivant tes étapes.
+```
+
+Observer : explorations lancées dans le même tour, tests rouges du testeur, implémentation, vérifications par série de trois, remarque éventuellement renvoyée à l'implémentation.
+
+::: attendu
+Relevé du 25 octobre 2026, non interactif ; le TUI est à relever à l'essai. Claude Code : 18 appels `Agent` (5 explorateurs, 3 testeurs, 4 implementeurs, 6 verificateurs), tous depuis le fil principal ; une exploration isolée, puis trois ; deux séries de trois vérificateurs. Le testeur (30 tours) et l'implementeur (40 tours) atteignent leur limite au premier passage. Deux findings (lint, deux tests de la spécification 001 cassés), puis un sur le scénario 8. Fin : 71 tests verts, lint propre, 13 fichiers (10 de code et migration, 3 de tests), 18 min, 4,49 USD. Le compte rendu annonce trois passes de vérification, deux observées.
+
+Open Code : 11 sous-agents (3 explorateurs, testeur, implementeur, testeur de correction, 2 relances, 3 verificateurs) ; trois explorations et trois vérifications dans le même tour, aucun finding. Fin : 70 tests verts, 11 fichiers, 2,40 USD. Le compte rendu annonce 26 tests ajoutés, 33 réellement. Annoncer à la salle « 70 ou 71 tests » et « 11 ou 13 fichiers » : le nombre dépend de l'exécution.
+:::
+
+::: indice
+Le hook `guard-path.sh` des sous-agents (périmètre d'écriture sous Claude Code) n'a pas été observé. L'imbrication d'un sous-agent dans un sous-agent est refusée par défaut sous Open Code (`Subagent depth limit reached (1)`). Repli si la livraison échoue ou dure trop : `git checkout origin/feat/responsable-priorite-haute-done` (61 tests, `make test`), puis `git diff main..HEAD --stat` (12 fichiers : neuf de code et de documentation, dont la migration `20260907_0002_ticket_assignee.py`, et trois de tests).
+:::
+
+### Contrôler le résultat
+
+```console
+$ make test
+$ make lint
+$ git status --short
+```
+
+Relever le coût total (`/usage` sous Claude Code, coût affiché sous Open Code) et le nombre de sous-agents lancés.
+
+::: attendu
+Tests verts (37 de départ plus les tests ajoutés), lint propre, migration Alembic créée. Les fichiers modifiés sont ceux de l'implémentation et des tests ; l'orchestrateur n'a fait aucun commit.
+:::
+
+::: indice
+Remise à zéro : `git checkout -- . && git clean -fdq -e .venv -e node_modules` ; si l'orchestrateur a commité, `git reset --hard origin/main`. Rétablir la base de test avant la démonstration 4.
+:::
+
+## Démonstration 4 : boucle de correction sous garde-fous {.tp}
+
+Une commande du dépôt corrige le code jusqu'à des tests verts, sous garde-fous. Branche `fix/ticket-ferme-commentaires`, deux tests rouges.
+
+Prérequis : Claude Code 2.1.310 ou Open Code v2.0.32, `gh`, `docker`, `uv`, copie de session de la démonstration 1.
+
+### Se placer sur la branche et poser les garde-fous
+
+Variables `SESSION`, `TARGET` et `WORK` de la démonstration 1 posées. La commande se joue en session interactive.
+
+```bash
+cd "$WORK"
+git checkout -- . && git clean -fdq -e .venv -e node_modules
+git checkout fix/ticket-ferme-commentaires
+make db-up
+uv sync
+```
+
+::: claude-code
+La règle `deny` protège `tests/` contre l'outil `Edit`. Elle bloque aussi le testeur de l'orchestrateur : ne la garder que pour cette démonstration.
+
+```bash
+mkdir -p .claude
+cat > .claude/settings.json <<'EOF'
+{
+  "model": "claude-sonnet-4-6",
+  "permissions": {
+    "allow": [
+      "Bash(make test *)",
+      "Bash(make lint *)",
+      "Bash(uv run pytest *)",
+      "Bash(uv run ruff *)",
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)"
+    ],
+    "deny": ["Edit(tests/**)"]
+  }
+}
+EOF
+```
+:::
+
+::: opencode
+L'agent `implementeur` en forme v2 : l'édition est autorisée, puis refusée sur `tests/*`, `.github/*` et `.opencode/*` (le joker `*` couvre `/`, la dernière règle correspondante l'emporte).
+
+```bash
+mkdir -p .opencode/agents
+cat > .opencode/agents/implementeur.md <<'EOF'
+---
+description: Modifie le code de l'application sous src/ et fait passer make lint et make test ; ne touche jamais aux tests
+mode: subagent
+steps: 40
+permissions:
+  - { action: edit, resource: "*", effect: allow }
+  - { action: edit, resource: "tests/*", effect: deny }
+  - { action: edit, resource: ".github/*", effect: deny }
+  - { action: edit, resource: ".opencode/*", effect: deny }
+  - { action: shell, resource: "*", effect: deny }
+  - { action: shell, resource: "make *", effect: allow }
+  - { action: shell, resource: "uv run *", effect: allow }
+  - { action: shell, resource: "git status*", effect: allow }
+  - { action: shell, resource: "git diff*", effect: allow }
+  - { action: shell, resource: "git log*", effect: allow }
+  - { action: webfetch, resource: "*", effect: deny }
+  - { action: subagent, resource: "*", effect: deny }
+---
+
+Tu implémentes ou corriges le code de l'application dans `src/tickets/`, en respectant
+l'architecture hexagonale décrite dans `AGENTS.md` : règle métier dans `domain/`, cas
+d'usage dans `application/`, routes dans `adapters/inbound/http/`, base dans
+`adapters/outbound/postgres/` avec une migration Alembic écrite à la main.
+
+Les tests sont ta cible, jamais ton chantier : tu ne modifies aucun fichier sous
+`tests/`. Si un test te paraît faux, tu le dis dans ta réponse et tu t'arrêtes.
+
+Avant de rendre la main : `make lint` et `make test` verts (lance chaque commande seule, sans `cd` ni `&&`), ou l'explication précise de
+ce qui bloque.
+
+Tu réponds en français, identifiants et messages du code en anglais.
+
+Réponse, sans préambule :
+
+- Cause : une phrase.
+- Fichiers modifiés : liste des chemins.
+- Résultat : la dernière ligne de `make test` et de `make lint`.
+EOF
+opencode debug agents
+```
+:::
+
+```console
+$ make test
+```
+
+::: attendu
+`2 failed, 37 passed`. Échecs : `test_add_comment_on_closed_ticket_returns_409` et `test_closed_ticket_refuses_comments`. Sous Open Code, `opencode debug agents` décode `implementeur`.
+:::
+
+::: indice
+Base de test laissée à la révision Alembic `0002` par la démonstration 3 : `make test` donne 14 erreurs et l'agent est tenté de réécrire une migration. Repartir d'une base propre (`uv run alembic downgrade -1`, ou `make db-down` puis `make db-up`). Port 5432 pris : `docker stop tickets-api-db-1`.
+:::
+
+### Lire la commande
+
+::: claude-code
+```console
+$ cat .claude/commands/fix-until-green.md
+```
+
+```markdown
+---
+description: Corrige le code jusqu'à ce que make test passe, cinq relances au plus
+allowed-tools: Bash(make test *)
+---
+
+Délègue ce travail au sous-agent `implementeur`.
+
+Objectif : $ARGUMENTS
+
+État actuel des tests :
+!`make test 2>&1 | tail -40`
+
+Corrige la cause de l'échec dans le code de l'application, jamais dans les tests.
+Relance `make test` après chaque correction. Arrête-toi dès que tout passe, ou après
+cinq relances en expliquant ce qui bloque. Compte tes relances dans ta réponse.
+```
+:::
+
+::: opencode
+```console
+$ cat .opencode/commands/fix-until-green.md
+```
+
+```markdown
+---
+description: Corrige le code jusqu'à ce que make test passe, cinq relances au plus
+agent: implementeur
+---
+
+Objectif : $ARGUMENTS
+
+État actuel des tests :
+!`make test 2>&1 | tail -40`
+
+Corrige la cause de l'échec dans le code de l'application, jamais dans les tests.
+Relance `make test` après chaque correction. Arrête-toi dès que tout passe, ou après
+cinq relances en expliquant ce qui bloque. Compte tes relances dans ta réponse.
+```
+:::
+
+::: attendu
+La limite de cinq relances est une instruction du prompt : un garde-fou faible, que seul un script ou le harnais rend contraignant.
+:::
+
+### Lancer la boucle
+
+::: claude-code
+```console
+$ claude --model claude-sonnet-4-6
+```
+:::
+
+::: opencode
+```console
+$ opencode
+```
+:::
+
+```prompt
+/fix-until-green interdire les commentaires sur un ticket fermé
+```
+
+::: attendu
+Tous les tests passent en cinq relances au plus (39 verts). Le correctif tient en trois à cinq lignes dans `src/tickets/domain/ticket.py` : import de `TicketClosed` et `if ticket.status == Status.CLOSED: raise TicketClosed(ticket.id)` dans `Comment.write`. Relevé du 25 octobre 2026, non interactif. Claude Code : 42 s, 0,29 USD, `2 failed, 37 passed` avant, `39 passed` après, une relance, pas d'échec persistant à montrer. Open Code : 43 s, 0,22 USD (agent principal 0,049, sous-agent 0,172), 39 verts, même diff limité à `ticket.py`. Aucune tentative de contourner les tests dans les deux outils. Le déroulé de `/fix-until-green` en TUI est à relever à l'essai.
+:::
+
+::: indice
+Sous Open Code, en non interactif, `/fix-until-green` n'est pas développé : l'agent lit le fichier de la commande avec `read`, lance `make test` puis délègue à `implementeur`. Le sous-agent a écrit `cd <chemin> && make test`, refusé par la règle `shell make *` : l'agent `implementeur` ci-dessus demande de lancer chaque commande seule, sans `cd`. Sans cette consigne, l'agent principal lance les tests à sa place. Si l'agent tente de modifier `tests/`, montrer le refus : `Edit(tests/**)` sous Claude Code, `Permission denied: edit` sous Open Code. Sous Claude Code, `sed -i` par `Bash` échappe à `Edit`. Repli : `git checkout origin/fix/ticket-ferme-commentaires-done` (39 verts) et lecture du `git diff` contre la branche de départ.
+:::
+
+### Contrôler le diff
+
+```console
+$ make test
+$ git diff --stat
+```
+
+Lire le `git diff` à voix haute.
+
+::: attendu
+`make test` : 39 verts. Seul `src/` change (`src/tickets/domain/ticket.py`) ; `tests/` est intact.
+:::
+
+::: indice
+Remise à zéro, deux tests de nouveau rouges : `git checkout -- . && git clean -fdq -e .venv -e node_modules`, puis reposer les garde-fous de l'étape 01.
+:::
+
+## Démonstration 5 : corriger un bandeau par MCP {.tp}
+
+Un serveur MCP pilote un navigateur : l'agent de code constate un défaut d'interface, le corrige et vérifie le rendu. Branche `feat/front` de `tickets-api`.
+
+Prérequis : Claude Code 2.1.310 ou Open Code v2.0.32, `gh`, `docker`, `uv`, `node`, copie de session de la démonstration 1.
+
+### Préparer la copie et le navigateur
+
+La branche porte un bandeau `position: fixed` qui recouvre le formulaire de `/ui` à 1280x720 (titre « Tickets » masqué, bouton « Ajouter » rogné) ; l'API répond correctement et les 37 tests passent. Le serveur Playwright se lance par `npx @playwright/mcp@0.0.83` (version testée le 25 octobre 2026, à revérifier par `npm view @playwright/mcp version`).
+
+```bash
+cd "$WORK"
+git checkout -- . && git clean -fdq -e .venv -e node_modules
+git checkout feat/front
+make db-up
+uv sync
+npx --yes @playwright/mcp@0.0.83 install-browser chrome-for-testing
+```
+
+::: attendu
+Le navigateur s'installe (12 s, 118,6 Mo, `chromium_headless_shell-1247` dans `~/.cache/ms-playwright`).
+:::
+
+::: indice
+Playwright MCP 0.0.83 cible par défaut le canal `chrome` (Google Chrome système) : sans Chrome installé, le serveur échoue (`Chromium distribution 'chrome' is not found at /opt/google/chrome/chrome`). La configuration ci-dessous passe `--browser chromium`, qui s'appuie sur ce navigateur. `npx playwright install chromium` ne suffit pas : la révision diffère de celle attendue par le serveur. Réseau coupé : la veille, lancer une fois `npx @playwright/mcp@0.0.83 --help` pour remplir le cache de npm (à vérifier hors ligne).
+:::
+
+### Déclarer le serveur Playwright
+
+::: claude-code
+La branche déclare `@latest` : le remplacer par la version épinglée.
+
+```bash
+mkdir -p .claude
+cat > .mcp.json <<'EOF'
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@0.0.83", "--browser", "chromium", "--headless", "--isolated"]
+    }
+  }
+}
+EOF
+cat > .claude/settings.json <<'EOF'
+{
+  "model": "claude-sonnet-4-6",
+  "permissions": {
+    "allow": [
+      "Bash(make test *)",
+      "Bash(make lint *)",
+      "Bash(uv run pytest *)",
+      "Bash(uv run ruff *)",
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "mcp__playwright"
+    ]
+  }
+}
+EOF
+jq empty .mcp.json .claude/settings.json
+```
+:::
+
+::: opencode
+```bash
+cat > opencode.json <<'EOF'
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "amazon-bedrock/eu.anthropic.claude-sonnet-4-6",
+  "instructions": [".specify/memory/constitution.md"],
+  "mcp": {
+    "servers": {
+      "playwright": {
+        "type": "local",
+        "command": ["npx", "@playwright/mcp@0.0.83", "--browser", "chromium", "--headless", "--isolated"]
+      }
+    }
+  },
+  "permissions": [
+    { "action": "playwright_*", "resource": "*", "effect": "allow" }
+  ]
+}
+EOF
+jq empty opencode.json
+opencode debug config
+```
+:::
+
+::: attendu
+Les fichiers JSON sont valides (`jq` ne affiche rien). Sous Open Code, `opencode debug config` décode l'entrée `playwright`.
+:::
+
+::: indice
+`--headless` lance un navigateur sans fenêtre, `--isolated` un profil en mémoire ; la fenêtre visible (sans `--headless`) n'a pas été essayée. Les permissions `allow` sur Playwright conviennent à une démonstration locale seulement.
+:::
+
+### Lancer l'API et le front
+
+```bash
+cd "$WORK"
+setsid nohup make run > serve.log 2>&1 &
+echo $! > serve.pid
+sleep 5
+curl -s -o /dev/null -w "%{http_code}\n" http://localhost:8000/ui/
+make test
+```
+
+::: attendu
+`curl` affiche `200`. `make test` : 37 verts. Dans un navigateur, `http://localhost:8000/ui/` montre le bandeau jaune qui recouvre le formulaire.
+:::
+
+::: indice
+L'API et les tests partagent la même base : ne pas jouer deux démonstrations en parallèle. Journal du serveur : `serve.log`. Pour arrêter l'API en fin de démonstration : `kill -- -$(cat serve.pid) 2>/dev/null || kill $(cat serve.pid)`, puis `rm serve.pid`. Port 5432 pris : `docker stop tickets-api-db-1`.
+:::
+
+### Lancer l'agent de code
+
+::: claude-code
+```console
+$ claude --model claude-sonnet-4-6
+```
+
+Approuver le serveur du projet à la demande d'approbation, puis `/mcp` pour lister les outils.
+:::
+
+::: opencode
+```console
+$ opencode
+```
+
+Aucune approbation ; `/mcps` pour lister les outils.
+:::
+
+::: attendu
+Le serveur `playwright` figure dans la liste. L'invite d'approbation, `/mcp` et `/mcps` n'ont pas été relevés : à relever à l'essai.
+:::
+
+### Constater, corriger, vérifier
+
+```prompt
+Avec le serveur MCP playwright, ouvre http://localhost:8000/ui/ à 1280x720, saisis un titre dans le champ puis clique sur « Ajouter », constate le défaut d'interface, corrige-le dans src/tickets/ui/style.css, sans sous-agent, et vérifie le rendu par une capture. Ne modifie ni la configuration MCP ni les tests.
+```
+
+::: attendu
+Capture initiale : le bandeau jaune recouvre le formulaire. Capture finale : le formulaire et le bouton « Ajouter » sont visibles et cliquables. Le défaut vient de `.bandeau` en `position: fixed`. Le correctif de l'agent varie, ne pas annoncer une ligne précise : le bandeau restait fixe, avec `body { margin: 0; padding-top: 64px; }` sous Claude Code et `main { padding: 72px 16px 32px; }` sous Open Code. Outils observés : `browser_resize`, `browser_navigate`, `browser_take_screenshot`, `browser_fill_form`, `browser_click`, `browser_evaluate` sous Claude Code ; `browser_resize`, `browser_navigate`, `browser_snapshot`, `browser_take_screenshot`, `browser_click`, `browser_run_code_unsafe` sous Open Code. Noms côté agent : `mcp__playwright__browser_navigate` sous Claude Code, `tools.playwright.browser_navigate` dans l'outil `execute` sous Open Code.
+
+Relevé du 25 octobre 2026, non interactif, avec l'ancien prompt (sans URL ni clic). Claude Code : 155 s, 33 tours, 0,72 USD, cinq captures de vérification. Open Code : 77 s, 37 étapes, 0,415 USD, aucun clic sur « Ajouter ». L'effet du prompt ci-dessus n'a pas été rejoué : à relever à l'essai.
+:::
+
+::: indice
+Piège du cache : la page reste en cache après la correction, deux captures montrent la feuille de style non corrigée ; l'agent recharge la feuille par `browser_evaluate` (Claude Code) ou `browser_run_code_unsafe` (Open Code). Sous Open Code, `browser_click` avec `target: "ref=e6"` échoue, `"#titre"` fonctionne. Avec l'ancien prompt, l'agent cherchait l'URL par `curl`, et sous Open Code il a modifié `opencode.json` pour ajouter `--browser chromium` : d'où la consigne de ne pas toucher à la configuration MCP.
+
+Repli si le serveur ou le navigateur est indisponible : appliquer le correctif de référence (le bandeau devient `position: static`), recharger `/ui/` et montrer le résultat dans un navigateur.
+
+```console
+$ sed -i 's/^\.bandeau { position: fixed; top: 0; left: 0; right: 0;/.bandeau { position: static;/' src/tickets/ui/style.css
+```
+:::
+
+### Contrôler le correctif
+
+```console
+$ make test
+$ git diff -- src tests
+$ git status --short
+```
+
+::: attendu
+`make test` : 37 verts. Le diff de `src` et `tests` se limite à `src/tickets/ui/style.css`. Le serveur écrit des captures et des fichiers `page-*.yml` dans `.playwright-mcp/` : l'ignorer dans `git status`, ou l'ajouter au `.gitignore` de la copie.
+:::
+
+::: indice
+Remise à zéro : arrêter l'API (commande de l'étape 03), puis `git checkout -- . && git clean -fdq -e .venv -e node_modules`.
 :::
 
 ## Glossaire : notions de base {kicker="Glossaire"}
