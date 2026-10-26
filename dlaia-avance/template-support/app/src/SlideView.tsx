@@ -180,7 +180,7 @@ function ContentBody({ slide }: { slide: Slide }) {
               href={`#${slide.tpId}`}
               className="slide-body mt-14 inline-flex items-center gap-6 rounded-full bg-slide-accent px-12 py-5 text-slide-paper no-underline!"
             >
-              Ouvrir l'énoncé →
+              Ouvrir les étapes →
             </a>
           </div>
           <ol className="min-w-0 border-t-4 border-slide-accent pt-7">

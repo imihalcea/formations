@@ -484,7 +484,7 @@ function buildTp(b: Block, ctx: Ctx, id: string, slideIndex: number): { slide: S
   const duration = b.attrs["duration"];
   const slide: Slide = {
     ...base,
-    kicker: base.kicker ?? "Travaux pratiques",
+    kicker: base.kicker ?? "Démonstration",
     kind: "tp",
     tpId: id,
     introHtml,

@@ -74,7 +74,7 @@ export function TpPage({ tp, section, onBack }: { tp: Tp; section: Section; onBa
 
       <article className="mx-auto max-w-3xl px-4 pb-24 pt-10">
         <p className="font-mono text-xs font-semibold uppercase tracking-[0.14em] text-slide-accent">
-          {section.number ? `Module ${section.number} · ` : ""}Travaux pratiques
+          {section.number ? `Module ${section.number} · ` : ""}Démonstration
         </p>
         <div className="mt-3 flex flex-wrap items-start justify-between gap-4">
           <h1 className="font-display text-4xl leading-tight tracking-tight">{tp.title}</h1>

@@ -45,7 +45,7 @@ Chaque titre `##` ouvre une slide. Une classe entre accolades fixe son type, et 
 | `quote` | lignes `> …` | `author`, `kicker` |
 | `video` | aucun ; le lecteur se charge au clic | `src` (obligatoire : adresse https YouTube, Vimeo ou fichier `.mp4` / `.webm`), `start` (secondes, à défaut le paramètre `t` de l'adresse), `kicker` |
 | `compare` | conteneurs `claude-code` et `opencode`, texte commun facultatif au-dessus ; seule la variante de l'outil choisi s'affiche (sélecteur en haut à droite, `?outil=opencode` dans l'adresse) | `kicker` |
-| `tp` | voir « Travaux pratiques » | `duration`, `kicker` |
+| `tp` | voir « Démonstrations (type tp) » | `duration`, `kicker` |
 | `end` | sous-titre | `kicker` |
 
 Les conteneurs `::: nom` … `:::` complètent une slide :
@@ -71,9 +71,9 @@ Un bloc de code vide peut reprendre le contenu d'un fichier, chemin relatif au f
 ```
 ````
 
-## Travaux pratiques
+## Démonstrations (type tp)
 
-Le type `tp` sert aux démonstrations de fin de module (`## Démonstration N : titre {.tp}`), jouées par le formateur ; « stagiaire » désigne alors le lecteur de la page. Un TP s'écrit dans le fichier de son module. Il produit une slide de lancement, projetée en salle, et une page d'énoncé qui défile, lisible en demi-écran à côté du terminal. Le stagiaire travaille uniquement avec cette page.
+Le type `tp` sert aux démonstrations de fin de module (`## Démonstration N : titre {.tp}`), jouées par le formateur ; « stagiaire » désigne alors le lecteur de la page. Un TP s'écrit dans le fichier de son module. Il produit une slide de lancement, projetée en salle, et une page d'étapes qui défile, lisible en demi-écran à côté du terminal. Le stagiaire travaille uniquement avec cette page.
 
 ```markdown
 ## TP 3 : explorer le code {.tp duration="45 min"}

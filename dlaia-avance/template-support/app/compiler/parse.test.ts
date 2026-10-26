@@ -95,6 +95,7 @@ describe("compileDeck", () => {
     expect(tp.steps[0]!.segments.map((s) => s.kind)).toEqual(["common", "claude-code", "opencode", "attendu"]);
     expect(tp.corrigeHtml).toContain("avec_tva");
     expect(deck.slides[tp.slideIndex]!.kind).toBe("tp");
+    expect(deck.slides[tp.slideIndex]!.kicker).toBe("Démonstration");
   });
 
   it("refuse une étape de TP sans résultat attendu", async () => {
