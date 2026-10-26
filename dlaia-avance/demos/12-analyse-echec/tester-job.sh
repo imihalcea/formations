@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Teste ci/lancer-job.sh sans modèle ni GitHub : faux `gh` et faux `claude` dans le PATH.
+# Teste ci/analyser-echec.sh sans modèle ni GitHub : faux `gh` et faux `claude` dans le PATH.
 # Vérifie le journal passé à l'agent (tronqué), le commentaire posté, et « rien à analyser »
 # quand l'exécution de ci a réussi.
 set -euo pipefail
@@ -24,7 +24,7 @@ STUB
 chmod +x "$tmp/bin/"*
 export PATH="$tmp/bin:$PATH" JOURNAL_GH="$tmp/gh.log"
 
-MAX_LIGNES=10 SORTIE="$tmp/s1" "$ici/ci/lancer-job.sh" claude 123 9 > "$tmp/log1" 2>&1
+MAX_LIGNES=10 SORTIE="$tmp/s1" "$ici/ci/analyser-echec.sh" claude 123 9 > "$tmp/log1" 2>&1
 grep -q "Journal : 51 lignes" "$tmp/log1" || { echo "KO décompte"; cat "$tmp/log1"; exit 1; }
 [ "$(wc -l < "$tmp/s1/journal.txt")" = 10 ] || { echo "KO troncature"; exit 1; }
 grep -q "pr comment 9 --body-file" "$tmp/gh.log" || { echo "KO commentaire"; cat "$tmp/gh.log"; exit 1; }
@@ -32,6 +32,6 @@ grep -q "10 lignes lues" "$tmp/gh.log.corps" && grep -q "colonne assignee sans m
 echo "OK journal de 51 lignes tronqué à 10, commentaire posté sur la pull request 9"
 
 : > "$tmp/gh.log"
-FAUSSE_CONCLUSION=success SORTIE="$tmp/s2" "$ici/ci/lancer-job.sh" claude 123 9 > "$tmp/log2" 2>&1
+FAUSSE_CONCLUSION=success SORTIE="$tmp/s2" "$ici/ci/analyser-echec.sh" claude 123 9 > "$tmp/log2" 2>&1
 grep -q "rien à analyser" "$tmp/log2" && [ ! -s "$tmp/gh.log" ] || { echo "KO succès"; exit 1; }
 echo "OK exécution réussie : rien à analyser, aucun commentaire"

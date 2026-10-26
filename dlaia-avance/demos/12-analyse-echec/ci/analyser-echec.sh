@@ -2,13 +2,13 @@
 # Étapes du job « analyse-echec ». Seule source de ces étapes : le workflow analyse-echec.yml l'appelle,
 # et le formateur le lance à la main sur son poste.
 #
-# Usage : ci/lancer-job.sh <claude|opencode> [identifiant de l'exécution de ci] [numéro de pull request]
+# Usage : ci/analyser-echec.sh <claude|opencode> [identifiant de l'exécution de ci] [numéro de pull request]
 # Sans argument : dernière exécution du workflow ci sur la branche courante et sa pull request.
 # Variables : RUN, PR (comme les arguments), MAX_LIGNES (journal passé à l'agent, défaut 3000),
 #   MAX_TURNS (Claude Code, défaut 6), DELAI (secondes, défaut 540), SORTIE (défaut analyse-sortie),
 #   DRY_RUN=1 (affiche le commentaire au lieu de le poster).
 set -euo pipefail
-outil="${1:?usage: lancer-job.sh <claude|opencode> [exécution] [pull request]}"
+outil="${1:?usage: analyser-echec.sh <claude|opencode> [exécution] [pull request]}"
 run="${2:-${RUN:-}}"
 pr="${3:-${PR:-}}"
 sortie="${SORTIE:-analyse-sortie}"

@@ -24,9 +24,9 @@ else
   mkdir -p .claude/agents .opencode/agents .github/workflows ci
   cp "$ici/artefacts/.claude/agents/diagnostiqueur.md" .claude/agents/
   cp "$ici/artefacts/.opencode/agents/diagnostiqueur.md" .opencode/agents/
-  cp "$ici/ci/lancer-job.sh" ci/
+  cp "$ici/ci/analyser-echec.sh" ci/
   cp "$ici/workflows/$wf" .github/workflows/analyse-echec.yml
-  chmod +x ci/lancer-job.sh
+  chmod +x ci/analyser-echec.sh
   git add .claude/agents/diagnostiqueur.md .opencode/agents/diagnostiqueur.md ci .github/workflows/analyse-echec.yml
   git commit --quiet -m "Analyse d'échec : agent, script du job et workflow ($outil)"
   git push --quiet origin main

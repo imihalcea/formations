@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Étape de validation : lit la sortie texte du reviewer sur l'entrée standard et rend sur la sortie
 # standard les findings conformes à revue/finding.schema.json, un objet JSON par ligne. Les autres
-# lignes (prose, balises ```json, objets invalides) sont écartées ; le décompte va sur stderr.
+# lignes (prose, balises de code, objets invalides) sont écartées ; le décompte va sur stderr.
 set -uo pipefail
 filtre='select(type=="object"
   and ((keys|sort) == ["fichier","ligne","regle","resume","scenario","severite"])

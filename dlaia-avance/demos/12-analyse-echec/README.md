@@ -1,6 +1,6 @@
 # Démonstration 12 : analyse d'échec
 
-Slide « Démonstration : analyse d'échec ». La branche `demo/build-casse` déclare la colonne `assignee` dans `tables.py` sans migration Alembic : `ci` échoue, le journal de CI est long, l'analyse d'échec nomme la cause et propose la migration en commentaire de la pull request. Le workflow `analyse-echec.yml` (événement `workflow_run`) est montré et commité dans le dépôt de session ; `ci/lancer-job.sh <outil>` rejoue ses étapes sur le poste. Seul le workflow `ci` tourne chez GitHub.
+Slide « Démonstration : analyse d'échec ». La branche `demo/build-casse` déclare la colonne `assignee` dans `tables.py` sans migration Alembic : `ci` échoue, le journal de CI est long, l'analyse d'échec nomme la cause et propose la migration en commentaire de la pull request. Le workflow `analyse-echec.yml` (événement `workflow_run`) est montré et commité dans le dépôt de session ; `ci/analyser-echec.sh <outil>` rejoue ses étapes sur le poste. Seul le workflow `ci` tourne chez GitHub.
 
 ## Préalables
 
@@ -14,12 +14,12 @@ Piège local : sur une base de test déjà migrée par un autre passage (migrati
 demos/12-analyse-echec/session.sh <session> <claude|opencode>
 ```
 
-Actions sortantes (essai à blanc par le formateur avant la séance) : création du dépôt privé `imihalcea/tickets-api-<session>` et push d'un commit sur sa branche `main`, qui ajoute `.claude/agents/diagnostiqueur.md`, `.opencode/agents/diagnostiqueur.md`, `ci/lancer-job.sh` et `.github/workflows/analyse-echec.yml` du seul outil choisi (un workflow `workflow_run` est lu sur la branche par défaut). La copie de travail est ensuite placée sur `demo/build-casse`.
+Actions sortantes (essai à blanc par le formateur avant la séance) : création du dépôt privé `imihalcea/tickets-api-<session>` et push d'un commit sur sa branche `main`, qui ajoute `.claude/agents/diagnostiqueur.md`, `.opencode/agents/diagnostiqueur.md`, `ci/analyser-echec.sh` et `.github/workflows/analyse-echec.yml` du seul outil choisi (un workflow `workflow_run` est lu sur la branche par défaut). La copie de travail est ensuite placée sur `demo/build-casse`.
 
 | Fichier | Rôle |
 |---|---|
 | `workflows/analyse-echec.claude-code.yml`, `.opencode.yml` | `on: workflow_run` (`workflows: [ci]`, `types: [completed]`), `if: conclusion == 'failure'`, `permissions` (`contents: read`, `actions: read`, `pull-requests: write`), `concurrency`, `timeout-minutes: 10`, appel du script, `upload-artifact` avec `if: always()` |
-| `ci/lancer-job.sh` | exécution de `ci` trouvée (ou donnée), « rien à analyser » si elle n'a pas échoué ; `gh run view --log-failed` ; agent sans `GH_TOKEN` ; commentaire par `gh pr comment` ; rien n'est poussé |
+| `ci/analyser-echec.sh` | exécution de `ci` trouvée (ou donnée), « rien à analyser » si elle n'a pas échoué ; `gh run view --log-failed` ; agent sans `GH_TOKEN` ; commentaire par `gh pr comment` ; rien n'est poussé |
 | `artefacts/.claude/agents/diagnostiqueur.md`, `.opencode/agents/diagnostiqueur.md` | agent en lecture seule : cause avec la ligne du journal, fichiers, correctif en diff |
 | `reference/20260907_0002_ticket_assignee.py` | migration de repli, vérifiée : copiée dans `migrations/versions/`, `make test` donne 61 verts |
 
@@ -42,8 +42,8 @@ Dans la copie (`cd ~/travail/tickets-api-<session>`), branche `demo/build-casse`
 2. Faire défiler le journal avec la salle : le nombre de lignes s'affiche avec `gh run view <id> --log-failed | wc -l` (chez GitHub : à relever en séance ; sur le poste, `uv run pytest -q` donne 6597 lignes pour 19 échecs).
 3. Lire `.github/workflows/analyse-echec.yml` (`git show origin/main:.github/workflows/analyse-echec.yml`) : `workflow_run`, condition d'échec, droits, durée. Dire que le fichier est lu sur la branche principale, pas sur celle de la pull request.
 4. Jouer le job sur le poste :
-   - Claude Code : `git checkout origin/main -- ci .claude .opencode && ci/lancer-job.sh claude`
-   - Open Code : `git checkout origin/main -- ci .claude .opencode && ci/lancer-job.sh opencode`
+   - Claude Code : `git checkout origin/main -- ci .claude .opencode && ci/analyser-echec.sh claude`
+   - Open Code : `git checkout origin/main -- ci .claude .opencode && ci/analyser-echec.sh opencode`
 
    Sans `.claude .opencode`, la branche `demo/build-casse` ne porte pas l'agent : sous Open Code, `Error: Agent not found: "diagnostiqueur"` (code 1). En CI le dépôt extrait est `main`, qui porte l'agent.
 
@@ -56,7 +56,7 @@ Dans la copie (`cd ~/travail/tickets-api-<session>`), branche `demo/build-casse`
 
    7b. Variante Open Code (non rejoué) : lancer `opencode --model amazon-bedrock/eu.anthropic.claude-sonnet-4-6`, puis coller `/fix-until-green` dans la TUI ; `opencode run` ne développe pas la commande (voir le runbook de la démonstration 4). Texte à coller si la commande n'est pas développée : `Lis .opencode/commands/fix-until-green.md et applique-la : fais passer make test, sans modifier tests/.`
 
-   7c. `git push`, puis `gh run watch` : `ci` verte. `ci/lancer-job.sh <outil>` répond « rien à analyser ».
+   7c. `git push`, puis `gh run watch` : `ci` verte. `ci/analyser-echec.sh <outil>` répond « rien à analyser ».
 
    7d. Repli sans modèle : `cp <dépôt de formation>/demos/12-analyse-echec/reference/20260907_0002_ticket_assignee.py src/tickets/adapters/outbound/postgres/migrations/versions/` puis `git add`, commit, push.
 
@@ -87,7 +87,7 @@ Limite à dire : dans un vrai job `workflow_run`, le dépôt extrait est `main`,
 
 | Point | Claude Code | Open Code |
 |---|---|---|
-| Workflow | `analyse-echec.claude-code.yml` : `./ci/lancer-job.sh claude`, `MAX_TURNS` | `analyse-echec.opencode.yml` : `./ci/lancer-job.sh opencode` |
+| Workflow | `analyse-echec.claude-code.yml` : `./ci/analyser-echec.sh claude`, `MAX_TURNS` | `analyse-echec.opencode.yml` : `./ci/analyser-echec.sh opencode` |
 | Étape de l'agent de code | `claude -p … --model claude-sonnet-4-6 --max-turns 6 --output-format json --allowedTools Read Grep Glob`, journal en entrée standard | `opencode run --model amazon-bedrock/eu.anthropic.claude-sonnet-4-6 --agent diagnostiqueur`, journal en entrée standard |
 | Agent | `.claude/agents/diagnostiqueur.md`, `tools: Read, Grep, Glob` | `.opencode/agents/diagnostiqueur.md`, `permissions` : `edit`, `shell`, `webfetch` refusés |
 
@@ -95,7 +95,7 @@ L'action `anthropics/claude-code-action@v1` (entrées `prompt` et `claude_args: 
 
 ## Repli
 
-`sortie-reference.md` pour la forme du commentaire. Si `gh pr create` échoue ou si `ci` ne tourne pas : `ci/lancer-job.sh <outil> <exécution> <pull request>` sur une exécution existante, ou `DRY_RUN=1` pour afficher le commentaire sans le poster. Si le modèle ne répond pas : montrer la ligne d'erreur dans le journal (`gh run view <id> --log-failed | grep -m1 UndefinedColumn`), lire `reference/20260907_0002_ticket_assignee.py` comme correctif attendu et l'appliquer (étape 7, repli sans modèle). La branche `demo/build-casse-done` du plan n'existe pas dans tickets-api : sa création est une action sortante laissée au formateur.
+`sortie-reference.md` pour la forme du commentaire. Si `gh pr create` échoue ou si `ci` ne tourne pas : `ci/analyser-echec.sh <outil> <exécution> <pull request>` sur une exécution existante, ou `DRY_RUN=1` pour afficher le commentaire sans le poster. Si le modèle ne répond pas : montrer la ligne d'erreur dans le journal (`gh run view <id> --log-failed | grep -m1 UndefinedColumn`), lire `reference/20260907_0002_ticket_assignee.py` comme correctif attendu et l'appliquer (étape 7, repli sans modèle). La branche `demo/build-casse-done` du plan n'existe pas dans tickets-api : sa création est une action sortante laissée au formateur.
 
 ## Remise à zéro
 

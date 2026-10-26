@@ -24,7 +24,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Analyse d'échec
-        run: ./ci/lancer-job.sh claude
+        run: ./ci/analyser-echec.sh claude
         env:
           GH_TOKEN: ${{ github.token }}
           RUN: ${{ github.event.workflow_run.id }}
