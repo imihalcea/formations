@@ -64,7 +64,7 @@ Les termes des modules 1 à 3 de DLAIA (agent, harnais, fenêtre de contexte, sk
 | agent principal | agent de code qui reçoit la tâche de l'utilisateur et lance les sous-agents ; slide « Définition d'un sous-agent » | 01 | agent parent, agent racine |
 | sous-agent | agent lancé par l'agent principal, avec sa propre fenêtre de contexte ; seul son rapport revient ; slide « Définition d'un sous-agent » | 01 | agent enfant, spécialiste, worker |
 | orchestrateur | agent qui découpe une tâche, la délègue à des sous-agents et fait converger leurs rapports, sans rien modifier lui-même ; slide « Définition d'un orchestrateur » | 01 | chef d'orchestre, superviseur, graphe dynamique |
-| horizon de tâche | durée d'une tâche, mesurée en temps humain, qu'un modèle mène à bien avec une probabilité de 50 % (mesure METR) ; slide « L'horizon double en 131 jours » | 01 | autonomie, durée de tâche |
+| horizon de tâche | durée d'une tâche, mesurée en temps humain, qu'un modèle mène à bien avec une probabilité de 50 % (mesure METR) ; notes de la slide « Des tâches toujours plus longues » | 01 | autonomie, durée de tâche |
 | critère vérifiable | commande dont le code de retour dit si le travail est fini ; slide « Un critère vérifiable » | 01 | condition d'arrêt, test de sortie, vert, commande de vérification |
 | boucle | relance de l'agent de code tant qu'un critère vérifiable n'est pas satisfait ; slide « Définition d'une boucle » | 01 | itération, cycle, loop |
 | relance | nouvel appel de l'agent de code par la boucle quand le critère vérifiable n'est pas satisfait ; slide « Définition d'une boucle » | 01 | itération, essai, retry |

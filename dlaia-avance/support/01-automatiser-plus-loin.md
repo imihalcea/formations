@@ -533,11 +533,10 @@ Conclut la section : définition, permissions, étapes, parallélisme, coût, d�
 Transition : une exécution unique, avec des sous-agents. Reste l'arrêt prématuré : la section Boucles.
 :::
 
-## L'horizon double en 131 jours {.facts kicker="Boucles"}
+## Des tâches toujours plus longues {.facts kicker="Boucles"}
 
-- **Horizon de tâche** durée d'une tâche, en temps humain, qu'un modèle mène à bien avec 50 % de réussite
-- **131 jours** pour doubler cet horizon
-- **Tâche plus longue** dépasse une seule exécution de l'agent de code
+- **Tous les 131 jours, la durée des tâches double** on confie à l'agent de code des tâches de plus en plus complexes
+- **Mais leur taux de réussite est de 50 %** une tâche longue sur deux n'est pas menée à bien en une seule exécution
 
 ::: sources
 - [METR, Time Horizon 1.1 (29 janvier 2026)](https://metr.org/blog/2026-01-29-time-horizon-1-1/)
@@ -545,9 +544,9 @@ Transition : une exécution unique, avec des sous-agents. Reste l'arrêt prémat
 :::
 
 ::: notes
-Le type `figures` exige trois chiffres : la slide emploie `facts`, deux chiffres (131 jours, 50 %) et la phrase de liaison. Source : METR, Time Horizon 1.1, 29 janvier 2026. Doublement post-2023 : 130,8 jours, intervalle [107, 161] (tableau d'annexe), « 131 jours » dans le texte, contre 165 jours pour la version 1. La définition du 50 % ne vient que de l'article d'origine (arXiv 2503.14499), non du billet 1.1 : « the time humans typically take to complete tasks that AI models can complete with 50% success rate ».
-Réserves à dire : la mesure dépend de la composition des tâches ; la page `metr.org/time-horizons` précise ne plus être mise à jour (8 septembre 2026).
-Lien avec la suite : les tâches confiées à un agent de code s'allongent, donc une seule exécution ne suffit plus.
+Terme de l'étude : « horizon de tâche », durée humaine d'une tâche qu'un modèle mène à bien avec 50 % de réussite (définition de l'article d'origine, arXiv 2503.14499, non du billet 1.1). Source : METR, Time Horizon 1.1, 29 janvier 2026. Doublement post-2023 : 130,8 jours, intervalle [107, 161] (tableau d'annexe), « 131 jours » dans le texte, contre 165 jours pour la version 1.
+À dire : tous les 131 jours, la durée des tâches qu'un modèle sait faire double, donc on lui confie des tâches de plus en plus complexes. Mais le taux de réussite est de 50 % : une fois sur deux, la tâche n'aboutit pas. Il faut une commande qui dise quand c'est fini : c'est la section suivante.
+Réserves : la mesure dépend de la composition des tâches ; la page `metr.org/time-horizons` précise ne plus être mise à jour (8 septembre 2026).
 :::
 
 ## Un critère vérifiable {kicker="Boucles"}
