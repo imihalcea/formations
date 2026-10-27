@@ -774,36 +774,18 @@ Question à poser : que reste-t-il à l'humain ? Les findings avec leur verdict,
 
 Le reviewer relit la branche `demo/revue-defauts` de `tickets-api` contre les règles de l'équipe et rend des findings classés par sévérité. La branche porte quatre défauts qu'aucun test n'attrape.
 
-### Préparer le dépôt de session
+### Se placer sur la branche
 
-Prérequis : `git`, `make`, `jq`, `docker` avec Compose, `uv`, `gh` connecté (`gh auth status`) avec le droit de créer un dépôt privé et un accès en lecture à `imihalcea/tickets-api`, une clé SSH enregistrée sur GitHub (les clones passent par l'URL SSH), le port 5432 libre. Claude Code 2.1.310 connecté à un abonnement Anthropic, ou Open Code v2.0.32 avec des identifiants Amazon Bedrock (`AWS_PROFILE` ou clés d'accès, région européenne, accès au modèle `eu.anthropic.claude-sonnet-5-5`). Le modèle est `claude-sonnet-5-5` pour les deux outils : option `--model` et `settings.json` pour Claude Code, champ `model` des agents pour Open Code.
-
-Le dépôt de session est un dépôt privé, copie miroir du dépôt de référence. Le bloc le crée s'il manque, en clone la copie de travail dans `$WORK`, se place sur la branche et remet son état d'origine.
+Le dépôt de session, la copie de travail, la base et les dépendances viennent des démonstrations 1 à 5 (variables `SESSION`, `TARGET` et `WORK` incluses). La remise à zéro retire leurs fichiers non commités. La base est recréée : une base laissée à une révision Alembic antérieure par la démonstration 4 fait échouer les tests.
 
 ```bash
-export SESSION=demo
-export REFERENCE=imihalcea/tickets-api
-export TARGET="$REFERENCE-$SESSION"
-export WORK="$HOME/travail/tickets-api-$SESSION"
-
-if ! gh repo view "$TARGET" >/dev/null 2>&1; then
-  gh repo create "$TARGET" --private --description "Dépôt de session $SESSION"
-  tmp=$(mktemp -d)
-  git clone --mirror "$(gh repo view "$REFERENCE" --json sshUrl -q .sshUrl)" "$tmp/reference.git"
-  git -C "$tmp/reference.git" push --mirror "$(gh repo view "$TARGET" --json sshUrl -q .sshUrl)"
-  rm -rf "$tmp"
-fi
-if [ ! -d "$WORK/.git" ]; then
-  mkdir -p "$HOME/travail"
-  git clone "$(gh repo view "$TARGET" --json sshUrl -q .sshUrl)" "$WORK"
-fi
-
 cd "$WORK"
 git fetch --quiet origin
 git checkout -- . && git clean -fdq -e .venv -e node_modules
 git checkout demo/revue-defauts
 git reset --hard origin/demo/revue-defauts
 make db-up
+docker compose down -v
 uv sync
 make test
 ```
@@ -824,7 +806,7 @@ Contenu utilisé du dépôt de référence, branche `demo/revue-defauts` :
 - `Makefile` : `make db-up` (Docker Compose, PostgreSQL sur le port 5432), `make test` (`uv run pytest`), `make lint`.
 - `opencode.json` : modèle `amazon-bedrock/eu.anthropic.claude-sonnet-5-5` et serveur MCP `github`, sans objet ici.
 
-Dépôt de session déjà créé par une démonstration précédente : les deux blocs `if` ne font rien. Port 5432 pris par un autre conteneur (par exemple `tickets-api-db-1`) : l'arrêter avant `make db-up`. Dépôt de référence inaccessible : `gh auth status`, puis demander l'accès à `imihalcea/tickets-api`.
+Port 5432 pris par un autre conteneur (par exemple `tickets-api-db-1`) : l'arrêter avant `make db-up`.
 :::
 
 ### Lire ce que la branche change
@@ -1141,7 +1123,7 @@ $ grep -c "/assignee" tests/integration/test_tickets_api.py
 :::
 
 ::: indice
-Remise à zéro avant la démonstration suivante : rejouer l'étape « Préparer le dépôt de session » (elle contient `git reset --hard origin/demo/revue-defauts` et le nettoyage des fichiers de la revue).
+Remise à zéro avant la démonstration suivante : rejouer l'étape « Se placer sur la branche » (elle contient `git reset --hard origin/demo/revue-defauts` et le nettoyage des fichiers de la revue).
 :::
 
 ## Démonstration 7 : corriger la règle R3 {.tp}
@@ -1150,34 +1132,16 @@ Une règle qui produit un faux positif se réécrit dans `revue/regles.md`, se c
 
 ### Reconstruire l'état de départ
 
-Prérequis : `git`, `make`, `jq`, `docker` avec Compose, `uv`, `gh` connecté (`gh auth status`) avec le droit de créer un dépôt privé et un accès en lecture à `imihalcea/tickets-api`, une clé SSH enregistrée sur GitHub (les clones passent par l'URL SSH), le port 5432 libre. Claude Code 2.1.310 connecté à un abonnement Anthropic, ou Open Code v2.0.32 avec des identifiants Amazon Bedrock (`AWS_PROFILE` ou clés d'accès, région européenne, accès au modèle `eu.anthropic.claude-sonnet-5-5`). Le modèle est `claude-sonnet-5-5` pour les deux outils : option `--model` et `settings.json` pour Claude Code, champ `model` des agents pour Open Code.
-
-Le dépôt de session est un dépôt privé, copie miroir du dépôt de référence. Le bloc le crée s'il manque, en clone la copie de travail dans `$WORK` et remet l'état d'origine de la branche, même si une démonstration précédente a laissé des fichiers : tout se recrée dans les étapes suivantes.
+Le dépôt de session, la copie de travail, la base et les dépendances viennent des démonstrations précédentes (variables `SESSION`, `TARGET` et `WORK` incluses). La remise à zéro retire les fichiers non commités et les commits locaux qu'elles ont laissés.
 
 ```bash
-export SESSION=demo
-export REFERENCE=imihalcea/tickets-api
-export TARGET="$REFERENCE-$SESSION"
-export WORK="$HOME/travail/tickets-api-$SESSION"
-
-if ! gh repo view "$TARGET" >/dev/null 2>&1; then
-  gh repo create "$TARGET" --private --description "Dépôt de session $SESSION"
-  tmp=$(mktemp -d)
-  git clone --mirror "$(gh repo view "$REFERENCE" --json sshUrl -q .sshUrl)" "$tmp/reference.git"
-  git -C "$tmp/reference.git" push --mirror "$(gh repo view "$TARGET" --json sshUrl -q .sshUrl)"
-  rm -rf "$tmp"
-fi
-if [ ! -d "$WORK/.git" ]; then
-  mkdir -p "$HOME/travail"
-  git clone "$(gh repo view "$TARGET" --json sshUrl -q .sshUrl)" "$WORK"
-fi
-
 cd "$WORK"
 git fetch --quiet origin
 git checkout -- . && git clean -fdq -e .venv -e node_modules
 git checkout demo/revue-defauts
 git reset --hard origin/demo/revue-defauts
 make db-up
+docker compose down -v
 uv sync
 make test
 ```
@@ -1198,7 +1162,7 @@ Contenu utilisé du dépôt de référence, branche `demo/revue-defauts` :
 - `Makefile` : `make db-up` (Docker Compose, PostgreSQL sur le port 5432), `make test` (`uv run pytest`), `make lint`.
 - `opencode.json` : modèle `amazon-bedrock/eu.anthropic.claude-sonnet-5-5` et serveur MCP `github`, sans objet ici.
 
-Dépôt de session déjà créé par une démonstration précédente : les deux blocs `if` ne font rien. Port 5432 pris par un autre conteneur (par exemple `tickets-api-db-1`) : l'arrêter avant `make db-up`. Dépôt de référence inaccessible : `gh auth status`, puis demander l'accès à `imihalcea/tickets-api`.
+Port 5432 pris par un autre conteneur (par exemple `tickets-api-db-1`) : l'arrêter avant `make db-up`.
 :::
 
 ### Écrire les règles de revue
@@ -1563,34 +1527,16 @@ Remise à zéro avant la démonstration suivante : rejouer l'étape « Reconstru
 
 ### Reconstruire l'état de départ
 
-Prérequis : `git`, `make`, `jq`, `docker` avec Compose, `uv`, `gh` connecté (`gh auth status`) avec le droit de créer un dépôt privé et un accès en lecture à `imihalcea/tickets-api`, une clé SSH enregistrée sur GitHub (les clones passent par l'URL SSH), le port 5432 libre. Claude Code 2.1.310 connecté à un abonnement Anthropic, ou Open Code v2.0.32 avec des identifiants Amazon Bedrock (`AWS_PROFILE` ou clés d'accès, région européenne, accès au modèle `eu.anthropic.claude-sonnet-5-5`). Le modèle est `claude-sonnet-5-5` pour les deux outils : option `--model` et `settings.json` pour Claude Code, champ `model` des agents pour Open Code.
-
-Le dépôt de session est un dépôt privé, copie miroir du dépôt de référence. Le bloc le crée s'il manque, en clone la copie de travail dans `$WORK` et remet l'état d'origine de la branche, même si une démonstration précédente a laissé des fichiers. Les fichiers de la revue et la règle R3 corrigée se posent dans les deux étapes suivantes.
+Le dépôt de session, la copie de travail, la base et les dépendances viennent des démonstrations précédentes (variables `SESSION`, `TARGET` et `WORK` incluses). La remise à zéro retire les fichiers non commités et les commits locaux qu'elles ont laissés. Les fichiers de la revue et la règle R3 corrigée se posent dans les deux étapes suivantes.
 
 ```bash
-export SESSION=demo
-export REFERENCE=imihalcea/tickets-api
-export TARGET="$REFERENCE-$SESSION"
-export WORK="$HOME/travail/tickets-api-$SESSION"
-
-if ! gh repo view "$TARGET" >/dev/null 2>&1; then
-  gh repo create "$TARGET" --private --description "Dépôt de session $SESSION"
-  tmp=$(mktemp -d)
-  git clone --mirror "$(gh repo view "$REFERENCE" --json sshUrl -q .sshUrl)" "$tmp/reference.git"
-  git -C "$tmp/reference.git" push --mirror "$(gh repo view "$TARGET" --json sshUrl -q .sshUrl)"
-  rm -rf "$tmp"
-fi
-if [ ! -d "$WORK/.git" ]; then
-  mkdir -p "$HOME/travail"
-  git clone "$(gh repo view "$TARGET" --json sshUrl -q .sshUrl)" "$WORK"
-fi
-
 cd "$WORK"
 git fetch --quiet origin
 git checkout -- . && git clean -fdq -e .venv -e node_modules
 git checkout demo/revue-defauts
 git reset --hard origin/demo/revue-defauts
 make db-up
+docker compose down -v
 uv sync
 make test
 ```
@@ -1611,7 +1557,7 @@ Contenu utilisé du dépôt de référence, branche `demo/revue-defauts` :
 - `Makefile` : `make db-up` (Docker Compose, PostgreSQL sur le port 5432), `make test` (`uv run pytest`), `make lint`.
 - `opencode.json` : modèle `amazon-bedrock/eu.anthropic.claude-sonnet-5-5` et serveur MCP `github`, sans objet ici.
 
-Dépôt de session déjà créé par une démonstration précédente : les deux blocs `if` ne font rien. Port 5432 pris par un autre conteneur (par exemple `tickets-api-db-1`) : l'arrêter avant `make db-up`. Dépôt de référence inaccessible : `gh auth status`, puis demander l'accès à `imihalcea/tickets-api`.
+Port 5432 pris par un autre conteneur (par exemple `tickets-api-db-1`) : l'arrêter avant `make db-up`.
 :::
 
 ### Écrire les règles, R3 corrigée
