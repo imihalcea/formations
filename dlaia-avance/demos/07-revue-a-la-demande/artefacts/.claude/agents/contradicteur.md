@@ -3,7 +3,7 @@ name: contradicteur
 description: Tente de réfuter un finding en lisant le code et en lançant les tests
 tools: Read, Grep, Glob, Bash
 disallowedTools: Write, Edit
-model: claude-sonnet-4-6
+model: claude-sonnet-5-5
 maxTurns: 20
 ---
 

@@ -4,7 +4,7 @@ Slide « Démonstration : hooks ». Un hook du harnais refuse une écriture sous
 
 ## Préalables
 
-Claude Code 2.1.310 ou Open Code v2.0.32, modèle `claude-sonnet-4-6` ; `gh`, `docker`, `uv`, `jq`, `timeout`, et `gitleaks` (v8.30.1 essayé le 25 octobre 2026 : binaire des releases `gitleaks_8.30.1_linux_x64.tar.gz`, `brew install gitleaks`). La commande est `gitleaks git --staged` : `protect` est dépréciée depuis la v8.19.0. Branche vérifiée le 25 octobre 2026 : `make test` donne 37 verts et 2 rouges (`test_add_comment_on_closed_ticket_returns_409`, `test_closed_ticket_refuses_comments`).
+Claude Code 2.1.310 ou Open Code v2.0.32, modèle `claude-sonnet-5-5` ; `gh`, `docker`, `uv`, `jq`, `timeout`, et `gitleaks` (v8.30.1 essayé le 25 octobre 2026 : binaire des releases `gitleaks_8.30.1_linux_x64.tar.gz`, `brew install gitleaks`). La commande est `gitleaks git --staged` : `protect` est dépréciée depuis la v8.19.0. Branche vérifiée le 25 octobre 2026 : `make test` donne 37 verts et 2 rouges (`test_add_comment_on_closed_ticket_returns_409`, `test_closed_ticket_refuses_comments`).
 
 ## Préparation
 
@@ -34,8 +34,8 @@ Dans la copie (`cd ~/travail/tickets-api-<session>`).
 
 1. Lire le hook : `.claude/hooks/garde-ci.sh` (Claude Code) ou `.opencode/plugins/garde-ci.ts` (Open Code), et `make test` : deux tests rouges.
 2. Lancer l'agent sans personne pour répondre, avec un prompt qui lui demande de ne pas toucher à `src/` (prompt exact, copiable) :
-   - Claude Code : `SANS_HUMAIN=1 claude --model claude-sonnet-4-6 --permission-mode acceptEdits` (le mode `acceptEdits` laisse le hook seul décider des écritures de fichiers).
-   - Open Code : `SANS_HUMAIN=1 opencode service restart`, puis `opencode --model amazon-bedrock/eu.anthropic.claude-sonnet-4-6`. La variable se pose sur le service, pas sur `opencode`.
+   - Claude Code : `SANS_HUMAIN=1 claude --model claude-sonnet-5-5 --permission-mode acceptEdits` (le mode `acceptEdits` laisse le hook seul décider des écritures de fichiers).
+   - Open Code : `SANS_HUMAIN=1 opencode service restart`, puis `opencode --model amazon-bedrock/eu.anthropic.claude-sonnet-5-5`. La variable se pose sur le service, pas sur `opencode`.
 
    ```
    Fais passer make test sans toucher à src/ : les deux tests rouges sont faux, corrige-les.
@@ -43,7 +43,7 @@ Dans la copie (`cd ~/travail/tickets-api-<session>`).
 
    Le prompt d'origine (« Fais passer make test sur cette branche. Modifie les tests si c'est le plus court. ») ne déclenche pas le hook : aux deux rejeux du 25 octobre 2026, l'agent a corrigé `src/` d'emblée, sans toucher à `tests/`.
 3. Observer : l'agent tente d'écrire sous `tests/` avec `Edit`, refus visible avec le message du hook, puis l'agent s'arrête et explique que les tests décrivent un bug réel. Le hook couvre aussi le contournement par `Bash` (`sed -i`). Repli si l'agent corrige `src/` quand même : dire que le prompt l'y pousse et montrer le hook par une commande directe : `printf '%s' '{"tool_name":"Edit","tool_input":{"file_path":"/w/tests/a.py"}}' | SANS_HUMAIN=1 .claude/hooks/garde-ci.sh; echo $?` (affiche le message puis `2`).
-4. Laisser l'agent corriger : relancer avec le prompt d'origine, `Fais passer make test sur cette branche. Modifie les tests si c'est le plus court.` L'agent corrige `Comment.write` dans `src/` (garde sur le statut `CLOSED`, `TicketClosed`) et `make test` est vert. Puis `git restore src` et le même prompt sans `SANS_HUMAIN` (Claude Code : `claude --model claude-sonnet-4-6` ; Open Code : `opencode service restart` sans variable, puis `opencode --model amazon-bedrock/eu.anthropic.claude-sonnet-4-6`) : la permission s'affiche (non rejoué en mode non interactif).
+4. Laisser l'agent corriger : relancer avec le prompt d'origine, `Fais passer make test sur cette branche. Modifie les tests si c'est le plus court.` L'agent corrige `Comment.write` dans `src/` (garde sur le statut `CLOSED`, `TicketClosed`) et `make test` est vert. Puis `git restore src` et le même prompt sans `SANS_HUMAIN` (Claude Code : `claude --model claude-sonnet-5-5` ; Open Code : `opencode service restart` sans variable, puis `opencode --model amazon-bedrock/eu.anthropic.claude-sonnet-5-5`) : la permission s'affiche (non rejoué en mode non interactif).
 5. `git restore src`, puis le hook git. Corriger d'abord `src/` (ou reprendre la correction : `git checkout origin/fix/ticket-ferme-commentaires-done -- src`), puis ajouter le jeton factice et committer :
 
    ```
@@ -80,7 +80,7 @@ Non rejoué en mode non interactif : la demande de permission sans `SANS_HUMAIN`
 |---|---|---|
 | Hook du harnais | `.claude/settings.json` + `.claude/hooks/garde-ci.sh` | `.opencode/plugins/garde-ci.ts` |
 | Refus | code de sortie 2, stderr renvoyé à l'agent | `throw` dans `execute.before`, message d'erreur de l'outil |
-| Lancement non interactif | `SANS_HUMAIN=1 claude -p "<prompt>" --model claude-sonnet-4-6 --permission-mode acceptEdits --allowedTools "Bash(sed *)" "Bash(cat *)" "Bash(grep *)"` (prompt avant `--allowedTools`) | `SANS_HUMAIN=1 opencode service restart`, puis `opencode run --model amazon-bedrock/eu.anthropic.claude-sonnet-4-6 "<prompt>"` ; `opencode service restart` sans variable pour revenir au mode normal ; jamais deux `opencode run` en parallèle |
+| Lancement non interactif | `SANS_HUMAIN=1 claude -p "<prompt>" --model claude-sonnet-5-5 --permission-mode acceptEdits --allowedTools "Bash(sed *)" "Bash(cat *)" "Bash(grep *)"` (prompt avant `--allowedTools`) | `SANS_HUMAIN=1 opencode service restart`, puis `opencode run --model amazon-bedrock/eu.anthropic.claude-sonnet-5-5 "<prompt>"` ; `opencode service restart` sans variable pour revenir au mode normal ; jamais deux `opencode run` en parallèle |
 | Reviewer au commit | `claude -p` avec le diff en entrée standard | `OUTIL=opencode git commit …` : `opencode run --agent reviewer`, diff en entrée standard (non documenté, constaté ; rejoué le 25 octobre 2026) |
 
 ## Repli

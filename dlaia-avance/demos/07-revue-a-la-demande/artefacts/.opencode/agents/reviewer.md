@@ -1,7 +1,7 @@
 ---
 description: Applique les règles de revue à un diff et rend des findings
 mode: subagent
-model: amazon-bedrock/eu.anthropic.claude-sonnet-4-6
+model: amazon-bedrock/eu.anthropic.claude-sonnet-5-5
 steps: 20
 permissions:
   - { action: edit, resource: "*", effect: deny }

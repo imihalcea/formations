@@ -1,6 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "amazon-bedrock/eu.anthropic.claude-sonnet-4-6",
+  "model": "amazon-bedrock/eu.anthropic.claude-sonnet-5-5",
   "instructions": [".specify/memory/constitution.md"],
   "default_agent": "orchestrateur"
 }

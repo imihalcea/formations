@@ -8,12 +8,12 @@ git diff --cached --name-only --diff-filter=ACM -- '*.py' | xargs -r uv run ruff
 [ "${SANS_REVIEWER:-0}" = "1" ] && exit 0
 
 if [ "${OUTIL:-claude}" = "opencode" ]; then
-  sortie=$(git diff --cached | timeout 60 opencode run --model amazon-bedrock/eu.anthropic.claude-sonnet-4-6 \
+  sortie=$(git diff --cached | timeout 60 opencode run --model amazon-bedrock/eu.anthropic.claude-sonnet-5-5 \
     --agent reviewer "Applique revue/regles.md à ce diff.") || exit 0
 else
   sortie=$(git diff --cached | timeout 60 claude -p \
     "Lance le sous-agent reviewer sur ce diff avec revue/regles.md. Affiche ses findings tels quels." \
-    --model claude-sonnet-4-6) || exit 0
+    --model claude-sonnet-5-5) || exit 0
 fi
 echo "$sortie"
 ! grep -q '"severite": *"haute"' <<<"$sortie"

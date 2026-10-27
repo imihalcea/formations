@@ -4,7 +4,7 @@ Slide « Démonstration : revue en CI ». Une pull request sur `demo/revue-defau
 
 ## Préalables
 
-Claude Code 2.1.310 (abonnement) ou Open Code v2.0.32 (Amazon Bedrock), modèle `claude-sonnet-4-6` ; `gh` connecté, `docker`, `uv`, `jq`, `timeout`. Branche `demo/revue-defauts` : spec 002 et quatre défauts plantés (démonstration 7).
+Claude Code 2.1.310 (abonnement) ou Open Code v2.0.32 (Amazon Bedrock), modèle `claude-sonnet-5-5` ; `gh` connecté, `docker`, `uv`, `jq`, `timeout`. Branche `demo/revue-defauts` : spec 002 et quatre défauts plantés (démonstration 7).
 
 ## Préparation
 
@@ -65,7 +65,7 @@ Reste à voir en séance : acceptation des lignes par l'API réelle (commentaire
 | Point | Claude Code | Open Code |
 |---|---|---|
 | Workflow | `revue.claude-code.yml` : `./ci/lancer-job.sh claude`, `MAX_TURNS` | `revue.opencode.yml` : `./ci/lancer-job.sh opencode` |
-| Étape de l'agent de code | `claude -p … --model claude-sonnet-4-6 --max-turns 6 --output-format json --allowedTools Read Grep Glob`, diff en entrée standard | `opencode run --model amazon-bedrock/eu.anthropic.claude-sonnet-4-6 --agent reviewer`, diff en entrée standard |
+| Étape de l'agent de code | `claude -p … --model claude-sonnet-5-5 --max-turns 6 --output-format json --allowedTools Read Grep Glob`, diff en entrée standard | `opencode run --model amazon-bedrock/eu.anthropic.claude-sonnet-5-5 --agent reviewer`, diff en entrée standard |
 | Bornes | `timeout-minutes`, `concurrency`, `--max-turns` | `timeout-minutes`, `concurrency`, `steps: 20` du fichier d'agent |
 | Authentification en CI | non jouée : identifiants sur la machine du runner (ou action `anthropics/claude-code-action@v1` avec `ANTHROPIC_API_KEY`, `CLAUDE_CODE_OAUTH_TOKEN` ou Bedrock) ; usage de l'abonnement Max en CI : conditions d'utilisation non lues, ne pas l'affirmer | non jouée : identifiants Bedrock sur la machine du runner |
 

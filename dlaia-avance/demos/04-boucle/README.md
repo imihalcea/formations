@@ -25,7 +25,7 @@ La commande personnalisée `fix-until-green` vient du dépôt (`.claude/commands
 
 1. `make test` rouge, deux échecs.
 2. Lire la commande : cinq relances au plus (instruction du prompt, donc garde-fou faible).
-3. Lancer `claude --model claude-sonnet-4-6` ou `opencode`, puis le prompt exact :
+3. Lancer `claude --model claude-sonnet-5-5` ou `opencode`, puis le prompt exact :
 
    ```
    /fix-until-green interdire les commentaires sur un ticket fermé

@@ -21,7 +21,7 @@ Contrôles sans modèle : `make check` ; `opencode debug agents` dans la copie :
 ## Déroulé
 
 1. Lire `.claude/agents/contradicteur.md` (ou `.opencode/agents/contradicteur.md`) : verdict et preuve obligatoires, aucune écriture.
-2. Lancer (Claude Code : `claude --model claude-sonnet-4-6` ; Open Code : TUI) le prompt exact :
+2. Lancer (Claude Code : `claude --model claude-sonnet-5-5` ; Open Code : TUI) le prompt exact :
 
    ```
    /revue-adverse 002-responsable-priorite-haute
@@ -37,7 +37,7 @@ Résultat attendu : verdicts confirmés avec une ligne de code citée pour R1, R
 
 | Outil | Commande |
 |---|---|
-| Claude Code | `claude -p "/revue-adverse 002-responsable-priorite-haute" --model claude-sonnet-4-6 --output-format json --allowedTools "Bash(cat *)" "Bash(grep *)" "Bash(git diff *)" "Bash(git log *)" "Bash(make test*)" "Bash(uv run pytest *)"` (le JSON donne `total_cost_usd` ; le prompt précède `--allowedTools`) |
+| Claude Code | `claude -p "/revue-adverse 002-responsable-priorite-haute" --model claude-sonnet-5-5 --output-format json --allowedTools "Bash(cat *)" "Bash(grep *)" "Bash(git diff *)" "Bash(git log *)" "Bash(make test*)" "Bash(uv run pytest *)"` (le JSON donne `total_cost_usd` ; le prompt précède `--allowedTools`) |
 | Open Code | `../07-revue-a-la-demande/lancer-opencode.sh <copie> revue-adverse 002-responsable-priorite-haute` : agent par défaut (`build`), seul à pouvoir lancer deux sous-agents |
 
 ## Résultat observé (rejeu du 25 octobre 2026, `claude-sonnet-4-6`)

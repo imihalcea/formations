@@ -18,7 +18,7 @@ Copie de session sur `main`. Overlay : `opencode.json` avec `default_agent: "orc
 
 1. Ouvrir les instructions fixes : `.claude/agents/orchestrateur.md` ou `.opencode/agents/orchestrateur.md` (cinq étapes).
 2. Lancer l'orchestrateur comme agent principal.
-   - Claude Code : `claude --agent orchestrateur --model claude-sonnet-4-6`
+   - Claude Code : `claude --agent orchestrateur --model claude-sonnet-5-5`
    - Open Code : `opencode` en TUI (agent par défaut de l'overlay). `opencode run --agent orchestrateur` rend la main après 16 s, quand les trois explorations partent en `background: true`, alors que l'orchestration continue dans le démon (357 s en tout) : ne pas l'utiliser pour la séance.
    - Claude Code : en `claude -p`, le processus est resté bloqué 20 min après le résultat final (observé une fois) ; jouer en interactif. Compter 18 min et 4,49 USD au rejeu, avec un plafond de 5 USD presque atteint ; `maxTurns` du testeur (30) et de l'implémenteur (40) atteints au premier passage.
 3. Prompt exact :

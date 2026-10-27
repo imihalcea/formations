@@ -17,7 +17,7 @@ Avant de jouer : `make db-up`, `make test` (37 tests verts sur `main`), `uv sync
 | Élément | Claude Code | Open Code |
 |---|---|---|
 | Contexte | `CLAUDE.md` (importe `AGENTS.md`) | `AGENTS.md` |
-| Modèle | `.claude/settings.json` : `claude-sonnet-4-6` | `opencode.json` : `amazon-bedrock/eu.anthropic.claude-sonnet-4-6` |
+| Modèle | `.claude/settings.json` : `claude-sonnet-5-5` | `opencode.json` : `amazon-bedrock/eu.anthropic.claude-sonnet-5-5` |
 | Sous-agents | `.claude/agents/` | `.opencode/agents/` |
 | Commande | `.claude/commands/fix-until-green.md` | `.opencode/commands/fix-until-green.md` |
 | MCP | `.mcp.json` (Playwright) | `opencode.json` (GitHub) ; Playwright à ajouter pour la démonstration MCP et IHM |

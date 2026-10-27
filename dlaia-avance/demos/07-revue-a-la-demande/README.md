@@ -4,7 +4,7 @@ Slide « Démonstration : revue à la demande ». Le reviewer relit la branche `
 
 ## Préalables
 
-Claude Code 2.1.310 ou Open Code v2.0.32, modèle `claude-sonnet-4-6` ; `gh`, `docker`, `uv`, `jq`. Branche `demo/revue-defauts` : spec 002 livrée et quatre défauts plantés (commit `31ece52`). Sur la branche, `make test` donne 57 verts (relevé le 25 octobre 2026) : les défauts ne cassent aucun test, c'est la raison de la revue.
+Claude Code 2.1.310 ou Open Code v2.0.32, modèle `claude-sonnet-5-5` ; `gh`, `docker`, `uv`, `jq`. Branche `demo/revue-defauts` : spec 002 livrée et quatre défauts plantés (commit `31ece52`). Sur la branche, `make test` donne 57 verts (relevé le 25 octobre 2026) : les défauts ne cassent aucun test, c'est la raison de la revue.
 
 ## Préparation
 
@@ -37,7 +37,7 @@ Si le port 5432 est pris par un autre conteneur `tickets-api-db-1`, `make db-up`
 1. `git log --oneline origin/main..HEAD` : les commits de la branche (spec 002, défauts plantés ; une fusion de `main` peut s'y ajouter).
 2. Lire `revue/regles.md` : R1 à R4.
 3. Lancer, dans la copie de travail :
-   - Claude Code : `claude --model claude-sonnet-4-6`.
+   - Claude Code : `claude --model claude-sonnet-5-5`.
    - Open Code, TUI : `opencode`.
 
    Puis le prompt exact :
@@ -54,8 +54,8 @@ Si le port 5432 est pris par un autre conteneur `tickets-api-db-1`, `make db-up`
 
 | Outil | Commande |
 |---|---|
-| Claude Code | `claude -p "/revue 002-responsable-priorite-haute" --model claude-sonnet-4-6 --allowedTools "Bash(cat *)" "Bash(grep *)" "Bash(git diff *)" "Bash(git log *)"` dans la copie. Le prompt vient avant `--allowedTools` (option variadique : placé après, il est absorbé et la commande échoue). `claude -p` développe la commande et démarre en mode Manual : les permissions manquantes refusent |
-| Open Code | `make opencode SESSION=<session>` : `lancer-opencode.sh` assemble le prompt de `.opencode/commands/revue.md` (frontmatter retiré, `$ARGUMENTS` remplacé, blocs `` !`cmd` `` exécutés) puis lance `opencode run --model amazon-bedrock/eu.anthropic.claude-sonnet-4-6 --agent reviewer`. v2.0.32 ne développe ni `/revue` ni `` !`…` `` en `opencode run` |
+| Claude Code | `claude -p "/revue 002-responsable-priorite-haute" --model claude-sonnet-5-5 --allowedTools "Bash(cat *)" "Bash(grep *)" "Bash(git diff *)" "Bash(git log *)"` dans la copie. Le prompt vient avant `--allowedTools` (option variadique : placé après, il est absorbé et la commande échoue). `claude -p` développe la commande et démarre en mode Manual : les permissions manquantes refusent |
+| Open Code | `make opencode SESSION=<session>` : `lancer-opencode.sh` assemble le prompt de `.opencode/commands/revue.md` (frontmatter retiré, `$ARGUMENTS` remplacé, blocs `` !`cmd` `` exécutés) puis lance `opencode run --model amazon-bedrock/eu.anthropic.claude-sonnet-5-5 --agent reviewer`. v2.0.32 ne développe ni `/revue` ni `` !`…` `` en `opencode run` |
 
 À vérifier en séance : la forme `git diff origin/main...HEAD | opencode run --agent reviewer "…"` (diff par l'entrée standard) n'a pas été exécutée ; le script assemble le prompt lui-même.
 

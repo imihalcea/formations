@@ -33,7 +33,7 @@ Sous-titre (une phrase). Ce que le module précédent laisse en suspens et que l
 
 ## Démonstrations
 
-Pour chaque démonstration : slide qui la porte, dépôt ou artefacts dans `demos/NN-nom/`, prompt, déroulé, résultat attendu, repli si la démonstration échoue en séance, outil concerné (variantes Claude Code et Open Code si elles diffèrent), à relever à l'essai avec `claude-sonnet-4-6`. Le plan indique aussi, par démonstration, son numéro dans la journée, les préalables, les étapes de la section finale (`{.tp}`), le contenu de `attendu` et d'`indice`.
+Pour chaque démonstration : slide qui la porte, dépôt ou artefacts dans `demos/NN-nom/`, prompt, déroulé, résultat attendu, repli si la démonstration échoue en séance, outil concerné (variantes Claude Code et Open Code si elles diffèrent), à relever à l'essai avec `claude-sonnet-5-5`. Le plan indique aussi, par démonstration, son numéro dans la journée, les préalables, les étapes de la section finale (`{.tp}`), le contenu de `attendu` et d'`indice`.
 
 ## Notions introduites
 

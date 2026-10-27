@@ -43,14 +43,14 @@ prompt_oc="Rends la cause de cet échec de CI avec la ligne du journal citée te
 case "$outil" in
   claude)
     timeout "${DELAI:-540}" env -u GH_TOKEN -u GITHUB_TOKEN claude -p "$prompt_cc" \
-      --model claude-sonnet-4-6 --max-turns "${MAX_TURNS:-6}" --output-format json \
+      --model claude-sonnet-5-5 --max-turns "${MAX_TURNS:-6}" --output-format json \
       --allowedTools Read Grep Glob < "$sortie/journal.txt" > "$sortie/sortie.json"
     jq -r '.result' "$sortie/sortie.json" > "$sortie/analyse.md"
     jq -c '{total_cost_usd, num_turns, is_error, subtype}' "$sortie/sortie.json" > "$sortie/metriques.json"
     ;;
   opencode)
     timeout "${DELAI:-540}" env -u GH_TOKEN -u GITHUB_TOKEN opencode run \
-      --model amazon-bedrock/eu.anthropic.claude-sonnet-4-6 --agent diagnostiqueur "$prompt_oc" \
+      --model amazon-bedrock/eu.anthropic.claude-sonnet-5-5 --agent diagnostiqueur "$prompt_oc" \
       < "$sortie/journal.txt" > "$sortie/analyse.md"
     ;;
   *) echo "Outil inconnu : $outil (claude ou opencode)"; exit 2 ;;

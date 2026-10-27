@@ -1,7 +1,7 @@
 ---
 description: Tente de réfuter un finding en lisant le code et en lançant les tests
 mode: subagent
-model: amazon-bedrock/eu.anthropic.claude-sonnet-4-6
+model: amazon-bedrock/eu.anthropic.claude-sonnet-5-5
 steps: 20
 permissions:
   - { action: edit, resource: "*", effect: deny }

@@ -37,14 +37,14 @@ prompt_oc="Applique revue/regles.md à ce diff et à la spécification specs/$sp
 case "$outil" in
   claude)
     timeout "${DELAI:-540}" env -u GH_TOKEN -u GITHUB_TOKEN claude -p "$prompt_cc" \
-      --model claude-sonnet-4-6 --max-turns "${MAX_TURNS:-6}" --output-format json \
+      --model claude-sonnet-5-5 --max-turns "${MAX_TURNS:-6}" --output-format json \
       --allowedTools Read Grep Glob < "$sortie/diff.patch" > "$sortie/sortie.json"
     jq -r '.result' "$sortie/sortie.json" > "$sortie/sortie.txt"
     jq -c '{total_cost_usd, num_turns, is_error, subtype}' "$sortie/sortie.json" > "$sortie/metriques.json"
     ;;
   opencode)
     timeout "${DELAI:-540}" env -u GH_TOKEN -u GITHUB_TOKEN opencode run \
-      --model amazon-bedrock/eu.anthropic.claude-sonnet-4-6 --agent reviewer "$prompt_oc" \
+      --model amazon-bedrock/eu.anthropic.claude-sonnet-5-5 --agent reviewer "$prompt_oc" \
       < "$sortie/diff.patch" > "$sortie/sortie.txt"
     ;;
   *) echo "Outil inconnu : $outil (claude ou opencode)"; exit 2 ;;

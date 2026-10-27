@@ -1,7 +1,7 @@
 ---
 description: Lit le journal d'un job de CI en échec et rend la cause avec un correctif proposé en diff
 mode: subagent
-model: amazon-bedrock/eu.anthropic.claude-sonnet-4-6
+model: amazon-bedrock/eu.anthropic.claude-sonnet-5-5
 steps: 10
 permissions:
   - { action: edit, resource: "*", effect: deny }

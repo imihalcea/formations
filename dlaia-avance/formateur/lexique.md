@@ -2,7 +2,7 @@
 
 Vocabulaire de référence du support. Une notion a un seul nom, celui de la colonne « Terme » ; les slides, les notes et les notes de démonstration l'emploient sous cette forme et sous aucune autre. Un terme entre au lexique avec le plan du module qui l'introduit, et la slide qui le définit précède toute slide qui l'emploie. Un module ne redéfinit pas un terme d'un module antérieur : il le reprend tel quel. Une notion absente du lexique ne s'emploie pas comme notion : soit elle y entre, soit la phrase se reformule avec les termes existants.
 
-La colonne « Introduit » donne le module de la première définition. La colonne « À ne pas employer » liste les synonymes, anglicismes et variantes à remplacer par le terme. Les noms de fichiers, de commandes et d'identifiants (`.mcp.json`, `opencode.json`, `claude-sonnet-4-6`) gardent leur forme d'origine et ne figurent pas ici. Les sigles (LLM, MCP, SDK, CI) sont développés une fois, sur la slide qui les définit, puis employés seuls.
+La colonne « Introduit » donne le module de la première définition. La colonne « À ne pas employer » liste les synonymes, anglicismes et variantes à remplacer par le terme. Les noms de fichiers, de commandes et d'identifiants (`.mcp.json`, `opencode.json`, `claude-sonnet-5-5`) gardent leur forme d'origine et ne figurent pas ici. Les sigles (LLM, MCP, SDK, CI) sont développés une fois, sur la slide qui les définit, puis employés seuls.
 
 Les définitions ci-dessous sont provisoires jusqu'au plan du module concerné, qui les confirme ou les corrige. La carte mentale (`support/carte-mentale.yaml`) reprend ces définitions en fin de rédaction.
 
@@ -15,8 +15,8 @@ Les termes des modules 1 à 3 de DLAIA (agent, harnais, fenêtre de contexte, sk
 | agent de code | programme en ligne de commande qui pilote un modèle pour lire, écrire et exécuter du code dans un dépôt ; Claude Code et Open Code en sont deux ; « agent » seul aux slides 1 à 3 de l'ouverture (acquis de la formation initiale), « agent de code » dès la slide 4 ; slide « Choisir l'agent de code » | 00 | assistant, outil, CLI, harnais (pour l'agent de code) |
 | Claude Code | agent de code en ligne de commande d'Anthropic | 00 | Claude (pour l'outil), ClaudeCode, claude hors commande |
 | Open Code | agent de code libre en ligne de commande, version 2 | 00 | OpenCode, opencode hors commande |
-| Claude Sonnet 4.6 | modèle unique de la formation, identifiant `claude-sonnet-4-6` | 00 | Sonnet seul, Claude 4.6, le modèle d'Anthropic |
-| Amazon Bedrock | service d'Amazon Web Services qui héberge des modèles ; Open Code l'appelle pour Claude Sonnet 4.6 (Claude Code passe par l'abonnement Anthropic) (étiquette du schéma) | 00 | Bedrock seul, AWS Bedrock |
+| Claude Sonnet 5.5 | modèle unique de la formation, identifiant `claude-sonnet-5-5` | 00 | Sonnet seul, Claude 5.5, le modèle d'Anthropic |
+| Amazon Bedrock | service d'Amazon Web Services qui héberge des modèles ; Open Code l'appelle pour Claude Sonnet 5.5 (Claude Code passe par l'abonnement Anthropic) (étiquette du schéma) | 00 | Bedrock seul, AWS Bedrock |
 | fichier de contexte | fichier lu par l'agent de code au lancement : `CLAUDE.md` (Claude Code), `AGENTS.md` (Open Code) ; slide « Choisir l'agent de code » | 00 | fichier d'instructions, mémoire |
 | limitation | ce que l'agent de code ne dépasse pas seul, même avec une spécification et un harnais ; slide « Définition d'une limitation » | 00 | goulot, blocage, plafond (pour la notion) |
 | démonstration | exécution commentée, en direct, d'une tâche confiée à l'agent de code, jouée par le formateur ; définie à l'oral et dans le glossaire | 00 | démo, TP, atelier |
@@ -134,7 +134,7 @@ Les termes des modules 1 à 3 de DLAIA (agent, harnais, fenêtre de contexte, sk
 
 | Terme | Définition | Introduit | À ne pas employer |
 |---|---|---|---|
-| modèle distant | modèle hébergé chez un fournisseur, hors du réseau de l'équipe (Claude Sonnet 4.6 par l'abonnement Anthropic ou par Amazon Bedrock, ou tout modèle d'un fournisseur) ; slide « Définition d'un modèle local » | 04 | modèle cloud, API |
+| modèle distant | modèle hébergé chez un fournisseur, hors du réseau de l'équipe (Claude Sonnet 5.5 par l'abonnement Anthropic ou par Amazon Bedrock, ou tout modèle d'un fournisseur) ; slide « Définition d'un modèle local » | 04 | modèle cloud, API |
 | modèle local | modèle exécuté sur une machine de l'équipe ; le prompt ne quitte pas le réseau de l'équipe ; slide « Définition d'un modèle local » | 04 | modèle on-premise, modèle embarqué |
 | poids | nombres appris du modèle, relus à chaque token (modèle dense) ; taille en mémoire = paramètres × octets par paramètre ; slide « Définition d'un poids » | 04 | coefficients, weights |
 | paramètre (du modèle) | un des nombres du modèle, distinct du paramètre d'un outil MCP ; slide « Définition d'un poids » | 04 | paramètre seul |
@@ -144,7 +144,7 @@ Les termes des modules 1 à 3 de DLAIA (agent, harnais, fenêtre de contexte, sk
 | mixture d'experts | modèle dont chaque token n'active qu'une partie des poids ; slide « Définition d'une mixture d'experts » | 04 | MoE |
 | expert | bloc de poids d'une mixture d'experts, activé ou non selon le token ; slide « Définition d'une mixture d'experts » | 04 | sous-modèle, spécialiste |
 | modèle dense | modèle dont chaque token relit tous les poids ; slide « Définition d'une mixture d'experts » | 04 | modèle classique |
-| grand modèle | modèle auquel le routage renvoie les cas que le petit modèle ne sait pas traiter (Claude Sonnet 4.6) ; slide « Routage vers le grand modèle » | 04 | modèle frontier, gros modèle |
+| grand modèle | modèle auquel le routage renvoie les cas que le petit modèle ne sait pas traiter (Claude Sonnet 5.5) ; slide « Routage vers le grand modèle » | 04 | modèle frontier, gros modèle |
 | bande passante (mémoire) | quantité de données que la mémoire envoie au processeur par seconde, en Go/s ; slide « Vitesse maximale d'un modèle » | 04 | débit mémoire, bande passante seule |
 | vitesse de génération | nombre de tokens produits par seconde ; slide « Vitesse maximale d'un modèle » | 04 | débit, tokens par seconde (pour la notion) |
 | cache de la fenêtre de contexte | données gardées en mémoire pour chaque token déjà lu ou produit ; slide « Mémoire d'un modèle » | 04 | cache du contexte, KV cache |

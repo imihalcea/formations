@@ -678,7 +678,7 @@ Un hook du harnais refuse l'écriture sous `tests/`. Un hook git refuse un commi
 
 ### Préparer le dépôt de session et la copie de travail
 
-Prérequis : `git`, `make`, `curl`, `jq`, `docker`, `uv`, `timeout` et `gh` installés ; accès SSH à GitHub (les clones utilisent l'URL SSH) ; `gh` connecté (`gh auth login`), avec accès en lecture à `imihalcea/tickets-api` (dépôt privé) et droit de créer un dépôt privé ; Claude Code 2.1.310 : abonnement Anthropic, connexion faite (`/login` en session interactive) ; Open Code v2.0.32 : identifiants Amazon Bedrock dans la chaîne d'identifiants AWS (par exemple `AWS_PROFILE`), région des profils d'inférence `eu.`, modèle `amazon-bedrock/eu.anthropic.claude-sonnet-4-6`. Les deux outils emploient `claude-sonnet-4-6`. Port 5432 libre. `gitleaks` 8.30.1 s'installe à l'étape 06. État de départ : aucun, chaque commande de l'étape 01 est sans effet si le dépôt de session et la copie de travail existent déjà.
+Prérequis : `git`, `make`, `curl`, `jq`, `docker`, `uv`, `timeout` et `gh` installés ; accès SSH à GitHub (les clones utilisent l'URL SSH) ; `gh` connecté (`gh auth login`), avec accès en lecture à `imihalcea/tickets-api` (dépôt privé) et droit de créer un dépôt privé ; Claude Code 2.1.310 : abonnement Anthropic, connexion faite (`/login` en session interactive) ; Open Code v2.0.32 : identifiants Amazon Bedrock dans la chaîne d'identifiants AWS (par exemple `AWS_PROFILE`), région des profils d'inférence `eu.`, modèle `amazon-bedrock/eu.anthropic.claude-sonnet-5-5`. Les deux outils emploient `claude-sonnet-5-5`. Port 5432 libre. `gitleaks` 8.30.1 s'installe à l'étape 06. État de départ : aucun, chaque commande de l'étape 01 est sans effet si le dépôt de session et la copie de travail existent déjà.
 
 Contenu utilisé du dépôt de référence : une API FastAPI de tickets (Python 3.12, SQLAlchemy 2, PostgreSQL, Alembic, pytest, ruff, `uv`). `AGENTS.md` décrit l'architecture hexagonale (`src/tickets/domain/`, `application/`, `adapters/inbound/http/`, `adapters/outbound/postgres/`) et les commandes. Le `Makefile` expose `db-up` (`docker compose up -d db` ; `compose.yml` lance PostgreSQL 17 sur le port 5432 avec les bases `tickets` et `tickets_test`), `test` (`uv run pytest`) et `lint` (`ruff check` et `ruff format --check`). `main` porte déjà `.claude/` (agents, commande `/fix-until-green`, hook `guard-path.sh`, `settings.json`), `.opencode/` (agents, commandes) et `opencode.json`. La branche `demo/hook-harnais` ajoute à `main` deux tests rouges, `tests/unit/test_ticket.py::test_closed_ticket_refuses_comments` et `tests/integration/test_comments_api.py::test_add_comment_on_closed_ticket_returns_409`. Le défaut est dans `Comment.write` (`src/tickets/domain/ticket.py`), qui accepte un commentaire sur un ticket `closed`.
 
@@ -734,7 +734,7 @@ cd "$WORK"
 mkdir -p .claude/hooks
 cat > .claude/settings.json <<'EOF'
 {
-  "model": "claude-sonnet-4-6",
+  "model": "claude-sonnet-5-5",
   "permissions": {
     "allow": [
       "Bash(make test *)",
@@ -810,7 +810,7 @@ export default Plugin.define({
 })
 EOF
 SANS_HUMAIN=1 opencode service restart
-opencode run --model amazon-bedrock/eu.anthropic.claude-sonnet-4-6 "Réponds seulement OK."
+opencode run --model amazon-bedrock/eu.anthropic.claude-sonnet-5-5 "Réponds seulement OK."
 ```
 :::
 
@@ -829,7 +829,7 @@ Le prompt demande de ne pas toucher à `src/` : l'agent de code doit alors tente
 ::: claude-code
 ```console
 $ cd "$WORK"
-$ SANS_HUMAIN=1 claude --model claude-sonnet-4-6 --permission-mode acceptEdits
+$ SANS_HUMAIN=1 claude --model claude-sonnet-5-5 --permission-mode acceptEdits
 ```
 
 Le mode `acceptEdits` laisse le hook seul décider des écritures de fichiers.
@@ -840,7 +840,7 @@ Le service tourne déjà avec `SANS_HUMAIN=1` (étape 02).
 
 ```console
 $ cd "$WORK"
-$ opencode --model amazon-bedrock/eu.anthropic.claude-sonnet-4-6
+$ opencode --model amazon-bedrock/eu.anthropic.claude-sonnet-5-5
 ```
 :::
 
@@ -869,7 +869,7 @@ L'agent ajoute un garde dans `Comment.write` qui lève `TicketClosed` pour un ti
 :::
 
 ::: indice
-Sans `SANS_HUMAIN`, une écriture sous `tests/` demande une permission à la place du refus (non rejoué en mode non interactif). Claude Code : lancer `claude --model claude-sonnet-4-6` sans la variable. Open Code : `opencode service restart` sans variable, puis `opencode`. Remettre `SANS_HUMAIN=1` ensuite n'est pas nécessaire pour la suite.
+Sans `SANS_HUMAIN`, une écriture sous `tests/` demande une permission à la place du refus (non rejoué en mode non interactif). Claude Code : lancer `claude --model claude-sonnet-5-5` sans la variable. Open Code : `opencode service restart` sans variable, puis `opencode`. Remettre `SANS_HUMAIN=1` ensuite n'est pas nécessaire pour la suite.
 :::
 
 ### Poser les règles et le reviewer
@@ -943,7 +943,7 @@ cat > .claude/agents/reviewer.md <<'EOF'
 name: reviewer
 description: Applique les règles de revue à un diff et rend des findings
 tools: Read, Grep, Glob
-model: claude-sonnet-4-6
+model: claude-sonnet-5-5
 maxTurns: 20
 ---
 
@@ -966,7 +966,7 @@ cat > .opencode/agents/reviewer.md <<'EOF'
 ---
 description: Applique les règles de revue à un diff et rend des findings
 mode: subagent
-model: amazon-bedrock/eu.anthropic.claude-sonnet-4-6
+model: amazon-bedrock/eu.anthropic.claude-sonnet-5-5
 steps: 20
 permissions:
   - { action: edit, resource: "*", effect: deny }
@@ -1019,12 +1019,12 @@ git diff --cached --name-only --diff-filter=ACM -- '*.py' | xargs -r uv run ruff
 [ "${SANS_REVIEWER:-0}" = "1" ] && exit 0
 
 if [ "${OUTIL:-claude}" = "opencode" ]; then
-  sortie=$(git diff --cached | timeout 60 opencode run --model amazon-bedrock/eu.anthropic.claude-sonnet-4-6 \
+  sortie=$(git diff --cached | timeout 60 opencode run --model amazon-bedrock/eu.anthropic.claude-sonnet-5-5 \
     --agent reviewer "Applique revue/regles.md à ce diff.") || exit 0
 else
   sortie=$(git diff --cached | timeout 60 claude -p \
     "Lance le sous-agent reviewer sur ce diff avec revue/regles.md. Affiche ses findings tels quels." \
-    --model claude-sonnet-4-6) || exit 0
+    --model claude-sonnet-5-5) || exit 0
 fi
 echo "$sortie"
 ! grep -q '"severite": *"haute"' <<<"$sortie"
@@ -1139,7 +1139,7 @@ Une pull request reçoit les findings du reviewer en commentaires, sans commande
 
 ### Préparer le dépôt de session et la copie de travail
 
-Prérequis : `git`, `make`, `curl`, `jq`, `docker`, `uv`, `timeout` et `gh` installés ; accès SSH à GitHub (les clones utilisent l'URL SSH) ; `gh` connecté (`gh auth login`), avec accès en lecture à `imihalcea/tickets-api` (dépôt privé) et droit de créer un dépôt privé et d'y ouvrir une pull request ; Claude Code 2.1.310 : abonnement Anthropic, connexion faite (`/login` en session interactive) ; Open Code v2.0.32 : identifiants Amazon Bedrock dans la chaîne d'identifiants AWS (par exemple `AWS_PROFILE`), région des profils d'inférence `eu.`, modèle `amazon-bedrock/eu.anthropic.claude-sonnet-4-6`. Les deux outils emploient `claude-sonnet-4-6`. Port 5432 libre. État de départ : aucun, l'étape reconstruit le dépôt de session et la copie de travail. Aucun runner (machine qui exécute un job) auto-hébergé n'est enregistré : le workflow est commité, non exécuté, et le script du job se joue sur le poste. Seuls `lint` et `test` du workflow `ci` du dépôt de session tournent chez GitHub.
+Prérequis : `git`, `make`, `curl`, `jq`, `docker`, `uv`, `timeout` et `gh` installés ; accès SSH à GitHub (les clones utilisent l'URL SSH) ; `gh` connecté (`gh auth login`), avec accès en lecture à `imihalcea/tickets-api` (dépôt privé) et droit de créer un dépôt privé et d'y ouvrir une pull request ; Claude Code 2.1.310 : abonnement Anthropic, connexion faite (`/login` en session interactive) ; Open Code v2.0.32 : identifiants Amazon Bedrock dans la chaîne d'identifiants AWS (par exemple `AWS_PROFILE`), région des profils d'inférence `eu.`, modèle `amazon-bedrock/eu.anthropic.claude-sonnet-5-5`. Les deux outils emploient `claude-sonnet-5-5`. Port 5432 libre. État de départ : aucun, l'étape reconstruit le dépôt de session et la copie de travail. Aucun runner (machine qui exécute un job) auto-hébergé n'est enregistré : le workflow est commité, non exécuté, et le script du job se joue sur le poste. Seuls `lint` et `test` du workflow `ci` du dépôt de session tournent chez GitHub.
 
 Contenu utilisé du dépôt de référence : une API FastAPI de tickets (Python 3.12, SQLAlchemy 2, PostgreSQL, Alembic, pytest, ruff, `uv`), `Makefile` avec `db-up` (`docker compose up -d db`, PostgreSQL 17 sur le port 5432), `test` (`uv run pytest`) et `lint`. Le workflow `.github/workflows/ci.yml` (jobs `lint` et `test`, sur `pull_request` et sur push vers `main`) est celui qui tourne chez GitHub. `main` porte déjà `.claude/` (agents, commande, hook, `settings.json`) et `.opencode/` (agents, commandes). La branche `demo/revue-defauts` porte la spécification 002 et quatre défauts plantés.
 
@@ -1251,7 +1251,7 @@ cat > .claude/agents/reviewer.md <<'EOF'
 name: reviewer
 description: Applique les règles de revue à un diff et rend des findings
 tools: Read, Grep, Glob
-model: claude-sonnet-4-6
+model: claude-sonnet-5-5
 maxTurns: 20
 ---
 
@@ -1268,7 +1268,7 @@ cat > .opencode/agents/reviewer.md <<'EOF'
 ---
 description: Applique les règles de revue à un diff et rend des findings
 mode: subagent
-model: amazon-bedrock/eu.anthropic.claude-sonnet-4-6
+model: amazon-bedrock/eu.anthropic.claude-sonnet-5-5
 steps: 20
 permissions:
   - { action: edit, resource: "*", effect: deny }
@@ -1343,14 +1343,14 @@ prompt_oc="Applique revue/regles.md à ce diff et à la spécification specs/$sp
 case "$outil" in
   claude)
     timeout "${DELAI:-540}" env -u GH_TOKEN -u GITHUB_TOKEN claude -p "$prompt_cc" \
-      --model claude-sonnet-4-6 --max-turns "${MAX_TURNS:-6}" --output-format json \
+      --model claude-sonnet-5-5 --max-turns "${MAX_TURNS:-6}" --output-format json \
       --allowedTools Read Grep Glob < "$sortie/diff.patch" > "$sortie/sortie.json"
     jq -r '.result' "$sortie/sortie.json" > "$sortie/sortie.txt"
     jq -c '{total_cost_usd, num_turns, is_error, subtype}' "$sortie/sortie.json" > "$sortie/metriques.json"
     ;;
   opencode)
     timeout "${DELAI:-540}" env -u GH_TOKEN -u GITHUB_TOKEN opencode run \
-      --model amazon-bedrock/eu.anthropic.claude-sonnet-4-6 --agent reviewer "$prompt_oc" \
+      --model amazon-bedrock/eu.anthropic.claude-sonnet-5-5 --agent reviewer "$prompt_oc" \
       < "$sortie/diff.patch" > "$sortie/sortie.txt"
     ;;
   *) echo "Outil inconnu : $outil (claude ou opencode)"; exit 2 ;;
@@ -1612,7 +1612,7 @@ Un workflow `ci` en échec déclenche une analyse en lecture seule : l'agent de 
 
 ### Préparer le dépôt de session et la copie de travail
 
-Prérequis : `git`, `make`, `curl`, `jq`, `docker`, `uv`, `timeout` et `gh` installés ; accès SSH à GitHub (les clones utilisent l'URL SSH) ; `gh` connecté (`gh auth login`), avec accès en lecture à `imihalcea/tickets-api` (dépôt privé) et droit de créer un dépôt privé et d'y ouvrir une pull request ; Claude Code 2.1.310 : abonnement Anthropic, connexion faite (`/login` en session interactive) ; Open Code v2.0.32 : identifiants Amazon Bedrock dans la chaîne d'identifiants AWS (par exemple `AWS_PROFILE`), région des profils d'inférence `eu.`, modèle `amazon-bedrock/eu.anthropic.claude-sonnet-4-6`. Les deux outils emploient `claude-sonnet-4-6`. Port 5432 libre. État de départ : aucun, l'étape reconstruit le dépôt de session, la copie de travail et la base de test. Aucun runner auto-hébergé n'est enregistré : le workflow `analyse-echec` est commité, non exécuté ; le script du job se joue sur le poste. Seul le workflow `ci` tourne chez GitHub.
+Prérequis : `git`, `make`, `curl`, `jq`, `docker`, `uv`, `timeout` et `gh` installés ; accès SSH à GitHub (les clones utilisent l'URL SSH) ; `gh` connecté (`gh auth login`), avec accès en lecture à `imihalcea/tickets-api` (dépôt privé) et droit de créer un dépôt privé et d'y ouvrir une pull request ; Claude Code 2.1.310 : abonnement Anthropic, connexion faite (`/login` en session interactive) ; Open Code v2.0.32 : identifiants Amazon Bedrock dans la chaîne d'identifiants AWS (par exemple `AWS_PROFILE`), région des profils d'inférence `eu.`, modèle `amazon-bedrock/eu.anthropic.claude-sonnet-5-5`. Les deux outils emploient `claude-sonnet-5-5`. Port 5432 libre. État de départ : aucun, l'étape reconstruit le dépôt de session, la copie de travail et la base de test. Aucun runner auto-hébergé n'est enregistré : le workflow `analyse-echec` est commité, non exécuté ; le script du job se joue sur le poste. Seul le workflow `ci` tourne chez GitHub.
 
 Contenu utilisé du dépôt de référence : une API FastAPI de tickets (Python 3.12, SQLAlchemy 2, PostgreSQL, Alembic, pytest, ruff, `uv`), `Makefile` avec `db-up` (`docker compose up -d db`, PostgreSQL 17 sur le port 5432), `test` (`uv run pytest`) et `lint`. Le workflow `.github/workflows/ci.yml` (jobs `lint` et `test`) est celui qui échoue chez GitHub. `main` porte déjà `.claude/` et `.opencode/` (agents, commandes). Les migrations Alembic sont dans `src/tickets/adapters/outbound/postgres/migrations/versions/` : la seule révision de `main` est `0001`.
 
@@ -1675,7 +1675,7 @@ cat > .claude/agents/diagnostiqueur.md <<'EOF'
 name: diagnostiqueur
 description: Lit le journal d'un job de CI en échec et rend la cause avec un correctif proposé en diff
 tools: Read, Grep, Glob
-model: claude-sonnet-4-6
+model: claude-sonnet-5-5
 maxTurns: 10
 ---
 
@@ -1701,7 +1701,7 @@ cat > .opencode/agents/diagnostiqueur.md <<'EOF'
 ---
 description: Lit le journal d'un job de CI en échec et rend la cause avec un correctif proposé en diff
 mode: subagent
-model: amazon-bedrock/eu.anthropic.claude-sonnet-4-6
+model: amazon-bedrock/eu.anthropic.claude-sonnet-5-5
 steps: 10
 permissions:
   - { action: edit, resource: "*", effect: deny }
@@ -1782,14 +1782,14 @@ prompt_oc="Rends la cause de cet échec de CI avec la ligne du journal citée te
 case "$outil" in
   claude)
     timeout "${DELAI:-540}" env -u GH_TOKEN -u GITHUB_TOKEN claude -p "$prompt_cc" \
-      --model claude-sonnet-4-6 --max-turns "${MAX_TURNS:-6}" --output-format json \
+      --model claude-sonnet-5-5 --max-turns "${MAX_TURNS:-6}" --output-format json \
       --allowedTools Read Grep Glob < "$sortie/journal.txt" > "$sortie/sortie.json"
     jq -r '.result' "$sortie/sortie.json" > "$sortie/analyse.md"
     jq -c '{total_cost_usd, num_turns, is_error, subtype}' "$sortie/sortie.json" > "$sortie/metriques.json"
     ;;
   opencode)
     timeout "${DELAI:-540}" env -u GH_TOKEN -u GITHUB_TOKEN opencode run \
-      --model amazon-bedrock/eu.anthropic.claude-sonnet-4-6 --agent diagnostiqueur "$prompt_oc" \
+      --model amazon-bedrock/eu.anthropic.claude-sonnet-5-5 --agent diagnostiqueur "$prompt_oc" \
       < "$sortie/journal.txt" > "$sortie/analyse.md"
     ;;
   *) echo "Outil inconnu : $outil (claude ou opencode)"; exit 2 ;;
@@ -2055,7 +2055,7 @@ Claude Code, `.claude/agents/implementeur.md` :
 name: implementeur
 description: Modifie le code de l'application sous src/ et fait passer make lint et make test ; ne touche jamais aux tests
 tools: Read, Grep, Glob, Edit, Write, Bash
-model: claude-sonnet-4-6
+model: claude-sonnet-5-5
 maxTurns: 40
 hooks:
   PreToolUse:
@@ -2100,7 +2100,7 @@ case "$mode" in
 esac
 ```
 
-Claude Code se lance par `claude --model claude-sonnet-4-6 --allowedTools "Bash(make *)" "Bash(uv run *)"`, puis `/fix-until-green`. La commande ne déclare que `Bash(make test *)`, alors que `implementeur` a besoin de `make migrate`, `uv run alembic`, `ls` et `grep` : sans ces motifs en non interactif, la boucle s'arrête sans migrer (8 refus). Avec eux, rejeu du 25 octobre 2026 : 154 s, 0,53 USD, 61 tests verts.
+Claude Code se lance par `claude --model claude-sonnet-5-5 --allowedTools "Bash(make *)" "Bash(uv run *)"`, puis `/fix-until-green`. La commande ne déclare que `Bash(make test *)`, alors que `implementeur` a besoin de `make migrate`, `uv run alembic`, `ls` et `grep` : sans ces motifs en non interactif, la boucle s'arrête sans migrer (8 refus). Avec eux, rejeu du 25 octobre 2026 : 154 s, 0,53 USD, 61 tests verts.
 
 Open Code, `.opencode/commands/fix-until-green.md` :
 
@@ -2162,7 +2162,7 @@ Réponse, sans préambule :
 - Résultat : la dernière ligne de `make test` et de `make lint`.
 ```
 
-Sous Open Code, `opencode run` ne développe pas la commande : lancer `opencode --model amazon-bedrock/eu.anthropic.claude-sonnet-4-6` puis coller `Lis .opencode/commands/fix-until-green.md et applique-la : fais passer make test, sans modifier tests/.` (non rejoué).
+Sous Open Code, `opencode run` ne développe pas la commande : lancer `opencode --model amazon-bedrock/eu.anthropic.claude-sonnet-5-5` puis coller `Lis .opencode/commands/fix-until-green.md et applique-la : fais passer make test, sans modifier tests/.` (non rejoué).
 
 Remise à zéro : `gh pr close <numéro>`, `git reset --hard origin/demo/build-casse`, `git clean -fdq -e .venv -e node_modules`, `rm -rf analyse-sortie`, `docker compose down -v && make db-up`.
 :::

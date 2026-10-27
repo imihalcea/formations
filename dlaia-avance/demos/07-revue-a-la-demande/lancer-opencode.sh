@@ -4,14 +4,14 @@
 # blocs !`cmd` dans la copie de travail, puis lance opencode run avec le prompt assemblé.
 # Usage : lancer-opencode.sh <copie de travail> <revue|revue-adverse> <spécification> [agent]
 #   agent : défaut reviewer pour revue, agent par défaut (build) pour revue-adverse
-# Variable : MODEL (défaut amazon-bedrock/eu.anthropic.claude-sonnet-4-6)
+# Variable : MODEL (défaut amazon-bedrock/eu.anthropic.claude-sonnet-5-5)
 set -euo pipefail
 work="${1:?usage: lancer-opencode.sh <copie> <revue|revue-adverse> <spec> [agent]}"
 cmd="${2:?commande}"
 spec="${3:?spécification}"
 default_agent=""; [ "$cmd" = "revue" ] && default_agent="reviewer"
 agent="${4:-$default_agent}"
-model="${MODEL:-amazon-bedrock/eu.anthropic.claude-sonnet-4-6}"
+model="${MODEL:-amazon-bedrock/eu.anthropic.claude-sonnet-5-5}"
 file="$work/.opencode/commands/$cmd.md"
 [ -f "$file" ] || { echo "KO : $file absent"; exit 1; }
 

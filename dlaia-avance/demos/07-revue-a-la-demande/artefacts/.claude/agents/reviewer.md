@@ -2,7 +2,7 @@
 name: reviewer
 description: Applique les règles de revue à un diff et rend des findings
 tools: Read, Grep, Glob
-model: claude-sonnet-4-6
+model: claude-sonnet-5-5
 maxTurns: 20
 ---
 

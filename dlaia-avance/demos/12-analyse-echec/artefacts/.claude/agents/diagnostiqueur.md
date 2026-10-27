@@ -2,7 +2,7 @@
 name: diagnostiqueur
 description: Lit le journal d'un job de CI en échec et rend la cause avec un correctif proposé en diff
 tools: Read, Grep, Glob
-model: claude-sonnet-4-6
+model: claude-sonnet-5-5
 maxTurns: 10
 ---
 

@@ -4,7 +4,7 @@ Slide « Démonstration : analyse d'échec ». La branche `demo/build-casse` dé
 
 ## Préalables
 
-Claude Code 2.1.310 (abonnement) ou Open Code v2.0.32 (Amazon Bedrock), modèle `claude-sonnet-4-6` ; `gh` connecté, `docker`, `uv`, `jq`, `timeout`. Branche vérifiée le 25 octobre 2026 sur une base neuve : `19 failed, 42 passed`, erreur `psycopg.errors.UndefinedColumn: column "assignee" of relation "tickets" does not exist` (12 fois) et `column tickets.assignee does not exist` (14 fois au rejeu Open Code), 6597 lignes de sortie locale. Le plan annonçait 19 tests en erreur : le chiffre est confirmé en échecs, sur une base de test sans migration appliquée.
+Claude Code 2.1.310 (abonnement) ou Open Code v2.0.32 (Amazon Bedrock), modèle `claude-sonnet-5-5` ; `gh` connecté, `docker`, `uv`, `jq`, `timeout`. Branche vérifiée le 25 octobre 2026 sur une base neuve : `19 failed, 42 passed`, erreur `psycopg.errors.UndefinedColumn: column "assignee" of relation "tickets" does not exist` (12 fois) et `column tickets.assignee does not exist` (14 fois au rejeu Open Code), 6597 lignes de sortie locale. Le plan annonçait 19 tests en erreur : le chiffre est confirmé en échecs, sur une base de test sans migration appliquée.
 
 Piège local : sur une base de test déjà migrée par un autre passage (migration 0002 appliquée), les tests échouent avec `Can't locate revision identified by '0002'` (21 erreurs) au lieu de `UndefinedColumn`. Le piège se produit aussi après la démonstration 10 : un passage de l'agent y a réinitialisé la base partagée `tickets_test`, restée en migration `0002`. Repartir d'une base `tickets_test` neuve avant la démonstration : `docker compose down -v && make db-up`.
 
@@ -52,9 +52,9 @@ Dans la copie (`cd ~/travail/tickets-api-<session>`), branche `demo/build-casse`
 6. Constater que rien n'est poussé : `git status` et `gh pr view --json commits -q '.commits | length'` inchangés.
 7. Appliquer le correctif localement avec la commande personnalisée de la branche, puis pousser.
 
-   7a. Lancer `/fix-until-green`. Claude Code : `claude --model claude-sonnet-4-6 --allowedTools "Bash(make *)" "Bash(uv run *)"`, puis coller `/fix-until-green`. La commande déclare `allowed-tools: Bash(make test *)` seulement, et le sous-agent `implementeur` a besoin de `make migrate`, `uv run alembic`, `ls` et `grep` : sans ces motifs, le 1er essai du rejeu (non interactif) s'est arrêté sans migrer (8 refus, migration écrite et jamais exécutée). Avec eux : 154 s, 61 tests verts. En interactif, accepter les demandes de permission revient au même.
+   7a. Lancer `/fix-until-green`. Claude Code : `claude --model claude-sonnet-5-5 --allowedTools "Bash(make *)" "Bash(uv run *)"`, puis coller `/fix-until-green`. La commande déclare `allowed-tools: Bash(make test *)` seulement, et le sous-agent `implementeur` a besoin de `make migrate`, `uv run alembic`, `ls` et `grep` : sans ces motifs, le 1er essai du rejeu (non interactif) s'est arrêté sans migrer (8 refus, migration écrite et jamais exécutée). Avec eux : 154 s, 61 tests verts. En interactif, accepter les demandes de permission revient au même.
 
-   7b. Variante Open Code (non rejoué) : lancer `opencode --model amazon-bedrock/eu.anthropic.claude-sonnet-4-6`, puis coller `/fix-until-green` dans la TUI ; `opencode run` ne développe pas la commande (voir le runbook de la démonstration 4). Texte à coller si la commande n'est pas développée : `Lis .opencode/commands/fix-until-green.md et applique-la : fais passer make test, sans modifier tests/.`
+   7b. Variante Open Code (non rejoué) : lancer `opencode --model amazon-bedrock/eu.anthropic.claude-sonnet-5-5`, puis coller `/fix-until-green` dans la TUI ; `opencode run` ne développe pas la commande (voir le runbook de la démonstration 4). Texte à coller si la commande n'est pas développée : `Lis .opencode/commands/fix-until-green.md et applique-la : fais passer make test, sans modifier tests/.`
 
    7c. `git push`, puis `gh run watch` : `ci` verte. `ci/analyser-echec.sh <outil>` répond « rien à analyser ».
 
@@ -88,7 +88,7 @@ Limite à dire : dans un vrai job `workflow_run`, le dépôt extrait est `main`,
 | Point | Claude Code | Open Code |
 |---|---|---|
 | Workflow | `analyse-echec.claude-code.yml` : `./ci/analyser-echec.sh claude`, `MAX_TURNS` | `analyse-echec.opencode.yml` : `./ci/analyser-echec.sh opencode` |
-| Étape de l'agent de code | `claude -p … --model claude-sonnet-4-6 --max-turns 6 --output-format json --allowedTools Read Grep Glob`, journal en entrée standard | `opencode run --model amazon-bedrock/eu.anthropic.claude-sonnet-4-6 --agent diagnostiqueur`, journal en entrée standard |
+| Étape de l'agent de code | `claude -p … --model claude-sonnet-5-5 --max-turns 6 --output-format json --allowedTools Read Grep Glob`, journal en entrée standard | `opencode run --model amazon-bedrock/eu.anthropic.claude-sonnet-5-5 --agent diagnostiqueur`, journal en entrée standard |
 | Agent | `.claude/agents/diagnostiqueur.md`, `tools: Read, Grep, Glob` | `.opencode/agents/diagnostiqueur.md`, `permissions` : `edit`, `shell`, `webfetch` refusés |
 
 L'action `anthropics/claude-code-action@v1` (entrées `prompt` et `claude_args: --allowedTools …`) est la variante non retenue : un seul script sert les deux outils. Jamais deux `opencode run` en parallèle.

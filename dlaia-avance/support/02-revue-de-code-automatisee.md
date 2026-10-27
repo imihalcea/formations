@@ -311,7 +311,7 @@ Sans règle violée, ne rends rien.
 :::
 
 ::: notes
-Fichiers : `.claude/agents/reviewer.md` (Claude Code), `.opencode/agents/reviewer.md` (Open Code). Extraits abrégés : les fichiers réels fixent aussi `model: claude-sonnet-4-6` (Open Code : `amazon-bedrock/eu.anthropic.claude-sonnet-4-6`) et le nombre maximal de tours.
+Fichiers : `.claude/agents/reviewer.md` (Claude Code), `.opencode/agents/reviewer.md` (Open Code). Extraits abrégés : les fichiers réels fixent aussi `model: claude-sonnet-5-5` (Open Code : `amazon-bedrock/eu.anthropic.claude-sonnet-5-5`) et le nombre maximal de tours.
 Claude Code : `tools` est une liste blanche, seuls `name` et `description` sont requis. Le reviewer n'a ni `Bash` ni `Write` ni `Edit`. La doc ne montre pas de motif `Bash(git diff *)` dans `tools` : c'est la commande `/revue` qui injecte le diff, le reviewer n'a pas à le lire lui-même.
 Open Code v2 : `permissions` est une liste ordonnée de règles `{action, resource, effect}`, la dernière règle qui correspond l'emporte. Ici le diff est injecté par la commande (les blocs shell d'une commande Open Code s'exécutent hors du flux de permissions de l'outil) : aucune règle d'autorisation n'est nécessaire.
 Le format de finding est défini dans `revue/finding.schema.json` (slide précédente).
@@ -776,7 +776,7 @@ Le reviewer relit la branche `demo/revue-defauts` de `tickets-api` contre les r�
 
 ### Préparer le dépôt de session
 
-Prérequis : `git`, `make`, `jq`, `docker` avec Compose, `uv`, `gh` connecté (`gh auth status`) avec le droit de créer un dépôt privé et un accès en lecture à `imihalcea/tickets-api`, une clé SSH enregistrée sur GitHub (les clones passent par l'URL SSH), le port 5432 libre. Claude Code 2.1.310 connecté à un abonnement Anthropic, ou Open Code v2.0.32 avec des identifiants Amazon Bedrock (`AWS_PROFILE` ou clés d'accès, région européenne, accès au modèle `eu.anthropic.claude-sonnet-4-6`). Le modèle est `claude-sonnet-4-6` pour les deux outils : option `--model` et `settings.json` pour Claude Code, champ `model` des agents pour Open Code.
+Prérequis : `git`, `make`, `jq`, `docker` avec Compose, `uv`, `gh` connecté (`gh auth status`) avec le droit de créer un dépôt privé et un accès en lecture à `imihalcea/tickets-api`, une clé SSH enregistrée sur GitHub (les clones passent par l'URL SSH), le port 5432 libre. Claude Code 2.1.310 connecté à un abonnement Anthropic, ou Open Code v2.0.32 avec des identifiants Amazon Bedrock (`AWS_PROFILE` ou clés d'accès, région européenne, accès au modèle `eu.anthropic.claude-sonnet-5-5`). Le modèle est `claude-sonnet-5-5` pour les deux outils : option `--model` et `settings.json` pour Claude Code, champ `model` des agents pour Open Code.
 
 Le dépôt de session est un dépôt privé, copie miroir du dépôt de référence. Le bloc le crée s'il manque, en clone la copie de travail dans `$WORK`, se place sur la branche et remet son état d'origine.
 
@@ -822,7 +822,7 @@ Contenu utilisé du dépôt de référence, branche `demo/revue-defauts` :
 - `tests/integration/test_tickets_api.py` : aucun test de la route d'attribution (défaut R2).
 - `tests/conftest.py` : ligne 6, `monkeypatch.setenv("NOTIFY_TOKEN", "test-token-0000")`, valeur factice (cas voisin de la démonstration 7).
 - `Makefile` : `make db-up` (Docker Compose, PostgreSQL sur le port 5432), `make test` (`uv run pytest`), `make lint`.
-- `opencode.json` : modèle `amazon-bedrock/eu.anthropic.claude-sonnet-4-6` et serveur MCP `github`, sans objet ici.
+- `opencode.json` : modèle `amazon-bedrock/eu.anthropic.claude-sonnet-5-5` et serveur MCP `github`, sans objet ici.
 
 Dépôt de session déjà créé par une démonstration précédente : les deux blocs `if` ne font rien. Port 5432 pris par un autre conteneur (par exemple `tickets-api-db-1`) : l'arrêter avant `make db-up`. Dépôt de référence inaccessible : `gh auth status`, puis demander l'accès à `imihalcea/tickets-api`.
 :::
@@ -921,7 +921,7 @@ cat > .claude/agents/reviewer.md <<'EOF'
 name: reviewer
 description: Applique les règles de revue à un diff et rend des findings
 tools: Read, Grep, Glob
-model: claude-sonnet-4-6
+model: claude-sonnet-5-5
 maxTurns: 20
 ---
 
@@ -956,7 +956,7 @@ EOF
 mkdir -p .claude
 cat > .claude/settings.json <<'EOF'
 {
-  "model": "claude-sonnet-4-6",
+  "model": "claude-sonnet-5-5",
   "permissions": {
     "allow": [
       "Bash(make test *)",
@@ -974,7 +974,7 @@ cat > .claude/settings.json <<'EOF'
 EOF
 ```
 
-Ouvrir `claude --model claude-sonnet-4-6` une fois dans la copie de travail et accepter le dialogue de confiance du dossier, puis quitter.
+Ouvrir `claude --model claude-sonnet-5-5` une fois dans la copie de travail et accepter le dialogue de confiance du dossier, puis quitter.
 :::
 
 ::: opencode
@@ -987,7 +987,7 @@ cat > .opencode/agents/reviewer.md <<'EOF'
 ---
 description: Applique les règles de revue à un diff et rend des findings
 mode: subagent
-model: amazon-bedrock/eu.anthropic.claude-sonnet-4-6
+model: amazon-bedrock/eu.anthropic.claude-sonnet-5-5
 steps: 20
 permissions:
   - { action: edit, resource: "*", effect: deny }
@@ -1040,7 +1040,7 @@ Sans dialogue de confiance accepté, `claude -p` ignore les `permissions.allow` 
 ::: claude-code
 ```console
 $ cd "$WORK"
-$ claude --model claude-sonnet-4-6
+$ claude --model claude-sonnet-5-5
 ```
 :::
 
@@ -1072,7 +1072,7 @@ Les numéros de ligne varient d'une exécution à l'autre, le contenu non. Le re
 Claude Code, mode non interactif (le prompt précède `--allowedTools`, option variadique) :
 
 ```bash
-claude -p "/revue 002-responsable-priorite-haute" --model claude-sonnet-4-6 \
+claude -p "/revue 002-responsable-priorite-haute" --model claude-sonnet-5-5 \
   --allowedTools "Bash(cat *)" "Bash(grep *)" "Bash(git diff *)" "Bash(git log *)"
 ```
 
@@ -1086,14 +1086,14 @@ cat > "$HOME/lancer-opencode.sh" <<'EOF'
 # blocs !`cmd` dans la copie de travail, puis lance opencode run avec le prompt assemblé.
 # Usage : lancer-opencode.sh <copie de travail> <revue|revue-adverse> <spécification> [agent]
 #   agent : défaut reviewer pour revue, agent principal (build) pour revue-adverse
-# Variable : MODEL (défaut amazon-bedrock/eu.anthropic.claude-sonnet-4-6)
+# Variable : MODEL (défaut amazon-bedrock/eu.anthropic.claude-sonnet-5-5)
 set -euo pipefail
 work="${1:?usage: lancer-opencode.sh <copie> <revue|revue-adverse> <spec> [agent]}"
 cmd="${2:?commande}"
 spec="${3:?spécification}"
 default_agent=""; [ "$cmd" = "revue" ] && default_agent="reviewer"
 agent="${4:-$default_agent}"
-model="${MODEL:-amazon-bedrock/eu.anthropic.claude-sonnet-4-6}"
+model="${MODEL:-amazon-bedrock/eu.anthropic.claude-sonnet-5-5}"
 file="$work/.opencode/commands/$cmd.md"
 [ -f "$file" ] || { echo "KO : $file absent"; exit 1; }
 
@@ -1150,7 +1150,7 @@ Une règle qui produit un faux positif se réécrit dans `revue/regles.md`, se c
 
 ### Reconstruire l'état de départ
 
-Prérequis : `git`, `make`, `jq`, `docker` avec Compose, `uv`, `gh` connecté (`gh auth status`) avec le droit de créer un dépôt privé et un accès en lecture à `imihalcea/tickets-api`, une clé SSH enregistrée sur GitHub (les clones passent par l'URL SSH), le port 5432 libre. Claude Code 2.1.310 connecté à un abonnement Anthropic, ou Open Code v2.0.32 avec des identifiants Amazon Bedrock (`AWS_PROFILE` ou clés d'accès, région européenne, accès au modèle `eu.anthropic.claude-sonnet-4-6`). Le modèle est `claude-sonnet-4-6` pour les deux outils : option `--model` et `settings.json` pour Claude Code, champ `model` des agents pour Open Code.
+Prérequis : `git`, `make`, `jq`, `docker` avec Compose, `uv`, `gh` connecté (`gh auth status`) avec le droit de créer un dépôt privé et un accès en lecture à `imihalcea/tickets-api`, une clé SSH enregistrée sur GitHub (les clones passent par l'URL SSH), le port 5432 libre. Claude Code 2.1.310 connecté à un abonnement Anthropic, ou Open Code v2.0.32 avec des identifiants Amazon Bedrock (`AWS_PROFILE` ou clés d'accès, région européenne, accès au modèle `eu.anthropic.claude-sonnet-5-5`). Le modèle est `claude-sonnet-5-5` pour les deux outils : option `--model` et `settings.json` pour Claude Code, champ `model` des agents pour Open Code.
 
 Le dépôt de session est un dépôt privé, copie miroir du dépôt de référence. Le bloc le crée s'il manque, en clone la copie de travail dans `$WORK` et remet l'état d'origine de la branche, même si une démonstration précédente a laissé des fichiers : tout se recrée dans les étapes suivantes.
 
@@ -1196,7 +1196,7 @@ Contenu utilisé du dépôt de référence, branche `demo/revue-defauts` :
 - `tests/integration/test_tickets_api.py` : aucun test de la route d'attribution (défaut R2).
 - `tests/conftest.py` : ligne 6, `monkeypatch.setenv("NOTIFY_TOKEN", "test-token-0000")`, valeur factice (cas voisin de la démonstration 7).
 - `Makefile` : `make db-up` (Docker Compose, PostgreSQL sur le port 5432), `make test` (`uv run pytest`), `make lint`.
-- `opencode.json` : modèle `amazon-bedrock/eu.anthropic.claude-sonnet-4-6` et serveur MCP `github`, sans objet ici.
+- `opencode.json` : modèle `amazon-bedrock/eu.anthropic.claude-sonnet-5-5` et serveur MCP `github`, sans objet ici.
 
 Dépôt de session déjà créé par une démonstration précédente : les deux blocs `if` ne font rien. Port 5432 pris par un autre conteneur (par exemple `tickets-api-db-1`) : l'arrêter avant `make db-up`. Dépôt de référence inaccessible : `gh auth status`, puis demander l'accès à `imihalcea/tickets-api`.
 :::
@@ -1284,7 +1284,7 @@ cat > .claude/agents/reviewer.md <<'EOF'
 name: reviewer
 description: Applique les règles de revue à un diff et rend des findings
 tools: Read, Grep, Glob
-model: claude-sonnet-4-6
+model: claude-sonnet-5-5
 maxTurns: 20
 ---
 
@@ -1319,7 +1319,7 @@ EOF
 mkdir -p .claude
 cat > .claude/settings.json <<'EOF'
 {
-  "model": "claude-sonnet-4-6",
+  "model": "claude-sonnet-5-5",
   "permissions": {
     "allow": [
       "Bash(make test *)",
@@ -1339,7 +1339,7 @@ cat > .claude/settings.json <<'EOF'
 EOF
 ```
 
-Ouvrir `claude --model claude-sonnet-4-6` une fois dans la copie de travail et accepter le dialogue de confiance du dossier, puis quitter.
+Ouvrir `claude --model claude-sonnet-5-5` une fois dans la copie de travail et accepter le dialogue de confiance du dossier, puis quitter.
 :::
 
 ::: opencode
@@ -1352,7 +1352,7 @@ cat > .opencode/agents/reviewer.md <<'EOF'
 ---
 description: Applique les règles de revue à un diff et rend des findings
 mode: subagent
-model: amazon-bedrock/eu.anthropic.claude-sonnet-4-6
+model: amazon-bedrock/eu.anthropic.claude-sonnet-5-5
 steps: 20
 permissions:
   - { action: edit, resource: "*", effect: deny }
@@ -1425,7 +1425,7 @@ Deux lignes qui diffèrent : le littéral `ntfy_9f3a7c21e0b44d8f` (`notification
 
 ### Réécrire R3
 
-Lancer l'agent de code dans la copie de travail (`claude --model claude-sonnet-4-6` ou `opencode`). Le reviewer est en lecture seule : l'agent principal modifie le fichier. Accepter la permission d'écrire `revue/regles.md` si la session la demande.
+Lancer l'agent de code dans la copie de travail (`claude --model claude-sonnet-5-5` ou `opencode`). Le reviewer est en lecture seule : l'agent principal modifie le fichier. Accepter la permission d'écrire `revue/regles.md` si la session la demande.
 
 ```prompt
 Réécris la règle R3 de revue/regles.md : elle continue de signaler tout identifiant émis écrit en clair dans src/ (préfixe de fournisseur, séparateur - ou _, au moins seize caractères hexadécimaux), exclut tests/ et donne un exemple conforme dans tests/. Commite la modification.
@@ -1503,7 +1503,7 @@ Contrepartie à signaler : l'exclusion de `tests/` supprime aussi la détection 
 Claude Code, mode non interactif (le prompt précède `--allowedTools`, option variadique) :
 
 ```bash
-claude -p "/revue 002-responsable-priorite-haute" --model claude-sonnet-4-6 \
+claude -p "/revue 002-responsable-priorite-haute" --model claude-sonnet-5-5 \
   --allowedTools "Bash(cat *)" "Bash(grep *)" "Bash(git diff *)" "Bash(git log *)"
 ```
 
@@ -1517,14 +1517,14 @@ cat > "$HOME/lancer-opencode.sh" <<'EOF'
 # blocs !`cmd` dans la copie de travail, puis lance opencode run avec le prompt assemblé.
 # Usage : lancer-opencode.sh <copie de travail> <revue|revue-adverse> <spécification> [agent]
 #   agent : défaut reviewer pour revue, agent principal (build) pour revue-adverse
-# Variable : MODEL (défaut amazon-bedrock/eu.anthropic.claude-sonnet-4-6)
+# Variable : MODEL (défaut amazon-bedrock/eu.anthropic.claude-sonnet-5-5)
 set -euo pipefail
 work="${1:?usage: lancer-opencode.sh <copie> <revue|revue-adverse> <spec> [agent]}"
 cmd="${2:?commande}"
 spec="${3:?spécification}"
 default_agent=""; [ "$cmd" = "revue" ] && default_agent="reviewer"
 agent="${4:-$default_agent}"
-model="${MODEL:-amazon-bedrock/eu.anthropic.claude-sonnet-4-6}"
+model="${MODEL:-amazon-bedrock/eu.anthropic.claude-sonnet-5-5}"
 file="$work/.opencode/commands/$cmd.md"
 [ -f "$file" ] || { echo "KO : $file absent"; exit 1; }
 
@@ -1563,7 +1563,7 @@ Remise à zéro avant la démonstration suivante : rejouer l'étape « Reconstru
 
 ### Reconstruire l'état de départ
 
-Prérequis : `git`, `make`, `jq`, `docker` avec Compose, `uv`, `gh` connecté (`gh auth status`) avec le droit de créer un dépôt privé et un accès en lecture à `imihalcea/tickets-api`, une clé SSH enregistrée sur GitHub (les clones passent par l'URL SSH), le port 5432 libre. Claude Code 2.1.310 connecté à un abonnement Anthropic, ou Open Code v2.0.32 avec des identifiants Amazon Bedrock (`AWS_PROFILE` ou clés d'accès, région européenne, accès au modèle `eu.anthropic.claude-sonnet-4-6`). Le modèle est `claude-sonnet-4-6` pour les deux outils : option `--model` et `settings.json` pour Claude Code, champ `model` des agents pour Open Code.
+Prérequis : `git`, `make`, `jq`, `docker` avec Compose, `uv`, `gh` connecté (`gh auth status`) avec le droit de créer un dépôt privé et un accès en lecture à `imihalcea/tickets-api`, une clé SSH enregistrée sur GitHub (les clones passent par l'URL SSH), le port 5432 libre. Claude Code 2.1.310 connecté à un abonnement Anthropic, ou Open Code v2.0.32 avec des identifiants Amazon Bedrock (`AWS_PROFILE` ou clés d'accès, région européenne, accès au modèle `eu.anthropic.claude-sonnet-5-5`). Le modèle est `claude-sonnet-5-5` pour les deux outils : option `--model` et `settings.json` pour Claude Code, champ `model` des agents pour Open Code.
 
 Le dépôt de session est un dépôt privé, copie miroir du dépôt de référence. Le bloc le crée s'il manque, en clone la copie de travail dans `$WORK` et remet l'état d'origine de la branche, même si une démonstration précédente a laissé des fichiers. Les fichiers de la revue et la règle R3 corrigée se posent dans les deux étapes suivantes.
 
@@ -1609,7 +1609,7 @@ Contenu utilisé du dépôt de référence, branche `demo/revue-defauts` :
 - `tests/integration/test_tickets_api.py` : aucun test de la route d'attribution (défaut R2).
 - `tests/conftest.py` : ligne 6, `monkeypatch.setenv("NOTIFY_TOKEN", "test-token-0000")`, valeur factice (cas voisin de la démonstration 7).
 - `Makefile` : `make db-up` (Docker Compose, PostgreSQL sur le port 5432), `make test` (`uv run pytest`), `make lint`.
-- `opencode.json` : modèle `amazon-bedrock/eu.anthropic.claude-sonnet-4-6` et serveur MCP `github`, sans objet ici.
+- `opencode.json` : modèle `amazon-bedrock/eu.anthropic.claude-sonnet-5-5` et serveur MCP `github`, sans objet ici.
 
 Dépôt de session déjà créé par une démonstration précédente : les deux blocs `if` ne font rien. Port 5432 pris par un autre conteneur (par exemple `tickets-api-db-1`) : l'arrêter avant `make db-up`. Dépôt de référence inaccessible : `gh auth status`, puis demander l'accès à `imihalcea/tickets-api`.
 :::
@@ -1697,7 +1697,7 @@ cat > .claude/agents/reviewer.md <<'EOF'
 name: reviewer
 description: Applique les règles de revue à un diff et rend des findings
 tools: Read, Grep, Glob
-model: claude-sonnet-4-6
+model: claude-sonnet-5-5
 maxTurns: 20
 ---
 
@@ -1732,7 +1732,7 @@ EOF
 mkdir -p .claude
 cat > .claude/settings.json <<'EOF'
 {
-  "model": "claude-sonnet-4-6",
+  "model": "claude-sonnet-5-5",
   "permissions": {
     "allow": [
       "Bash(make test *)",
@@ -1750,7 +1750,7 @@ cat > .claude/settings.json <<'EOF'
 EOF
 ```
 
-Ouvrir `claude --model claude-sonnet-4-6` une fois dans la copie de travail et accepter le dialogue de confiance du dossier, puis quitter.
+Ouvrir `claude --model claude-sonnet-5-5` une fois dans la copie de travail et accepter le dialogue de confiance du dossier, puis quitter.
 :::
 
 ::: opencode
@@ -1763,7 +1763,7 @@ cat > .opencode/agents/reviewer.md <<'EOF'
 ---
 description: Applique les règles de revue à un diff et rend des findings
 mode: subagent
-model: amazon-bedrock/eu.anthropic.claude-sonnet-4-6
+model: amazon-bedrock/eu.anthropic.claude-sonnet-5-5
 steps: 20
 permissions:
   - { action: edit, resource: "*", effect: deny }
@@ -1827,7 +1827,7 @@ name: contradicteur
 description: Tente de réfuter un finding en lisant le code et en lançant les tests
 tools: Read, Grep, Glob, Bash
 disallowedTools: Write, Edit
-model: claude-sonnet-4-6
+model: claude-sonnet-5-5
 maxTurns: 20
 ---
 
@@ -1877,7 +1877,7 @@ cat > .opencode/agents/contradicteur.md <<'EOF'
 ---
 description: Tente de réfuter un finding en lisant le code et en lançant les tests
 mode: subagent
-model: amazon-bedrock/eu.anthropic.claude-sonnet-4-6
+model: amazon-bedrock/eu.anthropic.claude-sonnet-5-5
 steps: 20
 permissions:
   - { action: edit, resource: "*", effect: deny }
@@ -1931,7 +1931,7 @@ Open Code : la dernière commande affiche `contradicteur` et `reviewer`, tous de
 ::: claude-code
 ```console
 $ cd "$WORK"
-$ claude --model claude-sonnet-4-6
+$ claude --model claude-sonnet-5-5
 ```
 :::
 
@@ -1958,7 +1958,7 @@ Les contradicteurs citent des lignes de code lues (`grep -n`, lecture) et relanc
 Claude Code, mode non interactif (le prompt précède `--allowedTools`, option variadique) :
 
 ```bash
-claude -p "/revue-adverse 002-responsable-priorite-haute" --model claude-sonnet-4-6 --output-format json \
+claude -p "/revue-adverse 002-responsable-priorite-haute" --model claude-sonnet-5-5 --output-format json \
   --allowedTools "Bash(cat *)" "Bash(grep *)" "Bash(git diff *)" "Bash(git log *)" "Bash(make test*)" "Bash(uv run pytest *)"
 ```
 
@@ -1974,14 +1974,14 @@ cat > "$HOME/lancer-opencode.sh" <<'EOF'
 # blocs !`cmd` dans la copie de travail, puis lance opencode run avec le prompt assemblé.
 # Usage : lancer-opencode.sh <copie de travail> <revue|revue-adverse> <spécification> [agent]
 #   agent : défaut reviewer pour revue, agent principal (build) pour revue-adverse
-# Variable : MODEL (défaut amazon-bedrock/eu.anthropic.claude-sonnet-4-6)
+# Variable : MODEL (défaut amazon-bedrock/eu.anthropic.claude-sonnet-5-5)
 set -euo pipefail
 work="${1:?usage: lancer-opencode.sh <copie> <revue|revue-adverse> <spec> [agent]}"
 cmd="${2:?commande}"
 spec="${3:?spécification}"
 default_agent=""; [ "$cmd" = "revue" ] && default_agent="reviewer"
 agent="${4:-$default_agent}"
-model="${MODEL:-amazon-bedrock/eu.anthropic.claude-sonnet-4-6}"
+model="${MODEL:-amazon-bedrock/eu.anthropic.claude-sonnet-5-5}"
 file="$work/.opencode/commands/$cmd.md"
 [ -f "$file" ] || { echo "KO : $file absent"; exit 1; }
 
@@ -2035,7 +2035,7 @@ La revue adverse coûte plus que la revue sans contradicteur : chaque contradict
 :::
 
 ::: indice
-Sans contradicteur en mode non interactif : `claude -p "/revue 002-responsable-priorite-haute" --model claude-sonnet-4-6 --output-format json --allowedTools "Bash(cat *)" "Bash(grep *)" "Bash(git diff *)" "Bash(git log *)"` ; sous Open Code, `"$HOME/lancer-opencode.sh" "$WORK" revue 002-responsable-priorite-haute` (script de l'indice de l'étape « Lancer la revue adverse »). Remise à zéro : rejouer l'étape « Reconstruire l'état de départ ».
+Sans contradicteur en mode non interactif : `claude -p "/revue 002-responsable-priorite-haute" --model claude-sonnet-5-5 --output-format json --allowedTools "Bash(cat *)" "Bash(grep *)" "Bash(git diff *)" "Bash(git log *)"` ; sous Open Code, `"$HOME/lancer-opencode.sh" "$WORK" revue 002-responsable-priorite-haute` (script de l'indice de l'étape « Lancer la revue adverse »). Remise à zéro : rejouer l'étape « Reconstruire l'état de départ ».
 :::
 
 ## Glossaire : revue et findings {kicker="Glossaire"}
