@@ -677,10 +677,28 @@ Source primaire consultée le 25 octobre 2026. Citations : « nearly 3.5K React 
 Date de publication : la page ne la porte pas dans son texte (courant 2025, mars selon la presse spécialisée). Méthode : relances avec le dernier état du fichier et les erreurs de validation.
 :::
 
+## Ce que reçoit chaque relance {kicker="Boucles"}
+
+![Une étape Airbnb : l'agent corrige, la vérification rend un verdict ; en cas d'échec, relance avec les erreurs et le fichier à jour](images/01-relance-airbnb.svg)
+
+L'agent corrige à partir de l'échec, sans repartir de zéro. La boucle s'arrête à la réussite ou au nombre maximal de relances.
+
+::: sources
+- [Airbnb Tech Blog, Accelerating Large-Scale Test Migration with LLMs](https://airbnb.tech/infrastructure/accelerating-large-scale-test-migration-with-llms/)
+:::
+
+::: notes
+Source consultée le 27 octobre 2026. Chaque fichier traverse des étapes dans l'ordre : conversion, Jest, lint et tsc, terminé. Un fichier avance seulement quand la vérification de son étape passe ; les fichiers sont indépendants, donc traités en parallèle, et une étape se rejoue seule.
+À chaque relance, le prompt est reconstruit avec les erreurs de la vérification qui vient d'échouer et la dernière version du fichier. Nombre maximal de relances réglable. Fichiers simples ou moyens : quelques relances, la plupart avant 10.
+D'après l'article, relancer a mieux marché que peaufiner le prompt (« brute force »). Les fichiers complexes ont reçu un contexte enrichi (40 000 à 100 000 tokens : composant, test, erreurs, tests voisins du dossier, exemples) ; ce qui a compté le plus : choisir les bons fichiers voisins.
+Chiffres de la campagne : environ 75 % des fichiers migrés au premier passage (4 heures), 97 % après quatre jours de cycles « échantillonner 5 à 10 fichiers, ajuster, relancer tout ». Fichiers restants (moins de 100, certains relancés 50 à 100 fois) : corrigés à la main en une semaine environ.
+Lecture pour le module : le critère décide de la fin, l'erreur renvoyée guide la relance, la limite évite la boucle sans fin (section Garde-fous). Un script reproduit le schéma : il reconstruit le prompt à chaque tour, car chaque appel `claude -p` repart d'une session vide.
+:::
+
 ## Le code de retour d'une commande remplace l'avis du modèle sur la fin. {.statement kicker="Boucles"}
 
 ::: notes
-Conclut la section : horizon de tâche, critère, définition, commande, script, cas Airbnb.
+Conclut la section : horizon de tâche, critère, définition, commande, script, cas Airbnb, contenu d'une relance.
 Transition : une boucle sans nombre maximal de relances peut tourner longtemps ou contourner son critère. Section suivante.
 :::
 
