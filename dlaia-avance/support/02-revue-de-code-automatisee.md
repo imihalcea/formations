@@ -784,9 +784,9 @@ git fetch --quiet origin
 git checkout -- . && git clean -fdq -e .venv -e node_modules
 git checkout demo/revue-defauts
 git reset --hard origin/demo/revue-defauts
-make db-up
 docker compose down -v
 uv sync
+make db-up
 make test
 ```
 
@@ -1140,9 +1140,9 @@ git fetch --quiet origin
 git checkout -- . && git clean -fdq -e .venv -e node_modules
 git checkout demo/revue-defauts
 git reset --hard origin/demo/revue-defauts
-make db-up
 docker compose down -v
 uv sync
+make db-up
 make test
 ```
 
@@ -1535,9 +1535,9 @@ git fetch --quiet origin
 git checkout -- . && git clean -fdq -e .venv -e node_modules
 git checkout demo/revue-defauts
 git reset --hard origin/demo/revue-defauts
-make db-up
 docker compose down -v
 uv sync
+make db-up
 make test
 ```
 
