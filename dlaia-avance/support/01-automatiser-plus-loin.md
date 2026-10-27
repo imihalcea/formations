@@ -2080,37 +2080,14 @@ Une commande du dépôt corrige le code jusqu'à des tests verts, sous garde-fou
 
 ### Se placer sur la branche et poser les garde-fous
 
-Préalables : `git`, `make`, `docker` (Compose), `uv`, `gh` connecté, clé SSH enregistrée sur GitHub, accès à `imihalcea/tickets-api`, port 5432 libre. Claude Code 2.1.310 (abonnement Anthropic connecté) ou Open Code v2.0.32 (identifiants AWS pour Amazon Bedrock, région européenne). Aucun jeton GitHub. Contenu du dépôt employé : `AGENTS.md`, `Makefile` (`test`), le code de `src/tickets/domain/ticket.py`, la commande `fix-until-green` et le sous-agent `implementeur` de `.claude/` et de `.opencode/`, le hook `.claude/hooks/guard-path.sh`.
-
-
-La commande se joue en session interactive. Le bloc crée le dépôt de session et la copie de travail s'ils n'existent pas, sans effet de bord sinon. La base est recréée : une base laissée à la révision Alembic `0002` par la démonstration 3 fait échouer les tests.
+Le dépôt de session, la copie de travail et les dépendances viennent des démonstrations 1 à 3 (variables `SESSION`, `TARGET` et `WORK` incluses). La remise à zéro retire leurs fichiers non commités. La base est recréée : une base laissée à la révision Alembic `0002` par la démonstration 3 fait échouer les tests. La commande `fix-until-green`, le sous-agent `implementeur` et le hook `.claude/hooks/guard-path.sh` sont dans le dépôt. La commande se joue en session interactive.
 
 ```bash
-export SESSION=demo
-export REFERENCE=imihalcea/tickets-api
-export TARGET="$REFERENCE-$SESSION"
-export WORK="$HOME/travail/tickets-api-$SESSION"
-
-if ! gh repo view "$TARGET" >/dev/null 2>&1; then
-  gh repo create "$TARGET" --private --description "Dépôt de session $SESSION"
-  REFERENCE_URL=$(gh repo view "$REFERENCE" --json sshUrl -q .sshUrl)
-  TARGET_URL=$(gh repo view "$TARGET" --json sshUrl -q .sshUrl)
-  tmp=$(mktemp -d)
-  git clone --mirror "$REFERENCE_URL" "$tmp/reference.git"
-  git -C "$tmp/reference.git" push --mirror "$TARGET_URL"
-  rm -rf "$tmp"
-fi
-if [ ! -d "$WORK/.git" ]; then
-  mkdir -p "$HOME/travail"
-  git clone "$(gh repo view "$TARGET" --json sshUrl -q .sshUrl)" "$WORK"
-fi
-
-cd "$WORK"
+cd $WORK
 git checkout -- . && git clean -fdq -e .venv -e node_modules
 git checkout fix/ticket-ferme-commentaires
 docker compose down -v
 make db-up
-uv sync
 ```
 
 ::: claude-code
