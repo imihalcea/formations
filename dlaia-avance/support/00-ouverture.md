@@ -15,10 +15,10 @@ Rappeler que le support suppose la formation initiale acquise : agent, harnais, 
 | Élément en place | Ce qu'il apporte |
 |---|---|
 | Agent | un modèle dans une boucle d'outils : il lit, exécute, relit, jusqu'au résultat |
-| Harnais | le logiciel autour du modèle : boucle, outils, permissions, affichage |
+| Harnais | le logiciel autour du modèle : agent, outils, permissions, affichage |
 | Spécification | l'intention écrite et versionnée, avant le code |
 
-La journée traite ce qui résiste malgré ces trois éléments.
+La journée traite des limitations qui résistent malgré ces trois éléments.
 
 ::: notes
 Pas de rappel de cours : trois lignes pour fixer le point de départ commun. Définitions du lexique de la formation initiale.
@@ -33,52 +33,11 @@ Lecture de la slide : les modules dans l'ordre où ils sont joués. Chaque modul
 Les titres de module sont annoncés ici, définis dans leur module : ne rien expliquer maintenant.
 :::
 
-## Choisir l'agent de code {kicker="Environnement"}
-
-Un agent de code est un agent en ligne de commande : il pilote un modèle pour lire, écrire et exécuter du code dans un dépôt. La journée se joue avec un seul des deux, choisi maintenant.
-
-| Agent de code | Commande de lancement | Fichier de contexte |
-|---|---|---|
-| Claude Code | `claude` | `CLAUDE.md` |
-| Open Code | `opencode` | `AGENTS.md` |
-
-Fichier de contexte : lu par l'agent de code au lancement.
-
-::: sources
-- [Claude Code, CLI reference](https://code.claude.com/docs/en/cli-reference)
-- [Claude Code, How Claude remembers your project](https://code.claude.com/docs/en/memory)
-- [Open Code, CLI](https://opencode.ai/docs/cli/)
-- [Open Code, Rules](https://opencode.ai/docs/rules/)
-:::
-
-::: notes
-Demander le choix à la salle, puis régler le sélecteur d'outil en haut à droite du support : les slides à variantes n'affichent plus que l'outil choisi. Les démonstrations se jouent avec cet outil seul.
-Les deux agents de code ont la même définition ; seuls la commande et le fichier de contexte diffèrent.
-Claude Code lit `AGENTS.md` quand aucun `CLAUDE.md` n'existe, à partir de la v2.1.277 (doc memory). Open Code : la doc (opencode.ai/docs/rules) annonce un repli vers `CLAUDE.md` quand aucun `AGENTS.md` n'existe ; non observé en v2.0.32 (code de découverte, `formateur/equivalences.md`). Dans tickets-api, `CLAUDE.md` importe `AGENTS.md` : une seule source, le repli ne joue pas.
-Open Code : « open source AI coding agent » (page d'accueil de la documentation).
-Versions relevées sur le poste le 25 octobre 2026 : Claude Code 2.1.310, Open Code v2.0.32. À revérifier avant la séance (`claude --version`, `opencode --version`).
-:::
-
-## Les démonstrations se jouent avec l'agent de code choisi. {.statement kicker="Environnement"}
-
-::: notes
-Conclut la section : un seul agent de code joue la journée. La commande, le fichier de contexte et la configuration diffèrent d'un outil à l'autre ; les slides à variantes suivent le sélecteur.
-À dire à l'oral : une démonstration est l'exécution commentée, en direct, d'une tâche confiée à l'agent de code. Chacune a quatre parties : le prompt (la consigne donnée à l'agent de code), le déroulé (les étapes jouées et commentées), le résultat attendu et le repli (la solution de secours si l'agent dérive). Aucun TP : la salle observe et pose des questions.
-Chaque démonstration a un runbook dans `demos/NN-nom/` ; le prompt, le déroulé, le résultat attendu et le repli sont dans les notes de la slide qui la porte.
-Fixer le modèle : Claude Code `claude --model claude-sonnet-4-6` ; Open Code, fichier `opencode.json`, clé `model` : `amazon-bedrock/eu.anthropic.claude-sonnet-4-6`. Sources : Claude Code CLI reference et Settings, Open Code Models et CLI (code.claude.com/docs/en/cli-reference, /settings ; opencode.ai/docs/models/, /cli/).
-À dire à l'oral : un seul modèle pour la journée, Claude Sonnet 4.6 (`claude-sonnet-4-6`). Claude Code passe par l'abonnement Anthropic, Open Code par Amazon Bedrock (région eu-west-1). Claude Code sait aussi passer par Bedrock (page Claude Code on Amazon Bedrock) ; le poste n'emploie pas cette voie.
-Alias : la documentation dit que les alias suivent « the recommended version for your provider » et changent avec le temps ; `sonnet` désigne Sonnet 4.5 sur Bedrock (page Amazon Bedrock : sans variable de pin, `sonnet` vaut Sonnet 4.5) et un modèle plus récent sur l'API Anthropic. L'identifiant complet fige le modèle : tous les appels des démonstrations l'imposent, jamais l'alias.
-Sources : Claude Code Model configuration (code.claude.com/docs/en/model-config), Claude Code Amazon Bedrock (code.claude.com/docs/en/amazon-bedrock), Open Code Providers (opencode.ai/docs/providers/). Page providers d'Open Code : authentification Bedrock documentée, identifiant `amazon-bedrock/eu.anthropic.claude-sonnet-4-6` non documenté, relevé dans `opencode.json` de tickets-api.
-Claude Code : l'option `--model` prend l'identifiant complet (exemple de la doc : `claude --model claude-sonnet-5`). Le dépôt tickets-api l'épingle aussi dans `.claude/settings.json`, clé `model` (doc Settings : « "model": "claude-sonnet-5" » en exemple de fichier d'équipe ; contenu vérifié par `gh api` le 25 octobre 2026).
-Open Code : la doc annonce `--model`/`-m` sur la TUI, mais `opencode --help` en v2.0.32 ne la montre pas (relevé du 25 octobre 2026). `-m` existe sur `opencode run`, utilisé par le rejeu. Format `provider/model`. Donc modèle fixé par `opencode.json`.
-Jamais deux `opencode run` en parallèle. Avant le module 1 : `opencode mcp list` de chauffe.
-:::
-
 ## Définition d'une limitation {kicker="Limitations"}
 
 ![Deux barres : le code produit dépasse la ligne de limitation, le code relu l'atteint sans la franchir](images/00-limitation.svg)
 
-Une limitation est ce que l'agent de code ne dépasse pas seul, même avec une spécification et un harnais.
+Une limitation est ce que l'IA ne dépasse pas seule, même avec une methode comme SDD et un harnais.
 
 ::: notes
 Un défaut de prompt ou de méthode se corrige sans changer d'outil ; une limitation subsiste une fois spécification et harnais en place.
@@ -86,11 +45,12 @@ Le mot est choisi pour la suite de la journée : on ne dit ni plafond, ni goulot
 Le schéma est une illustration. Archétype repris au module 2 : l'agent produit plus de code que l'équipe n'en relit.
 :::
 
-## Quatre modules, quatre limitations dépassées {kicker="Limitations"}
+## Quatre modules, quatre limitations a dépasser {kicker="Limitations"}
 
 | Limitation | Module |
 |---|---|
-| l'agent de code seul n'a que ses outils d'origine, une seule fenêtre de contexte et une seule passe | 1 Automatiser plus loin |
+| l'agent de code seul n'a que ses outils d'origine | 1 Automatiser plus loin |
+| une seule fenêtre de contexte et une seule passe | 1 Automatiser plus loin |
 | l'agent de code produit plus de code que l'équipe n'en relit | 2 Revue de code automatisée |
 | l'agent de code peut contourner une règle que rien ne vérifie | 3 Hooks et pipeline |
 | le code du dépôt quitte le poste à chaque appel du modèle | 4 Modèles locaux |
@@ -98,27 +58,6 @@ Le schéma est une illustration. Archétype repris au module 2 : l'agent produit
 ::: notes
 Classement du support, pas une source externe. Les termes de chaque colonne droite sont définis dans leur module : ne pas entrer dans le détail.
 Lecture : une ligne, une limitation, un module qui y répond.
-:::
-
-## Cas vécus depuis la formation {kicker="Limitations"}
-
-| Artefact ou méthode en place | Ce qui a cassé | Limitation atteinte |
-|---|---|---|
-| 1 (illustration) | revue des pull requests par l'équipe | l'agent de code produit plus de code que l'équipe n'en relit |
-| 2 | | |
-| 3 | | |
-
-::: notes
-Question posée à la salle : un cas vécu depuis la formation initiale. Une ligne par cas, noter l'artefact ou la méthode en place, ce qui a cassé, puis désigner la limitation par son numéro de module.
-Chaque cas cité est renvoyé au module de la limitation correspondante et repris à ce module. Un cas hors des quatre limitations : le noter, le reprendre à la clôture.
-Première ligne : illustration inventée, pour montrer le format.
-:::
-
-## Les modules 1 à 4 répondent chacun à une limitation. {.statement kicker="Limitations"}
-
-::: notes
-Conclut les trois slides : définition, classement, cas de la salle.
-Renvoi d'un cas de la salle : demander ce qui a cassé, le rapprocher de la colonne gauche de « Quatre modules, quatre limitations dépassées » (outils d'origine : module 1 ; volume à relire : module 2 ; règle contournée : module 3 ; code qui quitte le poste : module 4), puis noter le numéro de module sur la ligne. La suite présente le matériel avec lequel les réponses sont jouées.
 :::
 
 ## Le dépôt tickets-api {.compare kicker="Matériel"}
@@ -162,7 +101,7 @@ Copie de travail : `~/demos/00-tickets-api/session.sh <identifiant>` crée `imih
 |||
 
 - **Fichier de contexte** : fichier lu par l'agent de code au lancement
-- **Claude Sonnet 4.6** : modèle unique de la formation, identifiant `claude-sonnet-4-6`
+- **Claude Sonnet 5.5** : modèle unique de la formation, identifiant `claude-sonnet-5-5`
 - **Amazon Bedrock** : service d'Amazon Web Services qui héberge des modèles
 
 ::: sources
