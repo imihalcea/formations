@@ -1,4 +1,4 @@
-# Sortie de référence, démonstration 4
+# Sortie de référence, démonstration 5
 
 Statut : observé au rejeu du 25 octobre 2026 (`claude -p`, `opencode run`, `claude-sonnet-4-6`). Non observé : TUI, échec persistant, contournement des tests.
 

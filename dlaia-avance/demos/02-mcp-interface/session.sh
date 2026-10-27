@@ -2,7 +2,7 @@
 # Prépare la copie de travail de la démonstration (branche feat/front), installe le navigateur
 # de Playwright et lance l'API et le front en arrière-plan.
 # Usage : session.sh <session> [dossier de travail, défaut ~/travail]
-# Arrêt : make -C demos/06-mcp-interface stop SESSION=<session>
+# Arrêt : make -C demos/02-mcp-interface stop SESSION=<session>
 set -euo pipefail
 ici="$(cd "$(dirname "$0")" && pwd)"
 session="${1:?usage: session.sh <session> [dossier]}"

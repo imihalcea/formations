@@ -1,4 +1,4 @@
-# Démonstration 3 : orchestrateur
+# Démonstration 4 : orchestrateur
 
 Slide « Démonstration : livrer une spécification ». L'orchestrateur répartit exploration, tests, implémentation et vérification de la spécification 002. Branche `main` (spécification 002 écrite dans `specs/002-responsable-priorite-haute/`, code absent, 37 tests verts).
 
@@ -9,7 +9,7 @@ Claude Code 2.1.310 ou Open Code v2.0.32 ; `gh`, `docker`, `uv`. Démonstration 
 ## Préparation
 
 ```
-demos/03-orchestrateur/session.sh <session>
+demos/04-orchestrateur/session.sh <session>
 ```
 
 Copie de session sur `main`. Overlay : `opencode.json` avec `default_agent: "orchestrateur"` (sans serveur MCP, donc sans jeton), pour que la TUI d'Open Code démarre sur l'orchestrateur. Les cinq agents (`orchestrateur`, `explorateur`, `testeur`, `implementeur`, `verificateur`) viennent du dépôt. `opencode debug agents` liste l'orchestrateur en mode `primary`.
@@ -54,7 +54,7 @@ Passer sur la branche livrée dans la copie de travail : `git checkout origin/fe
 
 ## Port 5432 déjà pris et base de test
 
-Si un autre projet `tickets-api` tient le port 5432 (conteneur `tickets-api-db-1`), `make db-up` échoue. Arrêter l'autre conteneur avant la séance. L'orchestrateur ajoute une migration Alembic (`assignee`) : la base de test partagée reste à la révision `0002` après la démonstration et fait échouer les démonstrations suivantes (14 erreurs alembic au rejeu). Utiliser une base dédiée à la démonstration, ou `alembic downgrade` sur `main`, avant la démonstration 4.
+Si un autre projet `tickets-api` tient le port 5432 (conteneur `tickets-api-db-1`), `make db-up` échoue. Arrêter l'autre conteneur avant la séance. L'orchestrateur ajoute une migration Alembic (`assignee`) : la base de test partagée reste à la révision `0002` après la démonstration et fait échouer les démonstrations suivantes (14 erreurs alembic au rejeu). Utiliser une base dédiée à la démonstration, ou `alembic downgrade` sur `main`, avant la démonstration 5.
 
 ## Non observé au rejeu
 

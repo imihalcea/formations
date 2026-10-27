@@ -6,7 +6,7 @@ WORK ?= $(HOME)/travail/tickets-api-$(SESSION)
 check:
 	jq empty overlay/opencode.json overlay/.mcp.json overlay/.claude/settings.json
 	bash -n session.sh ../01-commun/prepare.sh
-	@echo "OK 06-mcp-interface"
+	@echo "OK 02-mcp-interface"
 
 # Relance l'API et le front au premier plan (session.sh les lance déjà en arrière-plan).
 serve:

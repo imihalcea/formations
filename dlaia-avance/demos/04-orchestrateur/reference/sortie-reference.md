@@ -1,4 +1,4 @@
-# Sortie de référence, démonstration 3
+# Sortie de référence, démonstration 4
 
 Statut : observé au rejeu du 25 octobre 2026 (`claude -p --agent orchestrateur`, `opencode run --agent orchestrateur`, `claude-sonnet-4-6`). Non observé : TUI, hook `guard-path.sh`, imbrication sur trois niveaux.
 

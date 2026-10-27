@@ -1,4 +1,4 @@
-# Sortie de référence, démonstration 5
+# Sortie de référence, démonstration 2
 
 Statut : observé au rejeu du 25 octobre 2026 (`claude -p`, `opencode run`, `claude-sonnet-4-6`, Playwright MCP 0.0.83 avec `--browser chromium --headless`). Les deux captures PNG du dossier (`avant-bandeau.png`, `apres-bandeau.png`) viennent de Chromium headless hors agent de code. Non observé : navigateur avec fenêtre, effet du prompt durci.
 

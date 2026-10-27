@@ -1,4 +1,4 @@
-# Démonstration 4 : boucle jusqu'à la réussite
+# Démonstration 5 : boucle jusqu'à la réussite
 
 Slide « Démonstration : boucle de correction ». Une commande personnalisée du dépôt corrige le code jusqu'à ce que les tests passent, sous garde-fous. Branche `fix/ticket-ferme-commentaires` (37 verts, 2 rouges).
 
@@ -9,7 +9,7 @@ Claude Code 2.1.310 ou Open Code v2.0.32 ; `gh`, `docker`, `uv`. La commande se 
 ## Préparation
 
 ```
-demos/04-boucle/session.sh <session>
+demos/05-boucle/session.sh <session>
 ```
 
 Overlay :
@@ -61,7 +61,7 @@ Passer sur `origin/fix/ticket-ferme-commentaires-done` (39 verts) et lire le `gi
 
 ## Port 5432 déjà pris et base de test
 
-Si un autre projet `tickets-api` tient le port 5432 (conteneur `tickets-api-db-1`), `make db-up` échoue. Arrêter l'autre conteneur avant la séance. Une base de test laissée à la révision Alembic `0002` par la démonstration 3 fait échouer `make test` (14 erreurs) et pousse l'agent à réécrire une migration : repartir d'une base propre.
+Si un autre projet `tickets-api` tient le port 5432 (conteneur `tickets-api-db-1`), `make db-up` échoue. Arrêter l'autre conteneur avant la séance. Une base de test laissée à la révision Alembic `0002` par la démonstration 4 fait échouer `make test` (14 erreurs) et pousse l'agent à réécrire une migration : repartir d'une base propre.
 
 ## Non observé au rejeu
 

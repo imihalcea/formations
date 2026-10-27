@@ -1,4 +1,4 @@
-# Démonstration 5 : MCP et interface, corriger un bandeau
+# Démonstration 2 : MCP et interface, corriger un bandeau
 
 Slide « Démonstration : corriger un bandeau ». L'agent de code constate le défaut dans le navigateur, le corrige et vérifie le rendu. Branche `feat/front` : front minimal sur `/ui`, bandeau `position: fixed` qui recouvre le formulaire (titre « Tickets » masqué, bouton « Ajouter » rogné), API et tests corrects (37 verts).
 
@@ -9,7 +9,7 @@ Claude Code 2.1.310 ou Open Code v2.0.32 ; `gh`, `docker`, `uv`, `node` et `npx`
 ## Préparation
 
 ```
-demos/06-mcp-interface/session.sh <session>
+demos/02-mcp-interface/session.sh <session>
 ```
 
 Une seule commande : copie de travail, overlay, installation du navigateur, puis lancement de l'API et du front en arrière-plan sur http://localhost:8000/ui/ (journal `serve.log` et `serve.pid` dans la copie). `make serve` relance l'API au premier plan si besoin.
@@ -52,12 +52,12 @@ Bouton « Ajouter » cliquable, capture avant et après. Les captures de référ
 ## Repli
 
 0. `npx` ne télécharge pas (réseau coupé) : la veille, lancer une fois `npx @playwright/mcp@0.0.83 --help` pour remplir le cache de npm, qui sert ensuite le paquet sans réseau (à vérifier hors ligne avant la séance) ; sinon passer au point 1.
-1. Serveur ou navigateur indisponible : montrer `reference/avant-bandeau.png` et `reference/apres-bandeau.png`, puis appliquer le correctif de référence : `make -C demos/06-mcp-interface patch SESSION=<session>` (`reference/correctif-bandeau.patch`, `position: static` pour `.bandeau`, vérifié par `git apply --check` et par capture).
+1. Serveur ou navigateur indisponible : montrer `reference/avant-bandeau.png` et `reference/apres-bandeau.png`, puis appliquer le correctif de référence : `make -C demos/02-mcp-interface patch SESSION=<session>` (`reference/correctif-bandeau.patch`, `position: static` pour `.bandeau`, vérifié par `git apply --check` et par capture).
 2. Montrer que `make test` reste vert (37).
 
 ## Remise à zéro
 
-D'abord arrêter l'API : `make -C demos/06-mcp-interface stop SESSION=<session>`. Puis `demos/01-commun/reset.sh <session>` (annule l'overlay et la correction CSS).
+D'abord arrêter l'API : `make -C demos/02-mcp-interface stop SESSION=<session>`. Puis `demos/01-commun/reset.sh <session>` (annule l'overlay et la correction CSS).
 
 ## Non observé au rejeu
 

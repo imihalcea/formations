@@ -1,4 +1,4 @@
-# Rapport de référence, démonstration 2
+# Rapport de référence, démonstration 3
 
 Statut : observé au rejeu du 25 octobre 2026 (`claude -p`, `opencode run`, `claude-sonnet-4-6`). Non observé : TUI, panneau d'agents, mention `@` interactive.
 
