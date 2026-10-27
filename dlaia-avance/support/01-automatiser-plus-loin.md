@@ -2374,37 +2374,16 @@ Un serveur MCP pilote un navigateur : l'agent de code constate un défaut d'inte
 
 ### Préparer la copie et le navigateur
 
-Préalables : `git`, `make`, `docker` (Compose), `uv`, `node` avec `npx`, `curl`, `jq`, `gh` connecté, clé SSH enregistrée sur GitHub, accès à `imihalcea/tickets-api`, ports 5432 et 8000 libres, accès réseau pour télécharger le navigateur. Claude Code 2.1.310 (abonnement Anthropic connecté) ou Open Code v2.0.32 (identifiants AWS pour Amazon Bedrock, région européenne). Aucun jeton GitHub. Contenu du dépôt employé : le front minimal `src/tickets/ui/` (`index.html`, `app.js`, `style.css`) servi sur `/ui/` par l'API, `Makefile` (`db-up`, `run`, `test`), `AGENTS.md`.
+Le dépôt de session, la copie de travail et les dépendances viennent des démonstrations 1 à 4 (variables `SESSION`, `TARGET` et `WORK` incluses). La remise à zéro retire leurs fichiers non commités. Nouveaux préalables : `node` avec `npx`, `curl`, `jq`, port 8000 libre, accès réseau pour télécharger le navigateur. Contenu du dépôt employé : le front minimal `src/tickets/ui/` (`index.html`, `app.js`, `style.css`) servi sur `/ui/` par l'API, `Makefile` (`db-up`, `run`, `test`), `AGENTS.md`.
 
-
-La branche porte un bandeau `.bandeau` en `position: fixed` dans `src/tickets/ui/style.css`, qui recouvre le formulaire de `/ui` à 1280x720 (titre « Tickets » masqué, bouton « Ajouter » rogné) ; l'API répond correctement et les 37 tests passent. Le serveur Playwright se lance par `npx @playwright/mcp@0.0.83` (version testée le 26 octobre 2026, à revérifier par `npm view @playwright/mcp version`). Le bloc crée le dépôt de session et la copie de travail s'ils n'existent pas, sans effet de bord sinon.
+La branche porte un bandeau `.bandeau` en `position: fixed` dans `src/tickets/ui/style.css`, qui recouvre le formulaire de `/ui` à 1280x720 (titre « Tickets » masqué, bouton « Ajouter » rogné) ; l'API répond correctement et les 37 tests passent. Le serveur Playwright se lance par `npx @playwright/mcp@0.0.83` (version testée le 26 octobre 2026, à revérifier par `npm view @playwright/mcp version`).
 
 ```bash
-export SESSION=demo
-export REFERENCE=imihalcea/tickets-api
-export TARGET="$REFERENCE-$SESSION"
-export WORK="$HOME/travail/tickets-api-$SESSION"
-
-if ! gh repo view "$TARGET" >/dev/null 2>&1; then
-  gh repo create "$TARGET" --private --description "Dépôt de session $SESSION"
-  REFERENCE_URL=$(gh repo view "$REFERENCE" --json sshUrl -q .sshUrl)
-  TARGET_URL=$(gh repo view "$TARGET" --json sshUrl -q .sshUrl)
-  tmp=$(mktemp -d)
-  git clone --mirror "$REFERENCE_URL" "$tmp/reference.git"
-  git -C "$tmp/reference.git" push --mirror "$TARGET_URL"
-  rm -rf "$tmp"
-fi
-if [ ! -d "$WORK/.git" ]; then
-  mkdir -p "$HOME/travail"
-  git clone "$(gh repo view "$TARGET" --json sshUrl -q .sshUrl)" "$WORK"
-fi
-
-cd "$WORK"
+cd $WORK
 git checkout -- . && git clean -fdq -e .venv -e node_modules
 git checkout feat/front
 docker compose down -v
 make db-up
-uv sync
 printf '%s\n' .playwright-mcp/ serve.log serve.pid >> .git/info/exclude
 npx --yes @playwright/mcp@0.0.83 install-browser chromium
 ```
