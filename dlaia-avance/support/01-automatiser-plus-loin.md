@@ -116,7 +116,7 @@ Classement du support, pas une source externe. Ordre des sections de la journée
 
 ## Définition d'un serveur MCP {kicker="MCP"}
 
-![L'agent de code échange avec un serveur MCP par le protocole MCP ; le serveur appelle l'API du service GitHub](images/01-serveur-mcp.svg)
+![L'agent de code échange avec un serveur MCP par le protocole MCP ; le serveur appelle l'API d'un service externe](images/01-serveur-mcp.svg)
 
 MCP (Model Context Protocol) est un protocole commun entre un agent de code et un serveur qui lui expose des outils. Un serveur MCP est un programme qui expose des outils à l'agent de code par ce protocole.
 
