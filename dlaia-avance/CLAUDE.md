@@ -26,8 +26,8 @@ Décisions prises :
 - **Section finale de démonstrations** (décision du 26 octobre 2026) : chaque module qui compte des démonstrations se termine, avant le glossaire, par une section de blocs `## Démonstration N : titre {.tp}`, numérotés sur toute la journée comme les TP de `claude-code/`. Le type `tp` du template est réutilisé : étapes `###` numérotées, prompt copiable, `::: attendu` à chaque étape, `::: indice` replié (points de blocage, repli), variantes d'outil par paire. La section est un support de référence relu après la séance, jouée par le formateur seul. Elle est autosuffisante : préalables, préparation en commandes, extraits de configuration et résultat attendu y figurent, sans renvoi à `demos/`. Dans le cours, la slide `## Démonstration : …` se réduit à une slide courte qui annonce le numéro de la démonstration.
 - **Une base de code par démonstration** : chaque démonstration apporte le dépôt ou les artefacts dont elle a besoin. bookit n'est pas imposé. Un dépôt externe est vérifié (`gh repo view`) avant reprise.
 - **Notes d'animation à côté de chaque slide** (bloc `::: notes`), rédigées comme des notes du formateur pour lui-même, en style télégraphique.
-- **Distribution : les slides seulement.** Les stagiaires reçoivent le support (`dlaia-avance.html`), jamais les démonstrations (runbooks, dépôts, scripts de session, sorties de référence), qui restent chez le formateur. Aucune slide ne renvoie à `demos/` ni à l'archive. Décision du 25 octobre 2026.
-- **Archive `dlaia-avance.zip`** : produite par `npm run dist`. Son contenu actuel (`dlaia-avance.html` et `demos/`) est à réduire à `dlaia-avance.html` pour suivre la décision de distribution ci-dessus.
+- **Distribution : slides et démonstrations.** Les stagiaires reçoivent le support (`dlaia-avance.html`) et `demos/` (runbooks, dépôts, scripts de session, sorties de référence). Les slides peuvent renvoyer à `demos/`. Décision du 28 octobre 2026, qui remplace celle du 25 octobre (slides seulement).
+- **Archive `dlaia-avance.zip`** : produite par `npm run dist`, elle contient `dlaia-avance.html` et `demos/`.
 
 Le skill `support-formation-html` ne doit pas être utilisé sur ce projet.
 
@@ -37,7 +37,7 @@ Depuis `template-support/app/` : `npm run build` génère `dist/index.html` à p
 
 ## Contexte pédagogique et contraintes techniques
 
-- **Environnement** : poste du formateur équipé de Claude Code (abonnement Anthropic) et d'Open Code (Amazon Bedrock), tous deux avec `claude-sonnet-4-6` désigné par son identifiant complet (l'alias `sonnet` ne garantit pas la version). Tout se fait en CLI.
+- **Environnement** : poste du formateur équipé de Claude Code (abonnement Anthropic) et d'Open Code (Amazon Bedrock), tous deux avec `claude-sonnet-5-5` désigné par son identifiant complet (l'alias `sonnet` ne garantit pas la version). Tout se fait en CLI.
 - **Double outil, un seul par session** : chaque démonstration est jouable avec Open Code comme avec Claude Code, mais la salle choisit un outil en début de formation et la journée se joue avec lui seul. Le sélecteur du support (en haut à droite, `?outil=opencode` dans l'adresse) fait n'afficher que la variante choisie des slides `compare`. Une étape porte des variantes `::: claude-code` / `::: opencode` seulement quand elle diffère. Les équivalences (commandes, fichier de contexte, permissions, skills, hooks, MCP, sous-agents) sont vérifiées dans la documentation officielle de chaque outil et tenues dans `formateur/equivalences.md`.
 - **Mécanismes des outils, aucun framework tiers** : pas de LangGraph ni de CrewAI. GitHub et GitHub Actions sont l'unique forge d'exemple. Les produits SaaS ne figurent qu'en panorama daté et sourcé.
 - **Version d'Open Code : v2.0.32** (poste de démonstration, décision du 25 octobre 2026). Le support d'origine citait 1.18.29 (v1) ; les plugins et les hooks diffèrent entre v1 et v2.
