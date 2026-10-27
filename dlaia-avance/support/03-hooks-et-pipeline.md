@@ -1,21 +1,21 @@
 # Hooks et pipeline
 
-Le contrôle se lance seul, borné par des garde-fous.
+## Contrôles lancés sans commande {kicker="Hooks"}
 
-## Deux modes de revue restants {kicker="Hooks"}
+Au module 2, la revue part de la commande `/revue`. Dans ce module, un événement lance le contrôle.
 
-Deux des trois modes de revue n'ont pas encore d'événement qui les lance.
-
-| Mode de revue | Lieu | Lancé par |
+| Événement | Mécanisme | Contrôle |
 |---|---|---|
-| à la demande | poste du développeur | la commande `/revue` |
-| pull request | GitHub | à définir |
-| avant le commit | git | à définir |
+| `git commit` | hook git | gitleaks, ruff, reviewer |
+| appel d'outil de l'agent de code | hook du harnais | refus d'écrire sous `tests/` |
+| pull request ouverte | job de CI | reviewer, findings en commentaires |
+| job de CI en échec | job de CI | analyse d'échec |
 
 ::: notes
-Reprend la dernière idée clé du module 2 (un outil de revue se juge sur ses règles et son format de finding) et la slide « Trois modes de revue » : la revue à la demande tourne parce que quelqu'un tape la commande. Les deux autres modes ont un lieu et aucune chose qui les lance. Ce module les raccorde, avec le même reviewer et les mêmes règles.
-Reprend aussi la note du module 1 sur le périmètre d'écriture par agent : « Le hook de périmètre est du module 3 ».
-Plan du module : hooks (harnais, git), CI (workflow, job, revue sur pull request), garde-fous, analyse d'échec, synthèse. Trois démonstrations (9 à 11) : hooks, revue en CI, analyse d'échec.
+Reprend la slide « Trois modes de revue » du module 2 : la revue à la demande tourne parce que quelqu'un tape la commande. Les deux autres modes (avant le commit, pull request) reçoivent ici leur événement, avec le même reviewer et les mêmes règles.
+Ordre du module, du plus connu au moins connu : le hook git (déjà pratiqué par la plupart), puis le hook du harnais (même idée, appliquée à l'agent de code), puis la CI (workflow, job, revue sur pull request), les garde-fous et l'analyse d'échec. Les mots de la colonne « Mécanisme » sont définis chacun à sa section.
+Reprend aussi la note du module 1 sur le périmètre d'écriture par agent : « Le hook de périmètre est du module 3 » (ligne du hook du harnais).
+Trois démonstrations (9 à 11) : hooks, revue en CI, analyse d'échec.
 :::
 
 ## Définition d'un hook {kicker="Hooks"}
@@ -31,10 +31,93 @@ Un hook est un contrôle qu'un événement lance, sans que le modèle décide de
 :::
 
 ::: notes
-Le mot « hook » couvre trois mécanismes de la journée : le hook du harnais (Claude Code : clé `hooks`, Open Code : plugin), le hook git, et plus loin le job de CI qui joue le même rôle sur un événement du dépôt. Même forme : événement, contrôle, décision.
+Le mot « hook » couvre trois mécanismes de la journée : le hook git, le hook du harnais (Claude Code : clé `hooks`, Open Code : plugin), et plus loin le job de CI qui joue le même rôle sur un événement du dépôt. Même forme : événement, contrôle, décision.
 Lexique : « contrôle » désigne ce que le hook exécute (gitleaks, ruff, tests, reviewer). « Vérification » reste réservé à ce que lit une règle de revue (module 2). « Événement » remplace « déclencheur » et « trigger ».
 « Sans que le modèle décide de le lancer » : le hook s'exécute dans le harnais ou dans git, le modèle n'est pas consulté pour décider de lancer le contrôle. Un hook peut lui-même appeler un modèle (c'est le cas du reviewer avant le commit) : le script décide alors d'après la sortie du reviewer, non d'après un prompt.
 Claude Code propose aussi des hooks de type `prompt` et `agent` où un modèle évalue ; hors périmètre ici.
+:::
+
+## Définition d'un hook git {kicker="Hooks"}
+
+Un hook git est un script que git exécute avant une opération ; un code de retour non nul la refuse.
+
+```sh
+#!/usr/bin/env bash
+# .githooks/pre-commit
+set -e
+gitleaks git --staged
+git diff --cached --name-only --diff-filter=ACM -- '*.py' | xargs -r uv run ruff check
+```
+
+```console
+$ git config core.hooksPath .githooks
+```
+
+`core.hooksPath` active le dossier versionné `.githooks`, à régler une fois par clone.
+
+::: sources
+- [git, githooks](https://git-scm.com/docs/githooks)
+- [gitleaks, commande git (cmd/git.go)](https://raw.githubusercontent.com/gitleaks/gitleaks/master/cmd/git.go)
+- [gitleaks, README (detect et protect dépréciés depuis v8.19.0)](https://github.com/gitleaks/gitleaks)
+- [ruff, linter (codes de sortie)](https://docs.astral.sh/ruff/linter/)
+:::
+
+::: notes
+githooks : `pre-commit` est invoqué par `git commit` avant le message de commit ; « Exiting with a non-zero status from this script causes the git commit command to abort ». Contournable par `--no-verify` : le hook protège contre l'oubli d'un contrôle. `core.hooksPath` change le dossier des hooks ; `.githooks/` est versionné, `.git/hooks/` ne l'est pas, d'où ce réglage à faire une fois par clone.
+gitleaks : `gitleaks git --staged` (aide du flag : « scan staged commits (good for pre-commit) ») ; code de retour 1 si une fuite est trouvée. Le README dit : « v8.19.0 introduced a change that deprecated `detect` and `protect` » (toujours disponibles mais masquées de l'aide) ; `protect --staged` du support d'origine est remplacé par `git --staged`. Selon le README, les versions futures ne contiennent que des correctifs de sécurité (module 2) : à dire avant de recommander l'outil. Binaire non installé sur le poste de rédaction : commande à jouer à la démonstration 9.
+ruff : `ruff check` rend 1 si des violations sont trouvées ; le Makefile de tickets-api lance `uv run ruff check .` et `uv run ruff format --check .`. `xargs -r` évite de lancer ruff sans fichier (il linterait alors tout le dossier).
+Lexique : « hook git » et non « hook » seul.
+:::
+
+## Durée des contrôles par hook {kicker="Hooks"}
+
+| Contrôle | Durée mesurée | Lancé à |
+|---|---|---|
+| `gitleaks git --staged` | 0,15 s | commit |
+| `ruff check` sur les changements indexés | 0,01 s | commit |
+| `pytest tests/unit` | 0,15 s | commit ou pull request |
+| reviewer | 40 s (Claude Code), 3 s (Open Code) | pull request, ou commit |
+
+::: notes
+Durées mesurées le 25 octobre 2026 sur le poste du formateur (trois mesures par contrôle, copie de tickets-api, base de test levée). Reviewer au commit, rejeu de la démonstration 9 : 40 s environ avec Claude Code (commit complet 42 s), 3 à 4 s avec Open Code (commit complet 4 s), aucun finding dans les deux cas.
+Règle de décision de la slide : un contrôle d'une seconde tient au commit, un contrôle d'une minute attend la pull request. Le commit est un geste fréquent, un hook lent pousse à `--no-verify`. Seuil non sourcé : mesure et choix du support.
+Le reviewer est le cas limite : slide suivante, où le hook git le borne à 60 s.
+:::
+
+## Le reviewer avant le commit {.compare kicker="Hooks"}
+
+Le hook git `pre-commit` envoie les changements indexés au reviewer et refuse le commit sur une sévérité haute. Il laisse passer le commit si le reviewer tombe en panne ou dépasse 60 s.
+
+::: claude-code
+```sh
+sortie=$(git diff --cached | timeout 60 claude -p \
+  "Lance le sous-agent reviewer sur ce diff avec revue/regles.md. Affiche ses findings tels quels.") || exit 0
+echo "$sortie"
+! grep -q '"severite": *"haute"' <<<"$sortie"
+```
+:::
+
+::: opencode
+```sh
+sortie=$(git diff --cached | timeout 60 opencode run --agent reviewer \
+  "Applique revue/regles.md à ce diff.") || exit 0
+echo "$sortie"
+! grep -q '"severite": *"haute"' <<<"$sortie"
+```
+:::
+
+::: sources
+- [Claude Code, Headless](https://code.claude.com/docs/en/headless)
+- [Open Code, CLI (diff sur l'entrée standard : constaté, non documenté)](https://opencode.ai/docs/cli/)
+- [git, githooks](https://git-scm.com/docs/githooks)
+:::
+
+::: notes
+Ces lignes complètent `.githooks/pre-commit` de la slide « Définition d'un hook git ». `timeout 60` borne la durée dans les deux agents de code (ni `claude -p` ni `opencode run` n'ont d'option de délai, voir `formateur/equivalences.md`). Si le reviewer expire ou échoue, `|| exit 0` laisse passer le commit : un contrôle qui bloque sur sa propre panne pousse à `--no-verify`. Seuil de blocage : sévérité haute seulement, comme le module 2 ; durée relevée au rejeu (40 s avec Claude Code, 3 à 4 s avec Open Code) ; le seuil `haute` n'a pas joué, le diff ne donnait aucun finding.
+Claude Code : le diff arrive sur l'entrée standard et s'ajoute au prompt (limite de 10 Mo). `claude -p` démarre en mode Manual : le reviewer lit avec `Read`, `Grep`, `Glob`, déjà autorisés ou sans permission demandée (voir module 2 pour la confiance du dossier).
+Open Code v2.0.32 : `opencode run` n'expanse pas `/revue` ; le prompt est assemblé à la main et le diff passe sur l'entrée standard, qui s'ajoute au message (constaté les 18 et 20 octobre 2026, non documenté dans la page CLI). La page `opencode.ai/docs/cli/` décrit `opencode run [message..]`, `--agent` et `--format`, sans parler de l'entrée standard : le reviewer a répondu « Aucune règle violée » au rejeu du 25 octobre 2026, et le diff en entrée standard est vu par le reviewer dans la démonstration 10.
+La sortie du reviewer est du JSON, un objet par ligne (module 2) ; le `grep` cherche la sévérité. Plus robuste en `jq`.
+Transition : git refuse un commit. Le harnais de l'agent de code refuse plus tôt, dès l'appel d'outil.
 :::
 
 ## Définition d'un hook du harnais {kicker="Hooks"}
@@ -179,88 +262,6 @@ Open Code : le message du `throw` arrive au modèle comme erreur de l'outil (`st
 Le message de refus dit quoi faire à la place : ici l'agent le lit et s'arrête.
 :::
 
-## Définition d'un hook git {kicker="Hooks"}
-
-Un hook git est un script que git exécute avant une opération ; un code de retour non nul la refuse.
-
-```sh
-#!/usr/bin/env bash
-# .githooks/pre-commit
-set -e
-gitleaks git --staged
-git diff --cached --name-only --diff-filter=ACM -- '*.py' | xargs -r uv run ruff check
-```
-
-```console
-$ git config core.hooksPath .githooks
-```
-
-`core.hooksPath` active le dossier versionné `.githooks`, à régler une fois par clone.
-
-::: sources
-- [git, githooks](https://git-scm.com/docs/githooks)
-- [gitleaks, commande git (cmd/git.go)](https://raw.githubusercontent.com/gitleaks/gitleaks/master/cmd/git.go)
-- [gitleaks, README (detect et protect dépréciés depuis v8.19.0)](https://github.com/gitleaks/gitleaks)
-- [ruff, linter (codes de sortie)](https://docs.astral.sh/ruff/linter/)
-:::
-
-::: notes
-githooks : `pre-commit` est invoqué par `git commit` avant le message de commit ; « Exiting with a non-zero status from this script causes the git commit command to abort ». Contournable par `--no-verify` : le hook protège contre l'oubli d'un contrôle. `core.hooksPath` change le dossier des hooks ; `.githooks/` est versionné, `.git/hooks/` ne l'est pas, d'où ce réglage à faire une fois par clone.
-gitleaks : `gitleaks git --staged` (aide du flag : « scan staged commits (good for pre-commit) ») ; code de retour 1 si une fuite est trouvée. Le README dit : « v8.19.0 introduced a change that deprecated `detect` and `protect` » (toujours disponibles mais masquées de l'aide) ; `protect --staged` du support d'origine est remplacé par `git --staged`. Selon le README, les versions futures ne contiennent que des correctifs de sécurité (module 2) : à dire avant de recommander l'outil. Binaire non installé sur le poste de rédaction : commande à jouer à la démonstration 9.
-ruff : `ruff check` rend 1 si des violations sont trouvées ; le Makefile de tickets-api lance `uv run ruff check .` et `uv run ruff format --check .`. `xargs -r` évite de lancer ruff sans fichier (il linterait alors tout le dossier).
-Lexique : « hook git » et non « hook » seul.
-:::
-
-## Durée des contrôles par hook {kicker="Hooks"}
-
-| Contrôle | Durée mesurée | Lancé à |
-|---|---|---|
-| `gitleaks git --staged` | 0,15 s | commit |
-| `ruff check` sur les changements indexés | 0,01 s | commit |
-| `pytest tests/unit` | 0,15 s | commit ou pull request |
-| reviewer | 40 s (Claude Code), 3 s (Open Code) | pull request, ou commit |
-
-::: notes
-Durées mesurées le 25 octobre 2026 sur le poste du formateur (trois mesures par contrôle, copie de tickets-api, base de test levée). Reviewer au commit, rejeu de la démonstration 9 : 40 s environ avec Claude Code (commit complet 42 s), 3 à 4 s avec Open Code (commit complet 4 s), aucun finding dans les deux cas.
-Règle de décision de la slide : un contrôle d'une seconde tient au commit, un contrôle d'une minute attend la pull request. Le commit est un geste fréquent, un hook lent pousse à `--no-verify`. Seuil non sourcé : mesure et choix du support.
-Le reviewer est le cas limite : slide suivante, où le hook git le borne à 60 s.
-:::
-
-## Le reviewer avant le commit {.compare kicker="Hooks"}
-
-Le hook git `pre-commit` envoie les changements indexés au reviewer et refuse le commit sur une sévérité haute. Il laisse passer le commit si le reviewer tombe en panne ou dépasse 60 s.
-
-::: claude-code
-```sh
-sortie=$(git diff --cached | timeout 60 claude -p \
-  "Lance le sous-agent reviewer sur ce diff avec revue/regles.md. Affiche ses findings tels quels.") || exit 0
-echo "$sortie"
-! grep -q '"severite": *"haute"' <<<"$sortie"
-```
-:::
-
-::: opencode
-```sh
-sortie=$(git diff --cached | timeout 60 opencode run --agent reviewer \
-  "Applique revue/regles.md à ce diff.") || exit 0
-echo "$sortie"
-! grep -q '"severite": *"haute"' <<<"$sortie"
-```
-:::
-
-::: sources
-- [Claude Code, Headless](https://code.claude.com/docs/en/headless)
-- [Open Code, CLI (diff sur l'entrée standard : constaté, non documenté)](https://opencode.ai/docs/cli/)
-- [git, githooks](https://git-scm.com/docs/githooks)
-:::
-
-::: notes
-Ces lignes complètent `.githooks/pre-commit` de la slide précédente. `timeout 60` borne la durée dans les deux agents de code (ni `claude -p` ni `opencode run` n'ont d'option de délai, voir `formateur/equivalences.md`). Si le reviewer expire ou échoue, `|| exit 0` laisse passer le commit : un contrôle qui bloque sur sa propre panne pousse à `--no-verify`. Seuil de blocage : sévérité haute seulement, comme le module 2 ; durée relevée au rejeu (40 s avec Claude Code, 3 à 4 s avec Open Code) ; le seuil `haute` n'a pas joué, le diff ne donnait aucun finding.
-Claude Code : le diff arrive sur l'entrée standard et s'ajoute au prompt (limite de 10 Mo). `claude -p` démarre en mode Manual : le reviewer lit avec `Read`, `Grep`, `Glob`, déjà autorisés ou sans permission demandée (voir module 2 pour la confiance du dossier).
-Open Code v2.0.32 : `opencode run` n'expanse pas `/revue` ; le prompt est assemblé à la main et le diff passe sur l'entrée standard, qui s'ajoute au message (constaté les 18 et 20 octobre 2026, non documenté dans la page CLI). La page `opencode.ai/docs/cli/` décrit `opencode run [message..]`, `--agent` et `--format`, sans parler de l'entrée standard : le reviewer a répondu « Aucune règle violée » au rejeu du 25 octobre 2026, et le diff en entrée standard est vu par le reviewer dans la démonstration 10.
-La sortie du reviewer est du JSON, un objet par ligne (module 2) ; le `grep` cherche la sévérité. Plus robuste en `jq`.
-:::
-
 ## Démonstration 9 : refuser par un hook {kicker="Hooks"}
 
 Un hook du harnais refuse l'écriture sous `tests/`, un hook git refuse un commit avec jeton.
@@ -268,14 +269,14 @@ Un hook du harnais refuse l'écriture sous `tests/`, un hook git refuse un commi
 Étapes : section Démonstrations, en fin de module.
 
 ::: notes
-Démonstration 9, branche `demo/hook-harnais`. Première démonstration du module : elle vient après les définitions du hook du harnais et du hook git. La démonstration 10 déplace le contrôle du poste vers le pipeline.
+Démonstration 9, branche `demo/hook-harnais`. Première démonstration du module : elle vient après les sections du hook git et du hook du harnais ; elle joue le hook du harnais d'abord, parce que sa correction de `src/` sert ensuite au commit. La démonstration 10 déplace le contrôle du poste vers le pipeline.
 Repères du rejeu du 25 octobre 2026 (`claude-sonnet-4-6`) : refus sous `Edit` en 55 s, 12 tours, 0,28 USD avec Claude Code ; correction de `src/` en 29 s et 0,26 USD (Claude Code), 35 s et 0,15 USD (Open Code) ; reviewer au commit 40 s (Claude Code) et 3 à 4 s (Open Code). Avec le prompt d'origine, l'agent corrige `src/` d'emblée et le hook ne se déclenche pas : d'où le prompt durci de l'étape 03. Sans `SANS_HUMAIN`, la permission s'affiche en session interactive. Jamais deux `opencode run` en parallèle.
 :::
 
-## Un refus de hook s'applique avant l'appel d'outil ou le commit. {.statement kicker="Hooks"}
+## Un refus de hook s'applique avant le commit ou l'appel d'outil. {.statement kicker="Hooks"}
 
 ::: notes
-Conclut la section : définition d'un hook, hook du harnais, hook git, reviewer avant le commit, démonstration. Le harnais pour Claude Code et Open Code, git pour le commit : le modèle n'est pas consulté pour accepter ou refuser.
+Conclut la section : définition d'un hook, hook git, reviewer avant le commit, hook du harnais, démonstration. Le harnais pour Claude Code et Open Code, git pour le commit : le modèle n'est pas consulté pour accepter ou refuser.
 Transition : le hook git s'exécute sur le poste, le hook du harnais aussi. Reste le moment où personne n'est devant : la pull request. Section suivante : la CI.
 :::
 
