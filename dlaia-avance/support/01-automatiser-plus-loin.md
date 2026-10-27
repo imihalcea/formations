@@ -89,14 +89,14 @@ Un mécanisme est un moyen d'étendre l'agent de code.
 
 ::: notes
 Classement du support, pas une source externe. Les trois sections portent les noms serveur MCP, sous-agents et orchestrateur, boucles : définis dans leur section, ne pas les expliquer ici.
-Les trois autres mécanismes prolongent ces sections : les garde-fous bornent les boucles, le SDK intègre l'agent de code dans un programme, l'interface reprend le serveur MCP avec un navigateur. Le module se clôt par une grille de choix.
+Les trois autres mécanismes prolongent ces sections : l'interface reprend le serveur MCP avec un navigateur, les garde-fous bornent les boucles, le SDK intègre l'agent de code dans un programme. Le module se clôt par une grille de choix.
 Sigle MCP : développé à la section suivante.
 :::
 
 ## Chaque situation observée appelle son propre mécanisme. {.statement kicker="Limitations"}
 
 ::: notes
-Conclut les trois situations (information absente, fenêtre saturée, arrêt prématuré). Mécanisme par limitation : serveur MCP, sous-agents, boucles. Ordre des sections : MCP, sous-agents, orchestrateur, boucles, garde-fous, SDK, interface, choix.
+Conclut les trois situations (information absente, fenêtre saturée, arrêt prématuré). Mécanisme par limitation : serveur MCP, sous-agents, boucles. Ordre des sections : MCP, interface, sous-agents, orchestrateur, boucles, garde-fous, SDK, choix.
 :::
 
 ## Six mécanismes au programme {kicker="Limitations"}
@@ -322,7 +322,7 @@ Les autres serveurs existent : le support n'en cite pas davantage.
 Un serveur MCP crée une issue par test en échec. Étapes : section Démonstrations, en fin de module.
 
 ::: notes
-Démonstration 1, branche `fix/ticket-ferme-commentaires`. Ouvre la série : la suivante isole la lecture dans un sous-agent.
+Démonstration 1, branche `fix/ticket-ferme-commentaires`. Ouvre la série : la suivante reprend MCP avec un navigateur pour corriger un défaut d'interface.
 Relevé du 25 octobre 2026 avec l'ancien prompt (lecture d'une issue), non interactif, à refaire avec le prompt de création. Claude Code : 16 s, 5 tours, 0,079 USD ; fenêtre de 26,9k à 41,0k tokens (chiffres du poste, serveurs MCP et skills personnels compris). Open Code avec `--standalone` : 19 s, 7 étapes, 0,085 USD ; entrée par étape de 12 146 à 21 794 tokens.
 Premier essai Claude Code écarté : le prompt ne donnait ni dépôt ni numéro, l'agent appelait `get_me` et `list_issues`, hors de l'`allow` (38 s, 0,25 USD). Open Code sans `--standalone` : jeton absent du processus d'arrière-plan, lecture de l'issue par `curl` en 12 s.
 :::
@@ -331,7 +331,124 @@ Premier essai Claude Code écarté : le prompt ne donnait ni dépôt ni numéro,
 
 ::: notes
 Conclut la section : définition, outil, appel, branchement, permissions, coût, comparaison avec `gh`, démonstration.
-Transition : l'information entre maintenant, mais la fenêtre se remplit. Section suivante : isoler la lecture.
+Transition : l'information entre maintenant. Un défaut visible seulement dans un navigateur échappe aux tests : section Interface.
+:::
+
+## Un défaut d'interface {kicker="Interface"}
+
+![Interface web de tickets-api : un bandeau fixe recouvre le bouton Ajouter](images/01-defaut-interface.svg)
+
+L'API répond 201 et les tests passent.
+
+::: notes
+Illustration schématique de l'interface web de la branche `feat/front` de tickets-api, à 1280x720 : un bandeau en `position: fixed` recouvre le bouton « Ajouter ». Le bandeau jaune porte le texte « Maintenance prévue samedi 20 h : l'API sera indisponible dix minutes. », masque le titre et rogne le formulaire ; la slide montre un schéma, la capture réelle se fait pendant la démonstration.
+Le front est minimal, servi sur `/ui`. Le défaut est planté : l'API et les tests sont corrects.
+:::
+
+## Ce que les tests omettent {kicker="Interface"}
+
+| `make test` vérifie | `make test` ne vérifie pas |
+|---|---|
+| le code de statut de l'API | le rendu de la page |
+| les données enregistrées | la visibilité du bouton |
+| les règles métier | le clic sur le bouton |
+
+::: notes
+Un test d'API n'affiche aucun rendu. Pour voir la page, l'agent de code a besoin d'un navigateur : un serveur MCP en pilote un.
+`make test` reste le contrôle habituel de l'agent de code : il ne couvre pas ce défaut.
+:::
+
+## Un serveur MCP de navigateur {kicker="Interface"}
+
+| Action | Outil Playwright |
+|---|---|
+| ouvrir une adresse | `browser_navigate` |
+| lire la page | `browser_snapshot` |
+| cliquer | `browser_click` |
+| capturer | `browser_take_screenshot` |
+
+Liste partielle.
+
+::: sources
+- [Playwright MCP, README](https://github.com/microsoft/playwright-mcp)
+:::
+
+::: notes
+Playwright MCP, publié par Microsoft : serveur MCP local qui pilote un navigateur. Tableau : liste partielle (le README en liste une vingtaine, dont `browser_resize`, `browser_type`, `browser_fill_form`, `browser_wait_for`). Appelés au rejeu. Claude Code : `browser_resize`, `browser_navigate` (4), `browser_take_screenshot` (5), `browser_fill_form`, `browser_click`, `browser_evaluate` (4) ; `browser_snapshot` existe mais n'a pas été choisi (le serveur écrit des fichiers `page-*.yml`). Open Code : `browser_resize`, `browser_navigate`, `browser_snapshot` (avec `boxes: true`), `browser_take_screenshot`, `browser_click`, `browser_run_code_unsafe` ; un `browser_click` avec `target: "ref=e6"` échoue, `target: "#titre"` fonctionne.
+Option `--headless` : navigateur sans fenêtre (par défaut avec fenêtre), fonctionne sans interface graphique aux deux rejeux ; `--isolated` : profil en mémoire. Noms d'outils côté agent : `mcp__playwright__browser_navigate` (Claude Code) ; `tools.playwright.browser_navigate` par l'outil `execute` (Open Code), `playwright_browser_navigate` seulement dans les règles de permission.
+Redimensionner à 1280x720 par `browser_resize` ou par le prompt.
+:::
+
+## Brancher Playwright {.compare kicker="Interface"}
+
+La déclaration suit la forme de la section MCP.
+
+::: claude-code
+```json
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@0.0.83", "--browser", "chromium", "--headless", "--isolated"]
+    }
+  }
+}
+```
+:::
+
+::: opencode
+```json
+{
+  "mcp": {
+    "servers": {
+      "playwright": {
+        "type": "local",
+        "command": ["npx", "@playwright/mcp@0.0.83", "--browser", "chromium", "--headless", "--isolated"]
+      }
+    }
+  }
+}
+```
+:::
+
+::: sources
+- [Playwright MCP, README](https://github.com/microsoft/playwright-mcp)
+- [Claude Code, MCP](https://code.claude.com/docs/en/mcp)
+- [Open Code, MCP servers](https://opencode.ai/v2/docs/mcp-servers/)
+:::
+
+::: notes
+Fichiers : `.mcp.json` (Claude Code), `opencode.json` (Open Code). Configuration écrite à l'étape de la démonstration. Serveur local : processus lancé par l'agent de code. Claude Code : `command` et `args` (sans `type`, une entrée vaut stdio). Open Code v2 : `type: "local"`, `command` en tableau. `--isolated` (profil en mémoire) est confirmé dans le README de Playwright MCP.
+Sans `--browser`, la version 0.0.83 cible le canal `chrome` (Google Chrome système, `/opt/google/chrome/chrome`) et échoue avec « Chromium distribution 'chrome' is not found » (constaté le 26 octobre 2026). L'aide du serveur liste `chrome`, `firefox`, `webkit` et `msedge` pour `--browser` ; `chromium` n'y figure pas, mais la version 0.0.83 l'accepte (appel `browser_navigate` réussi le 26 octobre 2026). Le navigateur s'installe par `npx @playwright/mcp@0.0.83 install-browser chromium` ; `npx playwright install chromium` ne suffit pas (révision différente de celle que le serveur attend).
+Le serveur de projet de `.mcp.json` demande une permission en session interactive de Claude Code. Claude Code : `.mcp.json` de la démonstration ; Open Code : `opencode.json` de la démonstration.
+:::
+
+## Constater, corriger, vérifier {kicker="Interface"}
+
+![Trois étapes en boucle : constater par une capture, corriger la feuille de style, vérifier par une nouvelle capture](images/01-cycle-interface.svg)
+
+La vérification est une capture lue par l'agent de code.
+
+::: notes
+Le critère n'est plus un code de retour mais une capture que l'agent de code lit. Un défaut restant déclenche une nouvelle correction.
+La section Boucles reprend ce cycle avec un critère vérifiable. À conserver sous contrôle humain : jugement du rendu final.
+:::
+
+## Démonstration 2 : corriger un bandeau par MCP {kicker="Interface"}
+
+Un serveur MCP de navigateur vérifie le correctif. Étapes : section Démonstrations, en fin de module.
+
+::: notes
+Démonstration 2, branche `feat/front`. Seconde démonstration MCP : elle lie MCP et interface. La suivante revient à la branche `fix/ticket-ferme-commentaires` pour les sous-agents.
+Relevé du 25 octobre 2026, non interactif, avec un prompt sans URL ni clic. Claude Code : 155 s, 33 tours, 0,72 USD ; clic sur `#ajouter` réussi malgré le bandeau (ajout de « Bug de connexion ») ; correctif `body { margin: 0; padding-top: 64px; }`, le bandeau reste fixe, contrairement au correctif de référence (`position: static`) ; cinq captures, les deux premières sur l'ancienne feuille de style (cache). Open Code : 77 s, 37 étapes, 0,415 USD ; défaut constaté par coordonnées (bandeau `0,0,1280,65`) ; correctif `main { padding: 72px 16px 32px; }` ; aucun clic sur « Ajouter » ; `opencode.json` modifié par l'agent pour ajouter `--browser chromium`.
+Les agents trouvaient l'URL par `curl` sur `localhost:8000/ui/` : elle figure maintenant dans le prompt.
+:::
+
+## L'agent de code contrôle le rendu qu'il vient de corriger. {.statement kicker="Interface"}
+
+::: notes
+Conclut la section : défaut, limite des tests, serveur de navigateur, branchement, cycle, démonstration.
+Transition : les outils MCP apportent l'information ; ils remplissent aussi la fenêtre de contexte. Section suivante : les sous-agents.
 :::
 
 ## Définition d'un sous-agent {kicker="Sous-agents"}
@@ -406,12 +523,12 @@ Le sous-agent lit beaucoup de fichiers dans sa propre fenêtre et ne renvoie qu'
 Méthode. Claude Code : `subagent_tokens` du harnais pour le sous-agent (6 outils, 18,9 s) ; contexte de l'agent principal de 32 397 à 33 575 tokens entre le premier et le dernier message, rapport compris (`/context` impossible en `-p`, la session se termine). Open Code : `opencode session export` de la session enfant (3 étapes, 38 335 tokens dont 23 365 lus en cache, 0,083 USD) ; fenêtre de l'agent principal de 12 146 à 12 790 tokens. Un seul passage par outil, rapports de 15 et 18 lignes au lieu de dix.
 :::
 
-## Démonstration 2 : déléguer à un sous-agent explorateur {kicker="Sous-agents"}
+## Démonstration 3 : déléguer à un sous-agent explorateur {kicker="Sous-agents"}
 
 Un sous-agent explore le code et rend dix lignes. Étapes : section Démonstrations, en fin de module.
 
 ::: notes
-Démonstration 2, branche `fix/ticket-ferme-commentaires`, la même que la démonstration 1. La suivante passe à l'orchestrateur sur `main`.
+Démonstration 3, branche `fix/ticket-ferme-commentaires`, celle de la démonstration 1 (la démonstration 2 était sur `feat/front`). La suivante passe à l'orchestrateur sur `main`.
 Relevé du 25 octobre 2026 avec l'ancien prompt (lecture d'une issue), non interactif, à refaire avec le prompt de création. Claude Code : 29 s, 0,22 USD, rapport de 15 lignes dont une phrase contradictoire ; sous-agent : 15 017 tokens lus (6 outils, 18,9 s), environ 1,2k reçus par l'agent principal (contexte de 32 397 à 33 575). Open Code : 13 s, 0,022 USD côté agent principal et 0,083 USD pour la session enfant, rapport de 18 lignes dont un fichier cité comme lu sans avoir été ouvert ; environ 38 000 tokens dont 23 365 en cache pour la session enfant, environ 640 reçus par l'agent principal.
 Historique du prompt : avec « tel quel », l'agent principal a reformulé le rapport dans les deux outils ; dix lignes dépassées par les deux. Le prompt actuel n'a pas été rejoué.
 :::
@@ -516,12 +633,12 @@ Open Code v2.0.32 : imbrication refusée par défaut. Message exact du rejeu : �
 Définition de « dérive » : celle du support, pas une source externe.
 :::
 
-## Démonstration 3 : livrer une spécification avec un orchestrateur {kicker="Orchestrateur"}
+## Démonstration 4 : livrer une spécification avec un orchestrateur {kicker="Orchestrateur"}
 
 Un orchestrateur livre la spécification 002. Étapes : section Démonstrations, en fin de module.
 
 ::: notes
-Démonstration 3, branche `main` (spécification 002 écrite, code absent). La suivante repart de la branche `fix/ticket-ferme-commentaires` avec une base de test remise à zéro.
+Démonstration 4, branche `main` (spécification 002 écrite, code absent). La suivante repart de la branche `fix/ticket-ferme-commentaires` avec une base de test remise à zéro.
 Relevé du 25 octobre 2026. Claude Code (`claude -p`) : 18 appels `Agent` (5 explorateurs, 3 testeurs, 4 implementeurs, 6 verificateurs), tous depuis le fil principal ; testeur (30 tours) et implementeur (40 tours) à leur limite au premier passage ; findings sur le lint, sur deux tests de la spécification 001 cassés, puis sur le scénario 8 ; 71 tests verts, 13 fichiers, 18 min, 4,49 USD ; le compte rendu annonce trois passes de vérification, deux observées. Open Code (`opencode run --agent orchestrateur`) : main rendue après 16 s, orchestration terminée après 357 s ; 11 sous-agents, 70 tests verts, 11 fichiers, 2,40 USD ; le compte rendu annonce 26 tests ajoutés, 33 réellement. Annoncer « 70 ou 71 tests » et « 11 ou 13 fichiers ».
 La branche livrée de référence compte 61 tests et douze fichiers. Imbrication : voir la slide des dérives.
 :::
@@ -660,7 +777,7 @@ Variante Claude Code : écrite pour ce support, non rejouée (le rejeu a lancé 
 Open Code : `opencode run --help` (v2.0.32) liste `--agent` et `--auto`, sans option de tours ni de budget (la page CLI v2 ne documente aucun drapeau de `run`). `opencode run` rejette d'office toute action `ask` (« This non-interactive run cannot ask the user for permission ») ; `--auto` approuve tout sauf `deny`.
 :::
 
-## Airbnb : migration de tests {.figures kicker="Boucles"}
+## Cas Airbnb : migration de tests {.figures kicker="Boucles"}
 
 - **3 500** fichiers de tests
 - **6 semaines** pour tout migrer
@@ -677,7 +794,7 @@ Source primaire consultée le 25 octobre 2026. Citations : « nearly 3.5K React 
 Date de publication : la page ne la porte pas dans son texte (courant 2025, mars selon la presse spécialisée). Méthode : relances avec le dernier état du fichier et les erreurs de validation.
 :::
 
-## Ce que reçoit chaque relance {kicker="Boucles"}
+## Cas Airbnb : fonctionnement {kicker="Boucles"}
 
 ![Une étape Airbnb : l'agent corrige, la vérification rend un verdict ; en cas d'échec, relance avec les erreurs et le fichier à jour](images/01-relance-airbnb.svg)
 
@@ -843,14 +960,14 @@ Le code de retour mesure la réussite des tests ; la relecture du diff mesure le
 Dernière ligne : la relecture couvre ce que les trois autres garde-fous omettent.
 :::
 
-## Démonstration 4 : boucle de correction sous garde-fous {kicker="Garde-fous"}
+## Démonstration 5 : boucle de correction sous garde-fous {kicker="Garde-fous"}
 
 Une commande boucle jusqu'à des tests verts. Étapes : section Démonstrations, en fin de module.
 
 ::: notes
-Démonstration 4, branche `fix/ticket-ferme-commentaires` (deux tests rouges). Suit la démonstration 3 : la base de test est remise à zéro avant. La suivante change de sujet, l'interface web.
+Démonstration 5, branche `fix/ticket-ferme-commentaires` (deux tests rouges). Suit la démonstration 4 : la base de test est remise à zéro avant. Dernière démonstration du module.
 Relevé du 25 octobre 2026 avec l'ancien prompt (lecture d'une issue), non interactif, à refaire avec le prompt de création. Claude Code : 42 s, 0,29 USD, une relance, pas d'échec persistant à montrer ; correctif de trois lignes dans `src/tickets/domain/ticket.py`, sans la méthode `ensure_accepts_comments` de la branche corrigée. Open Code : 43 s, 0,22 USD (agent principal 0,049, sous-agent 0,172), même diff limité à `ticket.py` ; le shell du sous-agent refuse `cd <chemin> && make test`, c'est l'agent principal qui lance `make test`. Aucune tentative de contourner les tests dans les deux outils.
-Premier essai écarté : base de test contaminée par la démonstration 3, l'agent avait réécrit une migration.
+Premier essai écarté : base de test contaminée par la démonstration 4, l'agent avait réécrit une migration.
 :::
 
 ## Un script ou le harnais arrête l'agent de code sans le consulter. {.statement kicker="Garde-fous"}
@@ -931,123 +1048,6 @@ Le SDK mêle du code déterministe, qui décide, et l'agent de code, qui exécut
 ::: notes
 Comparaison du support, pas une source externe. Le critère vérifiable par le script ou le programme est un garde-fou ; dans la commande, il reste une instruction du prompt.
 Question probable : « SDK ou `claude -p` ? » `claude -p` suffit pour une boucle shell ; le SDK sert quand le programme doit décider entre deux appels, structurer ses résultats ou traiter les messages.
-Transition : jusqu'ici, la vérification porte sur des tests. Un défaut visible seulement dans un navigateur échappe aux tests : section Interface.
-:::
-
-## Un défaut d'interface {kicker="Interface"}
-
-![Interface web de tickets-api : un bandeau fixe recouvre le bouton Ajouter](images/01-defaut-interface.svg)
-
-L'API répond 201 et les tests passent.
-
-::: notes
-Illustration schématique de l'interface web de la branche `feat/front` de tickets-api, à 1280x720 : un bandeau en `position: fixed` recouvre le bouton « Ajouter ». Le bandeau jaune porte le texte « Maintenance prévue samedi 20 h : l'API sera indisponible dix minutes. », masque le titre et rogne le formulaire ; la slide montre un schéma, la capture réelle se fait pendant la démonstration.
-Le front est minimal, servi sur `/ui`. Le défaut est planté : l'API et les tests sont corrects.
-:::
-
-## Ce que les tests omettent {kicker="Interface"}
-
-| `make test` vérifie | `make test` ne vérifie pas |
-|---|---|
-| le code de statut de l'API | le rendu de la page |
-| les données enregistrées | la visibilité du bouton |
-| les règles métier | le clic sur le bouton |
-
-::: notes
-Un test d'API n'affiche aucun rendu. Pour voir la page, l'agent de code a besoin d'un navigateur : un serveur MCP en pilote un.
-Les tests restent le critère vérifiable de la boucle : ils ne couvrent pas ce défaut.
-:::
-
-## Un serveur MCP de navigateur {kicker="Interface"}
-
-| Action | Outil Playwright |
-|---|---|
-| ouvrir une adresse | `browser_navigate` |
-| lire la page | `browser_snapshot` |
-| cliquer | `browser_click` |
-| capturer | `browser_take_screenshot` |
-
-Liste partielle.
-
-::: sources
-- [Playwright MCP, README](https://github.com/microsoft/playwright-mcp)
-:::
-
-::: notes
-Playwright MCP, publié par Microsoft : serveur MCP local qui pilote un navigateur. Tableau : liste partielle (le README en liste une vingtaine, dont `browser_resize`, `browser_type`, `browser_fill_form`, `browser_wait_for`). Appelés au rejeu. Claude Code : `browser_resize`, `browser_navigate` (4), `browser_take_screenshot` (5), `browser_fill_form`, `browser_click`, `browser_evaluate` (4) ; `browser_snapshot` existe mais n'a pas été choisi (le serveur écrit des fichiers `page-*.yml`). Open Code : `browser_resize`, `browser_navigate`, `browser_snapshot` (avec `boxes: true`), `browser_take_screenshot`, `browser_click`, `browser_run_code_unsafe` ; un `browser_click` avec `target: "ref=e6"` échoue, `target: "#titre"` fonctionne.
-Option `--headless` : navigateur sans fenêtre (par défaut avec fenêtre), fonctionne sans interface graphique aux deux rejeux ; `--isolated` : profil en mémoire. Noms d'outils côté agent : `mcp__playwright__browser_navigate` (Claude Code) ; `tools.playwright.browser_navigate` par l'outil `execute` (Open Code), `playwright_browser_navigate` seulement dans les règles de permission.
-Redimensionner à 1280x720 par `browser_resize` ou par le prompt.
-:::
-
-## Brancher Playwright {.compare kicker="Interface"}
-
-La déclaration suit la forme de la section MCP.
-
-::: claude-code
-```json
-{
-  "mcpServers": {
-    "playwright": {
-      "command": "npx",
-      "args": ["@playwright/mcp@0.0.83", "--browser", "chromium", "--headless", "--isolated"]
-    }
-  }
-}
-```
-:::
-
-::: opencode
-```json
-{
-  "mcp": {
-    "servers": {
-      "playwright": {
-        "type": "local",
-        "command": ["npx", "@playwright/mcp@0.0.83", "--browser", "chromium", "--headless", "--isolated"]
-      }
-    }
-  }
-}
-```
-:::
-
-::: sources
-- [Playwright MCP, README](https://github.com/microsoft/playwright-mcp)
-- [Claude Code, MCP](https://code.claude.com/docs/en/mcp)
-- [Open Code, MCP servers](https://opencode.ai/v2/docs/mcp-servers/)
-:::
-
-::: notes
-Fichiers : `.mcp.json` (Claude Code), `opencode.json` (Open Code). Configuration écrite à l'étape de la démonstration. Serveur local : processus lancé par l'agent de code. Claude Code : `command` et `args` (sans `type`, une entrée vaut stdio). Open Code v2 : `type: "local"`, `command` en tableau. `--isolated` (profil en mémoire) est confirmé dans le README de Playwright MCP.
-Sans `--browser`, la version 0.0.83 cible le canal `chrome` (Google Chrome système, `/opt/google/chrome/chrome`) et échoue avec « Chromium distribution 'chrome' is not found » (constaté le 26 octobre 2026). L'aide du serveur liste `chrome`, `firefox`, `webkit` et `msedge` pour `--browser` ; `chromium` n'y figure pas, mais la version 0.0.83 l'accepte (appel `browser_navigate` réussi le 26 octobre 2026). Le navigateur s'installe par `npx @playwright/mcp@0.0.83 install-browser chromium` ; `npx playwright install chromium` ne suffit pas (révision différente de celle que le serveur attend).
-Le serveur de projet de `.mcp.json` demande une permission en session interactive de Claude Code. Claude Code : `.mcp.json` de la démonstration ; Open Code : `opencode.json` de la démonstration.
-:::
-
-## Constater, corriger, vérifier {kicker="Interface"}
-
-![Trois étapes en boucle : constater par une capture, corriger la feuille de style, vérifier par une nouvelle capture](images/01-cycle-interface.svg)
-
-La vérification est une capture lue par l'agent de code.
-
-::: notes
-Le critère n'est plus un code de retour mais une capture que l'agent de code lit. Un défaut restant déclenche une nouvelle correction.
-Ouverture sur la boucle : la vérification visuelle est une relance avec une capture comme critère. À conserver sous contrôle humain : jugement du rendu final.
-:::
-
-## Démonstration 5 : corriger un bandeau par MCP {kicker="Interface"}
-
-Un serveur MCP de navigateur vérifie le correctif. Étapes : section Démonstrations, en fin de module.
-
-::: notes
-Démonstration 5, branche `feat/front`. Dernière démonstration du module : elle lie MCP et interface.
-Relevé du 25 octobre 2026, non interactif, avec un prompt sans URL ni clic. Claude Code : 155 s, 33 tours, 0,72 USD ; clic sur `#ajouter` réussi malgré le bandeau (ajout de « Bug de connexion ») ; correctif `body { margin: 0; padding-top: 64px; }`, le bandeau reste fixe, contrairement au correctif de référence (`position: static`) ; cinq captures, les deux premières sur l'ancienne feuille de style (cache). Open Code : 77 s, 37 étapes, 0,415 USD ; défaut constaté par coordonnées (bandeau `0,0,1280,65`) ; correctif `main { padding: 72px 16px 32px; }` ; aucun clic sur « Ajouter » ; `opencode.json` modifié par l'agent pour ajouter `--browser chromium`.
-Les agents trouvaient l'URL par `curl` sur `localhost:8000/ui/` : elle figure maintenant dans le prompt.
-:::
-
-## L'agent de code contrôle le rendu qu'il vient de corriger. {.statement kicker="Interface"}
-
-::: notes
-Conclut la section : défaut, limite des tests, serveur de navigateur, branchement, cycle, démonstration.
 Transition : six mécanismes vus ; reste à choisir lequel employer.
 :::
 
@@ -1241,17 +1241,205 @@ Relever la fenêtre de contexte après le prompt (`/context` sous Claude Code).
 Remise à zéro avant la démonstration suivante : `cd "$WORK" && git checkout -- . && git clean -fdq -e .venv -e node_modules`. Elle restaure les fichiers de configuration du dépôt. Les issues créées restent dans le dépôt de session : les fermer (`gh issue close`) avant de rejouer l'étape.
 :::
 
-## Démonstration 2 : déléguer à un sous-agent explorateur {.tp}
+## Démonstration 2 : corriger un bandeau par MCP {.tp}
+
+Un serveur MCP pilote un navigateur : l'agent de code constate un défaut d'interface, le corrige et vérifie le rendu. Branche `feat/front` de `tickets-api`.
+
+### Préparer la copie et le navigateur
+
+Le dépôt de session, la copie de travail et les dépendances viennent de la démonstration 1 (variables `SESSION`, `TARGET` et `WORK` incluses). La remise à zéro retire leurs fichiers non commités. Nouveaux préalables : `node` avec `npx`, `curl`, `jq`, port 8000 libre, accès réseau pour télécharger le navigateur. Contenu du dépôt employé : le front minimal `src/tickets/ui/` (`index.html`, `app.js`, `style.css`) servi sur `/ui/` par l'API, `Makefile` (`db-up`, `run`, `test`), `AGENTS.md`.
+
+La branche porte un bandeau `.bandeau` en `position: fixed` dans `src/tickets/ui/style.css`, qui recouvre le formulaire de `/ui` à 1280x720 (titre « Tickets » masqué, bouton « Ajouter » rogné) ; l'API répond correctement et les 37 tests passent. Le serveur Playwright se lance par `npx @playwright/mcp@0.0.83` (version testée le 26 octobre 2026, à revérifier par `npm view @playwright/mcp version`).
+
+```bash
+cd $WORK
+git checkout -- . && git clean -fdq -e .venv -e node_modules
+git checkout feat/front
+docker compose down -v
+make db-up
+printf '%s\n' .playwright-mcp/ serve.log serve.pid >> .git/info/exclude
+npx --yes @playwright/mcp@0.0.83 install-browser chromium
+```
+
+::: attendu
+Le navigateur s'installe dans `~/.cache/ms-playwright` (répertoires `chromium-…` et `chromium_headless_shell-…`).
+:::
+
+::: indice
+Playwright MCP 0.0.83 cible par défaut le canal `chrome` (Google Chrome système) : sans Chrome installé, le serveur échoue (`Chromium distribution 'chrome' is not found at /opt/google/chrome/chrome`, constaté le 26 octobre 2026). L'aide du serveur (`npx @playwright/mcp@0.0.83 --help`) donne pour `--browser` les valeurs `chrome`, `firefox`, `webkit` et `msedge` ; la valeur `chromium` n'y figure pas, mais la version 0.0.83 l'accepte et emploie le navigateur installé ci-dessus (constaté le 26 octobre 2026 par un appel `browser_navigate`). Avec Google Chrome installé (`npx --yes @playwright/mcp@0.0.83 install-browser chrome`, droits d'administrateur), retirer les arguments `--browser chromium`. `npx playwright install chromium` ne suffit pas : la révision diffère de celle attendue par le serveur. Réseau coupé : lancer une fois `npx @playwright/mcp@0.0.83 --help` la veille pour remplir le cache de npm.
+:::
+
+### Déclarer le serveur Playwright
+
+::: claude-code
+La branche déclare `@latest` : le remplacer par la version épinglée.
+
+```bash
+mkdir -p .claude
+cat > .mcp.json <<'EOF'
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@0.0.83", "--browser", "chromium", "--headless", "--isolated"]
+    }
+  }
+}
+EOF
+cat > .claude/settings.json <<'EOF'
+{
+  "model": "claude-sonnet-5-5",
+  "permissions": {
+    "allow": [
+      "Bash(make test *)",
+      "Bash(make lint *)",
+      "Bash(uv run pytest *)",
+      "Bash(uv run ruff *)",
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "mcp__playwright"
+    ]
+  }
+}
+EOF
+jq empty .mcp.json .claude/settings.json
+```
+:::
+
+::: opencode
+```bash
+cat > opencode.json <<'EOF'
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "amazon-bedrock/eu.anthropic.claude-sonnet-5-5",
+  "instructions": [".specify/memory/constitution.md"],
+  "mcp": {
+    "servers": {
+      "playwright": {
+        "type": "local",
+        "command": [
+          "npx", "@playwright/mcp@0.0.83",
+          "--browser", "chromium", "--headless", "--isolated"
+        ]
+      }
+    }
+  },
+  "permissions": [
+    { "action": "playwright_*", "resource": "*", "effect": "allow" }
+  ]
+}
+EOF
+jq empty opencode.json
+opencode debug config
+```
+:::
+
+::: attendu
+Les fichiers JSON sont valides (`jq` n'affiche rien). Sous Open Code, `opencode debug config` liste les sources de configuration, dont l'`opencode.json` du projet.
+:::
+
+::: indice
+`--headless` lance un navigateur sans fenêtre, `--isolated` un profil en mémoire ; la fenêtre visible (sans `--headless`) n'a pas été essayée. Les permissions `allow` sur Playwright conviennent à une démonstration locale seulement.
+:::
+
+### Lancer l'API et le front
+
+```bash
+cd "$WORK"
+setsid nohup make run > serve.log 2>&1 &
+echo $! > serve.pid
+sleep 5
+curl -s -o /dev/null -w "%{http_code}\n" http://localhost:8000/ui/
+make test
+```
+
+::: attendu
+`curl` affiche `200`. `make test` : 37 verts. Dans un navigateur, `http://localhost:8000/ui/` montre le bandeau jaune qui recouvre le formulaire.
+:::
+
+::: indice
+L'API et les tests partagent la même base : ne pas jouer deux démonstrations en parallèle. Journal du serveur : `serve.log`. Pour arrêter l'API en fin de démonstration : `kill -- -$(cat serve.pid) 2>/dev/null || kill $(cat serve.pid)`, puis `rm serve.pid`. Port 5432 pris : `docker stop tickets-api-db-1`.
+:::
+
+### Lancer l'agent de code
+
+::: claude-code
+```console
+$ claude --model claude-sonnet-5-5
+```
+
+Autoriser le serveur du projet à l'invite de permission, puis `/mcp` pour lister les outils.
+:::
+
+::: opencode
+```console
+$ opencode
+```
+
+Aucune invite pour le serveur du projet ; `/mcps` pour lister les outils.
+:::
+
+::: attendu
+Le serveur `playwright` figure dans la liste des outils (`/mcp` sous Claude Code, `/mcps` sous Open Code).
+:::
+
+### Constater, corriger, vérifier
+
+```prompt
+Avec le serveur MCP playwright, ouvre http://localhost:8000/ui/ à 1280x720, saisis un titre dans le champ puis clique sur « Ajouter », constate le défaut d'interface, corrige-le dans src/tickets/ui/style.css, sans sous-agent, et vérifie le rendu par une capture. Ne modifie ni la configuration MCP ni les tests.
+```
+
+::: attendu
+Capture initiale : le bandeau jaune recouvre le formulaire. Capture finale : le formulaire et le bouton « Ajouter » sont visibles et cliquables. Le défaut vient de `.bandeau` en `position: fixed`. Le correctif de l'agent varie, ne pas annoncer une ligne précise : le bandeau reste fixe avec `body { margin: 0; padding-top: 64px; }` ou `main { padding: 72px 16px 32px; }` selon l'exécution. Outils à observer : `browser_resize`, `browser_navigate`, `browser_take_screenshot`, `browser_fill_form`, `browser_click`. Noms côté agent : `mcp__playwright__browser_navigate` sous Claude Code, `tools.playwright.browser_navigate` dans l'outil `execute` sous Open Code.
+:::
+
+::: indice
+Piège du cache : la page reste en cache après la correction, deux captures montrent la feuille de style non corrigée ; l'agent recharge la feuille par `browser_evaluate` (Claude Code) ou `browser_run_code_unsafe` (Open Code). Sous Open Code, `browser_click` avec `target: "ref=e6"` échoue, `"#titre"` fonctionne. Sans l'URL dans le prompt, l'agent la cherche par `curl` ; sous Open Code, il a déjà modifié `opencode.json` pour ajouter `--browser chromium` : d'où l'instruction de ne pas toucher à la configuration MCP.
+
+Repli si le serveur ou le navigateur est indisponible : appliquer le correctif de référence (le bandeau devient `position: static`), recharger `/ui/` et montrer le résultat dans un navigateur.
+
+```console
+$ sed -i 's/position: fixed; top: 0; left: 0; right: 0;/position: static;/' src/tickets/ui/style.css
+```
+
+Différence obtenue sur la règle `.bandeau` (le reste de la ligne est inchangé) :
+
+```diff
+-.bandeau { position: fixed; top: 0; left: 0; right: 0; height: 64px; …
++.bandeau { position: static; height: 64px; …
+```
+:::
+
+### Contrôler le correctif
+
+```console
+$ make test
+$ git diff -- src tests
+$ git status --short
+```
+
+::: attendu
+`make test` : 37 verts. Le diff de `src` et `tests` se limite à `src/tickets/ui/style.css`. Le serveur écrit des captures et des fichiers `page-*.yml` dans `.playwright-mcp/` du répertoire de lancement (le bloc de préparation l'a exclu de `git status` par `.git/info/exclude`).
+:::
+
+::: indice
+Remise à zéro : arrêter l'API (commande de l'étape 03), puis `git checkout -- . && git clean -fdq -e .venv -e node_modules`. Le serveur écrit dans `.playwright-mcp/` par défaut (observé avec la version 0.0.83) ; l'option `--output-dir` le déplace.
+:::
+
+## Démonstration 3 : déléguer à un sous-agent explorateur {.tp}
 
 Un sous-agent explore le code des commentaires et rend dix lignes à l'agent principal. Branche `fix/ticket-ferme-commentaires`.
 
 ### Préparer la démonstration
 
-La démonstration 1 a déjà créé le dépôt de session, la copie de travail, la base et les dépendances, et défini `SESSION`, `TARGET` et `WORK` dans le shell. Elle a aussi posé des fichiers non commités (serveur MCP, permissions) : ils sont retirés pour que la fenêtre de contexte de départ ne contienne pas les outils MCP. Dans un nouveau terminal, relancer d'abord `bash demos/01-commun/preparer-session.sh` et recopier les variables qu'il affiche.
+Les démonstrations 1 et 2 ont déjà créé le dépôt de session, la copie de travail, la base et les dépendances, et défini `SESSION`, `TARGET` et `WORK` dans le shell. Elles ont aussi posé des fichiers non commités (serveurs MCP, permissions) : ils sont retirés pour que la fenêtre de contexte de départ ne contienne pas les outils MCP. L'API de la démonstration 2 est arrêtée avant de changer de branche. Dans un nouveau terminal, relancer d'abord `bash demos/01-commun/preparer-session.sh` et recopier les variables qu'il affiche.
 
 ```bash
 cd $WORK
+[ -f serve.pid ] && { kill -- -$(cat serve.pid) 2>/dev/null || kill $(cat serve.pid); rm serve.pid; }
 git checkout -- . && git clean -fdq -e .venv -e node_modules
+git checkout fix/ticket-ferme-commentaires
 git status --short
 make db-up
 make test
@@ -1426,13 +1614,13 @@ Le sous-agent lit beaucoup, l'agent principal reçoit peu : la fenêtre de l'age
 Remise à zéro : `git checkout -- . && git clean -fdq -e .venv -e node_modules`.
 :::
 
-## Démonstration 3 : livrer une spécification avec un orchestrateur {.tp}
+## Démonstration 4 : livrer une spécification avec un orchestrateur {.tp}
 
 L'orchestrateur répartit la spécification 002 entre cinq agents. Branche `main` de `tickets-api` : spécification écrite, code absent.
 
 ### Se placer sur main
 
-Le dépôt de session, la base et les dépendances viennent des démonstrations 1 et 2 (variables `SESSION`, `TARGET` et `WORK` incluses). La remise à zéro retire leurs fichiers non commités. La spécification 002 est écrite dans `specs/002-responsable-priorite-haute/`, le code est absent. Démonstration la plus longue et la plus coûteuse : la lancer une fois.
+Le dépôt de session, la base et les dépendances viennent des démonstrations 1 à 3 (variables `SESSION`, `TARGET` et `WORK` incluses). La remise à zéro retire leurs fichiers non commités. La spécification 002 est écrite dans `specs/002-responsable-priorite-haute/`, le code est absent. Démonstration la plus longue et la plus coûteuse : la lancer une fois.
 
 ```bash
 cd $WORK
@@ -1632,7 +1820,7 @@ EOF
 :::
 
 ::: indice
-Base de test : l'orchestrateur ajoute une migration Alembic (`assignee`) et laisse la base partagée à la révision `0002`, ce qui fait échouer les démonstrations suivantes (erreurs `alembic`). `docker compose down -v` suivi de `make db-up` la ramène à l'état de `main` ; le faire avant la démonstration 4, ou employer une base dédiée. Port 5432 pris par un autre projet : `docker stop tickets-api-db-1`.
+Base de test : l'orchestrateur ajoute une migration Alembic (`assignee`) et laisse la base partagée à la révision `0002`, ce qui fait échouer la démonstration suivante (erreurs `alembic`). `docker compose down -v` suivi de `make db-up` la ramène à l'état de `main` ; le faire avant la démonstration 5, ou employer une base dédiée. Port 5432 pris par un autre projet : `docker stop tickets-api-db-1`.
 
 Sous Open Code, ne pas ajouter `temperature` à l'en-tête du `verificateur` : avec la v2.0.32, `opencode debug agents` montre alors les `permissions` déplacées dans le corps de la requête, donc sans effet sur les droits de l'agent.
 
@@ -2071,16 +2259,16 @@ Tests verts (37 de départ plus les tests ajoutés), lint propre, migration Alem
 :::
 
 ::: indice
-Remise à zéro : `git checkout -- . && git clean -fdq -e .venv -e node_modules` ; si l'orchestrateur a commité, `git reset --hard origin/main`. Rétablir la base de test avant la démonstration 4 : `docker compose down -v` puis `make db-up`.
+Remise à zéro : `git checkout -- . && git clean -fdq -e .venv -e node_modules` ; si l'orchestrateur a commité, `git reset --hard origin/main`. Rétablir la base de test avant la démonstration 5 : `docker compose down -v` puis `make db-up`.
 :::
 
-## Démonstration 4 : boucle de correction sous garde-fous {.tp}
+## Démonstration 5 : boucle de correction sous garde-fous {.tp}
 
 Une commande du dépôt corrige le code jusqu'à des tests verts, sous garde-fous. Branche `fix/ticket-ferme-commentaires`, deux tests rouges.
 
 ### Se placer sur la branche et poser les garde-fous
 
-Le dépôt de session, la copie de travail et les dépendances viennent des démonstrations 1 à 3 (variables `SESSION`, `TARGET` et `WORK` incluses). La remise à zéro retire leurs fichiers non commités. La base est recréée : une base laissée à la révision Alembic `0002` par la démonstration 3 fait échouer les tests. La commande `fix-until-green`, le sous-agent `implementeur` et le hook `.claude/hooks/guard-path.sh` sont dans le dépôt. La commande se joue en session interactive.
+Le dépôt de session, la copie de travail et les dépendances viennent des démonstrations 1 à 4 (variables `SESSION`, `TARGET` et `WORK` incluses). La remise à zéro retire leurs fichiers non commités. La base est recréée : une base laissée à la révision Alembic `0002` par la démonstration 4 fait échouer les tests. La commande `fix-until-green`, le sous-agent `implementeur` et le hook `.claude/hooks/guard-path.sh` sont dans le dépôt. La commande se joue en session interactive.
 
 ```bash
 cd $WORK
@@ -2366,192 +2554,6 @@ Lire le `git diff` pour vérifier que le correctif ne touche que le code.
 
 ::: indice
 Remise à zéro, deux tests de nouveau rouges : `git checkout -- . && git clean -fdq -e .venv -e node_modules`, puis reposer les garde-fous de l'étape 01 (`.claude/settings.json` ou `opencode.json` et `implementeur`, que la remise à zéro restaure ou supprime).
-:::
-
-## Démonstration 5 : corriger un bandeau par MCP {.tp}
-
-Un serveur MCP pilote un navigateur : l'agent de code constate un défaut d'interface, le corrige et vérifie le rendu. Branche `feat/front` de `tickets-api`.
-
-### Préparer la copie et le navigateur
-
-Le dépôt de session, la copie de travail et les dépendances viennent des démonstrations 1 à 4 (variables `SESSION`, `TARGET` et `WORK` incluses). La remise à zéro retire leurs fichiers non commités. Nouveaux préalables : `node` avec `npx`, `curl`, `jq`, port 8000 libre, accès réseau pour télécharger le navigateur. Contenu du dépôt employé : le front minimal `src/tickets/ui/` (`index.html`, `app.js`, `style.css`) servi sur `/ui/` par l'API, `Makefile` (`db-up`, `run`, `test`), `AGENTS.md`.
-
-La branche porte un bandeau `.bandeau` en `position: fixed` dans `src/tickets/ui/style.css`, qui recouvre le formulaire de `/ui` à 1280x720 (titre « Tickets » masqué, bouton « Ajouter » rogné) ; l'API répond correctement et les 37 tests passent. Le serveur Playwright se lance par `npx @playwright/mcp@0.0.83` (version testée le 26 octobre 2026, à revérifier par `npm view @playwright/mcp version`).
-
-```bash
-cd $WORK
-git checkout -- . && git clean -fdq -e .venv -e node_modules
-git checkout feat/front
-docker compose down -v
-make db-up
-printf '%s\n' .playwright-mcp/ serve.log serve.pid >> .git/info/exclude
-npx --yes @playwright/mcp@0.0.83 install-browser chromium
-```
-
-::: attendu
-Le navigateur s'installe dans `~/.cache/ms-playwright` (répertoires `chromium-…` et `chromium_headless_shell-…`).
-:::
-
-::: indice
-Playwright MCP 0.0.83 cible par défaut le canal `chrome` (Google Chrome système) : sans Chrome installé, le serveur échoue (`Chromium distribution 'chrome' is not found at /opt/google/chrome/chrome`, constaté le 26 octobre 2026). L'aide du serveur (`npx @playwright/mcp@0.0.83 --help`) donne pour `--browser` les valeurs `chrome`, `firefox`, `webkit` et `msedge` ; la valeur `chromium` n'y figure pas, mais la version 0.0.83 l'accepte et emploie le navigateur installé ci-dessus (constaté le 26 octobre 2026 par un appel `browser_navigate`). Avec Google Chrome installé (`npx --yes @playwright/mcp@0.0.83 install-browser chrome`, droits d'administrateur), retirer les arguments `--browser chromium`. `npx playwright install chromium` ne suffit pas : la révision diffère de celle attendue par le serveur. Réseau coupé : lancer une fois `npx @playwright/mcp@0.0.83 --help` la veille pour remplir le cache de npm.
-:::
-
-### Déclarer le serveur Playwright
-
-::: claude-code
-La branche déclare `@latest` : le remplacer par la version épinglée.
-
-```bash
-mkdir -p .claude
-cat > .mcp.json <<'EOF'
-{
-  "mcpServers": {
-    "playwright": {
-      "command": "npx",
-      "args": ["@playwright/mcp@0.0.83", "--browser", "chromium", "--headless", "--isolated"]
-    }
-  }
-}
-EOF
-cat > .claude/settings.json <<'EOF'
-{
-  "model": "claude-sonnet-5-5",
-  "permissions": {
-    "allow": [
-      "Bash(make test *)",
-      "Bash(make lint *)",
-      "Bash(uv run pytest *)",
-      "Bash(uv run ruff *)",
-      "Bash(git status *)",
-      "Bash(git diff *)",
-      "Bash(git log *)",
-      "mcp__playwright"
-    ]
-  }
-}
-EOF
-jq empty .mcp.json .claude/settings.json
-```
-:::
-
-::: opencode
-```bash
-cat > opencode.json <<'EOF'
-{
-  "$schema": "https://opencode.ai/config.json",
-  "model": "amazon-bedrock/eu.anthropic.claude-sonnet-5-5",
-  "instructions": [".specify/memory/constitution.md"],
-  "mcp": {
-    "servers": {
-      "playwright": {
-        "type": "local",
-        "command": [
-          "npx", "@playwright/mcp@0.0.83",
-          "--browser", "chromium", "--headless", "--isolated"
-        ]
-      }
-    }
-  },
-  "permissions": [
-    { "action": "playwright_*", "resource": "*", "effect": "allow" }
-  ]
-}
-EOF
-jq empty opencode.json
-opencode debug config
-```
-:::
-
-::: attendu
-Les fichiers JSON sont valides (`jq` n'affiche rien). Sous Open Code, `opencode debug config` liste les sources de configuration, dont l'`opencode.json` du projet.
-:::
-
-::: indice
-`--headless` lance un navigateur sans fenêtre, `--isolated` un profil en mémoire ; la fenêtre visible (sans `--headless`) n'a pas été essayée. Les permissions `allow` sur Playwright conviennent à une démonstration locale seulement.
-:::
-
-### Lancer l'API et le front
-
-```bash
-cd "$WORK"
-setsid nohup make run > serve.log 2>&1 &
-echo $! > serve.pid
-sleep 5
-curl -s -o /dev/null -w "%{http_code}\n" http://localhost:8000/ui/
-make test
-```
-
-::: attendu
-`curl` affiche `200`. `make test` : 37 verts. Dans un navigateur, `http://localhost:8000/ui/` montre le bandeau jaune qui recouvre le formulaire.
-:::
-
-::: indice
-L'API et les tests partagent la même base : ne pas jouer deux démonstrations en parallèle. Journal du serveur : `serve.log`. Pour arrêter l'API en fin de démonstration : `kill -- -$(cat serve.pid) 2>/dev/null || kill $(cat serve.pid)`, puis `rm serve.pid`. Port 5432 pris : `docker stop tickets-api-db-1`.
-:::
-
-### Lancer l'agent de code
-
-::: claude-code
-```console
-$ claude --model claude-sonnet-5-5
-```
-
-Autoriser le serveur du projet à l'invite de permission, puis `/mcp` pour lister les outils.
-:::
-
-::: opencode
-```console
-$ opencode
-```
-
-Aucune invite pour le serveur du projet ; `/mcps` pour lister les outils.
-:::
-
-::: attendu
-Le serveur `playwright` figure dans la liste des outils (`/mcp` sous Claude Code, `/mcps` sous Open Code).
-:::
-
-### Constater, corriger, vérifier
-
-```prompt
-Avec le serveur MCP playwright, ouvre http://localhost:8000/ui/ à 1280x720, saisis un titre dans le champ puis clique sur « Ajouter », constate le défaut d'interface, corrige-le dans src/tickets/ui/style.css, sans sous-agent, et vérifie le rendu par une capture. Ne modifie ni la configuration MCP ni les tests.
-```
-
-::: attendu
-Capture initiale : le bandeau jaune recouvre le formulaire. Capture finale : le formulaire et le bouton « Ajouter » sont visibles et cliquables. Le défaut vient de `.bandeau` en `position: fixed`. Le correctif de l'agent varie, ne pas annoncer une ligne précise : le bandeau reste fixe avec `body { margin: 0; padding-top: 64px; }` ou `main { padding: 72px 16px 32px; }` selon l'exécution. Outils à observer : `browser_resize`, `browser_navigate`, `browser_take_screenshot`, `browser_fill_form`, `browser_click`. Noms côté agent : `mcp__playwright__browser_navigate` sous Claude Code, `tools.playwright.browser_navigate` dans l'outil `execute` sous Open Code.
-:::
-
-::: indice
-Piège du cache : la page reste en cache après la correction, deux captures montrent la feuille de style non corrigée ; l'agent recharge la feuille par `browser_evaluate` (Claude Code) ou `browser_run_code_unsafe` (Open Code). Sous Open Code, `browser_click` avec `target: "ref=e6"` échoue, `"#titre"` fonctionne. Sans l'URL dans le prompt, l'agent la cherche par `curl` ; sous Open Code, il a déjà modifié `opencode.json` pour ajouter `--browser chromium` : d'où l'instruction de ne pas toucher à la configuration MCP.
-
-Repli si le serveur ou le navigateur est indisponible : appliquer le correctif de référence (le bandeau devient `position: static`), recharger `/ui/` et montrer le résultat dans un navigateur.
-
-```console
-$ sed -i 's/position: fixed; top: 0; left: 0; right: 0;/position: static;/' src/tickets/ui/style.css
-```
-
-Différence obtenue sur la règle `.bandeau` (le reste de la ligne est inchangé) :
-
-```diff
--.bandeau { position: fixed; top: 0; left: 0; right: 0; height: 64px; …
-+.bandeau { position: static; height: 64px; …
-```
-:::
-
-### Contrôler le correctif
-
-```console
-$ make test
-$ git diff -- src tests
-$ git status --short
-```
-
-::: attendu
-`make test` : 37 verts. Le diff de `src` et `tests` se limite à `src/tickets/ui/style.css`. Le serveur écrit des captures et des fichiers `page-*.yml` dans `.playwright-mcp/` du répertoire de lancement (le bloc de préparation l'a exclu de `git status` par `.git/info/exclude`).
-:::
-
-::: indice
-Remise à zéro : arrêter l'API (commande de l'étape 03), puis `git checkout -- . && git clean -fdq -e .venv -e node_modules`. Le serveur écrit dans `.playwright-mcp/` par défaut (observé avec la version 0.0.83) ; l'option `--output-dir` le déplace.
 :::
 
 ## Glossaire : notions de base {kicker="Glossaire"}
