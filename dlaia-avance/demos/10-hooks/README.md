@@ -22,7 +22,7 @@ demos/10-hooks/session.sh <session>
 | `.githooks/pre-commit` | gitleaks sur le diff indexé, ruff sur les `.py` indexés, reviewer (`timeout 60`, échec sur sévérité haute seulement) |
 | `revue/`, `.claude/agents/reviewer.md`, `.opencode/agents/reviewer.md` | règles R1 à R4 et reviewer, repris de `07-revue-a-la-demande/artefacts` |
 
-Contrôles sans modèle : `make check` dans ce dossier (JSON, `bash -n`, hook Claude Code sur six entrées JSON, fonction du plugin sur six événements, hook git contre gitleaks si le binaire est installé ; `GITLEAKS=<chemin>` sinon). Dans la copie : `make test` (2 rouges), `git config core.hooksPath` (`.githooks`), `gitleaks version`.
+Contrôles sans modèle : `make check` dans ce dossier (JSON, `bash -n`, hook Claude Code sur onze entrées JSON, fonction du plugin sur six événements, hook git contre gitleaks si le binaire est installé ; `GITLEAKS=<chemin>` sinon). Dans la copie : `make test` (2 rouges), `git config core.hooksPath` (`.githooks`), `gitleaks version`.
 
 Claude Code : ouvrir `claude` une fois dans la copie et accepter le dialogue de confiance (le hook est lu dans `.claude/settings.json` du projet). Open Code : le plugin lit `SANS_HUMAIN` dans le processus du service Open Code, pas dans celui de `opencode run` ni de `opencode`. Après la préparation, et après toute modification d'un fichier de `.opencode/plugins/`, lancer `opencode service restart` (sinon le premier `opencode run` a expiré à 150 s, 180 s puis 500 s en octobre 2026 ; après le redémarrage : 6 s), puis un `opencode run` à vide avant la séance.
 

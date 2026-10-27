@@ -114,7 +114,7 @@ Sans personne pour répondre (`SANS_HUMAIN=1`), le hook refuse toute écriture s
 #!/usr/bin/env bash
 [ "$SANS_HUMAIN" = "1" ] || exit 0
 cible=$(jq -r '.tool_input.file_path // .tool_input.command' <<<"$(cat)")
-if grep -Eq '(^|/)tests/|(sed -i|tee|mv|cp|rm) .*tests/' <<<"$cible"; then
+if grep -Eq '(^|/)tests/|((^|[;&| ])(sed -i|tee|mv|cp|rm) |>>?) *([^;&|]*[ /])?tests/' <<<"$cible"; then
   echo "Écriture sous tests/ refusée : corrige src/." >&2
   exit 2
 fi
@@ -127,7 +127,7 @@ const garde = (event) => {
   if (process.env.SANS_HUMAIN !== "1") return
   if (!/edit|write|patch|shell/.test(event.tool)) return
   const cible = event.input.path ?? event.input.command ?? ""
-  if (/(^|\/)tests\/|(sed -i|tee|mv|cp|rm) .*tests\//.test(cible))
+  if (/(^|\/)tests\/|((^|[;&| ])(sed -i|tee|mv|cp|rm) |>>?) *([^;&|]*[ \/])?tests\//.test(cible))
     throw new Error("Écriture sous tests/ refusée : corrige src/.")
 }
 ```
@@ -143,7 +143,7 @@ const garde = (event) => {
 ::: notes
 Comparaison avec le module 1 : la règle de refus couvre des chemins fixes, toujours ; ce hook refuse les mêmes chemins, mais sous condition.
 Fichiers : `.claude/hooks/garde-ci.sh` (Claude Code), corps de `garde` dans `.opencode/plugins/garde-ci.ts` (Open Code). Hook de démonstration : `SANS_HUMAIN` figure une exécution sans personne pour répondre à une permission ; les workflows de la suite posent `CI=true`, le hook de démonstration lit `SANS_HUMAIN` pour se jouer sur le poste.
-Claude Code : le hook reçoit un JSON sur stdin (`tool_name`, `tool_input`, `tool_use_id`) ; exit 2 bloque l'appel et stderr devient la raison montrée à Claude. `tool_input.file_path` pour `Edit`, `tool_input.command` pour `Bash` (champs confirmés au rejeu : `Edit` sous `tests/` et `sed -i` par `Bash` refusés). Le script a été exécuté à vide sur six entrées JSON : `Edit` et `Write` sous `tests/` refusés, `sed -i` sous `tests/` refusé, `uv run pytest tests/unit` et `Edit` sous `src/` acceptés.
+Claude Code : le hook reçoit un JSON sur stdin (`tool_name`, `tool_input`, `tool_use_id`) ; exit 2 bloque l'appel et stderr devient la raison montrée à Claude. `tool_input.file_path` pour `Edit`, `tool_input.command` pour `Bash` (champs confirmés au rejeu : `Edit` sous `tests/` et `sed -i` par `Bash` refusés). Le script a été exécuté à vide sur quinze entrées JSON (28 octobre 2026, onze dans `demos/10-hooks/tester-garde.sh`) : `Edit` et `Write` sous `tests/`, `sed -i`, `tee`, `rm` et les redirections `>` et `>>` vers `tests/` refusés ; `Edit` sous `src/`, `uv run pytest tests/unit`, `pytest -k term tests/unit`, `pytest --platform tests/`, `cat tests/a.py` et un chemin `src/mytests/` acceptés. Une première version non ancrée refusait `-k term tests/` (`rm tests/`) et laissait passer `> tests/a.py`.
 Open Code v2.0.32 : le champ `event.tool` est une chaîne, `event.input` l'entrée de l'outil (`tool.ts`). Un `throw` dans `execute.before` fait échouer l'appel seul, le message arrive au modèle (`adapter.ts`, constaté sur `opencode run` au rejeu du 25 octobre 2026). Valeurs mesurées au rejeu (sonde, 25 octobre 2026) : `event.tool` vaut `edit` pour l'écriture et `shell` pour une commande (aussi `read`, `grep`) ; `write` n'a pas été provoqué, d'où `write|patch` conservés dans le filtre. `event.input` : `{path, oldString, newString}` pour `edit`, `{command, workdir}` pour `shell`. Une première version testait `JSON.stringify(event.input)` : un `path` relatif (`tests/unit/test_ticket.py`) passait, faute de `/` devant `tests/`. Le contrôle lit `path` ou `command`, comme le hook Claude Code. Une règle `deny` de la configuration est évaluée avant le hook et ne peut pas être levée par lui.
 :::
 
@@ -767,7 +767,7 @@ cat > .claude/hooks/garde-ci.sh <<'EOF'
 # écriture sous tests/, par Edit, Write ou une commande Bash (sed -i, tee, mv, cp, rm).
 [ "$SANS_HUMAIN" = "1" ] || exit 0
 cible=$(jq -r '.tool_input.file_path // .tool_input.command' <<<"$(cat)")
-if grep -Eq '(^|/)tests/|(sed -i|tee|mv|cp|rm) .*tests/' <<<"$cible"; then
+if grep -Eq '(^|/)tests/|((^|[;&| ])(sed -i|tee|mv|cp|rm) |>>?) *([^;&|]*[ /])?tests/' <<<"$cible"; then
   echo "Écriture sous tests/ refusée : corrige src/." >&2
   exit 2
 fi
@@ -797,7 +797,7 @@ const garde = (event) => {
   if (process.env.SANS_HUMAIN !== "1") return
   if (!/edit|write|patch|shell/.test(event.tool)) return
   const cible = event.input.path ?? event.input.command ?? ""
-  if (/(^|\/)tests\/|(sed -i|tee|mv|cp|rm) .*tests\//.test(cible))
+  if (/(^|\/)tests\/|((^|[;&| ])(sed -i|tee|mv|cp|rm) |>>?) *([^;&|]*[ \/])?tests\//.test(cible))
     throw new Error("Écriture sous tests/ refusée : corrige src/.")
 }
 // fin garde
