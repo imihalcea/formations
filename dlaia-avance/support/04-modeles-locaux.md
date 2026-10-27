@@ -46,7 +46,7 @@ Un modèle local s'exécute sur une machine de l'équipe : le prompt ne quitte p
 ![Le prompt reste dans le réseau de l'équipe avec le modèle local, il le quitte pour le modèle distant](images/04-local-distant.svg)
 
 ::: notes
-Définition du support, aucune source. « Modèle distant » couvre Claude Sonnet 4.6 par l'abonnement Anthropic ou par Amazon Bedrock, et tout modèle d'un fournisseur. Le support écrit « modèle distant » et non « frontier » ni « cloud ».
+Définition du support, aucune source. « Modèle distant » couvre Claude Sonnet 5.5 par l'abonnement Anthropic ou par Amazon Bedrock, et tout modèle d'un fournisseur. Le support écrit « modèle distant » et non « frontier » ni « cloud ».
 Question probable : un serveur loué chez un loueur de cartes est-il local ? Il est hébergé hors du réseau de l'équipe : c'est un modèle distant, et la clause de sous-traitance s'applique (slide « Ce qui reste local »). Le serveur loué est défini à la slide « Définition d'un serveur loué ».
 :::
 
@@ -509,12 +509,12 @@ La confiance « haute » exigée évite de prendre pour acquise une réponse que
 
 ## Routage vers le grand modèle {kicker="Tâches"}
 
-Le routage envoie à un grand modèle l'issue que le petit modèle ne sait pas ranger. Le grand modèle est Claude Sonnet 4.6, que `trieur-distant` appelle.
+Le routage envoie à un grand modèle l'issue que le petit modèle ne sait pas ranger. Le grand modèle est Claude Sonnet 5.5, que `trieur-distant` appelle.
 
 ![Issue, trieur à petit modèle, critère vérifiable, puis résultat ou trieur-distant](images/04-routage.svg)
 
 ::: notes
-Schéma du support. Le critère vérifiable de la slide précédente décide : code 0, l'étiquette du petit modèle est le résultat ; code non nul (étiquette « inconnu », confiance basse, JSON invalide), la même issue part à `trieur-distant`, un second agent identique au trieur dont le modèle est Claude Sonnet 4.6. Les issues ordinaires restent sur la machine de l'équipe ; seules les difficiles partent chez le fournisseur.
+Schéma du support. Le critère vérifiable de la slide précédente décide : code 0, l'étiquette du petit modèle est le résultat ; code non nul (étiquette « inconnu », confiance basse, JSON invalide), la même issue part à `trieur-distant`, un second agent identique au trieur dont le modèle est Claude Sonnet 5.5. Les issues ordinaires restent sur la machine de l'équipe ; seules les difficiles partent chez le fournisseur.
 Lexique : « routage » et non « cascade » ni « fallback » ; le grand modèle est le modèle auquel le routage renvoie les cas que le petit modèle ne sait pas traiter. Un script route, le code de retour décide (module 1).
 :::
 
@@ -611,7 +611,7 @@ Hypothèses de l'illustration, au 26 octobre 2026 :
 
 - dix développeurs
 - 6 000 appels par mois, de 2 000 tokens lus et 100 produits
-- modèle distant : Claude Sonnet 4.6
+- modèle distant : Claude Sonnet 5.5
 
 ::: notes
 Un serveur loué est hors du réseau de l'équipe : le prompt le quitte et passe par la clause de sous-traitance (slide « Ce qui reste local »). Ce n'est pas un serveur d'équipe ; il sert de repère de prix, aucun prix d'achat d'un serveur d'équipe n'ayant été lu.
@@ -624,25 +624,25 @@ Même volume, deux façons de le servir : le modèle distant se paie au token, l
 
 | | Modèle distant | Serveur loué |
 |---|---|---|
-| calcul | 12 millions de tokens lus × 3 $ + 0,6 million de tokens produits × 15 $ | 2,49 $/h × 730 h |
-| par mois | 45 $ | 1 818 $ |
-| par million de tokens | 3,57 $ | 144 $ |
+| calcul | 12 millions de tokens lus × 2 $ + 0,6 million de tokens produits × 10 $ | 2,49 $/h × 730 h |
+| par mois | 30 $ | 1 818 $ |
+| par million de tokens | 2,38 $ | 144 $ |
 
 ::: sources
-- [Anthropic, Pricing (Claude Sonnet 4.6 : 3 $ et 15 $ par million de tokens)](https://platform.claude.com/docs/en/about-claude/pricing)
+- [Anthropic, Pricing (Claude Sonnet 5.5 : 2 $ et 10 $ par million de tokens)](https://platform.claude.com/docs/en/about-claude/pricing)
 - [RunPod, Pricing (RTX PRO 6000, 96 Go, Secure Cloud, mis à jour le 8 octobre 2026)](https://www.runpod.io/pricing)
 :::
 
 ::: notes
-Claude Sonnet 4.6 : 3 $ par million de tokens en entrée, 15 $ en sortie (page Pricing, lue le 26 octobre 2026) : 36 $ + 9 $ = 45 $. Le trieur et le message de commit sont servis côté Claude Code par `haiku`, moins cher que Sonnet 4.6 (Haiku 4.5 : 1 $ et 5 $ par million sur la même page) : avec haiku le coût distant baisse et l'écart augmente.
+Claude Sonnet 5.5 : 2 $ par million de tokens en entrée, 10 $ en sortie (page Pricing, lue le 27 octobre 2026) : 24 $ + 6 $ = 30 $. Le trieur et le message de commit sont servis côté Claude Code par `haiku`, moins cher que Sonnet 5.5 (Haiku 4.5 : 1 $ et 5 $ par million sur la même page) : avec haiku le coût distant baisse et l'écart augmente.
 Serveur : le plan prévoyait la mensualité amortie sur 36 mois d'un serveur à carte de 96 Go ; aucun prix d'achat n'a été lu. Remplacé par la location d'une carte RTX PRO 6000 de 96 Go (RunPod, Secure Cloud, 2,49 $ de l'heure, page mise à jour le 8 octobre 2026 ; Community Cloud 1,69 $) : 2,49 × 730 heures = 1 818 $ par mois, durée moyenne d'un mois.
-Égalité des coûts : 1 818 $ ÷ 3,57 $ par million = environ 509 millions de tokens par mois, quarante fois le volume de l'illustration. Au volume du trieur, le modèle distant coûte moins cher ; le local se justifie par la donnée (section « Données ») ou par le volume. Le débit réel de la carte n'est pas modélisé : à ce prix, elle pourrait traiter bien plus que 12,6 millions de tokens par mois.
+Égalité des coûts : 1 818 $ ÷ 2,38 $ par million = environ 764 millions de tokens par mois, soixante fois le volume de l'illustration. Au volume du trieur, le modèle distant coûte moins cher ; le local se justifie par la donnée (section « Données ») ou par le volume. Le débit réel de la carte n'est pas modélisé : à ce prix, elle pourrait traiter bien plus que 12,6 millions de tokens par mois.
 :::
 
-## À dix développeurs, un serveur loué coûte quarante fois plus que le modèle distant. {.statement kicker="Machine"}
+## À dix développeurs, un serveur loué coûte soixante fois plus que le modèle distant. {.statement kicker="Machine"}
 
 ::: notes
-Conclut la section : machines individuelles, serveur d'équipe, critères de choix, coût d'un serveur loué. 1 818 $ contre 45 $ par mois, soit 40 fois, à 12,6 millions de tokens par mois. La comparaison se fait en prix par million de tokens, au volume réel de l'équipe.
+Conclut la section : machines individuelles, serveur d'équipe, critères de choix, coût d'un serveur loué. 1 818 $ contre 30 $ par mois, soit 60 fois, à 12,6 millions de tokens par mois. La comparaison se fait en prix par million de tokens, au volume réel de l'équipe.
 Transition : données, mémoire, couches, modèles ouverts, tâches et machine donnent chacun un critère. Section suivante : leur synthèse par tâche.
 :::
 
