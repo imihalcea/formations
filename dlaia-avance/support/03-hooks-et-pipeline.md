@@ -341,24 +341,33 @@ Lexique : « journal de CI » et non « log » ni « build ».
 
 Le job `revue` relit la pull request avec le reviewer du module 2, sauf si elle est en brouillon.
 
+::: claude-code
 ```yaml
 on: { pull_request: { types: [opened, synchronize, ready_for_review] } }
 jobs:
   revue:
     if: ${{ !github.event.pull_request.draft }}
-```
-
-::: claude-code
-```sh
-git diff origin/main...HEAD | claude -p \
-  "Lance le sous-agent reviewer sur ce diff avec revue/regles.md."
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          git diff origin/main...HEAD | claude -p \
+            "Lance le sous-agent reviewer sur ce diff avec revue/regles.md."
 ```
 :::
 
 ::: opencode
-```sh
-git diff origin/main...HEAD | opencode run --agent reviewer \
-  "Applique revue/regles.md à ce diff."
+```yaml
+on: { pull_request: { types: [opened, synchronize, ready_for_review] } }
+jobs:
+  revue:
+    if: ${{ !github.event.pull_request.draft }}
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          git diff origin/main...HEAD | opencode run --agent reviewer \
+            "Applique revue/regles.md à ce diff."
 ```
 :::
 
@@ -372,7 +381,7 @@ git diff origin/main...HEAD | opencode run --agent reviewer \
 :::
 
 ::: notes
-Les blocs par outil sont l'étape `run` du job (`runs-on: self-hosted` dans la démonstration, omis ici). La commande est celle du module 2 (mode non interactif) : seule l'étape de l'agent de code change entre les outils. `types` : par défaut `pull_request` ne réagit qu'à `opened`, `synchronize` et `reopened` ; `ready_for_review` relance la revue quand un brouillon est publié. `github.event.pull_request.draft` est le champ booléen `draft` de l'objet pull request (API REST, « Get a pull request » et « Create a pull request » ; la page des événements ne parle pas des brouillons). Une pull request en brouillon est marquée non prête à relire par son auteur (état `draft` de GitHub) : le job de revue ne la lit pas.
+Lecture du YAML : l'événement `pull_request` déclenche le job `revue` ; le runner extrait la branche (`actions/checkout`), puis l'étape `run` exécute la commande dans un shell. `checkout` abrégé : la démonstration ajoute `fetch-depth: 0` (rend `origin/main` disponible) et `persist-credentials: false` (slide suivante). La commande est celle du module 2 (mode non interactif) : seule l'étape de l'agent de code change entre les outils. `types` : par défaut `pull_request` ne réagit qu'à `opened`, `synchronize` et `reopened` ; `ready_for_review` relance la revue quand un brouillon est publié. `github.event.pull_request.draft` est le champ booléen `draft` de l'objet pull request (API REST, « Get a pull request » et « Create a pull request » ; la page des événements ne parle pas des brouillons). Une pull request en brouillon est marquée non prête à relire par son auteur (état `draft` de GitHub) : le job de revue ne la lit pas.
 Dans la démonstration 10, ces lignes vivent dans `ci/lancer-job.sh <outil>`, et `revue.yml` ne porte que l'événement, les droits, le budget et l'appel du script : le script rejoué sur le poste est exactement celui qu'un runner auto-hébergé exécuterait.
 Authentification : non jouée. Un runner n'a pas les identifiants du formateur. Deux voies à l'oral : un runner GitHub auto-hébergé où le harnais est déployé et configuré (identifiants du modèle sur la machine, hors secrets du dépôt) ; ou l'action `anthropics/claude-code-action@v1` avec `ANTHROPIC_API_KEY` ou `CLAUDE_CODE_OAUTH_TOKEN` (jeton généré par `claude setup-token`, la doc le dit disponible sur Pro, Max, Team et Enterprise) et Bedrock par `use_bedrock` et OIDC. L'usage de l'abonnement Max en CI : conditions d'utilisation non lues, ne pas l'affirmer.
 Réserves : un runner auto-hébergé n'est sûr que sur un dépôt privé ou pour des pull requests sans fork (la page de durcissement : « self-hosted runners should almost never be used for public repositories », toute pull request y exécute du code). Enregistrement du runner : non joué. Sur dépôt public, GitHub retire les secrets des pull requests de forks (doc Claude Code).
