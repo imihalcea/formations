@@ -8,11 +8,13 @@ Claude Code 2.1.310 ou Open Code v2.0.32, `gh` connecté, `docker`, `uv`. Aucun 
 
 ## Préparation
 
+La démonstration 1 a déjà créé la copie de session, la base et les dépendances. Reprendre la même session : dans un nouveau terminal, `demos/01-commun/preparer-session.sh <session>` (idempotent).
+
 ```
 demos/02-sous-agent/session.sh <session>
 ```
 
-Copie de session sur la branche de la démonstration, puis overlay : `.opencode/agents/explorateur.md` en forme v2 (`permissions` en tableau, `edit`, `shell`, `webfetch` et `subagent` refusés ; le dépôt le porte en forme v1, migrée). Le sous-agent de Claude Code (`.claude/agents/explorateur.md`, `tools: Read, Grep, Glob`) est celui du dépôt, sans changement. `opencode debug agents` décode l'overlay : `explorateur`, mode `subagent`, `steps` 25, quatre refus.
+Se place sur la branche de la démonstration (la copie existe déjà), retire l'overlay de la démonstration 1 (`.mcp.json`, `.claude/settings.json` modifié, `opencode.json` avec serveur MCP : leurs outils fausseraient la mesure de la fenêtre), puis copie l'overlay : `.opencode/agents/explorateur.md` en forme v2 (`permissions` en tableau, `edit`, `shell`, `webfetch` et `subagent` refusés ; le dépôt le porte en forme v1, migrée). Le sous-agent de Claude Code (`.claude/agents/explorateur.md`, `tools: Read, Grep, Glob`) est celui du dépôt, sans changement. `opencode debug agents` décode l'overlay : `explorateur`, mode `subagent`, `steps` 25, quatre refus.
 
 ## Déroulé
 

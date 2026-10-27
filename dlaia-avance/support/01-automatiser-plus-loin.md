@@ -1,6 +1,5 @@
 # Automatiser plus loin
 
-L'agent de code seul a trois limitations ; la suite les dépasse.
 
 ## Les outils d'origine {kicker="Limitations"}
 
@@ -162,9 +161,9 @@ Autres outils du serveur utiles plus loin : `issue_write` (create, update), `add
 
 ## Un appel d'outil MCP {kicker="MCP"}
 
-![Séquence : le modèle choisit issue_read, le harnais appelle le serveur MCP, le résultat revient dans la fenêtre de contexte](images/01-appel-mcp.svg)
+![Séquence : le harnais liste les outils du serveur MCP, le modèle choisit issue_read, le harnais appelle le serveur, le résultat revient dans la fenêtre de contexte](images/01-appel-mcp.svg)
 
-Claude Code avertit au-delà de 10 000 tokens de résultat et coupe à 25 000.
+Certains outils avertisent au-delà de 10 000 tokens de résultat et coupe à 25 000.
 
 ::: sources
 - [MCP, Tools (spécification)](https://modelcontextprotocol.io/specification/2025-06-18/server/tools)
@@ -172,7 +171,8 @@ Claude Code avertit au-delà de 10 000 tokens de résultat et coupe à 25 000.
 :::
 
 ::: notes
-Le modèle ne parle jamais au serveur : il demande l'outil, le harnais envoie `tools/call`, le serveur répond, le texte du résultat est ajouté à la fenêtre de contexte.
+Étapes 1 à 3, découverte : au démarrage de la session, le harnais envoie `tools/list` au serveur, qui répond avec les définitions (nom, description, `inputSchema`, slide précédente). Le harnais les met à disposition du modèle ; elles occupent la fenêtre de contexte avant tout appel (slide « Coût en fenêtre de contexte »). La spécification prévoit aussi la notification `notifications/tools/list_changed` quand la liste change en cours de session.
+Étapes 4 à 7, appel : le modèle ne parle jamais au serveur. Il demande l'outil, le harnais envoie `tools/call`, le serveur répond, le texte du résultat est ajouté à la fenêtre de contexte.
 Seuil de Claude Code : variable `MAX_MCP_OUTPUT_TOKENS` pour changer le plafond de 25 000 ; au-delà de 50 000 caractères un résultat texte est écrit dans un fichier (doc MCP). Open Code : aucun plafond de sortie dans le schéma de configuration (code v2.0.32, `equivalences.md`).
 Spécification : les clients devraient demander une confirmation humaine pour les opérations sensibles ; c'est le rôle des permissions, deux slides plus loin.
 :::
@@ -270,25 +270,6 @@ Le support d'origine mettait `github_*: allow` : revu, la lecture seule est auto
 Rejeu Claude Code : avec le seul `issue_read` en `allow`, l'agent appelle d'abord `get_me` et `list_issues`, hors de l'`allow` : refusés en `claude -p`, invite de permission en séance interactive. Open Code : en mode code (outil `execute`), l'appel s'écrit `tools.github.issue_read` ; les règles de permission gardent la forme `github_issue_read` (doc). Avec `--auto`, aucune invite n'est apparue pour les règles `ask` ; leur comportement en session interactive n'est pas rejoué.
 :::
 
-## Coût en fenêtre de contexte {kicker="MCP"}
-
-| Agent de code | Chargé au démarrage | Fenêtre avant | Fenêtre après |
-|---|---|---|---|
-| Claude Code | noms d'outils | 26,9k tokens | 41,0k tokens |
-| Open Code | outil `execute` | 12,1k tokens | 21,8k tokens |
-
-::: sources
-- [Claude Code, MCP (tool search)](https://code.claude.com/docs/en/mcp)
-- [Open Code, MCP servers](https://opencode.ai/v2/docs/mcp-servers/)
-:::
-
-::: notes
-Doc Claude Code : « Tool search keeps MCP context usage low by deferring tool definitions until Claude needs them. Only tool names and server instructions load at session start. » Actif par défaut ; `ENABLE_TOOL_SEARCH` le règle. Donc le coût fixe est faible tant qu'un outil n'est pas appelé, puis la définition de l'outil appelé entre dans la fenêtre.
-Doc Open Code : « MCP tools consume model context, so add only the servers you need. » La doc ne dit pas ce qui est chargé au démarrage ; au rejeu, le serveur n'expose pas d'outils plats : un outil `execute` (mode code) et `search` pour découvrir les outils.
-Mesures du rejeu, un seul passage chacune. Claude Code : `/context` fonctionne en `claude -p` ; avant l'appel 26,9k sur 200k (outils MCP 478, outils MCP différés 19k, instructions du serveur 982, messages 8), après 41,0k (outils MCP 1,6k, différés 17,8k, messages 13k). Les totaux incluent les MCP et skills personnels du poste (prompt système 6,6k, outils 9,7k, mémoire 6,7k, skills 2,2k) : le delta propre au serveur GitHub est +1,1k de définitions chargées (478 vers 1,6k). Refaire la mesure sur un profil vierge avant la séance.
-Open Code : pas de `/context` ; la fenêtre est la somme des tokens d'entrée d'une étape, cache compris, relevée dans `--format json` : 12 146 avant le premier appel d'outil, 21 794 après la dernière étape. Le chargement initial des définitions n'est pas mesuré séparément.
-:::
-
 ## MCP ou ligne de commande {kicker="MCP"}
 
 `gh` est le client GitHub en ligne de commande.
@@ -336,13 +317,13 @@ Outils Context7 : `resolve-library-id`, `query-docs`. Sentry : la page ne nomme 
 Les autres serveurs existent : le support n'en cite pas davantage.
 :::
 
-## Démonstration 1 : lire une issue par MCP {kicker="MCP"}
+## Démonstration 1 : créer des issues par MCP {kicker="MCP"}
 
-Un serveur MCP lit l'issue et ses commentaires. Étapes : section Démonstrations, en fin de module.
+Un serveur MCP crée une issue par test en échec. Étapes : section Démonstrations, en fin de module.
 
 ::: notes
 Démonstration 1, branche `fix/ticket-ferme-commentaires`. Ouvre la série : la suivante isole la lecture dans un sous-agent.
-Relevé du 25 octobre 2026, non interactif. Claude Code : 16 s, 5 tours, 0,079 USD ; fenêtre de 26,9k à 41,0k tokens (chiffres du poste, serveurs MCP et skills personnels compris). Open Code avec `--standalone` : 19 s, 7 étapes, 0,085 USD ; entrée par étape de 12 146 à 21 794 tokens.
+Relevé du 25 octobre 2026 avec l'ancien prompt (lecture d'une issue), non interactif, à refaire avec le prompt de création. Claude Code : 16 s, 5 tours, 0,079 USD ; fenêtre de 26,9k à 41,0k tokens (chiffres du poste, serveurs MCP et skills personnels compris). Open Code avec `--standalone` : 19 s, 7 étapes, 0,085 USD ; entrée par étape de 12 146 à 21 794 tokens.
 Premier essai Claude Code écarté : le prompt ne donnait ni dépôt ni numéro, l'agent appelait `get_me` et `list_issues`, hors de l'`allow` (38 s, 0,25 USD). Open Code sans `--standalone` : jeton absent du processus d'arrière-plan, lecture de l'issue par `curl` en 12 s.
 :::
 
@@ -408,7 +389,7 @@ Tu explores le dépôt, tu ne modifies rien, dix lignes au plus.
 Fichiers : `.claude/agents/explorateur.md` (Claude Code), `.opencode/agents/explorateur.md` (Open Code). Extraits abrégés des fichiers de tickets-api (instructions fixes raccourcies : les vraies demandent aussi la forme du rapport en trois points). Claude Code : seuls `name` et `description` sont requis ; `tools` est une liste blanche ; `maxTurns` borne les tours du sous-agent.
 Open Code v2 : le frontmatter reprend les champs de l'entrée de configuration `agents` ; `mode: subagent` ; `steps` est le nombre maximal d'étapes du modèle (à la dernière, les outils sont retirés et le modèle résume) ; les permissions sont dans `permissions`, il n'y a pas de champ `tools` en v2. Les fichiers actuels de tickets-api utilisent la forme v1 (`permission:` avec `edit: deny`) acceptée et migrée ; `opencode debug agents` la décode au rejeu (`mode: subagent`, `steps: 25`, refus de `edit`, `shell`, `webfetch`, `subagent`).
 Invocation : Claude Code, en langage naturel (fonctionne) ou `@"explorateur (agent)"` (en `-p`, texte du prompt, l'agent lance bien `Agent` avec `subagent_type: explorateur` ; la mention interactive n'est pas vérifiée) ; Open Code, le modèle choisit d'après `description` et appelle l'outil `subagent` (`agent: "explorateur"`).
-Le fichier réel fixe aussi `model: claude-sonnet-4-6` et 25 tours (`maxTurns`, `steps`), omis de l'extrait. Identifiant complet accepté : les six messages du sous-agent portent `claude-sonnet-4-6` (Claude Code) ; Open Code l'exécute sur `amazon-bedrock/eu.anthropic.claude-sonnet-4-6`.
+Le fichier réel fixe aussi `model: claude-sonnet-5-5` et 25 tours (`maxTurns`, `steps`), omis de l'extrait. Identifiant complet accepté : les six messages du sous-agent portent `claude-sonnet-5-5` (Claude Code) ; Open Code l'exécute sur `amazon-bedrock/eu.anthropic.claude-sonnet-5-5`.
 Lecture seule : Claude Code, `tools` est une liste blanche, `disallowedTools` une liste noire appliquée d'abord ; les sous-agents intégrés Explore et Plan sont en lecture seule. Open Code : exemple « reviewer » de la doc, qui refuse `edit` et `shell` sur `*`. Intérêt : un sous-agent qui ne peut rien écrire ne corrompt rien pendant qu'il lit.
 Rejeu sous Linux (Claude Code 2.1.310) : avec `tools: Read, Grep, Glob`, le sous-agent appelle `Grep` (2 fois), `Glob` (1) et `Read` (3), aucun `Bash`. Open Code : `grep`, `glob`, `read` ×3.
 :::
@@ -431,7 +412,7 @@ Un sous-agent explore le code et rend dix lignes. Étapes : section Démonstrati
 
 ::: notes
 Démonstration 2, branche `fix/ticket-ferme-commentaires`, la même que la démonstration 1. La suivante passe à l'orchestrateur sur `main`.
-Relevé du 25 octobre 2026, non interactif. Claude Code : 29 s, 0,22 USD, rapport de 15 lignes dont une phrase contradictoire ; sous-agent : 15 017 tokens lus (6 outils, 18,9 s), environ 1,2k reçus par l'agent principal (contexte de 32 397 à 33 575). Open Code : 13 s, 0,022 USD côté agent principal et 0,083 USD pour la session enfant, rapport de 18 lignes dont un fichier cité comme lu sans avoir été ouvert ; environ 38 000 tokens dont 23 365 en cache pour la session enfant, environ 640 reçus par l'agent principal.
+Relevé du 25 octobre 2026 avec l'ancien prompt (lecture d'une issue), non interactif, à refaire avec le prompt de création. Claude Code : 29 s, 0,22 USD, rapport de 15 lignes dont une phrase contradictoire ; sous-agent : 15 017 tokens lus (6 outils, 18,9 s), environ 1,2k reçus par l'agent principal (contexte de 32 397 à 33 575). Open Code : 13 s, 0,022 USD côté agent principal et 0,083 USD pour la session enfant, rapport de 18 lignes dont un fichier cité comme lu sans avoir été ouvert ; environ 38 000 tokens dont 23 365 en cache pour la session enfant, environ 640 reçus par l'agent principal.
 Historique du prompt : avec « tel quel », l'agent principal a reformulé le rapport dans les deux outils ; dix lignes dépassées par les deux. Le prompt actuel n'a pas été rejoué.
 :::
 
@@ -851,7 +832,7 @@ Une commande boucle jusqu'à des tests verts. Étapes : section Démonstrations,
 
 ::: notes
 Démonstration 4, branche `fix/ticket-ferme-commentaires` (deux tests rouges). Suit la démonstration 3 : la base de test est remise à zéro avant. La suivante change de sujet, l'interface web.
-Relevé du 25 octobre 2026, non interactif. Claude Code : 42 s, 0,29 USD, une relance, pas d'échec persistant à montrer ; correctif de trois lignes dans `src/tickets/domain/ticket.py`, sans la méthode `ensure_accepts_comments` de la branche corrigée. Open Code : 43 s, 0,22 USD (agent principal 0,049, sous-agent 0,172), même diff limité à `ticket.py` ; le shell du sous-agent refuse `cd <chemin> && make test`, c'est l'agent principal qui lance `make test`. Aucune tentative de contourner les tests dans les deux outils.
+Relevé du 25 octobre 2026 avec l'ancien prompt (lecture d'une issue), non interactif, à refaire avec le prompt de création. Claude Code : 42 s, 0,29 USD, une relance, pas d'échec persistant à montrer ; correctif de trois lignes dans `src/tickets/domain/ticket.py`, sans la méthode `ensure_accepts_comments` de la branche corrigée. Open Code : 43 s, 0,22 USD (agent principal 0,049, sous-agent 0,172), même diff limité à `ticket.py` ; le shell du sous-agent refuse `cd <chemin> && make test`, c'est l'agent principal qui lance `make test`. Aucune tentative de contourner les tests dans les deux outils.
 Premier essai écarté : base de test contaminée par la démonstration 3, l'agent avait réécrit une migration.
 :::
 
@@ -1084,55 +1065,15 @@ Conclut le schéma des six mécanismes et la grille de choix.
 Le module 2 reprend l'autre côté : le code produit doit être relu.
 :::
 
-## Démonstration 1 : lire une issue par MCP {.tp}
+## Démonstration 1 : créer des issues par MCP {.tp}
 
-Un serveur MCP GitHub donne à l'agent de code une issue et ses commentaires. Branche `fix/ticket-ferme-commentaires` de `tickets-api`.
+Un serveur MCP GitHub permet à l'agent de code de créer des issues. Branche `fix/ticket-ferme-commentaires` de `tickets-api`.
 
 ### Préparer le dépôt de session
 
-Préalables : `git`, `make`, `docker` (Compose), `uv`, `curl`, `jq`, `gh` connecté (`gh auth status`, droit de créer un dépôt privé), clé SSH enregistrée sur GitHub (`ssh -T git@github.com`), accès en lecture à `imihalcea/tickets-api`, port 5432 libre. Claude Code 2.1.310 : abonnement Anthropic connecté (`/login` dans la session). Open Code v2.0.32 : identifiants AWS valides pour Amazon Bedrock (profil ou variables d'environnement) et région européenne, d'où le préfixe `eu.` du modèle `amazon-bedrock/eu.anthropic.claude-sonnet-4-6`. Les deux outils emploient `claude-sonnet-4-6`, désigné par son identifiant complet.
-
-Le dépôt de référence `imihalcea/tickets-api` (privé, API FastAPI de tickets en architecture hexagonale) fournit ce que les démonstrations emploient.
-
-| Élément | Contenu utilisé |
-|---|---|
-| Branches | `main` (spécification 001 livrée, 37 tests verts) ; `fix/ticket-ferme-commentaires` (2 tests rouges) et sa version corrigée `-done` (39 verts) ; `feat/responsable-priorite-haute-done` (spécification 002 livrée) ; `feat/front` (front minimal sur `/ui`) |
-| `Makefile` | `db-up` et `db-down` (Postgres 17 par Docker Compose, bases `tickets` et `tickets_test`), `test` (`uv run pytest`), `lint` (`ruff check` et `ruff format --check`), `migrate`, `run` (migration puis `uvicorn`) |
-| `AGENTS.md` | structure `domain/`, `application/`, `adapters/`, règles d'équipe (accès à la base dans `adapters/outbound/` seulement, un test nominal et un test d'erreur par route, configuration par l'environnement), table des erreurs HTTP (`TicketClosed` donne 409) ; `CLAUDE.md` l'importe par `@AGENTS.md` |
-| `.specify/memory/constitution.md` | cinq principes : architecture hexagonale, accès aux données par les ports, un test nominal et un test d'erreur par route, configuration par l'environnement, simplicité |
-| Tests cités | `test_add_comment_on_closed_ticket_returns_409` (`tests/integration/test_comments_api.py`), `test_closed_ticket_refuses_comments` (`tests/unit/test_ticket.py`) |
-| Agents et commande | `.claude/agents/` et `.opencode/agents/` (`explorateur`, `testeur`, `implementeur`, `verificateur`, `orchestrateur`), `.claude/commands/fix-until-green.md`, `.opencode/commands/fix-until-green.md`, `.claude/hooks/guard-path.sh`, `.claude/settings.json`, `opencode.json` |
-
-
-Le dépôt de session est un dépôt privé distinct de la référence, copie miroir de toutes ses branches : la référence ne reçoit jamais d'issue. La copie de travail est son clone local. Le bloc est rejouable sans effet de bord.
-
 ```bash
-export SESSION=demo
-export REFERENCE=imihalcea/tickets-api
-export TARGET="$REFERENCE-$SESSION"
-export WORK="$HOME/travail/tickets-api-$SESSION"
-
-if ! gh repo view "$TARGET" >/dev/null 2>&1; then
-  gh repo create "$TARGET" --private --description "Dépôt de session $SESSION"
-  REFERENCE_URL=$(gh repo view "$REFERENCE" --json sshUrl -q .sshUrl)
-  TARGET_URL=$(gh repo view "$TARGET" --json sshUrl -q .sshUrl)
-  tmp=$(mktemp -d)
-  git clone --mirror "$REFERENCE_URL" "$tmp/reference.git"
-  git -C "$tmp/reference.git" push --mirror "$TARGET_URL"
-  rm -rf "$tmp"
-fi
-if [ ! -d "$WORK/.git" ]; then
-  mkdir -p "$HOME/travail"
-  git clone "$(gh repo view "$TARGET" --json sshUrl -q .sshUrl)" "$WORK"
-fi
-
-cd "$WORK"
-git checkout -- . && git clean -fdq -e .venv -e node_modules
-git checkout fix/ticket-ferme-commentaires
-docker compose down -v
-make db-up
-uv sync
-make test
+bash demos/01-commun/preparer-session.sh
+bash demos/01-commun/preparer-session.sh 28-10-b
 ```
 
 ::: attendu
@@ -1154,104 +1095,6 @@ Open Code lit la région Bedrock dans sa configuration utilisateur, par exemple 
 ```
 :::
 
-### Créer l'issue de démonstration
-
-L'issue porte un constat et deux commentaires. Elle est créée dans le dépôt de session, jamais dans la référence.
-
-```bash
-cd "$WORK"
-TITLE="Un ticket fermé accepte encore des commentaires"
-gh issue create --repo "$TARGET" --title "$TITLE" --body-file - <<'EOF'
-## Constat
-
-`POST /tickets/{id}/comments` répond 201 sur un ticket au statut
-`closed`. Le commentaire est enregistré.
-
-## Attendu
-
-Un ticket fermé refuse les commentaires. La réponse est un 409 avec
-un message qui nomme le statut.
-
-## Piste
-
-La vérification du statut manque au moment de l'ajout du commentaire.
-EOF
-gh issue comment 1 --repo "$TARGET" --body-file - <<'EOF'
-Reproduit sur `main` : création d'un ticket, passage à `closed`,
-ajout d'un commentaire. Le commentaire apparaît dans
-`GET /tickets/{id}/comments`.
-EOF
-gh issue comment 1 --repo "$TARGET" --body-file - <<'EOF'
-Le test d'intégration `test_add_comment_on_closed_ticket_returns_409`
-décrit déjà le comportement attendu. Il échoue aujourd'hui.
-EOF
-```
-
-::: attendu
-`gh issue view 1 --repo "$TARGET" --json title,comments` affiche le titre et deux commentaires.
-:::
-
-::: indice
-Issue déjà créée : ne pas la recréer (`gh issue list --repo "$TARGET"`). `gh issue view 1 --comments` échoue avec gh 2.46.0 (`GraphQL: Projects (classic) is being deprecated`) : employer toujours `--json title,comments`.
-:::
-
-### Montrer l'impasse sans MCP
-
-Un faux `gh` cache la ligne de commande GitHub à l'agent de code. Le serveur MCP n'est pas encore déclaré.
-
-```bash
-mkdir -p "$HOME/sans-gh"
-cat > "$HOME/sans-gh/gh" <<'EOF'
-#!/usr/bin/env bash
-echo "gh: command not found" >&2
-exit 127
-EOF
-chmod +x "$HOME/sans-gh/gh"
-```
-
-::: claude-code
-Le `.mcp.json` du dépôt déclare un serveur Playwright : le retirer pour cette étape, la remise à zéro le restaure.
-
-```console
-$ cd "$WORK"
-$ rm -f .mcp.json
-$ PATH="$HOME/sans-gh:$PATH" claude --model claude-sonnet-4-6
-```
-:::
-
-::: opencode
-Le `opencode.json` du dépôt déclare déjà le serveur GitHub : le remplacer par un fichier qui fixe seulement le modèle.
-
-```bash
-cd "$WORK"
-cat > opencode.json <<'EOF'
-{
-  "$schema": "https://opencode.ai/config.json",
-  "model": "amazon-bedrock/eu.anthropic.claude-sonnet-4-6",
-  "instructions": [".specify/memory/constitution.md"]
-}
-EOF
-```
-
-```console
-$ PATH="$HOME/sans-gh:$PATH" opencode
-```
-:::
-
-Prompt, sans mention du serveur MCP :
-
-```prompt
-Lis l'issue n° 1 du dépôt imihalcea/tickets-api-demo et ses commentaires. Résume le bug en trois lignes exactement et nomme le test qui devrait le couvrir. Ne modifie rien.
-```
-
-::: attendu
-L'agent de code ne lit pas l'issue. Sous Claude Code, il tente `gh`, puis `curl`, puis `python3` (refusés ou sans résultat). Sous Open Code, observer les tentatives de contournement.
-:::
-
-::: indice
-Quitter la session de l'agent avant l'étape suivante. Si l'agent trouve l'issue par un autre moyen, le signaler : le but est de montrer que l'information reste hors de portée sans outil dédié.
-:::
-
 ### Déclarer le serveur MCP
 
 Le jeton est lu dans l'environnement du shell, jamais écrit dans un fichier.
@@ -1265,7 +1108,6 @@ Fichiers `.mcp.json` et `.claude/settings.json` à la racine de la copie de trav
 
 ```bash
 cd "$WORK"
-mkdir -p .claude
 cat > .mcp.json <<'EOF'
 {
   "mcpServers": {
@@ -1279,7 +1121,7 @@ cat > .mcp.json <<'EOF'
 EOF
 cat > .claude/settings.json <<'EOF'
 {
-  "model": "claude-sonnet-4-6",
+  "model": "claude-sonnet-5-5",
   "permissions": {
     "allow": [
       "Bash(make test *)",
@@ -1303,7 +1145,7 @@ cat > .claude/settings.json <<'EOF'
 EOF
 ```
 
-Lancer `claude --model claude-sonnet-4-6`, autoriser le serveur du projet à l'invite de permission, puis taper `/mcp`.
+Lancer `claude --model claude-sonnet-5-5`, autoriser le serveur du projet à l'invite de permission, puis taper `/mcp`.
 :::
 
 ::: opencode
@@ -1314,7 +1156,7 @@ cd "$WORK"
 cat > opencode.json <<'EOF'
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "amazon-bedrock/eu.anthropic.claude-sonnet-4-6",
+  "model": "amazon-bedrock/eu.anthropic.claude-sonnet-5-5",
   "instructions": [".specify/memory/constitution.md"],
   "mcp": {
     "servers": {
@@ -1347,20 +1189,20 @@ Le serveur `github` figure dans la liste (`/mcp` sous Claude Code, `✓ github` 
 Open Code v2 lance un processus d'arrière-plan qui n'hérite pas de l'environnement du shell : sans `GITHUB_TOKEN` de ce côté, le serveur échoue (`Authorization header is badly formatted`) et l'agent contourne par `curl`. En non interactif, ajouter `--standalone` à `opencode run` (option présente dans l'aide locale de la v2.0.32). En session interactive, vérifier `opencode mcp list` avant de commencer. Sous Claude Code, sans `list_issues` ni `get_me` dans `allow`, l'agent est bloqué par les permissions.
 :::
 
-### Lire l'issue par le serveur MCP
+### Créer les issues par le serveur MCP
 
 Relever d'abord la taille de la fenêtre de contexte : `/context` sous Claude Code ; sous Open Code, aucune commande équivalente documentée, noter le coût du premier tour.
 
 ```prompt
-Avec le serveur MCP github, sans gh ni curl, lis l'issue n° 1 du dépôt imihalcea/tickets-api-demo et ses commentaires. Résume le bug en trois lignes exactement et nomme le test qui devrait le couvrir. Ne modifie rien.
+Lance `make test`. Pour chaque test en échec, crée avec le serveur MCP github, sans gh ni curl, une issue dans le dépôt courant : titre court, comportement constaté, comportement attendu, nom du test. Ne modifie aucun fichier.
 ```
 
 ::: attendu
-Bug résumé en trois lignes (un ticket fermé accepte des commentaires, la réponse est 201 au lieu de 409) et test nommé, `test_add_comment_on_closed_ticket_returns_409`. Appels à observer : `list_issues` (le corps de l'issue vient de là) puis `issue_read` avec `method: get_comments` ; `issue_read` avec `method: get` n'est pas appelé. Noms d'outils : `mcp__github__issue_read` et `mcp__github__list_issues` sous Claude Code, `tools.github.issue_read` et `tools.github.list_issues` par l'outil `execute` sous Open Code. Sous Claude Code, la réponse peut dépasser les trois lignes demandées.
+`make test` affiche `2 failed, 37 passed`. L'agent demande l'autorisation à chaque création d'issue (`issue_write` est en `ask`) et en crée deux, une par test en échec : `test_add_comment_on_closed_ticket_returns_409` (un ticket fermé accepte un commentaire, la réponse est 201 au lieu de 409) et `test_closed_ticket_refuses_comments`. Noms d'outils : `mcp__github__issue_write` sous Claude Code, `tools.github.issue_write` par l'outil `execute` sous Open Code.
 :::
 
 ::: indice
-Sans le dépôt ni le numéro dans le prompt, l'agent appelle `get_me` et `list_issues` pour chercher l'issue, hors de l'`allow` : refus en non interactif. Le dépôt de session s'obtient par `gh repo view --json nameWithOwner -q .nameWithOwner`. Repli si le réseau ou le jeton échoue : relire le titre et les commentaires de l'étape 02, puis `gh issue view 1 --repo "$TARGET" --json title,comments`.
+Remplacer `<propriétaire>/tickets-api-<session>` par le dépôt de session (`gh repo view --json nameWithOwner -q .nameWithOwner`). Sans le dépôt dans le prompt, l'agent appelle `get_me` pour le deviner. Open Code v2 lance un processus d'arrière-plan qui n'hérite pas de l'environnement du shell : sans `GITHUB_TOKEN` de ce côté, le serveur échoue (`Authorization header is badly formatted`) et l'agent contourne par `curl` ; en session interactive, vérifier `opencode mcp list` avant de commencer. Repli si le réseau ou le jeton échoue : créer les deux issues avec `gh issue create --repo "$TARGET"`.
 :::
 
 ### Comparer avec gh et contrôler
@@ -1368,62 +1210,38 @@ Sans le dépôt ni le numéro dans le prompt, l'agent appelle `get_me` et `list_
 Dans un autre terminal, sans le faux `gh`, puis dans la copie de travail :
 
 ```console
-$ gh issue view 1 --repo "$TARGET" --json title,comments
+$ gh issue list --repo "$TARGET" --json number,title
 $ git status --short
 ```
 
 Relever la fenêtre de contexte après le prompt (`/context` sous Claude Code).
 
 ::: attendu
-`gh` rend le même contenu que le serveur MCP. `git status` ne liste que les fichiers de configuration posés à l'étape 04 (`.mcp.json` et `.claude/settings.json`, ou `opencode.json`) : l'agent n'a rien modifié. La fenêtre de contexte a grossi de plusieurs milliers de tokens (outils MCP et contenu de l'issue).
+`gh` liste les deux issues créées par le serveur MCP. `git status` ne liste que les fichiers de configuration posés à l'étape 02 (`.mcp.json` et `.claude/settings.json`, ou `opencode.json`) : l'agent n'a rien modifié. La fenêtre de contexte a grossi de plusieurs milliers de tokens (outils MCP, sortie des tests et contenu des issues).
 :::
 
 ::: indice
-Remise à zéro avant la démonstration suivante : `cd "$WORK" && git checkout -- . && git clean -fdq -e .venv -e node_modules`. Elle restaure les fichiers de configuration du dépôt. L'issue reste dans le dépôt de session et n'est pas recréée.
+Remise à zéro avant la démonstration suivante : `cd "$WORK" && git checkout -- . && git clean -fdq -e .venv -e node_modules`. Elle restaure les fichiers de configuration du dépôt. Les issues créées restent dans le dépôt de session : les fermer (`gh issue close`) avant de rejouer l'étape.
 :::
 
 ## Démonstration 2 : déléguer à un sous-agent explorateur {.tp}
 
 Un sous-agent explore le code des commentaires et rend dix lignes à l'agent principal. Branche `fix/ticket-ferme-commentaires`.
 
-### Se placer sur la branche
+### Préparer la démonstration
 
-Préalables : `git`, `make`, `docker` (Compose), `uv`, `gh` connecté, clé SSH enregistrée sur GitHub, accès à `imihalcea/tickets-api`, port 5432 libre. Claude Code 2.1.310 (abonnement Anthropic connecté) ou Open Code v2.0.32 (identifiants AWS pour Amazon Bedrock, région européenne). Aucun jeton GitHub. Contenu du dépôt employé : `AGENTS.md` et `.specify/memory/constitution.md` (architecture hexagonale), `src/tickets/domain/ticket.py` et `src/tickets/application/comments.py` (le code exploré), `Makefile` (`db-up`, `test`), l'agent `explorateur` de `.claude/agents/` et de `.opencode/agents/`.
-
-
-Le bloc crée le dépôt de session et la copie de travail s'ils n'existent pas, sans effet de bord sinon.
+La démonstration 1 a déjà créé le dépôt de session, la copie de travail, la base et les dépendances, et défini `SESSION`, `TARGET` et `WORK` dans le shell. Elle a aussi posé des fichiers non commités (serveur MCP, permissions) : ils sont retirés pour que la fenêtre de contexte de départ ne contienne pas les outils MCP. Dans un nouveau terminal, relancer d'abord `bash demos/01-commun/preparer-session.sh` et recopier les variables qu'il affiche.
 
 ```bash
-export SESSION=demo
-export REFERENCE=imihalcea/tickets-api
-export TARGET="$REFERENCE-$SESSION"
-export WORK="$HOME/travail/tickets-api-$SESSION"
-
-if ! gh repo view "$TARGET" >/dev/null 2>&1; then
-  gh repo create "$TARGET" --private --description "Dépôt de session $SESSION"
-  REFERENCE_URL=$(gh repo view "$REFERENCE" --json sshUrl -q .sshUrl)
-  TARGET_URL=$(gh repo view "$TARGET" --json sshUrl -q .sshUrl)
-  tmp=$(mktemp -d)
-  git clone --mirror "$REFERENCE_URL" "$tmp/reference.git"
-  git -C "$tmp/reference.git" push --mirror "$TARGET_URL"
-  rm -rf "$tmp"
-fi
-if [ ! -d "$WORK/.git" ]; then
-  mkdir -p "$HOME/travail"
-  git clone "$(gh repo view "$TARGET" --json sshUrl -q .sshUrl)" "$WORK"
-fi
-
-cd "$WORK"
+cd $WORK
 git checkout -- . && git clean -fdq -e .venv -e node_modules
-git checkout fix/ticket-ferme-commentaires
-docker compose down -v
+git status --short
 make db-up
-uv sync
 make test
 ```
 
 ::: claude-code
-Le sous-agent `explorateur` est dans le dépôt (`.claude/agents/explorateur.md`), sans changement. Le modèle est désigné par `--model claude-sonnet-4-6` au lancement et par le `.claude/settings.json` du dépôt.
+Le sous-agent `explorateur` est dans le dépôt (`.claude/agents/explorateur.md`), sans changement. Le modèle est désigné par `--model claude-sonnet-5-5` au lancement et par le `.claude/settings.json` du dépôt.
 :::
 
 ::: opencode
@@ -1433,7 +1251,7 @@ Le dépôt porte l'explorateur en forme v1. Écrire un `opencode.json` qui fixe 
 cat > opencode.json <<'EOF'
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "amazon-bedrock/eu.anthropic.claude-sonnet-4-6",
+  "model": "amazon-bedrock/eu.anthropic.claude-sonnet-5-5",
   "instructions": [".specify/memory/constitution.md"]
 }
 EOF
@@ -1491,7 +1309,7 @@ Contenu attendu :
 name: explorateur
 description: Explore un périmètre du dépôt en lecture seule et rend un résumé de dix lignes au plus
 tools: Read, Grep, Glob
-model: claude-sonnet-4-6
+model: claude-sonnet-5-5
 maxTurns: 25
 ---
 
@@ -1531,7 +1349,7 @@ L'agent doit apparaître dans `/agents` sous Claude Code et dans `opencode debug
 
 ::: claude-code
 ```console
-$ claude --model claude-sonnet-4-6
+$ claude --model claude-sonnet-5-5
 ```
 
 Relever la fenêtre de contexte : `/context`.
@@ -1546,11 +1364,11 @@ Open Code n'a pas de commande équivalente à `/context` : noter le coût affich
 :::
 
 ::: attendu
-Une session interactive s'ouvre sur le modèle `claude-sonnet-4-6`. La fenêtre de départ est relevée.
+Une session interactive s'ouvre sur le modèle `claude-sonnet-5-5`. La fenêtre de départ est relevée.
 :::
 
 ::: indice
-Modèle affiché différent de `claude-sonnet-4-6` : sous Claude Code, relancer avec `--model claude-sonnet-4-6` ; sous Open Code, vérifier le champ `model` d'`opencode.json`. Erreur d'authentification sous Open Code : contrôler les identifiants AWS et la région Bedrock.
+Modèle affiché différent de `claude-sonnet-5-5` : sous Claude Code, relancer avec `--model claude-sonnet-5-5` ; sous Open Code, vérifier le champ `model` d'`opencode.json`. Erreur d'authentification sous Open Code : contrôler les identifiants AWS et la région Bedrock.
 :::
 
 ### Déléguer l'exploration
@@ -1597,37 +1415,13 @@ L'orchestrateur répartit la spécification 002 entre cinq agents. Branche `main
 
 ### Se placer sur main
 
-Préalables : `git`, `make`, `docker` (Compose), `uv`, `gh` connecté, clé SSH enregistrée sur GitHub, accès à `imihalcea/tickets-api`, port 5432 libre. Claude Code 2.1.310 (abonnement Anthropic connecté) ou Open Code v2.0.32 (identifiants AWS pour Amazon Bedrock, région européenne). Aucun jeton GitHub. Démonstration la plus longue et la plus coûteuse : la lancer une fois. Contenu du dépôt employé : `AGENTS.md`, `.specify/memory/constitution.md`, `specs/002-responsable-priorite-haute/spec.md` (huit scénarios d'acceptation avec codes HTTP, texte à l'étape 01), `Makefile` (`db-up`, `test`, `lint`), les tests existants, les cinq agents de `.claude/agents/` et de `.opencode/agents/`, le hook `.claude/hooks/guard-path.sh`.
-
-
-La spécification 002 est écrite dans `specs/002-responsable-priorite-haute/`, le code est absent, 37 tests passent. Le bloc crée le dépôt de session et la copie de travail s'ils n'existent pas, sans effet de bord sinon.
+Le dépôt de session, la base et les dépendances viennent des démonstrations 1 et 2 (variables `SESSION`, `TARGET` et `WORK` incluses). La remise à zéro retire leurs fichiers non commités. La spécification 002 est écrite dans `specs/002-responsable-priorite-haute/`, le code est absent. Démonstration la plus longue et la plus coûteuse : la lancer une fois.
 
 ```bash
-export SESSION=demo
-export REFERENCE=imihalcea/tickets-api
-export TARGET="$REFERENCE-$SESSION"
-export WORK="$HOME/travail/tickets-api-$SESSION"
-
-if ! gh repo view "$TARGET" >/dev/null 2>&1; then
-  gh repo create "$TARGET" --private --description "Dépôt de session $SESSION"
-  REFERENCE_URL=$(gh repo view "$REFERENCE" --json sshUrl -q .sshUrl)
-  TARGET_URL=$(gh repo view "$TARGET" --json sshUrl -q .sshUrl)
-  tmp=$(mktemp -d)
-  git clone --mirror "$REFERENCE_URL" "$tmp/reference.git"
-  git -C "$tmp/reference.git" push --mirror "$TARGET_URL"
-  rm -rf "$tmp"
-fi
-if [ ! -d "$WORK/.git" ]; then
-  mkdir -p "$HOME/travail"
-  git clone "$(gh repo view "$TARGET" --json sshUrl -q .sshUrl)" "$WORK"
-fi
-
-cd "$WORK"
+cd $WORK
 git checkout -- . && git clean -fdq -e .venv -e node_modules
 git checkout main
-docker compose down -v
 make db-up
-uv sync
 make test
 ```
 
@@ -1640,7 +1434,7 @@ Poser le `.claude/settings.json` : le modèle et les commandes de test et de lec
 mkdir -p .claude
 cat > .claude/settings.json <<'EOF'
 {
-  "model": "claude-sonnet-4-6",
+  "model": "claude-sonnet-5-5",
   "permissions": {
     "allow": [
       "Bash(make test *)",
@@ -1664,7 +1458,7 @@ Un `opencode.json` désigne l'orchestrateur comme agent par défaut, pour que la
 cat > opencode.json <<'EOF'
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "amazon-bedrock/eu.anthropic.claude-sonnet-4-6",
+  "model": "amazon-bedrock/eu.anthropic.claude-sonnet-5-5",
   "instructions": [".specify/memory/constitution.md"],
   "default_agent": "orchestrateur"
 }
@@ -1951,7 +1745,7 @@ Contenu attendu :
 name: orchestrateur
 description: Livre une spec en répartissant exploration, tests, implémentation et vérification entre sous-agents ; ne modifie rien lui-même
 tools: Agent(explorateur, testeur, implementeur, verificateur), Read, Bash
-model: claude-sonnet-4-6
+model: claude-sonnet-5-5
 maxTurns: 60
 ---
 
@@ -2065,7 +1859,7 @@ Les trois autres agents de Claude Code, tels qu'ils figurent dans le dépôt (`t
 name: testeur
 description: Écrit les tests d'une spec sous tests/, rouges avant le code ; ne touche jamais à src/
 tools: Read, Grep, Glob, Edit, Write, Bash
-model: claude-sonnet-4-6
+model: claude-sonnet-5-5
 maxTurns: 30
 hooks:
   PreToolUse:
@@ -2101,7 +1895,7 @@ Réponse, sans préambule :
 name: implementeur
 description: Modifie le code de l'application sous src/ et fait passer make lint et make test ; ne touche jamais aux tests
 tools: Read, Grep, Glob, Edit, Write, Bash
-model: claude-sonnet-4-6
+model: claude-sonnet-5-5
 maxTurns: 40
 hooks:
   PreToolUse:
@@ -2136,7 +1930,7 @@ Réponse, sans préambule :
 name: verificateur
 description: Vérifie un seul critère sur le code en place et rend un finding ou un verdict conforme ; lecture seule
 tools: Read, Grep, Glob, Bash
-model: claude-sonnet-4-6
+model: claude-sonnet-5-5
 maxTurns: 25
 ---
 
@@ -2185,7 +1979,7 @@ esac
 
 ::: claude-code
 ```console
-$ claude --agent orchestrateur --model claude-sonnet-4-6
+$ claude --agent orchestrateur --model claude-sonnet-5-5
 ```
 :::
 
@@ -2309,7 +2103,7 @@ La règle `deny` protège `tests/` contre l'outil `Edit`. Elle bloque aussi le t
 mkdir -p .claude
 cat > .claude/settings.json <<'EOF'
 {
-  "model": "claude-sonnet-4-6",
+  "model": "claude-sonnet-5-5",
   "permissions": {
     "allow": [
       "Bash(make test *)",
@@ -2334,7 +2128,7 @@ Un `opencode.json` fixe le modèle, sans serveur MCP ni jeton. L'agent `implemen
 cat > opencode.json <<'EOF'
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "amazon-bedrock/eu.anthropic.claude-sonnet-4-6",
+  "model": "amazon-bedrock/eu.anthropic.claude-sonnet-5-5",
   "instructions": [".specify/memory/constitution.md"]
 }
 EOF
@@ -2454,7 +2248,7 @@ Sous Claude Code, la commande délègue à `implementeur`, dont voici le fichier
 name: implementeur
 description: Modifie le code de l'application sous src/ et fait passer make lint et make test ; ne touche jamais aux tests
 tools: Read, Grep, Glob, Edit, Write, Bash
-model: claude-sonnet-4-6
+model: claude-sonnet-5-5
 maxTurns: 40
 hooks:
   PreToolUse:
@@ -2504,7 +2298,7 @@ esac
 
 ::: claude-code
 ```console
-$ claude --model claude-sonnet-4-6
+$ claude --model claude-sonnet-5-5
 ```
 :::
 
@@ -2648,7 +2442,7 @@ cat > .mcp.json <<'EOF'
 EOF
 cat > .claude/settings.json <<'EOF'
 {
-  "model": "claude-sonnet-4-6",
+  "model": "claude-sonnet-5-5",
   "permissions": {
     "allow": [
       "Bash(make test *)",
@@ -2672,7 +2466,7 @@ jq empty .mcp.json .claude/settings.json
 cat > opencode.json <<'EOF'
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "amazon-bedrock/eu.anthropic.claude-sonnet-4-6",
+  "model": "amazon-bedrock/eu.anthropic.claude-sonnet-5-5",
   "instructions": [".specify/memory/constitution.md"],
   "mcp": {
     "servers": {
@@ -2726,7 +2520,7 @@ L'API et les tests partagent la même base : ne pas jouer deux démonstrations e
 
 ::: claude-code
 ```console
-$ claude --model claude-sonnet-4-6
+$ claude --model claude-sonnet-5-5
 ```
 
 Autoriser le serveur du projet à l'invite de permission, puis `/mcp` pour lister les outils.

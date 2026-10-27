@@ -2,7 +2,7 @@
 # Prépare la copie de travail d'une démonstration du module 1.
 # Usage : prepare.sh <session> <branche> <dossier overlay> [dossier de travail, défaut ~/travail]
 # 1. crée ou réutilise la copie de session (00-tickets-api/session.sh) ;
-# 2. se place sur la branche de la démonstration ;
+# 2. retire les fichiers non commités des démonstrations précédentes et se place sur la branche ;
 # 3. copie par-dessus les configurations de l'overlay (fichiers non commités) ;
 # 4. lance la base et installe les dépendances.
 set -euo pipefail
@@ -16,6 +16,8 @@ work="$base/tickets-api-$session"
 
 "$ici/../00-tickets-api/session.sh" "$session" "$base"
 cd "$work"
+git checkout --quiet -- .
+git clean -fdq -e .venv -e node_modules
 git fetch --quiet origin
 git checkout --quiet "$branche"
 git pull --quiet --ff-only origin "$branche" || true
