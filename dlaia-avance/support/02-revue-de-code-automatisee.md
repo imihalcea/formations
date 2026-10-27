@@ -1,6 +1,5 @@
 # Revue de code automatisée
 
-Un agent relit chaque diff.
 
 ## Le diff reste à relire {kicker="Périmètre"}
 
@@ -38,9 +37,11 @@ Le schéma ne montre pas encore la sortie de l'agent de code : elle a un nom et 
 Lexique : « revue automatisée », pas « revue par IA ».
 :::
 
-## Définition d'un finding {kicker="Périmètre"}
+## Finalité : Decouvrir les remarques importantes {kicker="Périmètre"}
 
-Un finding est une remarque localisée que la revue automatisée rend sur le diff.
+Nous cherchons des remarques localisées que la revue automatisée rend sur le diff.
+
+Terme : **finding**
 
 ```
 src/tickets/adapters/outbound/notifications.py:6
@@ -186,7 +187,7 @@ Sévérités : R2 est moyenne (une route sans test n'est pas un défaut en soi),
 Le reviewer ne reçoit pas la spécification complète dans les règles : la commande lui donne le chemin de la spécification visée.
 :::
 
-## Écrire la règle R3 {kicker="Règles"}
+## Écrire la règle de revue R3 {kicker="Règles"}
 
 ```markdown
 ## R3 Aucun secret en clair
@@ -214,7 +215,7 @@ Conclut la section : règles d'équipe en prose, définition d'une règle de rev
 Transition : une règle ne lit pas le diff. Qui l'applique ? Section suivante : le finding et l'agent qui le rend.
 :::
 
-## Définition d'un reviewer {kicker="Finding"}
+## Définition d'un agent "reviewer" {kicker="Finding"}
 
 ![Le diff et les règles de revue entrent dans le reviewer, qui rend des findings à l'agent principal](images/02-reviewer.svg)
 
@@ -246,7 +247,7 @@ Règle de rédaction du reviewer : pas de scénario, pas de finding. C'est ce qu
 Lexique : « scénario d'échec », pas « cas de test ».
 :::
 
-## Le format d'un finding {kicker="Finding"}
+## Le format {kicker="Finding"}
 
 ```json
 {
@@ -317,7 +318,7 @@ Open Code v2 : `permissions` est une liste ordonnée de règles `{action, resour
 Le format de finding est défini dans `revue/finding.schema.json` (slide précédente).
 :::
 
-## Un finding qu'on peut rejouer prouve qu'il dit vrai. {.statement kicker="Finding"}
+## Modes de revue {.statement kicker="Modes"}
 
 ::: notes
 Conclut la section : reviewer, scénario d'échec, format, déclaration.
@@ -785,8 +786,8 @@ git checkout -- . && git clean -fdq -e .venv -e node_modules
 git checkout demo/revue-defauts
 git reset --hard origin/demo/revue-defauts
 docker compose down -v
-uv sync
 make db-up
+uv sync
 make test
 ```
 
@@ -1141,8 +1142,8 @@ git checkout -- . && git clean -fdq -e .venv -e node_modules
 git checkout demo/revue-defauts
 git reset --hard origin/demo/revue-defauts
 docker compose down -v
-uv sync
 make db-up
+uv sync
 make test
 ```
 
@@ -1536,8 +1537,8 @@ git checkout -- . && git clean -fdq -e .venv -e node_modules
 git checkout demo/revue-defauts
 git reset --hard origin/demo/revue-defauts
 docker compose down -v
-uv sync
 make db-up
+uv sync
 make test
 ```
 
