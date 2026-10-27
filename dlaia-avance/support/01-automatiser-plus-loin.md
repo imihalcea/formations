@@ -2231,7 +2231,7 @@ cinq relances en expliquant ce qui bloque. Compte tes relances dans ta réponse.
 :::
 
 ::: attendu
-La limite de cinq relances est une instruction du prompt : un garde-fou faible, que seul un script ou le harnais rend contraignant.
+La limite de cinq relances est une instruction du prompt : un garde-fou faible, que seul un script ou le harnais rend contraignant. L'interdiction de toucher à `tests/` répète une contrainte que `implementeur` porte déjà : refus d'écriture par le hook `guard-path.sh` et la règle `deny` de `.claude/settings.json` sous Claude Code, règle `edit` sur `tests/*` de l'agent sous Open Code. La phrase du prompt double ce refus.
 :::
 
 ::: indice
