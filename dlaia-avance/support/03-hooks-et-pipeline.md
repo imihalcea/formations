@@ -184,18 +184,18 @@ export default Plugin.define({
 ::: notes
 Fichiers : `.claude/settings.json` (Claude Code), `.opencode/plugins/garde-ci.ts` (Open Code ; dossier de découverte `.opencode/plugins/`, doc v2). Le contrôle `garde` est sur la slide suivante.
 Claude Code : `matcher` `Edit|Write|Bash` vaut noms d'outils exacts. `${CLAUDE_PROJECT_DIR}` figure dans les exemples de la doc. Le hook se déclare dans `.claude/settings.json` (partagé par git) ; il se lance aussi en `claude -p`, même dans un dossier jamais ouvert en interactif (doc headless).
-Open Code v2.0.32 : pas de déclaration, un module TypeScript qui exporte `Plugin.define({ id, setup })` et enregistre ses hooks dans `setup`. Piège : après modification d'un fichier de `.opencode/plugins/`, le premier `opencode run` a expiré à 150 s, 180 s puis 500 s ; après `opencode service restart` il répond en 6 s (rejeu du 25 octobre 2026). Le plugin lit aussi `SANS_HUMAIN` dans le service, pas dans `opencode run` : `SANS_HUMAIN=1 opencode service restart` avant la démonstration, `opencode service restart` sans variable pour revenir au mode normal.
+Open Code v2.0.32 : pas de déclaration, un module TypeScript qui exporte `Plugin.define({ id, setup })` et enregistre ses hooks dans `setup`. Piège : après modification d'un fichier de `.opencode/plugins/`, le premier `opencode run` a expiré à 150 s, 180 s puis 500 s ; après `opencode service restart` il répond en 6 s (rejeu du 25 octobre 2026). Le plugin lit aussi `CI_EXECUTE` dans le service, pas dans `opencode run` : `CI_EXECUTE=1 opencode service restart` avant la démonstration, `opencode service restart` sans variable pour revenir au mode normal.
 Question probable : et la règle de refus du module 1 ? Elle couvre des chemins fixes, toujours. Le hook ajoute une condition.
 :::
 
 ## Écrire le contrôle du hook {.compare kicker="Hooks"}
 
-Sans personne pour répondre (`SANS_HUMAIN=1`), le hook refuse toute écriture sous `tests/`.
+En exécution CI (`CI_EXECUTE=1`), le hook refuse toute écriture sous `tests/`. `CI_EXECUTE` appartient à la démonstration : le harnais ne la définit pas.
 
 ::: claude-code
 ```bash
 #!/usr/bin/env bash
-[ "$SANS_HUMAIN" = "1" ] || exit 0
+if [ "$CI_EXECUTE" != "1" ]; then exit 0; fi  # hors CI : la permission s'affiche
 cible=$(jq -r '.tool_input.file_path // .tool_input.command' <<<"$(cat)")
 if grep -Eq '(^|/)tests/|((^|[;&| ])(sed -i|tee|mv|cp|rm) |>>?) *([^;&|]*[ /])?tests/' <<<"$cible"; then
   echo "Écriture sous tests/ refusée : corrige src/." >&2
@@ -207,7 +207,7 @@ fi
 ::: opencode
 ```ts
 const garde = (event) => {
-  if (process.env.SANS_HUMAIN !== "1") return
+  if (process.env.CI_EXECUTE !== "1") return
   if (!/edit|write|patch|shell/.test(event.tool)) return
   const cible = event.input.path ?? event.input.command ?? ""
   if (/(^|\/)tests\/|((^|[;&| ])(sed -i|tee|mv|cp|rm) |>>?) *([^;&|]*[ \/])?tests\//.test(cible))
@@ -225,7 +225,7 @@ const garde = (event) => {
 
 ::: notes
 Comparaison avec le module 1 : la règle de refus couvre des chemins fixes, toujours ; ce hook refuse les mêmes chemins, mais sous condition.
-Fichiers : `.claude/hooks/garde-ci.sh` (Claude Code), corps de `garde` dans `.opencode/plugins/garde-ci.ts` (Open Code). Hook de démonstration : `SANS_HUMAIN` figure une exécution sans personne pour répondre à une permission ; les workflows de la suite posent `CI=true`, le hook de démonstration lit `SANS_HUMAIN` pour se jouer sur le poste.
+Fichiers : `.claude/hooks/garde-ci.sh` (Claude Code), corps de `garde` dans `.opencode/plugins/garde-ci.ts` (Open Code). Hook de démonstration : `CI_EXECUTE` est une variable de la démonstration, posée par le formateur au lancement de l'agent (Claude Code) ou du service (Open Code) ; ni Claude Code ni Open Code ne la définissent. Elle figure une exécution sans personne pour répondre à une permission. Hors CI, le hook sort en 0 sans décider et la permission s'affiche. Les workflows de la suite posent `CI=true`, le hook de démonstration lit `CI_EXECUTE` pour se jouer sur le poste.
 Claude Code : le hook reçoit un JSON sur stdin (`tool_name`, `tool_input`, `tool_use_id`) ; exit 2 bloque l'appel et stderr devient la raison montrée à Claude. `tool_input.file_path` pour `Edit`, `tool_input.command` pour `Bash` (champs confirmés au rejeu : `Edit` sous `tests/` et `sed -i` par `Bash` refusés). Le script a été exécuté à vide sur quinze entrées JSON (28 octobre 2026, onze dans `demos/10-hooks/tester-garde.sh`) : `Edit` et `Write` sous `tests/`, `sed -i`, `tee`, `rm` et les redirections `>` et `>>` vers `tests/` refusés ; `Edit` sous `src/`, `uv run pytest tests/unit`, `pytest -k term tests/unit`, `pytest --platform tests/`, `cat tests/a.py` et un chemin `src/mytests/` acceptés. Une première version non ancrée refusait `-k term tests/` (`rm tests/`) et laissait passer `> tests/a.py`.
 Open Code v2.0.32 : le champ `event.tool` est une chaîne, `event.input` l'entrée de l'outil (`tool.ts`). Un `throw` dans `execute.before` fait échouer l'appel seul, le message arrive au modèle (`adapter.ts`, constaté sur `opencode run` au rejeu du 25 octobre 2026). Valeurs mesurées au rejeu (sonde, 25 octobre 2026) : `event.tool` vaut `edit` pour l'écriture et `shell` pour une commande (aussi `read`, `grep`) ; `write` n'a pas été provoqué, d'où `write|patch` conservés dans le filtre. `event.input` : `{path, oldString, newString}` pour `edit`, `{command, workdir}` pour `shell`. Une première version testait `JSON.stringify(event.input)` : un `path` relatif (`tests/unit/test_ticket.py`) passait, faute de `/` devant `tests/`. Le contrôle lit `path` ou `command`, comme le hook Claude Code. Une règle `deny` de la configuration est évaluée avant le hook et ne peut pas être levée par lui.
 :::
@@ -270,7 +270,7 @@ Un hook du harnais refuse l'écriture sous `tests/`, un hook git refuse un commi
 
 ::: notes
 Démonstration 9, branche `demo/hook-harnais`. Première démonstration du module : elle vient après les sections du hook git et du hook du harnais ; elle joue le hook du harnais d'abord, parce que sa correction de `src/` sert ensuite au commit. La démonstration 10 déplace le contrôle du poste vers le pipeline.
-Repères du rejeu du 25 octobre 2026 (`claude-sonnet-4-6`) : refus sous `Edit` en 55 s, 12 tours, 0,28 USD avec Claude Code ; correction de `src/` en 29 s et 0,26 USD (Claude Code), 35 s et 0,15 USD (Open Code) ; reviewer au commit 40 s (Claude Code) et 3 à 4 s (Open Code). Avec le prompt d'origine, l'agent corrige `src/` d'emblée et le hook ne se déclenche pas : d'où le prompt durci de l'étape 03. Sans `SANS_HUMAIN`, la permission s'affiche en session interactive. Jamais deux `opencode run` en parallèle.
+Repères du rejeu du 25 octobre 2026 (`claude-sonnet-4-6`) : refus sous `Edit` en 55 s, 12 tours, 0,28 USD avec Claude Code ; correction de `src/` en 29 s et 0,26 USD (Claude Code), 35 s et 0,15 USD (Open Code) ; reviewer au commit 40 s (Claude Code) et 3 à 4 s (Open Code). Avec le prompt d'origine, l'agent corrige `src/` d'emblée et le hook ne se déclenche pas : d'où le prompt durci de l'étape 03. Sans `CI_EXECUTE`, la permission s'affiche en session interactive. Jamais deux `opencode run` en parallèle.
 :::
 
 ## Un refus de hook s'applique avant le commit ou l'appel d'outil. {.statement kicker="Hooks"}
@@ -725,7 +725,7 @@ make test
 
 ### Poser le hook du harnais
 
-Le hook refuse toute écriture sous `tests/` quand la variable `SANS_HUMAIN` vaut `1`. Elle figure une exécution sans personne pour répondre à une permission.
+Le hook refuse toute écriture sous `tests/` quand la variable `CI_EXECUTE` vaut `1`. Elle figure une exécution CI, sans personne pour répondre à une permission. `CI_EXECUTE` appartient à la démonstration : ni Claude Code ni Open Code ne la définissent, le formateur la pose au lancement.
 
 ::: claude-code
 Le fichier `.claude/settings.json` remplace celui de la branche : mêmes permissions, plus la clé `hooks`.
@@ -764,9 +764,9 @@ cat > .claude/settings.json <<'EOF'
 EOF
 cat > .claude/hooks/garde-ci.sh <<'EOF'
 #!/usr/bin/env bash
-# Hook PreToolUse de la démonstration : sans personne pour répondre (SANS_HUMAIN=1), refuse toute
-# écriture sous tests/, par Edit, Write ou une commande Bash (sed -i, tee, mv, cp, rm).
-[ "$SANS_HUMAIN" = "1" ] || exit 0
+# Hook PreToolUse de la démonstration : en exécution CI (CI_EXECUTE=1, variable de la démonstration,
+# non définie par le harnais), refuse toute écriture sous tests/, par Edit, Write ou une commande Bash (sed -i, tee, mv, cp, rm).
+if [ "$CI_EXECUTE" != "1" ]; then exit 0; fi  # hors CI : la permission s'affiche
 cible=$(jq -r '.tool_input.file_path // .tool_input.command' <<<"$(cat)")
 if grep -Eq '(^|/)tests/|((^|[;&| ])(sed -i|tee|mv|cp|rm) |>>?) *([^;&|]*[ /])?tests/' <<<"$cible"; then
   echo "Écriture sous tests/ refusée : corrige src/." >&2
@@ -779,13 +779,13 @@ chmod +x .claude/hooks/garde-ci.sh
 Jouer le hook sans modèle, sur deux entrées JSON :
 
 ```console
-$ printf '%s' '{"tool_name":"Edit","tool_input":{"file_path":"/w/tests/a.py"}}' | SANS_HUMAIN=1 .claude/hooks/garde-ci.sh; echo $?
-$ printf '%s' '{"tool_name":"Edit","tool_input":{"file_path":"/w/src/a.py"}}' | SANS_HUMAIN=1 .claude/hooks/garde-ci.sh; echo $?
+$ printf '%s' '{"tool_name":"Edit","tool_input":{"file_path":"/w/tests/a.py"}}' | CI_EXECUTE=1 .claude/hooks/garde-ci.sh; echo $?
+$ printf '%s' '{"tool_name":"Edit","tool_input":{"file_path":"/w/src/a.py"}}' | CI_EXECUTE=1 .claude/hooks/garde-ci.sh; echo $?
 ```
 :::
 
 ::: opencode
-Le plugin `.opencode/plugins/garde-ci.ts` enregistre le contrôle sur `execute.before`. Il lit `SANS_HUMAIN` dans le processus du service Open Code, pas dans celui de `opencode` : la variable se pose au redémarrage du service.
+Le plugin `.opencode/plugins/garde-ci.ts` enregistre le contrôle sur `execute.before`. Il lit `CI_EXECUTE` dans le processus du service Open Code, pas dans celui de `opencode` : la variable se pose au redémarrage du service.
 
 ```bash
 cd "$WORK"
@@ -795,7 +795,7 @@ import { Plugin } from "@opencode/plugin"
 
 // debut garde
 const garde = (event) => {
-  if (process.env.SANS_HUMAIN !== "1") return
+  if (process.env.CI_EXECUTE !== "1") return
   if (!/edit|write|patch|shell/.test(event.tool)) return
   const cible = event.input.path ?? event.input.command ?? ""
   if (/(^|\/)tests\/|((^|[;&| ])(sed -i|tee|mv|cp|rm) |>>?) *([^;&|]*[ \/])?tests\//.test(cible))
@@ -810,7 +810,7 @@ export default Plugin.define({
   },
 })
 EOF
-SANS_HUMAIN=1 opencode service restart
+CI_EXECUTE=1 opencode service restart
 opencode run --model amazon-bedrock/eu.anthropic.claude-sonnet-5-5 "Réponds seulement OK."
 ```
 :::
@@ -830,14 +830,14 @@ Le prompt demande de ne pas toucher à `src/` : l'agent de code doit alors tente
 ::: claude-code
 ```console
 $ cd "$WORK"
-$ SANS_HUMAIN=1 claude --model claude-sonnet-5-5 --permission-mode acceptEdits
+$ CI_EXECUTE=1 claude --model claude-sonnet-5-5 --permission-mode acceptEdits
 ```
 
 Le mode `acceptEdits` laisse le hook seul décider des écritures de fichiers.
 :::
 
 ::: opencode
-Le service tourne déjà avec `SANS_HUMAIN=1` (étape 02).
+Le service tourne déjà avec `CI_EXECUTE=1` (étape 02).
 
 ```console
 $ cd "$WORK"
@@ -870,7 +870,7 @@ L'agent ajoute un garde dans `Comment.write` qui lève `TicketClosed` pour un ti
 :::
 
 ::: indice
-Sans `SANS_HUMAIN`, une écriture sous `tests/` demande une permission à la place du refus (non rejoué en mode non interactif). Claude Code : lancer `claude --model claude-sonnet-5-5` sans la variable. Open Code : `opencode service restart` sans variable, puis `opencode`. Remettre `SANS_HUMAIN=1` ensuite n'est pas nécessaire pour la suite.
+Sans `CI_EXECUTE`, une écriture sous `tests/` demande une permission à la place du refus (non rejoué en mode non interactif). Claude Code : lancer `claude --model claude-sonnet-5-5` sans la variable. Open Code : `opencode service restart` sans variable, puis `opencode`. Remettre `CI_EXECUTE=1` ensuite n'est pas nécessaire pour la suite.
 :::
 
 ### Poser les règles et le reviewer
@@ -1131,7 +1131,7 @@ git log --oneline -1
 :::
 
 ::: indice
-Remise à zéro avant la démonstration suivante : `cd "$WORK" && git reset --hard origin/demo/hook-harnais && git clean -fdq -e .venv -e node_modules && git config --unset core.hooksPath`, puis `docker compose down -v && make db-up`. Sous Open Code, `opencode service restart` sans variable retire `SANS_HUMAIN`. Repli si l'agent de code ne répond pas : jouer le hook à la main (étape 02), puis l'étape 07, gitleaks n'utilise pas de modèle.
+Remise à zéro avant la démonstration suivante : `cd "$WORK" && git reset --hard origin/demo/hook-harnais && git clean -fdq -e .venv -e node_modules && git config --unset core.hooksPath`, puis `docker compose down -v && make db-up`. Sous Open Code, `opencode service restart` sans variable retire `CI_EXECUTE`. Repli si l'agent de code ne répond pas : jouer le hook à la main (étape 02), puis l'étape 07, gitleaks n'utilise pas de modèle.
 :::
 
 ## Démonstration 10 : revue sur une pull request {.tp}

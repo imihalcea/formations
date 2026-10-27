@@ -21,11 +21,11 @@ const cas = [
 ]
 let ko = 0
 for (const [env, event, refus] of cas) {
-  process.env.SANS_HUMAIN = env
+  process.env.CI_EXECUTE = env
   let refuse = false
   let message = ""
   try { garde(event) } catch (e) { refuse = true; message = e.message }
-  if (refuse !== refus) { console.log("KO", JSON.stringify(event), "SANS_HUMAIN=" + env); ko = 1 }
+  if (refuse !== refus) { console.log("KO", JSON.stringify(event), "CI_EXECUTE=" + env); ko = 1 }
   if (refuse && message !== "Écriture sous tests/ refusée : corrige src/.") { console.log("KO message", message); ko = 1 }
 }
 if (!ko) console.log("OK garde-ci.ts : 8 événements")
