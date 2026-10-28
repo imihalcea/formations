@@ -1,0 +1,385 @@
+titre: DLAIA Avancé
+modules:
+  - module: "01"
+    titre: Automatiser plus loin
+    sections:
+      - section: Limitations
+        concepts:
+          - concept: Outil d'origine
+            definition: "Outil fourni avec l'agent de code, sans serveur MCP : lire, écrire, exécuter, chercher."
+            slide: "01-automatiser-plus-loin.md#Les outils d'origine"
+            outils:
+              claude-code: "`Read`, `Write`, `Edit`, `Bash`, `Grep`, `Glob`."
+              opencode: "`read`, `write`, `edit`, `shell`, `grep`, `glob`."
+          - concept: Mécanisme
+            definition: "Moyen d'étendre l'agent de code : serveur MCP, sous-agent, orchestrateur, boucle, SDK, garde-fou."
+            slide: "01-automatiser-plus-loin.md#Trois limitations, trois sections"
+            voir: [Serveur MCP, Sous-agent, Orchestrateur, Boucle, Garde-fou, SDK]
+      - section: MCP
+        concepts:
+          - concept: MCP
+            definition: "Model Context Protocol : protocole commun entre un agent de code et un serveur qui lui expose des outils."
+            slide: "01-automatiser-plus-loin.md#Définition d'un serveur MCP"
+          - concept: Serveur MCP
+            definition: "Programme qui expose des outils à l'agent de code par le MCP ; ses outils sont soumis aux permissions."
+            slide: "01-automatiser-plus-loin.md#Définition d'un serveur MCP"
+            outils:
+              claude-code: "Clé `mcpServers`, type `http` ou commande locale."
+              opencode: "Clé `mcp.servers` d'`opencode.json`, type `remote` ou `local`."
+            voir: [MCP, Outil MCP]
+          - concept: Outil MCP
+            definition: "Outil d'un serveur MCP : nom, description et paramètres typés que le serveur déclare à l'agent de code."
+            slide: "01-automatiser-plus-loin.md#Un outil MCP"
+            outils:
+              claude-code: "Permission par outil : `mcp__github__issue_read`."
+              opencode: "Permission par outil : `github_issue_read`."
+          - concept: Jeton d'accès
+            definition: "Secret lu dans une variable d'environnement qui authentifie l'agent de code auprès d'un serveur MCP."
+            slide: "01-automatiser-plus-loin.md#Brancher un serveur MCP"
+            outils:
+              claude-code: "`${GITHUB_TOKEN}` dans la déclaration du serveur."
+              opencode: "`{env:GITHUB_TOKEN}` dans la déclaration du serveur."
+      - section: Interface
+        concepts:
+          - concept: Serveur MCP de navigateur
+            definition: "Serveur MCP qui ouvre une page, la lit, clique et capture le rendu (Playwright) ; il vérifie ce que les tests omettent."
+            slide: "01-automatiser-plus-loin.md#Un serveur MCP de navigateur"
+            voir: [Serveur MCP]
+      - section: Sous-agents
+        concepts:
+          - concept: Agent principal
+            definition: "Agent de code qui reçoit la tâche de l'utilisateur et lance les sous-agents."
+            slide: "01-automatiser-plus-loin.md#Définition d'un sous-agent"
+          - concept: Sous-agent
+            definition: "Agent lancé par l'agent principal, avec sa propre fenêtre de contexte ; seul son rapport revient."
+            slide: "01-automatiser-plus-loin.md#Définition d'un sous-agent"
+            outils:
+              claude-code: "Fichier Markdown dans `.claude/agents/`, outils limités par `tools`."
+              opencode: "Fichier Markdown dans `.opencode/agents/`, `mode: subagent`, règles `permissions`."
+            voir: [Agent principal, Rapport]
+          - concept: Rapport
+            definition: "Texte court que le sous-agent renvoie à l'agent principal à la fin de sa tâche, à la place des fichiers lus."
+            slide: "01-automatiser-plus-loin.md#Le rapport remplace les fichiers lus"
+      - section: Orchestrateur
+        concepts:
+          - concept: Orchestrateur
+            definition: "Agent qui découpe une tâche, la délègue à des sous-agents et fait converger leurs rapports, sans rien modifier lui-même."
+            slide: "01-automatiser-plus-loin.md#Définition d'un orchestrateur"
+            voir: [Sous-agent, Dérive]
+          - concept: Dérive
+            definition: "Écart de comportement de l'agent de code que le garde-fou corrige : coût, redondance, contradiction, imbrication."
+            slide: "01-automatiser-plus-loin.md#Quatre dérives d'un orchestrateur"
+            outils:
+              claude-code: "`maxTurns` par sous-agent contre le coût."
+              opencode: "`steps` par sous-agent contre le coût."
+            voir: [Garde-fou]
+      - section: Boucles
+        concepts:
+          - concept: Horizon de tâche
+            definition: "Durée d'une tâche, mesurée en temps humain, qu'un modèle mène à bien avec une probabilité de 50 % (mesure METR)."
+            slide: "01-automatiser-plus-loin.md#Des tâches toujours plus longues"
+          - concept: Critère vérifiable
+            definition: "Commande dont le code de retour dit si le travail est fini : `make test`, `make lint`."
+            slide: "01-automatiser-plus-loin.md#Un critère vérifiable"
+            voir: [Code de retour]
+          - concept: Code de retour
+            definition: "Nombre rendu par une commande à sa fin, 0 si elle réussit."
+            slide: "01-automatiser-plus-loin.md#Un critère vérifiable"
+          - concept: Boucle
+            definition: "Relance de l'agent de code tant qu'un critère vérifiable n'est pas satisfait ; chaque nouvel appel est une relance."
+            slide: "01-automatiser-plus-loin.md#Définition d'une boucle"
+            voir: [Critère vérifiable, Commande personnalisée, Mode non interactif]
+          - concept: Commande personnalisée
+            definition: "Prompt enregistré dans un fichier du dépôt, lancé par `/nom`."
+            slide: "01-automatiser-plus-loin.md#Une boucle par commande"
+            outils:
+              claude-code: "`.claude/commands/nom.md`."
+              opencode: "`.opencode/commands/nom.md`."
+          - concept: Mode non interactif
+            definition: "Exécution sans session ouverte : un prompt en entrée, le résultat en sortie ; un script shell la relance."
+            slide: "01-automatiser-plus-loin.md#Une boucle par script"
+            outils:
+              claude-code: "`claude -p`."
+              opencode: "`opencode run`."
+      - section: Garde-fous
+        concepts:
+          - concept: Garde-fou
+            definition: "Limite posée hors du modèle, qui arrête ou borne l'agent de code."
+            slide: "01-automatiser-plus-loin.md#Définition d'un garde-fou"
+            outils:
+              claude-code: "`--max-turns`, `--max-budget-usd` à chaque appel."
+              opencode: "`steps` dans le fichier d'agent, `timeout` autour de l'appel."
+            voir: [Règle de refus, Critère vérifiable]
+          - concept: Diff
+            definition: "Liste des lignes ajoutées et retirées d'un fichier entre deux états."
+            slide: "01-automatiser-plus-loin.md#Un test désactivé masque l'échec"
+          - concept: Règle de refus
+            definition: "Permission qui interdit une action à l'agent de code, comme modifier les tests."
+            slide: "01-automatiser-plus-loin.md#Protéger les tests"
+            outils:
+              claude-code: "`\"deny\": [\"Edit(tests/**)\"]` dans `.claude/settings.json`."
+              opencode: "`effect: deny` sur `tests/*` dans le fichier d'agent."
+      - section: SDK
+        concepts:
+          - concept: SDK
+            definition: "Software Development Kit : bibliothèque qui pilote l'agent de code depuis un programme ; le code déterministe décide, l'agent de code exécute."
+            slide: "01-automatiser-plus-loin.md#Définition d'un SDK"
+            outils:
+              claude-code: "Claude Agent SDK, `@anthropic-ai/claude-agent-sdk`."
+              opencode: "`@opencode/sdk`."
+            voir: [Boucle]
+  - module: "02"
+    titre: Revue de code automatisée
+    sections:
+      - section: Périmètre
+        concepts:
+          - concept: Revue automatisée
+            definition: "Exécution de l'agent de code qui relit un diff ; l'humain tranche."
+            slide: "02-revue-de-code-automatisee.md#Définition d'une revue automatisée"
+            voir: [Diff, Finding]
+          - concept: Finding
+            definition: "Remarque localisée rendue par une revue automatisée sur un diff."
+            slide: "02-revue-de-code-automatisee.md#Finalité : Decouvrir les remarques importantes"
+            voir: [Sévérité, Scénario d'échec]
+          - concept: Sévérité
+            definition: "Niveau d'un finding : haute, moyenne ou basse."
+            slide: "02-revue-de-code-automatisee.md#Trois niveaux de sévérité"
+      - section: Règles
+        concepts:
+          - concept: Règle d'équipe
+            definition: "Phrase de `AGENTS.md` qui dit quoi faire, sans vérification ni exemple."
+            slide: "02-revue-de-code-automatisee.md#Les règles d'équipe de tickets-api"
+            voir: [Règle de revue]
+          - concept: Règle de revue
+            definition: "Énoncé que le diff peut violer, avec vérification, exemple de violation, exemple conforme et sévérité."
+            slide: "02-revue-de-code-automatisee.md#Définition d'une règle de revue"
+            voir: [Vérification d'une règle]
+          - concept: Vérification d'une règle
+            definition: "Ce que la revue lit pour décider si le diff viole la règle."
+            slide: "02-revue-de-code-automatisee.md#Définition d'une règle de revue"
+      - section: Finding
+        concepts:
+          - concept: Reviewer
+            definition: "Sous-agent en lecture seule qui applique les règles de revue et rend des findings."
+            slide: "02-revue-de-code-automatisee.md#Définition d'un agent \"reviewer\""
+            outils:
+              claude-code: "`tools: Read, Grep, Glob`."
+              opencode: "`mode: subagent`, `edit` et `shell` refusés."
+            voir: [Sous-agent, Règle de revue]
+          - concept: Scénario d'échec
+            definition: "Entrée concrète qui produit le défaut décrit par le finding."
+            slide: "02-revue-de-code-automatisee.md#Le scénario d'échec"
+      - section: Modes
+        concepts:
+          - concept: Mode de revue
+            definition: "Moment où le reviewer tourne : à la demande, sur la pull request, avant le commit."
+            slide: "02-revue-de-code-automatisee.md#Trois modes de revue"
+            voir: [Commande personnalisée, Mode non interactif]
+      - section: Faux positifs
+        concepts:
+          - concept: Faux positif
+            definition: "Finding sur un code conforme ; il se corrige dans la règle de revue."
+            slide: "02-revue-de-code-automatisee.md#Définition d'un faux positif"
+            voir: [Règle de revue]
+          - concept: Identifiant émis
+            definition: "Jeton, mot de passe ou clé délivré par un fournisseur, distinct d'une valeur factice de test."
+            slide: "02-revue-de-code-automatisee.md#Corriger la règle"
+      - section: Contradicteur
+        concepts:
+          - concept: Contradicteur
+            definition: "Sous-agent chargé de prouver qu'un finding est faux, qui lit le code et lance des commandes sans outil d'écriture."
+            slide: "02-revue-de-code-automatisee.md#Définition d'un contradicteur"
+            outils:
+              claude-code: "`disallowedTools: Write, Edit`."
+              opencode: "`edit` refusé, `shell` permis pour `make test*`."
+            voir: [Verdict]
+          - concept: Verdict
+            definition: "Réponse du contradicteur : confirmé, plausible ou réfuté, avec preuve."
+            slide: "02-revue-de-code-automatisee.md#Trois verdicts"
+          - concept: Revue adverse
+            definition: "Revue suivie d'un contradicteur par finding de sévérité haute."
+            slide: "02-revue-de-code-automatisee.md#Lancer la revue adverse"
+            voir: [Contradicteur, Sévérité]
+      - section: Alternatives
+        concepts:
+          - concept: Code Review
+            definition: "Service hébergé d'Anthropic qui relit les pull requests GitHub, distinct de la commande `/code-review`."
+            slide: "02-revue-de-code-automatisee.md#Code Review hébergé"
+  - module: "03"
+    titre: Hooks et pipeline
+    sections:
+      - section: Hooks
+        concepts:
+          - concept: Contrôle
+            definition: "Ce qu'un hook ou un job de CI exécute pour laisser passer ou refuser une modification : gitleaks, ruff, tests, reviewer."
+            slide: "03-hooks-et-pipeline.md#Définition d'un hook"
+          - concept: Événement
+            definition: "Moment où une commande démarre : appel d'outil, commit, événement du dépôt."
+            slide: "03-hooks-et-pipeline.md#Définition d'un hook"
+          - concept: Hook
+            definition: "Contrôle qu'un événement lance, sans que le modèle décide de le lancer ; il laisse passer ou refuse."
+            slide: "03-hooks-et-pipeline.md#Définition d'un hook"
+            voir: [Contrôle, Événement, Hook git, Hook du harnais]
+          - concept: Hook git
+            definition: "Script que git exécute avant une opération ; un code de retour non nul l'annule."
+            slide: "03-hooks-et-pipeline.md#Définition d'un hook git"
+            voir: [Code de retour]
+          - concept: Changements indexés
+            definition: "Modifications ajoutées par `git add`, que `git commit` va enregistrer et que le hook git lit."
+            slide: "03-hooks-et-pipeline.md#Le reviewer avant le commit"
+          - concept: Hook du harnais
+            definition: "Hook que le harnais exécute avant ou après un appel d'outil de l'agent de code ; seul celui d'avant peut refuser."
+            slide: "03-hooks-et-pipeline.md#Définition d'un hook du harnais"
+            outils:
+              claude-code: "`PreToolUse`, `PostToolUse` sous la clé `hooks`."
+              opencode: "`execute.before`, `execute.after` dans un plugin."
+      - section: CI
+        concepts:
+          - concept: CI
+            definition: "Intégration continue : serveur qui exécute des workflows à chaque événement du dépôt."
+            slide: "03-hooks-et-pipeline.md#Définition d'un workflow"
+          - concept: Workflow
+            definition: "Fichier de configuration YAML qui décrit des jobs de CI et l'événement qui les lance."
+            slide: "03-hooks-et-pipeline.md#Définition d'un workflow"
+            voir: [CI, Job de CI]
+          - concept: Branche principale
+            definition: "Branche vers laquelle les pull requests sont fusionnées (`main`) ; le job y lit le reviewer et les règles."
+            slide: "03-hooks-et-pipeline.md#Règles lues sur main"
+          - concept: Job de CI
+            definition: "Suite d'étapes d'un workflow."
+            slide: "03-hooks-et-pipeline.md#Définition d'un job de CI"
+            voir: [Journal de CI, Runner]
+          - concept: Journal de CI
+            definition: "Sortie texte d'un job de CI, lue ligne par ligne."
+            slide: "03-hooks-et-pipeline.md#Définition d'un job de CI"
+          - concept: Runner
+            definition: "Machine qui exécute un job de CI (`runs-on`)."
+            slide: "03-hooks-et-pipeline.md#Définition d'un job de CI"
+          - concept: Pull request en brouillon
+            definition: "Pull request que son auteur marque non prête à relire ; le job de revue ne la lit pas."
+            slide: "03-hooks-et-pipeline.md#Revue sur pull request"
+      - section: Garde-fous
+        concepts:
+          - concept: Jeton du job
+            definition: "Droits que le workflow accorde au job sur le dépôt (`permissions`)."
+            slide: "03-hooks-et-pipeline.md#Quatre éléments d'un job"
+            voir: [Jeton d'accès]
+          - concept: Budget
+            definition: "Garde-fou de durée posé à un job (`timeout-minutes`), qui borne aussi les tours de l'agent de code."
+            slide: "03-hooks-et-pipeline.md#Borner le budget"
+            outils:
+              claude-code: "`--max-turns` à l'appel de `claude -p`."
+              opencode: "`steps` dans le fichier d'agent."
+            voir: [Garde-fou]
+          - concept: Archive du job
+            definition: "Fichiers que le job conserve après son exécution (`upload-artifact`)."
+            slide: "03-hooks-et-pipeline.md#Quatre éléments d'un job"
+      - section: Analyse d'échec
+        concepts:
+          - concept: Analyse d'échec
+            definition: "Job qui lit en lecture seule le journal de CI d'un job en échec, lancé par `workflow_run` ; une étape sans agent de code publie la cause et le correctif proposé."
+            slide: "03-hooks-et-pipeline.md#Définition d'une analyse d'échec"
+            voir: [Journal de CI, Diagnostiqueur]
+          - concept: Diagnostiqueur
+            definition: "Sous-agent en lecture seule qui lit un journal de CI et rend la cause avec un correctif en diff."
+            slide: "03-hooks-et-pipeline.md#Définition d'une analyse d'échec"
+            voir: [Sous-agent]
+      - section: Synthèse
+        concepts:
+          - concept: Emplacement de contrôle
+            definition: "Endroit où un contrôle s'exécute : hook du harnais, hook git, job de CI, humain."
+            slide: "03-hooks-et-pipeline.md#Quatre emplacements de contrôle"
+            voir: [Hook du harnais, Hook git, Job de CI]
+  - module: "04"
+    titre: Modèles locaux
+    sections:
+      - section: Données
+        concepts:
+          - concept: Fournisseur
+            definition: "Organisation qui héberge un modèle distant, comme Anthropic ou Amazon Bedrock."
+            slide: "04-modeles-locaux.md#Lieux d'exécution d'un modèle"
+          - concept: Machine de l'équipe
+            definition: "Ordinateur que l'équipe contrôle : un poste ou un serveur d'équipe, où s'exécute un modèle local."
+            slide: "04-modeles-locaux.md#Lieux d'exécution d'un modèle"
+          - concept: Modèle local
+            definition: "Modèle exécuté sur une machine de l'équipe ; le prompt ne quitte pas le réseau de l'équipe."
+            slide: "04-modeles-locaux.md#Définition d'un modèle local"
+            voir: [Machine de l'équipe, Modèle distant]
+          - concept: Modèle distant
+            definition: "Modèle hébergé chez un fournisseur, hors du réseau de l'équipe."
+            slide: "04-modeles-locaux.md#Définition d'un modèle local"
+            voir: [Fournisseur]
+      - section: Mémoire
+        concepts:
+          - concept: Poids
+            definition: "Paramètres du modèle, des nombres appris ; leur taille en mémoire vaut le nombre de paramètres fois les octets par paramètre."
+            slide: "04-modeles-locaux.md#Définition d'un poids"
+          - concept: Quantification
+            definition: "Stockage des poids sur moins de bits (4 au lieu de 16) pour réduire la mémoire, au prix d'une perte de précision."
+            slide: "04-modeles-locaux.md#Quantification des poids"
+            voir: [Poids]
+          - concept: Petit modèle
+            definition: "Modèle de quelques milliards de paramètres, local ou distant, qui occupe peu de mémoire."
+            slide: "04-modeles-locaux.md#Définition d'un petit modèle"
+            voir: [Distillation]
+          - concept: Distillation
+            definition: "Entraînement d'un petit modèle sur les réponses d'un modèle plus grand."
+            slide: "04-modeles-locaux.md#Définition d'un petit modèle"
+          - concept: Modèle dense
+            definition: "Modèle dont chaque token relit tous les poids."
+            slide: "04-modeles-locaux.md#Définition d'une mixture d'experts"
+          - concept: Mixture d'experts
+            definition: "Modèle découpé en experts, des blocs de poids, dont chaque token n'active que quelques-uns ; tous restent en mémoire."
+            slide: "04-modeles-locaux.md#Définition d'une mixture d'experts"
+            voir: [Modèle dense]
+          - concept: Bande passante
+            definition: "Quantité de données que la mémoire envoie au processeur par seconde, en Go/s."
+            slide: "04-modeles-locaux.md#Vitesse maximale d'un modèle"
+          - concept: Vitesse de génération
+            definition: "Nombre de tokens produits par seconde ; au mieux, la bande passante divisée par la taille des poids relus à chaque token."
+            slide: "04-modeles-locaux.md#Vitesse maximale d'un modèle"
+            voir: [Bande passante, Poids]
+          - concept: Cache de la fenêtre de contexte
+            definition: "Données gardées en mémoire pour chaque token déjà lu ou produit ; il s'ajoute aux poids."
+            slide: "04-modeles-locaux.md#Mémoire d'un modèle"
+            voir: [Poids]
+      - section: Couches
+        concepts:
+          - concept: Moteur d'inférence
+            definition: "Programme qui exécute le modèle pour produire des tokens (llama.cpp)."
+            slide: "04-modeles-locaux.md#Trois couches d'un modèle local"
+            voir: [Format de poids, Serveur d'API]
+          - concept: Format de poids
+            definition: "Fichier qui stocke les poids (GGUF)."
+            slide: "04-modeles-locaux.md#Trois couches d'un modèle local"
+          - concept: Serveur d'API
+            definition: "Programme qui expose le modèle par une adresse compatible avec l'API OpenAI."
+            slide: "04-modeles-locaux.md#Trois couches d'un modèle local"
+      - section: Modèles ouverts
+        concepts:
+          - concept: Benchmark
+            definition: "Jeu de tâches avec une méthode de notation ; un score porte une date et un harnais."
+            slide: "04-modeles-locaux.md#Définition d'un benchmark"
+          - concept: Modèle ouvert
+            definition: "Modèle dont les poids sont publiés."
+            slide: "04-modeles-locaux.md#Scores sur SWE-bench Pro"
+            voir: [Benchmark]
+      - section: Tâches
+        concepts:
+          - concept: Grand modèle
+            definition: "Modèle chez le fournisseur qui traite les tâches que le routage ne garde pas au petit modèle (Claude Sonnet 5.5)."
+            slide: "04-modeles-locaux.md#Routage vers le grand modèle"
+          - concept: Routage
+            definition: "Le petit modèle classe la tâche ; une tâche locale reste au petit modèle, une tâche distante ou hors liste part au grand modèle."
+            slide: "04-modeles-locaux.md#Routage vers le grand modèle"
+            voir: [Petit modèle, Grand modèle]
+      - section: Machine
+        concepts:
+          - concept: Serveur d'équipe
+            definition: "Machine partagée de l'équipe, qui traite les prompts de plusieurs développeurs sans qu'ils quittent son réseau."
+            slide: "04-modeles-locaux.md#Définition d'un serveur d'équipe"
+            voir: [Machine de l'équipe]
+          - concept: Serveur loué
+            definition: "Serveur de calcul loué à un hébergeur, hors du réseau de l'équipe ; repère de coût d'un serveur d'équipe."
+            slide: "04-modeles-locaux.md#Définition d'un serveur loué"
+            voir: [Serveur d'équipe]
