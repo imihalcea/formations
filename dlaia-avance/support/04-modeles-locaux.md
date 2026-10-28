@@ -504,12 +504,12 @@ La confiance « haute » exigée évite de prendre pour acquise une réponse que
 
 ## Routage vers le grand modèle {kicker="Tâches"}
 
-Exemple du classement d'une issue : le grand modèle reçoit l'issue que le petit modèle ne sait pas classer.
+Classer une tâche lit peu de tokens en un tour : ce classement revient au petit modèle.
 
-![Le petit modèle classe l'issue ; une catégorie de la liste donne le résultat, sinon la même issue part chez le fournisseur au grand modèle](images/04-routage.svg)
+![Le petit modèle classe la tâche ; une tâche locale reste au petit modèle, une tâche distante ou hors liste part chez le fournisseur au grand modèle](images/04-routage.svg)
 
 ::: notes
-Schéma du support. Le losange est le critère vérifiable de la slide « Tâches du modèle local » (la catégorie rendue appartient à une liste fixée) : une commande le teste, « oui » vaut code 0, « non » code non nul. Non : catégorie hors liste, réponse illisible ou petit modèle qui répond « inconnu ». La même issue part alors au grand modèle, ici Claude Sonnet 5.5, avec le même prompt. Les issues ordinaires restent sur la machine de l'équipe ; seules les difficiles partent chez le fournisseur.
+Schéma du support. Le classement est lui-même une tâche du modèle local (slide « Tâches du modèle local », ligne « classement d'une issue ») : le petit modèle rend une catégorie prise dans une liste fixée, « locale » ou « distante », d'après les deux slides précédentes. Une commande vérifie que la catégorie appartient à la liste (critère vérifiable, module 1) ; une réponse hors liste ou illisible part au grand modèle, par prudence. Le grand modèle est ici Claude Sonnet 5.5. Les tâches locales restent sur la machine de l'équipe ; seules les distantes partent chez le fournisseur.
 Lexique : « routage » et non « cascade » ni « fallback » ; le grand modèle est le modèle auquel le routage renvoie les cas que le petit modèle ne sait pas traiter. Un script route, le code de retour décide (module 1).
 :::
 
