@@ -686,32 +686,13 @@ Transition : le module 4 déplace la question : ce qui sort du poste et ce qui r
 
 Un hook du harnais refuse l'écriture sous `tests/`. Un hook git refuse un commit qui contient un jeton. Branche `demo/hook-harnais` de `tickets-api`.
 
-### Préparer le dépôt de session et la copie de travail
+### Se placer sur la branche
 
-Prérequis : `git`, `make`, `curl`, `jq`, `docker`, `uv`, `timeout` et `gh` installés ; accès SSH à GitHub (les clones utilisent l'URL SSH) ; `gh` connecté (`gh auth login`), avec accès en lecture à `imihalcea/tickets-api` (dépôt privé) et droit de créer un dépôt privé ; Claude Code 2.1.310 : abonnement Anthropic, connexion faite (`/login` en session interactive) ; Open Code v2.0.32 : identifiants Amazon Bedrock dans la chaîne d'identifiants AWS (par exemple `AWS_PROFILE`), région des profils d'inférence `eu.`, modèle `amazon-bedrock/eu.anthropic.claude-sonnet-5-5`. Les deux outils emploient `claude-sonnet-5-5`. Port 5432 libre. `gitleaks` 8.30.1 s'installe à l'étape 06. État de départ : aucun, chaque commande de l'étape 01 est sans effet si le dépôt de session et la copie de travail existent déjà.
+Le dépôt de session, la copie de travail et les dépendances viennent des démonstrations précédentes (variables `SESSION`, `TARGET` et `WORK` incluses). La remise à zéro retire les fichiers non commités, les commits locaux et le `core.hooksPath` qu'elles ont pu laisser, puis recrée la base. `gitleaks` 8.30.1 s'installe à l'étape 06.
 
 Contenu utilisé du dépôt de référence : une API FastAPI de tickets (Python 3.12, SQLAlchemy 2, PostgreSQL, Alembic, pytest, ruff, `uv`). `AGENTS.md` décrit l'architecture hexagonale (`src/tickets/domain/`, `application/`, `adapters/inbound/http/`, `adapters/outbound/postgres/`) et les commandes. Le `Makefile` expose `db-up` (`docker compose up -d db` ; `compose.yml` lance PostgreSQL 17 sur le port 5432 avec les bases `tickets` et `tickets_test`), `test` (`uv run pytest`) et `lint` (`ruff check` et `ruff format --check`). `main` porte déjà `.claude/` (agents, commande `/fix-until-green`, hook `guard-path.sh`, `settings.json`), `.opencode/` (agents, commandes) et `opencode.json`. La branche `demo/hook-harnais` ajoute à `main` deux tests rouges, `tests/unit/test_ticket.py::test_closed_ticket_refuses_comments` et `tests/integration/test_comments_api.py::test_add_comment_on_closed_ticket_returns_409`. Le défaut est dans `Comment.write` (`src/tickets/domain/ticket.py`), qui accepte un commentaire sur un ticket `closed`.
 
-Le dépôt de session est un dépôt privé, copie miroir du dépôt de référence (`$TARGET`) : la référence ne reçoit jamais de commit. `$WORK` est la copie de travail locale de ce dépôt. La branche `demo/hook-harnais` reprend la correction du ticket fermé, avec deux tests rouges.
-
 ```bash
-export SESSION=demo
-export REFERENCE=imihalcea/tickets-api
-export TARGET="$REFERENCE-$SESSION"
-export WORK="$HOME/travail/tickets-api-$SESSION"
-
-if ! gh repo view "$TARGET" --json name >/dev/null 2>&1; then
-  gh repo create "$TARGET" --private --description "Dépôt de session $SESSION"
-  tmp=$(mktemp -d)
-  git clone --mirror "$(gh repo view "$REFERENCE" --json sshUrl -q .sshUrl)" "$tmp/reference.git"
-  git -C "$tmp/reference.git" push --mirror "$(gh repo view "$TARGET" --json sshUrl -q .sshUrl)"
-  rm -rf "$tmp"
-fi
-if [ ! -d "$WORK/.git" ]; then
-  mkdir -p "$HOME/travail"
-  git clone "$(gh repo view "$TARGET" --json sshUrl -q .sshUrl)" "$WORK"
-fi
-
 cd "$WORK"
 git config --unset core.hooksPath || true
 git fetch origin
@@ -1147,32 +1128,15 @@ Remise à zéro avant la démonstration suivante : `cd "$WORK" && git reset --ha
 
 Une pull request reçoit les findings du reviewer en commentaires, sans commande de revue. Branche `demo/revue-defauts` de `tickets-api`.
 
-### Préparer le dépôt de session et la copie de travail
+### Se placer sur la branche
 
-Prérequis : `git`, `make`, `curl`, `jq`, `docker`, `uv`, `timeout` et `gh` installés ; accès SSH à GitHub (les clones utilisent l'URL SSH) ; `gh` connecté (`gh auth login`), avec accès en lecture à `imihalcea/tickets-api` (dépôt privé) et droit de créer un dépôt privé et d'y ouvrir une pull request ; Claude Code 2.1.310 : abonnement Anthropic, connexion faite (`/login` en session interactive) ; Open Code v2.0.32 : identifiants Amazon Bedrock dans la chaîne d'identifiants AWS (par exemple `AWS_PROFILE`), région des profils d'inférence `eu.`, modèle `amazon-bedrock/eu.anthropic.claude-sonnet-5-5`. Les deux outils emploient `claude-sonnet-5-5`. Port 5432 libre. État de départ : aucun, l'étape reconstruit le dépôt de session et la copie de travail. Aucun runner (machine qui exécute un job) auto-hébergé n'est enregistré : le workflow est commité, non exécuté, et le script du job se joue sur le poste. Seuls `lint` et `test` du workflow `ci` du dépôt de session tournent chez GitHub.
+Le dépôt de session, la copie de travail et les dépendances viennent des démonstrations précédentes (variables `SESSION`, `TARGET` et `WORK` incluses). La remise à zéro retire les fichiers non commités, les commits locaux et le `core.hooksPath` qu'elles ont pu laisser, puis recrée la base. Aucun runner (machine qui exécute un job) auto-hébergé n'est enregistré : le workflow est commité, non exécuté, et le script du job se joue sur le poste. Seuls `lint` et `test` du workflow `ci` du dépôt de session tournent chez GitHub.
 
 Contenu utilisé du dépôt de référence : une API FastAPI de tickets (Python 3.12, SQLAlchemy 2, PostgreSQL, Alembic, pytest, ruff, `uv`), `Makefile` avec `db-up` (`docker compose up -d db`, PostgreSQL 17 sur le port 5432), `test` (`uv run pytest`) et `lint`. Le workflow `.github/workflows/ci.yml` (jobs `lint` et `test`, sur `pull_request` et sur push vers `main`) est celui qui tourne chez GitHub. `main` porte déjà `.claude/` (agents, commande, hook, `settings.json`) et `.opencode/` (agents, commandes). La branche `demo/revue-defauts` porte la spécification 002 et quatre défauts plantés.
 
-Le dépôt de session est un dépôt privé, copie miroir du dépôt de référence (`$TARGET`) ; la pull request s'y ouvre, jamais dans la référence. `$WORK` est la copie de travail locale de ce dépôt.
+La pull request s'ouvre dans le dépôt de session (`$TARGET`), jamais dans la référence.
 
 ```bash
-export SESSION=demo
-export REFERENCE=imihalcea/tickets-api
-export TARGET="$REFERENCE-$SESSION"
-export WORK="$HOME/travail/tickets-api-$SESSION"
-
-if ! gh repo view "$TARGET" --json name >/dev/null 2>&1; then
-  gh repo create "$TARGET" --private --description "Dépôt de session $SESSION"
-  tmp=$(mktemp -d)
-  git clone --mirror "$(gh repo view "$REFERENCE" --json sshUrl -q .sshUrl)" "$tmp/reference.git"
-  git -C "$tmp/reference.git" push --mirror "$(gh repo view "$TARGET" --json sshUrl -q .sshUrl)"
-  rm -rf "$tmp"
-fi
-if [ ! -d "$WORK/.git" ]; then
-  mkdir -p "$HOME/travail"
-  git clone "$(gh repo view "$TARGET" --json sshUrl -q .sshUrl)" "$WORK"
-fi
-
 cd "$WORK"
 git config --unset core.hooksPath || true
 git fetch origin
@@ -1190,7 +1154,7 @@ make test
 :::
 
 ::: indice
-Port 5432 pris par un autre projet : `docker stop` son conteneur avant `make db-up`. Dépôt de session et copie de travail déjà créés par une démonstration précédente : les commandes de création sont sans effet.
+Port 5432 pris par un autre projet : `docker stop` son conteneur avant `make db-up`.
 :::
 
 ### Poser le reviewer et ses règles sur main
@@ -1620,32 +1584,15 @@ Le passage en brouillon dépend du plan du dépôt (`gh pr ready --undo` : « If
 
 Un workflow `ci` en échec déclenche une analyse en lecture seule : l'agent de code nomme la cause et propose un diff. Branche `demo/build-casse` de `tickets-api`.
 
-### Préparer le dépôt de session et la copie de travail
+### Se placer sur la branche
 
-Prérequis : `git`, `make`, `curl`, `jq`, `docker`, `uv`, `timeout` et `gh` installés ; accès SSH à GitHub (les clones utilisent l'URL SSH) ; `gh` connecté (`gh auth login`), avec accès en lecture à `imihalcea/tickets-api` (dépôt privé) et droit de créer un dépôt privé et d'y ouvrir une pull request ; Claude Code 2.1.310 : abonnement Anthropic, connexion faite (`/login` en session interactive) ; Open Code v2.0.32 : identifiants Amazon Bedrock dans la chaîne d'identifiants AWS (par exemple `AWS_PROFILE`), région des profils d'inférence `eu.`, modèle `amazon-bedrock/eu.anthropic.claude-sonnet-5-5`. Les deux outils emploient `claude-sonnet-5-5`. Port 5432 libre. État de départ : aucun, l'étape reconstruit le dépôt de session, la copie de travail et la base de test. Aucun runner auto-hébergé n'est enregistré : le workflow `analyse-echec` est commité, non exécuté ; le script du job se joue sur le poste. Seul le workflow `ci` tourne chez GitHub.
+Le dépôt de session, la copie de travail et les dépendances viennent des démonstrations précédentes (variables `SESSION`, `TARGET` et `WORK` incluses). La remise à zéro retire les fichiers non commités, les commits locaux et le `core.hooksPath` qu'elles ont pu laisser, puis recrée la base. Aucun runner auto-hébergé n'est enregistré : le workflow `analyse-echec` est commité, non exécuté ; le script du job se joue sur le poste. Seul le workflow `ci` tourne chez GitHub.
 
 Contenu utilisé du dépôt de référence : une API FastAPI de tickets (Python 3.12, SQLAlchemy 2, PostgreSQL, Alembic, pytest, ruff, `uv`), `Makefile` avec `db-up` (`docker compose up -d db`, PostgreSQL 17 sur le port 5432), `test` (`uv run pytest`) et `lint`. Le workflow `.github/workflows/ci.yml` (jobs `lint` et `test`) est celui qui échoue chez GitHub. `main` porte déjà `.claude/` et `.opencode/` (agents, commandes). Les migrations Alembic sont dans `src/tickets/adapters/outbound/postgres/migrations/versions/` : la seule révision de `main` est `0001`.
 
 La branche `demo/build-casse` déclare la colonne `assignee` dans `src/tickets/adapters/outbound/postgres/tables.py` sans migration Alembic. La base de test doit être neuve : une base déjà migrée en `0002` par un autre passage donne `Can't locate revision identified by '0002'` au lieu de l'erreur attendue.
 
 ```bash
-export SESSION=demo
-export REFERENCE=imihalcea/tickets-api
-export TARGET="$REFERENCE-$SESSION"
-export WORK="$HOME/travail/tickets-api-$SESSION"
-
-if ! gh repo view "$TARGET" --json name >/dev/null 2>&1; then
-  gh repo create "$TARGET" --private --description "Dépôt de session $SESSION"
-  tmp=$(mktemp -d)
-  git clone --mirror "$(gh repo view "$REFERENCE" --json sshUrl -q .sshUrl)" "$tmp/reference.git"
-  git -C "$tmp/reference.git" push --mirror "$(gh repo view "$TARGET" --json sshUrl -q .sshUrl)"
-  rm -rf "$tmp"
-fi
-if [ ! -d "$WORK/.git" ]; then
-  mkdir -p "$HOME/travail"
-  git clone "$(gh repo view "$TARGET" --json sshUrl -q .sshUrl)" "$WORK"
-fi
-
 cd "$WORK"
 git config --unset core.hooksPath || true
 git fetch origin
