@@ -755,13 +755,6 @@ ruff : FAQ « Ruff is a linter, not a type checker », pas de plugins tiers pour
 « Outil local » pour ruff et gitleaks : programmes exécutés sur le poste ou le job, sans service ; déduction, aucune page ne parle d'envoi de code.
 :::
 
-## Un outil de revue se juge sur les règles qu'il lit et sur l'endroit où part le diff. {.statement kicker="Alternatives"}
-
-::: notes
-Conclut la section : commandes de Claude Code, service hébergé, panorama. Les colonnes « règles lues » et « où part le diff » du tableau sont les deux questions à poser à tout outil, avec le format de sortie.
-Transition : récapitulatif des éléments du module.
-:::
-
 ## Les éléments d'une revue {kicker="Synthèse"}
 
 ![Les sources des règles, les règles, le reviewer, les findings, le contradicteur et l'humain, avec les trois modes de lancement](images/02-revue-complete.svg)
