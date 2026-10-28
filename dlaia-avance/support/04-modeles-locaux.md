@@ -504,12 +504,12 @@ La confiance « haute » exigée évite de prendre pour acquise une réponse que
 
 ## Routage vers le grand modèle {kicker="Tâches"}
 
-`trieur-distant` est un second agent, identique au trieur, avec Claude Sonnet 5.5.
+Exemple du classement d'une issue : le grand modèle reçoit l'issue que le petit modèle ne sait pas classer.
 
-![L'issue passe par le trieur à petit modèle ; une étiquette sûre donne le résultat, sinon la même issue part chez le fournisseur à trieur-distant](images/04-routage.svg)
+![Le petit modèle classe l'issue ; une catégorie de la liste donne le résultat, sinon la même issue part chez le fournisseur au grand modèle](images/04-routage.svg)
 
 ::: notes
-Schéma du support. Le losange est le critère vérifiable de la slide précédente : « oui » vaut code 0, « non » code non nul. Code 0, l'étiquette du petit modèle est le résultat ; code non nul (étiquette « inconnu », confiance basse, JSON invalide), la même issue part à `trieur-distant`, un second agent identique au trieur dont le modèle est Claude Sonnet 5.5. Les issues ordinaires restent sur la machine de l'équipe ; seules les difficiles partent chez le fournisseur.
+Schéma du support. Le losange est le critère vérifiable de la slide « Tâches du modèle local » (la catégorie rendue appartient à une liste fixée) : une commande le teste, « oui » vaut code 0, « non » code non nul. Non : catégorie hors liste, réponse illisible ou petit modèle qui répond « inconnu ». La même issue part alors au grand modèle, ici Claude Sonnet 5.5, avec le même prompt. Les issues ordinaires restent sur la machine de l'équipe ; seules les difficiles partent chez le fournisseur.
 Lexique : « routage » et non « cascade » ni « fallback » ; le grand modèle est le modèle auquel le routage renvoie les cas que le petit modèle ne sait pas traiter. Un script route, le code de retour décide (module 1).
 :::
 
