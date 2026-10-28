@@ -52,15 +52,11 @@ Question probable : un serveur loué chez un loueur de cartes est-il local ? Il 
 
 ## Ce qui reste local {kicker="Données"}
 
-Liste partielle : le départ chez un fournisseur dépend de la classe de donnée.
+Données gardées en général hors du prompt d'un fournisseur (liste partielle) :
 
-| Classe de donnée | Peut partir chez le fournisseur ? | Règle citée |
-|---|---|---|
-| identifiants émis (clés d'accès) | non, si possible | agences de sécurité : hors du prompt |
-| code sous clause | selon le contrat | autorité de protection des données : contrat de sous-traitance |
-| données personnelles | selon le contrat | même autorité : éviter leur saisie |
-| journaux à identifiants | selon le contrat | même autorité : ne soumettre que le partageable |
-| code public | oui | aucune |
+- secrets : clés d'API, jetons, mots de passe ;
+- données personnelles, y compris dans les logs ;
+- code couvert par une clause de confidentialité.
 
 ::: sources
 - [Commission nationale de l'informatique et des libertés (CNIL), questions-réponses sur l'IA générative (18 juillet 2024)](https://cnil.fr/fr/les-questions-reponses-de-la-cnil-sur-lutilisation-dun-systeme-dia-generative)
@@ -70,7 +66,7 @@ Liste partielle : le départ chez un fournisseur dépend de la classe de donnée
 ::: notes
 CNIL (18 juillet 2024) : « les utilisateurs finaux ne devraient soumettre que des informations qu'ils sont autorisés à partager » (section 7) ; recours à une infrastructure externe sécurisé « par le biais d'un contrat de sous-traitance » précisant « les périmètres de responsabilité et les accès autorisés aux données traitées » ; pour les API, « en évitant autant que possible la saisie de données personnelles » (section 5).
 ANSSI et BSI, rapport daté « Last updated: September 2024 » dans le fichier lié (la page de publication de l'ANSSI donne le 4 octobre 2024) : « sensitive information (such as API keys) should, if possible, not end up in the prompt » (phrase écrite pour les chatbots courants) ; « local hosting of open-source models can prevent the loss of sensitive information » (niveau management, offres aux développeurs pour éviter le shadow IT).
-Le tableau est une lecture du support. La ligne « journaux à identifiants » applique la règle de la CNIL sur le partageable ; la ligne « code public » n'a pas de règle citée. « Selon le contrat » : la décision revient au responsable des données de l'organisation. La colonne « Règle citée » donne l'organisme et le principe, la formulation est du support. La CNIL formule la règle sur les données personnelles pour l'accès par API ; la colonne généralise.
+La liste est une lecture du support. Secrets : ANSSI et BSI (« hors du prompt, si possible »), le support étend l'exemple des clés d'API aux jetons et mots de passe. Données personnelles : CNIL (éviter leur saisie, ne soumettre que le partageable), journaux compris. Code sous clause : contrat de sous-traitance (CNIL), la décision revient au responsable des données de l'organisation. Le code public peut partir chez le fournisseur, aucune règle ne l'interdit. La CNIL formule la règle sur les données personnelles pour l'accès par API ; la liste généralise.
 :::
 
 ## Une donnée qui ne peut pas sortir impose une machine de l'équipe. {.statement kicker="Données"}
