@@ -536,10 +536,10 @@ Se rejoue à chaque changement de modèle, de quantification ou de prompt. Un sc
 `[ ... ] && ...` avec `set -e` s'arrête sur une différence : le script n'active pas `set -e`.
 :::
 
-## Le trieur garde les issues qu'il range avec confiance ; le reste monte d'un cran. {.statement kicker="Tâches"}
+## Un tri local réserve le fournisseur aux tâches qui l'exigent. {.statement kicker="Tâches"}
 
 ::: notes
-Conclut la section : tâches du modèle local et du modèle distant, trieur, modèle par sous-agent, sortie imposée, critère vérifiable, routage, taux d'accord. Le trieur est l'archétype d'une tâche à peu de tokens, en un tour, vérifiable ; le routage garde un filet pour le reste, le taux d'accord chiffre l'accord avec l'équipe.
+Conclut la section : tâches du modèle local, tâches du modèle distant, routage. Le classement d'une tâche est lui-même une tâche locale (peu de tokens, un tour, vérifiable) ; sa catégorie envoie la tâche au petit modèle ou au grand. Seules les tâches distantes, ou mal classées, quittent le réseau de l'équipe.
 Transition : où faire tourner ce petit modèle ? Section suivante : choix de machine.
 :::
 
