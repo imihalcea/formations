@@ -248,7 +248,7 @@ llama.cpp : `llama-server` est ce serveur, avec des routes compatibles OpenAI. A
 Question probable : et Ollama ? Même rôle (moteur et serveur empaquetés), non sourcé ici, donc non cité.
 :::
 
-## Une adresse de serveur d'API suffit à appeler un modèle local. {.statement kicker="Couches"}
+## Modeles ouverts face aux benchmarks {.statement kicker="Evaluation"}
 
 ::: notes
 Conclut la section : moteur d'inférence, format de poids, serveur d'API. Une fois les trois installés, Open Code appelle le modèle par une adresse, comme il appelle un fournisseur (Claude Code ne se raccorde qu'à des modèles Claude, slide « Un modèle par sous-agent »).
@@ -292,7 +292,7 @@ Point à relever en salle : claude-4-5-haiku, un petit modèle distant, marque 3
 Les modèles locaux se désignent par leur taille sur les slides ; leurs noms sont ici.
 :::
 
-## Le meilleur modèle ouvert évalué reste 23 points sous le meilleur modèle distant. {.statement kicker="Modèles ouverts"}
+## Approche hybride {.statement kicker="Modèles ouverts"}
 
 ::: notes
 Conclut la section : définition d'un benchmark, scores sur SWE-bench Pro. 61,5 − 38,7 = 22,8 points, soit environ 23 ; l'intervalle de confiance est d'environ ± 3 points.
@@ -339,168 +339,6 @@ Classement du support : lire de nombreux fichiers et raisonner sur plusieurs d'e
 La frontière n'est pas figée : la mesure sur les issues de l'équipe se refait quand un modèle local progresse.
 :::
 
-## Définition d'un trieur {kicker="Tâches"}
-
-Un trieur range une issue dans une étiquette. Les étiquettes forment une liste fermée : un ensemble fixe de valeurs (bug, fonctionnalité, question, inconnu). Il déclare aussi sa confiance, haute ou basse.
-
-Prompt du trieur (illustration) :
-
-```markdown
-Tu ranges l'issue reçue dans une seule étiquette : bug, fonctionnalité, question ou inconnu.
-Réponds par un objet JSON : {"etiquette": "...", "confiance": "haute" ou "basse"}.
-Réponds « inconnu » quand le texte ne permet pas de trancher.
-```
-
-::: sources
-- [Claude Code, Subagents](https://code.claude.com/docs/en/sub-agents)
-- [Open Code, Agents (v2)](https://opencode.ai/v2/docs/agents/)
-:::
-
-::: notes
-Le corps du fichier d'agent est l'instruction fixe du trieur ; l'en-tête (modèle) est à la slide « Un modèle par sous-agent », deux slides plus loin. Fichiers : `.claude/agents/trieur.md` (Claude Code), `.opencode/agents/trieur.md` (Open Code). Le trieur est choisi comme exemple de tâche pour un modèle local : texte d'une issue en entrée, étiquette en sortie, peu de tokens, un seul tour.
-Aucun outil nécessaire : l'issue arrive dans le prompt. Côté Claude Code, sans champ `tools`, un sous-agent hérite de tous les outils : ajouter `tools: Read` ou `disallowedTools: Bash, Write, Edit` dans le fichier réel (non montré ici). Côté Open Code, la clé `permissions` (règles `{action, resource, effect}`, la dernière règle qui correspond l'emporte, page Agents v2) permet de refuser les outils d'écriture ; les noms de ressource exacts ne sont pas vérifiés ici.
-Non joué : aucun modèle local ne tourne sur le poste de rédaction.
-:::
-
-## Serveur d'API local d'Open Code {kicker="Tâches"}
-
-Open Code déclare le serveur d'API local dans `providers` (illustration).
-
-```json
-{
-  "providers": {
-    "local": {
-      "package": "@opencode/ai/providers/openai-compatible",
-      "settings": { "baseURL": "http://127.0.0.1:9931/v1" },
-      "models": { "petit": { "name": "Petit modèle local" } }
-    }
-  }
-}
-```
-
-::: sources
-- [Open Code, Providers (v2)](https://opencode.ai/v2/docs/providers/)
-- [llama.cpp, serveur (adresse et port par défaut)](https://github.com/ggml-org/llama.cpp/blob/master/tools/server/README.md)
-:::
-
-::: notes
-Extrait relevé dans la documentation le 26 octobre 2026, non exécuté. Open Code v2 : `providers.<id>` avec `package` (`@opencode/ai/providers/openai-compatible` pour une API au format OpenAI), `settings.baseURL`, `models` (clés) ; le modèle se référence `<id>/<clé>`. Les identifiants `petit` et `local` sont des noms libres. La page Providers v2 donne cet exemple dans un fichier `opencode.jsonc` ; `formateur/equivalences.md` écrit `opencode.json` pour la configuration du projet : l'extrait vaut dans le fichier de configuration que le poste utilise.
-Adresse : `llama-server` écoute sur 127.0.0.1, port 9931 par défaut (README). La page Providers liste aussi `env` pour un secret d'API : un serveur sans clé n'en déclare pas (non vérifié à l'exécution).
-Claude Code n'a pas d'équivalent : slide suivante, `model: haiku`. Dans ces slides, « fournisseur » désigne l'hébergeur d'un modèle distant ; la clé `providers` d'Open Code est le nom de l'outil.
-:::
-
-## Un modèle par sous-agent {.compare kicker="Tâches"}
-
-Chaque sous-agent déclare son modèle (illustration).
-
-::: claude-code
-```yaml
----
-name: trieur
-description: Range une issue dans une étiquette de la liste fermée
-model: haiku  # petit modèle distant
----
-```
-:::
-
-::: opencode
-```yaml
----
-description: Range une issue dans une étiquette de la liste fermée
-mode: subagent
-model: local/petit
----
-```
-:::
-
-::: sources
-- [Claude Code, Subagents (champ model)](https://code.claude.com/docs/en/sub-agents)
-- [Open Code, Agents (v2)](https://opencode.ai/v2/docs/agents/)
-:::
-
-::: notes
-Extraits relevés dans la documentation le 26 octobre 2026, non exécutés.
-Claude Code, sous-agents : champ `model` = alias (`sonnet`, `opus`, `haiku`, `fable`), identifiant complet ou `inherit` ; ordre de résolution : paramètre d'appel, champ du fichier, `CLAUDE_CODE_SUBAGENT_MODEL`, modèle de la conversation. Le petit modèle de Claude Code est donc un petit modèle distant (Haiku). Page https://code.claude.com/docs/en/llm-gateway : « Anthropic ... doesn't support routing Claude Code to non-Claude models through any gateway. » Un serveur d'API compatible OpenAI n'est donc pas un raccordement pris en charge pour Claude Code (conséquence tirée par le support, la page ne cite pas les serveurs locaux) ; la journée avec Claude Code se limite à `haiku` pour le petit modèle.
-Open Code : `model: local/petit` désigne le modèle `petit` du fournisseur `local` déclaré à la slide précédente. Format `fournisseur/modèle` avec suffixe `#variante` facultatif (page Agents v2).
-:::
-
-## Schéma JSON de la sortie {kicker="Tâches"}
-
-Un schéma JSON décrit la forme d'une réponse valide.
-
-```json
-{
-  "type": "object",
-  "properties": {
-    "etiquette": { "enum": ["bug", "fonctionnalité", "question", "inconnu"] },
-    "confiance": { "enum": ["haute", "basse"] }
-  },
-  "required": ["etiquette", "confiance"]
-}
-```
-
-::: sources
-- [Claude Code, Headless (structured output)](https://code.claude.com/docs/en/headless)
-:::
-
-::: notes
-Le schéma est le fichier `trieur.schema.json` de la slide suivante. Il fixe la liste fermée des étiquettes et les deux niveaux de confiance.
-:::
-
-## Sortie imposée par un schéma {.compare kicker="Tâches"}
-
-Une sortie imposée est une réponse contrainte à un schéma JSON (illustration).
-
-::: claude-code
-```sh
-claude -p "$(cat issue.txt)" --agent trieur \
-  --output-format json --json-schema "$(cat trieur.schema.json)" \
-  | jq '.structured_output'
-```
-:::
-
-::: opencode
-```sh
-# aucune option de schéma : le prompt demande le JSON
-opencode run --agent trieur "$(cat issue.txt)"
-```
-:::
-
-::: sources
-- [Claude Code, Headless (structured output)](https://code.claude.com/docs/en/headless)
-- [Open Code, CLI (opencode run ; options vérifiées en v2.0.32 par `opencode run --help`)](https://opencode.ai/docs/cli/)
-:::
-
-::: notes
-Open Code n'a aucune option de schéma : le prompt du trieur demande le JSON. Claude Code (page Headless) : `--output-format json` avec `--json-schema` ; « the response includes metadata ... with the structured output in the `structured_output` field » ; sans sortie valide, le champ est absent (le critère vérifiable le détecte). `--agent` fait tourner la session sous le fichier d'agent (équivalences) ; l'effet de son champ `model` avec `--agent` n'est pas vérifié ici.
-Open Code : la page CLI de `opencode run` liste `--agent`, `--model`, `--format` (`default` ou `json` : événements JSON bruts, pas une sortie contrainte) et aucune option de schéma. La sortie peut contenir du texte autour du JSON (constaté au module 3) : le critère vérifiable de la slide suivante rejette alors la réponse, qui part au grand modèle.
-La confiance est un champ déclaré par le modèle.
-Non exécuté. Options de `opencode run` vérifiées par `opencode run --help` (v2.0.32) et sur la page CLI (`opencode.ai/docs/cli/`, v1).
-:::
-
-## Critère vérifiable de la sortie {kicker="Tâches"}
-
-Une commande teste l'étiquette et la confiance de la réponse ; son code de retour décide si l'issue reste au petit modèle (illustration).
-
-```sh
-# reponse.json : la réponse du trieur
-jq -e '(.etiquette | IN("bug","fonctionnalité","question")) and .confiance == "haute"' reponse.json
-echo $?
-```
-
-```console
-true
-0
-```
-
-::: sources
-- [jq, manuel (option --exit-status)](https://jqlang.org/manual/)
-:::
-
-::: notes
-`jq -e` fixe le code de retour d'après la dernière valeur : 0 si vrai, 1 si faux ou nul, et, constaté à l'essai (jq 1.8.1), 5 si le texte n'est pas du JSON (code 5 absent de la partie du manuel lue, à ne pas citer comme documenté ; le manuel dit 2 pour une erreur système, 3 pour une erreur de programme jq, 4 sans résultat ; essai local du 26 octobre 2026 : `bug`/`haute` rend 0, `inconnu` rend 1, du texte libre rend 5). `jq -e` affiche aussi la dernière valeur (`true`) avant le code, exécuté le 26 octobre 2026. Tout code non nul envoie l'issue au grand modèle (slide « Routage vers le grand modèle »). Un critère vérifiable est une commande dont le code de retour dit si le travail est fini (module 1).
-La confiance « haute » exigée évite de prendre pour acquise une réponse que le petit modèle jugeait douteuse ; elle ne garantit pas que l'étiquette est juste, seule la mesure sur les issues l'établit.
-:::
 
 ## Routage vers le grand modèle {kicker="Tâches"}
 
@@ -513,28 +351,6 @@ Schéma du support. Le classement est lui-même une tâche du modèle local (sli
 Lexique : « routage » et non « cascade » ni « fallback » ; le grand modèle est le modèle auquel le routage renvoie les cas que le petit modèle ne sait pas traiter. Un script route, le code de retour décide (module 1).
 :::
 
-## Mesurer le taux d'accord {kicker="Tâches"}
-
-Le routage laisse une question : le petit modèle range-t-il juste ? Le taux d'accord est la part des issues dont la réponse du trieur égale celle de l'équipe.
-
-```sh
-#!/usr/bin/env bash
-# issues.tsv : une ligne par issue, « fichier<TAB>étiquette de l'équipe »
-# trieur.sh : lance le trieur sur un fichier et affiche sa réponse JSON
-ok=0; n=0
-while IFS=$'\t' read -r fichier attendue; do
-  obtenue=$(./trieur.sh "$fichier" | jq -r '.etiquette')
-  [ "$obtenue" = "$attendue" ] && ok=$((ok + 1))
-  n=$((n + 1))
-done < issues.tsv
-echo "taux d'accord : $ok/$n"
-```
-
-::: notes
-Script (illustration) exécuté avec un `trieur.sh` factice et deux issues : il affiche « taux d'accord : 1/2 ». Le vrai `trieur.sh` et `issues.tsv` sont à écrire. Les issues de l'équipe, étiquetées à la main, sont la référence. Aucune taille d'échantillon n'est sourcée. Le script ne compte que les accords : la part des issues routées au grand modèle n'est pas mesurée ici.
-Se rejoue à chaque changement de modèle, de quantification ou de prompt. Un score public (section « Modèles ouverts ») propose des candidats, cette mesure répond pour les tâches de l'équipe.
-`[ ... ] && ...` avec `set -e` s'arrête sur une différence : le script n'active pas `set -e`.
-:::
 
 ## Un tri local réserve le fournisseur aux tâches qui l'exigent. {.statement kicker="Tâches"}
 
