@@ -1,6 +1,5 @@
 # Modèles locaux
 
-La mémoire d'une machine décide quelles tâches un modèle local prend ; le reste va au modèle distant.
 
 ## Données envoyées au modèle {kicker="Données"}
 
